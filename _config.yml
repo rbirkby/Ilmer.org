@@ -1,20 +1,20 @@
-title:            Balzac
-tagline:          A beautiful theme.
+title:            ilmer.org
+tagline:          Set in the heart of Buckinghamshire.
 description:      Describe your website.
-canonical: http://jekyll.gtat.me
+canonical: http://www.ilmer.org/
 
 # Owner/author information
 owner:
-  name:           Cole Townsend
-  avatar:         avatar.png
-  bio:            "Aesthete & Athlete"
-  email:          cole@coletownsend.com
-  twitter:        twnsndco
-  github:         coletownsend
-  instagram:      ctrunsthis
-  dribbble:       coletownsend
-  disqus:         balzac
-  location:       "Buffalo, NY"
+  name:           Ilmer residents
+#  avatar:         avatar.png
+#  bio:            ""
+  email:          residents@ilmer.org
+#  twitter:        twnsndco
+#  github:         coletownsend
+#  instagram:      ctrunsthis
+#  dribbble:       coletownsend
+#  disqus:         balzac
+  location:       "Ilmer, Buckinghamshire"
   # Plug in your disqus shortname!
 
 tools:
@@ -26,12 +26,14 @@ tools:
 links:
   - title: About
     url: /about
-  - title: Github
-    url: https://github.com/ColeTownsend/Balzac-for-Jekyll
-    external: true
-  - title: Cole Who?
-    url: http://coletownsend.com
-    external: true
+  - title: History
+    url: /history
+  - title: Events
+    url: /events
+  - title: Find us
+    url: /map
+  - title: Newsroom
+    url: /newsroom
 
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 timezone:    America/New_York
