@@ -1,5 +1,5 @@
 ---
-layout: home
+layout: page
 permalink: /map/index.html
 title: "Find Us"
 tags: []
