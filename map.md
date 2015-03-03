@@ -17,4 +17,4 @@ Ilmer is a small village with just 27 houses. For such a small place, it has a s
 
 ### Location
 
-<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://www.openstreetmap.org/export/embed.html?bbox=-0.8943021297454834%2C51.74093512215584%2C-0.883573293685913%2C51.74571818207215&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/><small><a href="http://www.openstreetmap.org/#map=17/51.74333/-0.88894">View Larger Map</a></small>
+<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://www.openstreetmap.org/export/embed.html?bbox=-0.8916199207305908%2C51.742130934607864%2C-0.8862555027008056%2C51.74452246456569&amp;layer=mapnik" style="border: 1px solid black"></iframe><br/><small><a href="http://www.openstreetmap.org/#map=18/51.74333/-0.88894">View Larger Map</a></small>
