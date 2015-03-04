@@ -13,6 +13,7 @@ image:
 
 ### The Name
 
+Ilmer has been known as Ilmire and Illmire.
 As late as 1949, the Bucks Herald still occasionally referred to Ilmer as Ilmire. 
 
 For example, from their March 22nd 1924 issue:
