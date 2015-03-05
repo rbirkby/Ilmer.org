@@ -1,7 +1,7 @@
 ---
 layout: post-no-feature
 title: "Bits of Bucks"
-description: ""
+description: "In 1909, the Bucks Herald took a walk down Ilmer lane and this is what they found"
 category: history
 tags: [walking]
 ---
