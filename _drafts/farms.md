@@ -16,6 +16,7 @@ The farms in the village have come and gone, and changed names too.
 * Upper Manor Farm
 * Upper Farm
 * Lower House Farm
+* Cold Harbour Farm
 
 ### Severalles / Lower Farm / Lower House Farm
 
@@ -58,3 +59,6 @@ Richard Belgrove farmed Manor Farm for 48 years in the late 19th century until 1
 Until 1923, Alfred Hill farmed this farm. He died 3 years later.
 By 1947, J Shurrock was recorded as living at the farm.
 
+### Cold Harbour Farm
+
+This remains of this farm can be seen in woodland beside the Ilmer to Towersey bridleway.
