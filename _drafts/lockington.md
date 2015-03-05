@@ -10,3 +10,5 @@ Lockington, or sometimes Lookington, was situated south-east of Ilmer in what is
 All that is left is a pond, what remains of a building and a section of wall.
 
 Census records record various members of the Gomme family residing here. During the 20th century, Charlie Belgrove lived here.
+
+!(Lockington map)[/images/lockington.png]
