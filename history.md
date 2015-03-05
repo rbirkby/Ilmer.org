@@ -1,5 +1,5 @@
 ---
-layout: post-index
+layout: post-light-feature
 permalink: /history/index.html
 title: "History"
 tags: []
