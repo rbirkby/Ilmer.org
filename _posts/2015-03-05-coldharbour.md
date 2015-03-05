@@ -8,7 +8,7 @@ tags: [farming, fatality, death]
 
 Coldharbour was a hamlet with a single farm along what is now the bridleway between Ilmer and Towersey. Historically, places called Coldharbour were abandoned refuges along ancient roman roads. It is likely the farm was created at this site.
 
-![coldharbour map](/images/coldharbour.png)
+![coldharbour map](/images/coldharbour.jpg)
 
 A particularly sad story about the farm comes from 1907 when the farmers son, aged just 12, accidently shot and killed his sister aged 5 with a gun which had been left loaded. In addition to appearing in the Bucks Herald, the shooting was also covered in newspapers such as the Western Gazette, the Cheltenham Chronicle and the Taunton Courier.
 

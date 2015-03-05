@@ -5,5 +5,5 @@ title: "History"
 tags: []
 cat: "history"
 image:
-  feature: os-sixinch-1899.png
+  feature: os-sixinch-1899.jpg
 ---
