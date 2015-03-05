@@ -41,3 +41,13 @@ When the late vicar, the Rev. W. E. Partridge, was presented to the living, in 1
 THe manor-house stands back from the road a little distance eastward from the church, and is a large edifice constructed of brick and timber. The manor was formerly held by one of those curious tenures we occasionally meet with during the middle ages; the service in this instance was being Marshall of the King's hawks and falcons. In the 17th century Lord Dormer, of Wing, because he held this manor was Master Falconer to the King.
 
 SIGMA.
+
+
+## TO THE EDITOR OF THE BUCKS HERALD.
+
+Bucks Herlad, 15th May 1909
+
+SIR,-Thanks to Mr. Loosley and "a Bucks lady" for their interesting notes about Ilmer. But the lane "Sigma" means, I think, must be one leading from the church to Towersey, and thence to Thame, known as Burnways, which must be one of the oldest byways in Bucks, has been used a lot in former times. Perhaps you would like a bit of the history of this old crooked lane, leading by that shivery place called Cold Harbour - a farm all grass land, and which has been in one family something like 400 years. The grand-father of the gentleman who occupies it now used to be a cow doctor and made "mad drinks." Any one bitten by a mad dog who took one of his drinks did not find any more of it. People used to go for miles round after these drinks, and gave them to cattle as well. I have heard say that they would not sell the receipt for £50. It was the only place in England where one could buy mad drinks like them. The old house was burnt down a few years ago, and all the old receipts dating back some hundreds of years, were destroyed. The roof being of thatch , there was no chance of getting them out. Now, going back to Burnway-lane, when you reach the brook where a water-mill once stood, the landmarks are still traceable in a piece called Mill-piece and Mill Leys. Old men say there used to be different things dug up in Burnway-lane which had been buried by soldiers in former times. Nor far form Cold Harbour is a field called Bonehook, and another called Catcham field, so it appears Burnway-lane has been used more in former times. I can remember when people used to go through to Towersey with a horse and cart, over Saddles Field, to Towersey-lane, now stopped, against the ford over the brook, with a bridle gate.
+
+Yours, &c,
+A BUCKS MAN
