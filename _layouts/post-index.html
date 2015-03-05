@@ -1,5 +1,7 @@
 {% include head-dark.html %}
 
+<section class="article">
+
 {% if page.image.feature %}
   <div class="overlay"></div>
   {% if page.image.feature contains 'https://' | escape or page.image.feature contains 'http://' | escape %}
@@ -27,5 +29,5 @@
           </article>
         </section>
     </div>
-
+  </section>
 {% include footer.html %}
