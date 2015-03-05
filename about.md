@@ -13,6 +13,11 @@ image:
 
 ### The Name
 
+Ilmer - 1833-
+Ilmire - 1833-1949
+Illmire - 1835-1937
+Illmer - 1837-1909
+
 Ilmer has been known as Ilmire and Illmire.
 As late as 1949, the Bucks Herald still occasionally referred to Ilmer as Ilmire. 
 
