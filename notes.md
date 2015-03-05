@@ -12,5 +12,10 @@ http://www.forum.familyhistory.uk.com/showthread.php?t=14912
 
 Map showing location: http://www.visionofbritain.org.uk/maps/
 
+Copyright
+---------
+
+http://www.corpcommsmagazine.co.uk/pdfs/pdf_nla-guide_newspaper-copyright-law.pdf
+https://www.whatdotheyknow.com/request/request_justification_of_claims
 
 
