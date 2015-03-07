@@ -35,11 +35,13 @@ After his father died, William built up a poultry flock, but neglected to send h
 Despite these convictions, the prosecutor described it as "an isolated act of foolishness".
 
 
-### Upper Manor Farm / Ilmer House Farm
+### Upper Manor Farm / Ilmer House Farm / Upper Farm
+
+Upper Farm was let to Mr Belgrove in 1882.
 
 David Goodchild, farmer died 1886 aged 55.
 
-Ilmer House was the farming residence for land around the south-eastern area of Ilmer. The house was constructed around 1906 by Albert Goodchild who lived there with his wife and daughter Millicent Irene. Albert may also have had a son - Robt Douglas.
+Ilmer House was the farming residence for land around the south-eastern area of Ilmer. The house was constructed around 1906 by Albert Goodchild who lived there with his wife and daughter Millicent Irene. Albert may also have had a son - Robert Douglas.
 
 The misdemeanors described above weren't confined to Lower Farm. Albert was fined 5s in 1929 for killing game with a gun without a licence (on a Sunday!).
 
@@ -47,15 +49,16 @@ In 1931, Albert died aged 58 and the following year the house was put up for auc
 
 > 275 feet up, with S.E. and S.W. aspects, Vestibule and Hall, 3 Reception Rooms, Billiard Room, Study, 10 Bed and Dressing Rooms, 2 Bathrooms, Offices, Own Electric Light and Water, Central Heating, Modern Drainage, Lavatory Basins in Bedrooms, Garage, Two Cottages, excellent Farm Buildings. Deligtful[sic] Gardens with Tennis and Croquet Lawns in all about 116 acres with Vacant Posession of House, Farm Buildings, 1 Cottage and Garden. Hunting with the South Oxfordshire, Old Berkeley, Bicester etc
 
-A Mr W White is recorded as being resident in the house until about 1936 followed by a Mr R Attenborough.
+A Mr W White is recorded as being resident in the house until about 1936 followed by a Robert Attenborough who died in 1968.
+
+![Robert Attenborough dedication](/images/robert-attenborough.jpg)
 
 During the 1970s, a new farm residence was constructed - what is now Upper Manor Farm which allowed Ilmer House to part ways with its farmland.
 
-### Manor Farm / Upper Farm
+### Manor Farm
 
 John Read farmed until 1886.
-Upper Farm was let to Mr Belgrove in 1882.
-Richard Belgrove farmed Manor Farm for 48 years in the late 19th century until 1910. 
+Richard Belgrove farmed Manor Farm for 48 years in the late 19th century until 1910.
 Until 1923, Alfred Hill farmed this farm. He died 3 years later.
 By 1947, J Shurrock was recorded as living at the farm.
 
