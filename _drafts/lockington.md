@@ -5,14 +5,14 @@ description: ""
 category: history
 tags: [farming]
 image:
-  feature: images/lockington-photo.jpg
+  feature: lockington-photo.jpg
 ---
 
 Lockington, or sometimes Lookington, was situated south-east of Ilmer in what is now a copse by the side of a footpath.
 
 ![Lockington map](/images/lockington.jpg)
 
-Census records for 1841 show 22 inhabitants in 5 dwellings comprising 11 members of the Allen family, 2 Roberts, a Gregory, 3 Burnhams and 5 Watsons living in Lockington.
+[Census records](http://www.saunderton.demon.co.uk/basic_saunderton/pdf/lockington%20all%20years.pdf) for 1841 show 22 inhabitants in 5 dwellings comprising 11 members of the Allen family, 2 Roberts, a Gregory, 3 Burnhams and 5 Watsons living in Lockington.
 
 ![Building](/image/lockington-building.jpg)
 
