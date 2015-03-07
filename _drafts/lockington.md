@@ -14,7 +14,7 @@ Lockington, or sometimes Lookington, was situated south-east of Ilmer in what is
 
 [Census records](http://www.saunderton.demon.co.uk/basic_saunderton/pdf/lockington%20all%20years.pdf) for 1841 show 22 inhabitants in 5 dwellings comprising 11 members of the Allen family, 2 Roberts, a Gregory, 3 Burnhams and 5 Watsons living in Lockington.
 
-![Building](/image/lockington-building.jpg)
+![Building](/images/lockington-dwelling.jpg)
 
 By 1851, the number of inhabitants was 23 with 13 Allens remaining in addition to 5 Burnhams and 5 Bass, all living in the 5 houses.
 
@@ -22,7 +22,7 @@ In the 1861 census, there were 33 people living in 4 properties with just 2 Alle
 
 Most were either lace makers or agricultural labourers.
 
-![Well](/image/lockington-well.jpg)
+![Well](/images/lockington-well.jpg)
 A well, situated inside what remains of the walls of a dwelling.
 
 During the 20th century, Charlie Belgrove lived here. The Bucks Herald described him being inside a hut when they went to interview him. Could this be it?
@@ -31,4 +31,4 @@ During the 20th century, Charlie Belgrove lived here. The Bucks Herald described
 
 Nearby is another well, this time about 5 foot in diameter with an old kitchen stove falling in.
 
-![Another well](/image/lockington-well2.jpg)
+![Another well](/images/lockington-well2.jpg)
