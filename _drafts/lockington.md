@@ -1,14 +1,34 @@
 ---
-layout: post-no-feature
+layout: post-light-feature
 title: "Lockington"
 description: ""
 category: history
 tags: [farming]
+image:
+  feature: images/lockington-photo.jpg
 ---
 
 Lockington, or sometimes Lookington, was situated south-east of Ilmer in what is now a copse by the side of a footpath.
-All that is left is a pond, what remains of a building and a section of wall.
-
-Census records record various members of the Gomme family residing here. During the 20th century, Charlie Belgrove lived here.
 
 ![Lockington map](/images/lockington.jpg)
+
+Census records for 1841 show 22 inhabitants in 5 dwellings comprising 11 members of the Allen family, 2 Roberts, a Gregory, 3 Burnhams and 5 Watsons living in Lockington.
+
+![Building](/image/lockington-building.jpg)
+
+By 1851, the number of inhabitants was 23 with 13 Allens remaining in addition to 5 Burnhams and 5 Bass, all living in the 5 houses.
+
+In the 1861 census, there were 33 people living in 4 properties with just 2 Allens remaining, but now there were 17 Kinghams, 6 Burnhams, 6 Canes, a Beach and a Gunnell.
+
+Most were either lace makers or agricultural labourers.
+
+![Well](/image/lockington-well.jpg)
+A well, situated inside what remains of the walls of a dwelling.
+
+During the 20th century, Charlie Belgrove lived here. The Bucks Herald described him being inside a hut when they went to interview him. Could this be it?
+
+![Charlies Hut?](/images/lockington-hut.jpg)
+
+Nearby is another well, this time about 5 foot in diameter with an old kitchen stove falling in.
+
+![Another well](/image/lockington-well2.jpg)
