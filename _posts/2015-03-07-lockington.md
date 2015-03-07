@@ -24,9 +24,9 @@ Most were either lace makers or agricultural labourers.
 
 ![Interior](/images/lockington-dwelling-interior.jpg)
 
-Old maps show 2 wells within the curtilage of the hamlet. They are both easy to find. One of the wells is situated inside what remains of the walls of a dwelling.
+Old maps show 2 wells within the curtilage of the hamlet. They are both easy to find. One of the wells is situated inside what remains of the walls of a dwelling. At the other end of the house are the remains of a kitchen stove.
 
-![Well](/images/lockington-well.jpg)
+![Stove](/images/lockington-stove.jpg)
 
 During the 20th century, Charlie Belgrove lived here. The Bucks Herald described him being inside a hut when they went to interview him. Could this be it?
 
