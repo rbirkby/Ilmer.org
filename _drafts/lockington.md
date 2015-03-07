@@ -22,8 +22,11 @@ In the 1861 census, there were 33 people living in 4 properties with just 2 Alle
 
 Most were either lace makers or agricultural labourers.
 
+![Interior](/images/lockington-dwelling-interior.jpg)
+
+Old maps show 2 wells within the curtilage of the hamlet. They are both easy to find. One of the wells is situated inside what remains of the walls of a dwelling.
+
 ![Well](/images/lockington-well.jpg)
-A well, situated inside what remains of the walls of a dwelling.
 
 During the 20th century, Charlie Belgrove lived here. The Bucks Herald described him being inside a hut when they went to interview him. Could this be it?
 

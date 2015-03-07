@@ -11,7 +11,4 @@ Charlie Belgrove, 5th son of Richard and Martha, [Born](http://www.freebmd.org.u
 After falling out with his family, Charlie was given woodland south-east of Ilmer and spent the rest of his days making clay bricks as a hermit.
 
 
-![Drawing A]({{ site.url }}/images/money.jpg)
-
-
-![Drawing Number One]({{ site.url }}/images/sticker-mule.jpg)
+![Charlies Hut?](/images/lockington-hut.jpg)
