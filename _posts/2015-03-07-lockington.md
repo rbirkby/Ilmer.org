@@ -32,6 +32,6 @@ During the 20th century, Charlie Belgrove lived here. The Bucks Herald described
 
 ![Charlies Hut?](/images/lockington-hut.jpg)
 
-Nearby is another well, this time about 5 foot in diameter with an old kitchen stove falling in.
+Nearby is another well, this time about 5 foot in diameter with an early 20th century kitchen stove falling in.
 
 ![Another well](/images/lockington-well2.jpg)
