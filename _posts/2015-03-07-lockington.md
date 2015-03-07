@@ -1,7 +1,7 @@
 ---
 layout: post-light-feature
 title: "Lockington"
-description: ""
+description: "An abandoned hamlet, once home to 33 people, lies secluded in undergrowth just off a popular footpath."
 category: history
 tags: [farming]
 image:
