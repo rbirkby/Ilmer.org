@@ -1,7 +1,7 @@
 ---
 layout: post
 permalink: /about/index.html
-title: About the site
+title: About Ilmer
 description:
 tags: [about, ilmer, buckinghamshire]
 image:
