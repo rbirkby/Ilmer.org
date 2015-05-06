@@ -30,8 +30,12 @@ Old maps show 2 wells within the curtilage of the hamlet. They are both easy to 
 
 During the 20th century, Charlie Belgrove lived here. The Bucks Herald described him being inside a hut when they went to interview him. Could this be it?
 
-![Charlies Hut?](/images/lockington-hut.jpg)
+![Charlies bedroom](/images/lockington-hut.jpg)
 
 Nearby is another well, this time about 5 foot in diameter with an early 20th century kitchen stove falling in.
 
 ![Another well](/images/lockington-well2.jpg)
+
+This well is probably the one Charlie built. Basil Purssell wrote about it being 50 foot deep in the following magazine article:
+
+[![Magazine Feature](/images/ilmer-hermit-thumbnail.jpg)](/images/ilmer-hermit.jpg)

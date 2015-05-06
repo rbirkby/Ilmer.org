@@ -12,3 +12,4 @@ After falling out with his family, Charlie was given the hamlet south-east of Il
 
 ![Charlies Hut?](/images/lockington-hut.jpg)
 
+[![Magazine Feature](/images/ilmer-hermit-thumbnail.jpg)](/images/ilmer-hermit.jpg)
