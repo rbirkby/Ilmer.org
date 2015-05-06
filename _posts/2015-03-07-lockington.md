@@ -36,6 +36,7 @@ Nearby is another well, this time about 5 foot in diameter with an early 20th ce
 
 ![Another well](/images/lockington-well2.jpg)
 
-This well is probably the one Charlie built. Basil Purssell wrote about it being 50 foot deep in the following magazine article:
+This well is probably the one Charlie built. Basil Purssell, Bucks Herald artist and local musician, 
+wrote about it being 50 foot deep in the following magazine article:
 
 [![Magazine Feature](/images/ilmer-hermit-thumbnail.jpg)](/images/ilmer-hermit.jpg)
