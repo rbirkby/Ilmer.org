@@ -65,3 +65,7 @@ By 1947, J Shurrock was recorded as living at the farm.
 ### Cold Harbour Farm
 
 This remains of this farm can be seen in woodland beside the Ilmer to Towersey bridleway.
+
+### Bumpers Farm
+
+[Evidence](http://archaeologydataservice.ac.uk/archives/view/cotswold2_ca660317/) points to a farmstead here in Roman times.
