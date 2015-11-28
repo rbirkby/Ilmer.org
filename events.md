@@ -12,7 +12,7 @@ cat: "events"
 Ilmer Christmas Eve Carol Service, St Peters, Ilmer
 5.30pm, 24th December
 
-Residents and House Guests only due to limited space
+*Residents and House Guests only due to limited space*
 
 
 !! Proposed Events
