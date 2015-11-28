@@ -19,7 +19,7 @@ Ilmer Christmas Eve Carol Service, St Peters, Ilmer
 
 ## Proposed Events
 
-In 2016, we hope to reform the Ilmer Social Committe and plan a program of events throughout the year.
+In 2016, we hope to reform the Ilmer Social Committe and plan a programme of events throughout the year.
 
 Such events may include:
 
