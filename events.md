@@ -7,7 +7,7 @@ cat: "events"
 ---
 
 
-!!Upcoming Events
+!! Upcoming Events
 
 Ilmer Christmas Eve Carol Service, St Peters, Ilmer
 5.30pm, 24th December
@@ -15,7 +15,7 @@ Ilmer Christmas Eve Carol Service, St Peters, Ilmer
 Residents and House Guests only due to limited space
 
 
-!!Proposed Events
+!! Proposed Events
 
 In 2016, we hope to reform the Ilmer Social Committe and plan a program of events throughout the year.
 
