@@ -11,15 +11,15 @@ image:
 
 ## Upcoming Events
 
-#### Wine Quiz
+### Wine Quiz
 
-30th April 2016 from 7:30pm
+*30th April 2016* from 7:30pm
 
 See the private Ilmer.org Facebook group or the flyer for details
 
-#### Part on the Green - Queen's 90th
+### Part on the Green - Queen's 90th
 
-Saturday 11th June from 2pm
+*Saturday 11th June* from 2pm
 
 
 ## Proposed Events
