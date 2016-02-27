@@ -15,7 +15,7 @@ image:
 
 *30th April 2016* from 7:30pm
 
-See the private Ilmer.org Facebook group or the flyer for details
+See the private Ilmer.org Village Group on Facebook or the flyer for details
 
 ### Part on the Green - Queen's 90th
 
@@ -34,5 +34,5 @@ Such events may include:
 * Christmas Carol Service
 
 Other suggestions are welcome. 
-Please email one of the social team to get invited to the private social Ilmer.org group.
+Please email one of the social team to get invited to the private Ilmer.org Village Group on [Facebook](https://www.facebook.com).
 
