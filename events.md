@@ -17,7 +17,7 @@ image:
 
 See the private Ilmer.org Village Group on Facebook or the flyer for details
 
-### Part on the Green - Queen's 90th
+### Party on the Green - Queen's 90th
 
 *Saturday 11th June* from 2pm
 
