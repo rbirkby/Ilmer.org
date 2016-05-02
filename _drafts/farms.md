@@ -55,6 +55,11 @@ A Mr W White is recorded as being resident in the house until about 1936 followe
 
 During the 1970s, a new farm residence was constructed - what is now Upper Manor Farm which allowed Ilmer House to part ways with its farmland.
 
+
+![Ilmer house on 26th July 1948](/images/EAW017636.jpg)
+http://www.britainfromabove.org.uk/image/eaw017636
+
+
 ### Manor Farm
 
 John Read farmed until 1886.
