@@ -3,6 +3,7 @@ layout: post
 permalink: /about/index.html
 title: About Ilmer
 description:
+foo: bar
 tags: [about, ilmer, buckinghamshire]
 image:
   feature: soft-trees.jpg
