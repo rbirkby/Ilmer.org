@@ -37,3 +37,7 @@ For example, from their March 22nd 1924 issue:
 And sometimes, they used both spellings:
 
 >WANTED, a reliable COWMAN; £2 per week; lodgings available near work - Apply, WHITE, Ilmire House, Ilmer, near Princes Risborough.
+
+And even in 2016, Bucks CC mis-spelled Ilmer on the re-surfacing website:
+
+![](/images/spelling.png)

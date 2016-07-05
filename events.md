@@ -22,7 +22,6 @@ See the private Ilmer.org Village Group on Facebook or the flyer for details
 
 *Saturday 11th June* from 2pm
 
-
 ## Proposed Events
 
 In 2016, we have reformed Ilmer Social and are planning a programme of events throughout the year.
