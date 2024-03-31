@@ -31,7 +31,7 @@ html {
     }
   } 
 
-  main figure {
+  main > figure {
     margin: 0 auto;
     max-width: 1120px;
 
@@ -51,6 +51,34 @@ html {
 
     img {
       width: 100%;
+    }
+
+    p:has(img) {
+      font-size: 0.8em;
+      line-height: 1.2em;
+    }
+
+    p:has(img[src*="#right"]) {
+      float:right;
+      width:40%;
+      margin:0 0 0 10px;
+      clear:right;
+    }
+
+    p:has(img[src*="#left"]) {
+      float:left;
+      width:40%;
+      margin:0 10px 0 0;
+      clear:left;
+    }
+
+    a {
+      color: #26a8ed;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 
@@ -124,17 +152,17 @@ html {
   }
 
   sup.footnote-ref a {
-    background-color: #cbeafb;
-    border-radius: 2px;
-    padding-bottom: 1px;
     font-size: 1.2rem;
-    text-decoration: none;
-    color: #000;
+    font-weight: bold;
+    padding-left:2px;
   }
 
   section.footnotes {
     font-size: 1.2rem;
     text-decoration: none;
     color: #000;
-    
+
+    li p {
+      margin:0;
+    }
   }
