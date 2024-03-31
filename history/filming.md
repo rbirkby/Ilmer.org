@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Filming"
-description: "The railway bridge was the perfect location for shooting a scene in Chitty Chitty Bang Bang."
+title: 'Filming'
+description: 'The railway bridge was the perfect location for shooting a scene in Chitty Chitty Bang Bang.'
 category: history
 tags: [filming, railway, bridge, halt, post]
 image: images/halt.jpg
@@ -23,4 +23,4 @@ The bridge was constructed in 1904 and the line opened in 1906. This [photo](htt
 
 Adjacent to the bridge was Ilmer Halt, an on-request station where a telephone was used to ask for the next train to stop at the halt. The station was opened 1st April 1929 serving the London and North-Eastern Railway Company. Initially, 1 northboard and 1 southbound train stopped here every morning on weekdays. Ilmer Halt can be seen in this still image taken from a [train cab video](http://youtu.be/nyWkpteoa84?t=39s) in 1962. The station closed the following year:
 
-![Ilmer Halt]({{ site.url }}/images/halt.jpg)
+![Ilmer Halt](/images/halt.jpg)
