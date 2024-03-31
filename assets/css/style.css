@@ -55,6 +55,7 @@ html {
   }
 
   body > header {
+    background-color: #15171a;
     background-image: radial-gradient(transparent 40%, #15171a 80%), url(/images/ilmer.svg);
     background-position: center;
     background-size: cover;
