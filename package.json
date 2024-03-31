@@ -1,0 +1,16 @@
+{
+  "name": "ilmer-org",
+  "version": "1.0.0",
+  "description": "Ilmer Past - local history website",
+  "main": "index.js",
+  "scripts": {
+    "run": "npx @11ty/eleventy --serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Richard Birkby <rbirkby@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1"
+  }
+}

@@ -1,0 +1,133 @@
+{% include "head" %}
+
+<style>
+
+  p {
+    margin: 0 0 1.5em 0;
+  }
+
+  main {
+    section {
+      display:grid;
+      justify-content: space-between;
+      gap: 30px;
+      grid-template-columns: 1fr 1fr 1fr;
+
+      @media (max-width: 980px) {
+        & {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 680px) {
+        & {
+          grid-template-columns: 1fr;
+        }
+      } 
+    }
+  }
+
+  .banner {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 10vw 0;
+    text-align: center;
+    color: #fff;
+
+    p  {
+      margin: 5px 0 0 0;
+      /* padding: 0; */
+      font-size: 2.4rem;
+      /* line-height: 1.3em; */
+      opacity: .7;
+    }
+  }
+
+  h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 4rem;
+    line-height: 1.3em;
+  }
+
+  article {
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    header {
+      display: flex;
+      flex-direction: column;
+
+      img {
+        margin: 0 0 10px 0;
+        max-width: 100%;
+        width: auto;
+        height: 200px;
+        background: #5b7a81 no-repeat center center;
+        background-size: cover;
+        object-fit: cover;
+      }
+
+      h2 {
+        color: #15171a;
+        margin: 0 0 10px 0;
+        padding: 0;
+        font-size: 2rem;
+      }
+
+      footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px 0 0 0;
+        color: #5b7a81;
+      }
+    }
+  }
+</style>
+
+<body>
+  <header>
+    <div class="container">
+      <div class="mast">
+        <a href="/">Ilmer Past</a>
+      </div>
+      <div class="banner">
+        <h1>Ilmer Past</h1>
+        <p>One historic village through time</p>
+      </div>
+      <nav>
+        <a href="/map">Location</a>
+        <a href="/news">News</a>
+        <a href="/about">About</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section>
+      {% for post in collections.post %}
+        <article>
+          <a href="{{ post.url }}">
+            <header>
+              <img src="{{ post.data.image }}" alt="{{ post.data.title }}">
+              <h2>{{ post.data.title }}</h2>
+            </header>
+            <p>{{ post.data.description }}</p>
+            <footer>
+
+            </footer>
+          </a>
+        </article>
+      {% endfor %}
+    </section>
+  </main>
+  <footer>
+    <div class="container">
+      An Ilmer community project
+    </div>
+  </footer>
+</body>
+
+

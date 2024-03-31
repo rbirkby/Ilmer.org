@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="/assets/css/style.css" media="all">
+      
+  <link rel="shortcut icon" href="/favicon.ico">
+  <title>{% if title %}{{ title }} &#8211; {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{{ description }}">
+  <meta name="keywords" content="{{ tags | join: ', ' }}">
+  
+  
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="{% if title %}{{ title }} &#8211; {% endif %}{{ site.title }}">
+  <meta property="og:description" content="{% if description %}{{ description | strip_html | strip_newlines | truncate: 120  }}{% else %}{{ content | strip_html | strip_newlines | truncate: 120 }}{% endif %}">
+  <meta property="og:url" content="{{ site.url }}{{ url }}">
+  <meta property="og:site_name" content="{{ site.title }}">
+</head>

@@ -16,7 +16,9 @@ Copyright
 ---------
 
 http://www.corpcommsmagazine.co.uk/pdfs/pdf_nla-guide_newspaper-copyright-law.pdf
+archive.org: https://web.archive.org/web/20150616043713/http://www.corpcommsmagazine.co.uk/pdfs/pdf_nla-guide_newspaper-copyright-law.pdf
 https://www.whatdotheyknow.com/request/request_justification_of_claims
 
 http://www.ordnancesurvey.co.uk/business-and-government/licensing/crown-copyright.html
 (OS maps go out of copyright after 50 years)
+archive.org: https://web.archive.org/web/20170217022527/http://www.ordnancesurvey.co.uk/business-and-government/licensing/crown-copyright.html

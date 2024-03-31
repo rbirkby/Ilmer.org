@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: post
 permalink: /map/index.html
 title: "Find Us"
 tags: []

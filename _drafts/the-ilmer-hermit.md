@@ -1,9 +1,10 @@
 ---
-layout: post-no-feature
+layout: post
 title: "The Ilmer hermit"
 description: "The strange tale of Charlie Belgrove."
 comments: true
 category: history
+image: images/ilmer-hermit-thumbnail.jpg
 ---
 
 Charlie Belgrove, 5th son of Richard and Martha, [Born](http://www.freebmd.org.uk/cgi/information.pl?scan=1&r=236969870:5980&d=bmd_1424163567) 1885, died about November 1968. His body wasn't discovered until the following January.

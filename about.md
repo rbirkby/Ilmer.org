@@ -5,8 +5,7 @@ title: About Ilmer
 description:
 foo: bar
 tags: [about, ilmer, buckinghamshire]
-image:
-  feature: soft-trees.jpg
+image: images/soft-trees.jpg
 ---
 
 Ilmer is a small village of 27 houses, 4 farms and church situated 1 mile south of the Thame to Princes Risborough road between Kingsey and Longwick.
@@ -15,7 +14,7 @@ Ilmer is a small village of 27 houses, 4 farms and church situated 1 mile south 
 
 St Peters church sits alongside the village green in the centre of this pretty village. The church is a listed 12th century building, rebuilt in the 14th century and then modified and restored in the 16th and 19th century respectively. Services are held on the first and third Sundays in the month. All are welcome.
 
-A detailed history of Ilmer can be found in "A History of the County of Buckingham: Volume 4, ed. William Page (London, 1927)" pages 61-63 which is available online at [British History](http://www.british-history.ac.uk/vch/bucks/vol4/pp61-63)
+<!-- A detailed history of Ilmer can be found in "A History of the County of Buckingham: Volume 4, ed. William Page (London, 1927)" pages 61-63 which is available online at [British History](https://www.british-history.ac.uk/vch/bucks/vol4/pp61-63) -->
 
 
 ### Acknowledgements

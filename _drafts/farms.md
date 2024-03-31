@@ -1,5 +1,5 @@
 ---
-layout: post-no-feature
+layout: post
 title: "Farms"
 description: "A farming community."
 category: history
