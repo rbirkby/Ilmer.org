@@ -121,3 +121,19 @@ html {
     border-left: #cbeafb 0.5em solid;
     font-style: italic;
   }
+
+  sup.footnote-ref a {
+    background-color: #cbeafb;
+    border-radius: 2px;
+    padding-bottom: 1px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: #000;
+  }
+
+  section.footnotes {
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: #000;
+    
+  }

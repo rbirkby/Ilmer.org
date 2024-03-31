@@ -4,7 +4,7 @@
   "description": "Ilmer Past - local history website",
   "main": "index.js",
   "scripts": {
-    "run": "npx @11ty/eleventy --serve",
+    "start": "npx @11ty/eleventy --serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,5 +12,8 @@
   "license": "MIT",
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1"
+  },
+  "dependencies": {
+    "markdown-it-footnote": "^4.0.0"
   }
 }
