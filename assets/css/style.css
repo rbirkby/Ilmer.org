@@ -1,168 +1,168 @@
-
 html {
-    font-size: 62.5%;
+  font-size: 62.5%;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+    'Helvetica Neue', sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.6em;
+  font-style: normal;
+  background: #fff;
+  color: #3c484e;
+}
+
+main {
+  max-width: 1120px;
+  margin: 5rem auto 0 auto;
+  padding: 0 4vw;
+
+  h1 {
+    margin: 0 0 0.8em;
+    font-size: 5rem;
+    color: #15171a;
   }
 
-  body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    font-size: 1.5rem;
-    line-height: 1.6em;
-    font-style: normal;
-    background: #fff;
-    color: #3c484e;
+  h3 {
+    margin: 0.8em 0 0.4em 0;
+    font-size: 3.2rem;
+    font-weight: 700;
+  }
+}
+
+main > figure {
+  margin: 0 auto;
+  max-width: 1120px;
+
+  img:first-child {
+    margin: 0 0 3vw;
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+  }
+}
+
+section.article {
+  max-width: 720px;
+  margin: 0 auto;
+  font-size: 2rem;
+  line-height: 1.7em;
+
+  img {
+    width: 100%;
   }
 
-  main {
-    max-width: 1120px;
-    margin: 5rem auto 0 auto;
-    padding: 0 4vw; 
-
-    h1 {
-      margin: 0 0 0.8em;
-      font-size: 5rem;
-      color: #15171a;
-    }
-
-    h3 {
-      margin: 0.8em 0 0.4em 0;
-      font-size: 3.2rem;
-      font-weight: 700;
-    }
-  } 
-
-  main > figure {
-    margin: 0 auto;
-    max-width: 1120px;
-
-    img:first-child {
-      margin: 0 0 3vw;
-      width: 100%;
-      height: 400px;
-      object-fit: cover;
-    }
+  p:has(img) {
+    font-size: 0.8em;
+    line-height: 1.2em;
   }
 
-  section.article {
-    max-width: 720px;
-    margin: 0 auto;
-    font-size: 2rem;
-    line-height: 1.7em;
-
-    img {
-      width: 100%;
-    }
-
-    p:has(img) {
-      font-size: 0.8em;
-      line-height: 1.2em;
-    }
-
-    p:has(img[src*="#right"]) {
-      float:right;
-      width:40%;
-      margin:0 0 0 10px;
-      clear:right;
-    }
-
-    p:has(img[src*="#left"]) {
-      float:left;
-      width:40%;
-      margin:0 10px 0 0;
-      clear:left;
-    }
-
-    a {
-      color: #26a8ed;
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
+  p:has(img[src*='#right']) {
+    float: right;
+    width: 40%;
+    margin: 0 0 0 10px;
+    clear: right;
   }
 
-  body > header {
-    background-color: #15171a;
-    background-image: radial-gradient(transparent 40%, #15171a 80%), url(/images/ilmer.svg);
-    background-position: center;
-    background-size: cover;
-    margin: 0 auto;
-    padding: 20px 4vw 20px 4vw; 
-
-    .container {
-      max-width: 1120px;
-      margin: 0 auto;
-    }
-
-    .mast {
-      font-size:2.2rem;
-
-      a {
-        opacity: inherit;
-      }
-    }
-
-    a {
-      text-decoration: none;
-      color: white;
-      opacity: .7;
-
-      &:hover {
-        opacity: 1;
-      }
-    }
-
-    nav {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      justify-content: space-between;
-      margin: 15px 0 0 0;
-
-      a {
-        flex-grow: 0;
-      }
-
-      a:last-child {
-        flex-grow: 1;
-        text-align: right;
-      }
-    }
+  p:has(img[src*='#left']) {
+    float: left;
+    width: 40%;
+    margin: 0 10px 0 0;
+    clear: left;
   }
 
-  body > footer {
-    margin-top: 2vw;
-    background-color: #15171a;
-    color: rgba(255, 255, 255, .7);
-    font-size: 1.3rem;
-    padding: 20px 4vw 40px 4vw;
-
-    .container {
-      max-width: 1120px;
-      margin: 0 auto;
-    }
-  }
-
-  blockquote {
-    margin: 0.3em 0 1.8em;
-    padding: 0 1.6em 0 1.6em;
-    border-left: #cbeafb 0.5em solid;
-    font-style: italic;
-  }
-
-  sup.footnote-ref a {
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding-left:2px;
-  }
-
-  section.footnotes {
-    font-size: 1.2rem;
+  a {
+    color: #26a8ed;
     text-decoration: none;
-    color: #000;
 
-    li p {
-      margin:0;
+    &:hover {
+      text-decoration: underline;
     }
   }
+}
+
+body > header {
+  background-color: #15171a;
+  background-image: radial-gradient(transparent 40%, #15171a 80%), url(/images/ilmer.svg);
+  background-position: center;
+  background-size: cover;
+  margin: 0 auto;
+  padding: 20px 4vw 20px 4vw;
+
+  .container {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  .mast {
+    font-size: 2.2rem;
+
+    a {
+      opacity: inherit;
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: white;
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  nav {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+    margin: 15px 0 0 0;
+
+    a {
+      flex-grow: 0;
+    }
+
+    a:last-child {
+      flex-grow: 1;
+      text-align: right;
+    }
+  }
+}
+
+body > footer {
+  margin-top: 2vw;
+  background-color: #15171a;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.3rem;
+  padding: 20px 4vw 40px 4vw;
+
+  .container {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+}
+
+blockquote {
+  margin: 0.3em 0 1.8em;
+  padding: 0 1.6em 0 1.6em;
+  border-left: #cbeafb 0.5em solid;
+  font-style: italic;
+}
+
+sup.footnote-ref a {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding-left: 2px;
+}
+
+section.footnotes {
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: #000;
+
+  li p {
+    margin: 0;
+  }
+}
