@@ -1,51 +1,49 @@
 ---
 layout: post
 title: "St Peter's"
-description: "12th century church in Ilmer, Buckinghamshire, England"
+description: '12th century church in Ilmer, Buckinghamshire, England'
 category: history
 tags: [church, history]
 image: images/church-linedrawing-postcard.jpg
 ---
 
-*Title image: A view of Ilmer Church on a postcard*
+_Title image: A view of Ilmer Church on a postcard_
 [^title-image]: Postcard of Ilmer Church with a drawing by Trevor Best
 
 ## Church History
 
 ![Ilmer Church without spire](/images/church-no-spire.jpg#right)
-*Ilmer Church without spire*[^1]
+_Ilmer Church without spire_[^1]
 [^1]: Ilmer Church, pre-1909, without spire. Copyright Sydney Newton until 2031.
 
 For many years, St. Peter's in Ilmer lacked a spire, featuring instead a simple wooden belfry that housed three bells, cast around 1500, 1586, and 1618. The oldest bell bears the Latin inscription "Sancta Margareta ora pro nobis," which translates to "St. Margaret, pray for us." It was likely produced by William Hasylwood at his foundry in Reading. Hasylwood was active in bell casting for a period of 15 years, starting in 1494 and culminating in 1509 with his final known work—the oldest bell hanging in St. Nicholas, Chearsley. The three bells in St. Peter's have diameters of approximately 36 inches, 33 inches, and 31 inches, respectively, corresponding to the chronological order of their casting.
 
-
 ![The church bells of Buckinghamshire, Cocks, 1897](/images/cocks-churchbells-of-bucks.jpg)
-*Church bell inscriptions*[^2]
+_Church bell inscriptions_[^2]
 [^2]: Church bell inscriptions. Source: [The church bells of Buckinghamshire](https://archive.org/details/cu31924011346453), Cocks, 1897
 
 ## Chancel restoration
 
-By the mid-19th century, the church had fallen into disrepair. In 1850, the Oxford Diocese appointed the ecclesiastical architect [George Edmund Street](https://en.wikipedia.org/wiki/George_Edmund_Street), who would go on to build or renovate 113 churches across the diocese. St. Peter's, overseen by Reverend William Edwards Partridge since 1833, was among these projects and was described as 'dilapidated' in a letter to the Bucks Herald five decades later. At that time, it was remembered that the congregation would wear strongly scented herbs and flowers to counteract the musty odours inside the church, which had an interior of high pews and benches. Street completely rebuilt the chancel and restored the nave between 1859 and 1860. During this renovation, a Tudor-origin rood screen, which separated the chancel from the nave, was found to be supporting the roof with farm hurdles[^3]. The church was reopened on Thursday, 30th August 1860, by Bishop Samuel Wilberforce, the son of William Wilberforce, exactly two months after the bishop's notable participation in an Oxford debate. In this debate, Bishop Wilberforce had [vigorously challenged](https://en.wikipedia.org/wiki/1860_Oxford_evolution_debate) Darwin's theory of evolution. 
+By the mid-19th century, the church had fallen into disrepair. In 1850, the Oxford Diocese appointed the ecclesiastical architect [George Edmund Street](https://en.wikipedia.org/wiki/George_Edmund_Street), who would go on to build or renovate 113 churches across the diocese. St. Peter's, overseen by Reverend William Edwards Partridge since 1833, was among these projects and was described as 'dilapidated' in a letter to the Bucks Herald five decades later. At that time, it was remembered that the congregation would wear strongly scented herbs and flowers to counteract the musty odours inside the church, which had an interior of high pews and benches. Street completely rebuilt the chancel and restored the nave between 1859 and 1860. During this renovation, a Tudor-origin rood screen, which separated the chancel from the nave, was found to be supporting the roof with farm hurdles[^3]. The church was reopened on Thursday, 30th August 1860, by Bishop Samuel Wilberforce, the son of William Wilberforce, exactly two months after the bishop's notable participation in an Oxford debate. In this debate, Bishop Wilberforce had [vigorously challenged](https://en.wikipedia.org/wiki/1860_Oxford_evolution_debate) Darwin's theory of evolution.
 
 [^3]: Rood screen renovation. Source: Bucks Herald, 26 Jun 1909
 
 ![1860 commemoration stone](/images/1860-dedication-stone.jpg#right)
-*1860 commemoration stone on North wall*
+_1860 commemoration stone on North wall_
 
 The commemoration stone on the North wall (restored 1983), has an inscription written by Reverends Partridge and Faber (Saunderton), the brother of hymn writer F Faber. Translated from Latin, it reads:
 
 > This church among the most ancient by length of years seriously weakened and decayed at his own proper charge restored and furnished William E. Partridge B.A. vicar of the same and patron in the year of Christ 1860.
 > To God alone be the honour and the glory.
 
-
 Rev Partridge had purchased Horsenden House in 1848 and purchased the Ilmer benefice from George Stanhope, 6th Earl of Chesterfield in 1858 which enabled him to fund its repair in 1860. Five years later in November 1865, the Church Living was united with Horsenden.
 
-Church warden at the time was Mr Richard Belgrove, farm tenant of Upper Farm also known as Ilmer Farm, on the site of the present day Ilmer House and nearby barn conversions. 
+Church warden at the time was Mr Richard Belgrove, farm tenant of Upper Farm also known as Ilmer Farm, on the site of the present day Ilmer House and nearby barn conversions.
 
 Following his work for the diocese, George Edmund Street went on to design The Law Courts on London’s Strand.
 
 ![Sister Elizabeth Moreton](/images/SisterMoreton.jpg#right)
-*Sister Elizabeth Moreton*[^4]
+_Sister Elizabeth Moreton_[^4]
 [^4]: Sr Elizabeth CSJB and an unknown companion. Source: [A Place in Life](https://www.amazon.co.uk/PLACE-LIFE-CLEWER-HOUSE-MERCY/dp/0950871028), Valerie Bonham, 1992
 
 ## Sister Elizabeth Moreton's contributions
@@ -57,20 +55,21 @@ In 1907, Miss Moreton once again supported the community by donating a new Paris
 ## A new spire
 
 ![St Peter's without spire](/images/church-no-spire2.jpg#right)
-*St Peter's, pre-1909, without spire*[^5]
+_St Peter's, pre-1909, without spire_[^5]
 [^5]: St Peter's without spire. Source: Unknown
 
 During the tenure of Reverend Varley, it became known that the church once boasted a spire which had since deteriorated and was either collapsed or removed. The wooden belfry was deemed unsightly not only by the vicar but also in Kelly's Directory of 1899, the forerunner of yellow pages.
 
 ![John Oldrid Scott](/images/john-oldrid-scott.jpg#left)
-*John Oldrid Scott*[^6]
+_John Oldrid Scott_[^6]
 [^6]: John Oldrid Scott. Source: [gilbertscott.org](https://gilbertscott.org/john-oldrid-scott/)
 
+In February 1909, Architects John Oldrid Scott and Son (Charles Marriott Oldrid Scott) of Dean’s Yard, Westminster were given faculty to design the replacement spire and remove the half-hip roof to complete the west gable. John Oldrid Scott was the grandson of [Sir Gilbert Scott](https://gilbertscott.org/sir-george-gilbert-scott/), architect of the [Albert Memorial](https://en.wikipedia.org/wiki/Albert_Memorial). He had completed the stone steeple of St Mary’s, Risborough the previous year, which had replaced an older zinc-covered wooden structure.[^7]
 
-In February 1909, Architects John Oldrid Scott and Son (Charles Marriott Oldrid Scott) of Dean’s Yard, Westminster were given faculty to design the replacement spire and remove the half-hip roof to complete the west gable. John Oldrid Scott was the grandson of [Sir Gilbert Scott](https://gilbertscott.org/sir-george-gilbert-scott/), architect of the [Albert Memorial](https://en.wikipedia.org/wiki/Albert_Memorial). He had completed the stone steeple of St Mary’s, Risborough the previous year, which had replaced an older zinc-covered wooden structure.
+[^7]: More details likely to be available in the RIBA Scott archive held in the RIBA Study Room at the V&A. Item ScJO/1-3 - Account books and papers of John Oldrid Scott, 1873-1916
 
 ![Stonework showing where the Half Hip roof was converted to a full gable end](/images/half-hip-removal.jpg#right)
-*Stonework showing where the Half Hip roof was converted to a full gable end*
+_Stonework showing where the Half Hip roof was converted to a full gable end_
 
 The construction was entrusted to [Franklin's of Deddington](https://www.deddingtonhistory.uk/franklinsthebuilders), a firm of masons and woodcarvers located just south of Banbury in the town of Deddington. Throughout its approximate fifty-year history, Franklin's, which specialised in the restoration of churches and colleges, had at one point employed 200 people.
 
@@ -99,26 +98,25 @@ A Union Jack and other flags were displayed outside the Parish Room where parish
 [^dedication]: Church dedication. Source: Bucks Herald (topical notes article and also supplement), 3 Jul 1909
 
 ![Photograph of a postcard](/images/church-carvings-postcard.jpg)
-*Old postcard showing chancel carvings. Photos are pre-1910*[^8]
+_Old postcard showing chancel carvings. Photos are pre-1910_[^8]
 [^8]: Henry W Taunt postcard. Original photos also found in [A pretty corner of leafy Bucks. Princes Risborough, and round it](https://hdl.handle.net/2027/yale.39002015689814) by Henry Taunt, 1910.
 
 ## Heating and lighting
 
 ![Colourised photo of the church interior, showing the church stove](/images/church-interior-vch.jpg#left)
-*Colourised ~1915 photo of the church interior, showing the stove and flue*[^10]
+_Colourised ~1915 photo of the church interior, showing the stove and flue_[^10]
 [^10]: Colourised photo of the church interior, showing the stove and flue. Source: [VCH Bucks, vol 4](https://www.british-history.ac.uk/vch/bucks/vol4)
-
 
 A photograph of the period shows a small stove installed in the nave with flue exiting the building approximately where the war memorial plaque was later installed. A prominent stone, previously painted, can be found in the exterior south wall possibly indicating where the flue exited the building.
 
 ![Advert for a stove similar to that photographed in Ilmer church](/images/tortoise-stove-ad.jpg)
-*Advert for a stove similar to that photographed in Ilmer church*[^9]
+_Advert for a stove similar to that photographed in Ilmer church_[^9]
 [^9]: Advert for a stove similar to that photographed in Ilmer church. Source: East Kent Gazette, 4 Jan 1890.
 
 At the time, lighting was provided by pendant oil lamps. When electrification came, the oil lamp saddle was inverted and instead of the ceiling chains being attached to the fleur de lys, now an electric light dangles from each of the three fleur de lys and the ceiling chains were re-attached to the central ring of the saddle.
 
 ![Oil lamp converted to electric using the same bracket as shown in VCH](/images/electrical-lighting-retrofit-oil-lamp.jpg#right)
-*Oil lamp converted to electric using the repurposed oil lamp saddle*
+_Oil lamp converted to electric using the repurposed oil lamp saddle_
 
 ## Windows
 
@@ -139,6 +137,6 @@ By 1978, the spire required new shingle tiles, and the tower and bells were in n
 ## Bench Mark
 
 ![Ordnance Survey Benchmark](/images/benchmark.jpg#left)
-*Ordnance Survey Benchmark*
+_Ordnance Survey Benchmark_
 
 The North West corner of the church exterior has a carved [Ordnance Survey Bench Mark](https://www.ordnancesurvey.co.uk/benchmarks/) - composed of a horizontal cut datum line over a cross foot or pheon arrow. This is one of the ½ million bench marks across the UK which, until 1993, were used to record height above sea level. This Bench Mark is at 85.7m above sea level. Ilmer has a second Bench Mark at the south west of the railway bridge. Other nearby Bench Marks are at Ray Farm and on Mill Leys, near the assumed historic site of the Domesday-recorded water mill, adjacent to the bridleway towards Towersey. This last Bench Mark no longer exists.
