@@ -66,7 +66,7 @@ _John Oldrid Scott_[^6]
 
 In February 1909, Architects John Oldrid Scott and Son (Charles Marriott Oldrid Scott) of Dean’s Yard, Westminster were given faculty to design the replacement spire and remove the half-hip roof to complete the west gable. John Oldrid Scott was the grandson of [Sir Gilbert Scott](https://gilbertscott.org/sir-george-gilbert-scott/), architect of the [Albert Memorial](https://en.wikipedia.org/wiki/Albert_Memorial). He had completed the stone steeple of St Mary’s, Risborough the previous year, which had replaced an older zinc-covered wooden structure.[^7]
 
-[^7]: More details likely to be available in the RIBA Scott archive held in the RIBA Study Room at the V&A. Item ScJO/1-3 - Account books and papers of John Oldrid Scott, 1873-1916
+[^7]: More details likely to be available in the RIBA Scott archive held in the RIBA Study Room at the V&A. Item ScJO/1-3 - **Account books and papers of John Oldrid Scott, 1873-1916**
 
 ![Stonework showing where the Half Hip roof was converted to a full gable end](/images/half-hip-removal.jpg#right)
 _Stonework showing where the Half Hip roof was converted to a full gable end_
