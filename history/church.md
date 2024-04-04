@@ -107,7 +107,7 @@ _Old postcard showing chancel carvings. Photos are pre-1910_[^8]
 _Colourised ~1915 photo of the church interior, showing the stove and flue_[^10]
 [^10]: Colourised photo of the church interior, showing the stove and flue. Source: [VCH Bucks, vol 4](https://www.british-history.ac.uk/vch/bucks/vol4)
 
-A photograph of the period shows a small stove installed in the nave with flue exiting the building approximately where the war memorial plaque was later installed. A prominent stone, previously painted, can be found in the exterior south wall possibly indicating where the flue exited the building.
+A photograph of the period shows a small stove installed in the nave with flue exiting the building approximately where the war memorial plaque was later installed. Aerial photographs from 1948 show a chimney exiting the tiled roof in alignment with a butress. A prominent stone, previously painted, can be found in the exterior south wall possibly indicating other work connected with the flue. Curiously, a second small chimney is also visible on the 1948 photo on the south of the chancel adjacent to the rood screen. 
 
 ![Advert for a stove similar to that photographed in Ilmer church](/images/tortoise-stove-ad.jpg)
 _Advert for a stove similar to that photographed in Ilmer church_[^9]
