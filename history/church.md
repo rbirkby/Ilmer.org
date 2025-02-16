@@ -22,6 +22,8 @@ For many years, St. Peter's in Ilmer lacked a spire, featuring instead a simple 
 _Church bell inscriptions_[^2]
 [^2]: Church bell inscriptions. Source: [The church bells of Buckinghamshire](https://archive.org/details/cu31924011346453), Cocks, 1897
 
+During the reformation, the Edwardian Inventory of 23rd July 1552 included two further bells - a handbell and a Saunse bell, which would have been located outside the church on the Western gable.
+
 ## Chancel restoration
 
 By the mid-19th century, the church had fallen into disrepair. In 1850, the Oxford Diocese appointed the ecclesiastical architect [George Edmund Street](https://en.wikipedia.org/wiki/George_Edmund_Street), who would go on to build or renovate 113 churches across the diocese. St. Peter's, overseen by Reverend William Edwards Partridge since 1833, was among these projects and was described as 'dilapidated' in a letter to the Bucks Herald five decades later. At that time, it was remembered that the congregation would wear strongly scented herbs and flowers to counteract the musty odours inside the church, which had an interior of high pews and benches. Street completely rebuilt the chancel and restored the nave between 1859 and 1860. During this renovation, a Tudor-origin rood screen, which separated the chancel from the nave, was found to be supporting the roof with farm hurdles[^3]. The church was reopened on Thursday, 30th August 1860, by Bishop Samuel Wilberforce, the son of William Wilberforce, exactly two months after the bishop's notable participation in an Oxford debate. In this debate, Bishop Wilberforce had [vigorously challenged](https://en.wikipedia.org/wiki/1860_Oxford_evolution_debate) Darwin's theory of evolution.
@@ -107,7 +109,9 @@ _Old postcard showing chancel carvings. Photos are pre-1910_[^8]
 _Colourised ~1915 photo of the church interior, showing the stove and flue_[^10]
 [^10]: Colourised photo of the church interior, showing the stove and flue. Source: [VCH Bucks, vol 4](https://www.british-history.ac.uk/vch/bucks/vol4)
 
-A photograph of the period shows a small stove installed in the nave with flue exiting the building approximately where the war memorial plaque was later installed. Aerial photographs from 1948 show a chimney exiting the tiled roof in alignment with a butress. A prominent stone, previously painted, can be found in the exterior south wall possibly indicating other work connected with the flue. Curiously, a second small chimney is also visible on the 1948 photo on the south of the chancel adjacent to the rood screen. 
+A photograph of the period shows a small stove installed in the nave with flue exiting the building approximately where the war memorial plaque was later installed. Aerial photographs from 1948 show a chimney exiting the tiled roof in alignment with a butress. A prominent stone, previously painted, can be found in the exterior south wall possibly indicating other work connected with the flue. Curiously, a second small chimney is also visible on the 1948 photo on the south of the chancel adjacent to the rood screen. Work to repair these chimneys was undertaken in 1939[^vestryminutes1939]
+
+[^vestryminutes1939]: Approval to repair the church's chimney. Source: Vestry Minutes, 12 April 1939
 
 ![Advert for a stove similar to that photographed in Ilmer church](/images/tortoise-stove-ad.jpg)
 _Advert for a stove similar to that photographed in Ilmer church_[^9]
@@ -118,9 +122,21 @@ At the time, lighting was provided by pendant oil lamps. When electrification ca
 ![Oil lamp converted to electric using the same bracket as shown in VCH](/images/electrical-lighting-retrofit-oil-lamp.jpg#right)
 _Oil lamp converted to electric using the repurposed oil lamp saddle_
 
-## Windows
+In 1924, a proposal was made to lay electricity lines to Ilmer[^electricity] and a faculty granted in 1928[^wilson] to install electric lighting in the church however power was supplied at this time from the generator at Ilmer House[^vestryminutes1928] courtesy of owner Albert Goodchild. The 1931 vestry minutes held in January 1932 and October 1932 record the cost of the electricity now charged using a slot meter following the death of Albert Goodchild the previous year.
 
-The stained glass in the nave's north wall, known as the Pulpit Window, features the parable of the Good Samaritan and serves as a memorial to Mary Clara Jacques (1849-1932), daughter of the former vicar, Reverend W. E. Partridge. A meeting held at the Parish Hall on Tuesday, October 25, 1932, chaired by Reverend A. M. Berry, resolved to install the window in her honour to commemorate her charitable deeds. Contributions were received from both within and outside the parish, with no additional fundraising activities undertaken. The cost was projected at £70. Joseph Edward Nuttgens of North Dean crafted the window, which was installed in February 1933. The opposite window, installed 1991, on the south wall of the nave is by his son, Joseph Ambrose Nuttgens[^nuttgens]
+[^vestryminutes1928]: Source: Vestry Minutes, Bucks Archives
+
+[^electricity]: Source: [London Gazette, 16 Dec 1924](https://www.thegazette.co.uk/London/issue/33002/page/9149)
+
+[^wilson]: Source: St Peter’s Church, Ilmer, History and Events, Janet Wilson, 1999
+
+## Memorials
+
+In November 1919, the vestry minutes record the decision to erect the war memorial tablet on the south wall of the nave. The faculty was granted on 13th January 1920 and it was duly erected the same year.
+
+The stained glass in the nave's north wall, known as the Pulpit Window, features the parable of the Good Samaritan and serves as a memorial to Mary Clara Jacques (1849-1932), daughter of the former vicar, Reverend W. E. Partridge. A meeting held at the Parish Hall on Tuesday, October 25, 1932, chaired by Reverend A. M. Berry, resolved to install the window in her honour to commemorate her charitable deeds. Contributions were received from both within and outside the parish, with no additional fundraising activities undertaken. The cost was projected at £70. Joseph Edward Nuttgens of North Dean crafted the window, which was installed in February 1933.
+
+The opposite window, installed 1991, on the south wall of the nave is by his son, Joseph Ambrose Nuttgens[^nuttgens]. This was a gift from an anonymous resident of Longwick[^wilson].
 
 [^nuttgens]: Stained glass windows. Source: [buckschurches.uk](https://buckschurches.uk/glass/building.php?buildingid=134)
 
@@ -130,9 +146,19 @@ In 1940, the Parish Room needed redecorating which was undertaken by Frank Roger
 
 [^parish-hall-decoration]: Invoice for work. Source: Bucks Archive, PR/114/87.
 
-In the late 1960s, redecoration and reconstruction work of the church, amounting to £1,000, was carried out, funded by the parishioners.
+The wartime activities didn't escape Ilmer, as in 1942, 7 soldiers slept overnight in the parish hall and plans were made for the vent of an invasion whereby the parish room would be used as a mortuary[^vestryminutes1942].
 
-By 1978, the spire required new shingle tiles, and the tower and bells were in need of restoration. Consequently, a fundraising campaign was initiated in January of that year, and within two years, £8,000 had been raised. The restoration was completed by the end of 1979.
+[^vestryminutes1942]: Use of Parish Room for overnight refuge and use during invasion. Source Vestry Minutes 8 April 1942 and 28 April 1942.
+
+In the late 1960s, redecoration and reconstruction work of the church, amounting to £1,000, was carried out, funded by the parishioners. In particular, the 1964 installation of an oak communion rail made by Ivor Newton of Haddenham[^wilson].
+
+By 1978, the spire required new shingle tiles, and the tower and bells were in need of restoration. Consequently, a fundraising campaign was initiated in January of that year, and within two years, £8,000 had been raised. The bells were restored by Whites of Appleton during 1981[^wilson] and at this time they were converted to swing chiming.
+
+In 1993, the base of the octagonal font cover was replaced with 19th century oak[^wilson].
+
+![Photographing Faries](/images/photographing-faries.jpg#right)
+
+The Church was used for the opening scene of the 1996 film [Photographing Faries](https://en.wikipedia.org/wiki/Photographing_Fairies) and received £500[^wilson]. St Peter's doubled as a Swiss alpine church surrounded by snow. Since filming took place in July, this necessitated white sheeting and theatrical spray snow to accomplish the shot.
 
 ## Bench Mark
 
