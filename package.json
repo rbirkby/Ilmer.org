@@ -11,10 +11,10 @@
   "author": "Richard Birkby <rbirkby@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@11ty/eleventy": "^2.0.1"
+    "@11ty/eleventy": "^3.0.0"
   },
   "dependencies": {
     "markdown-it-footnote": "^4.0.0",
-    "prettier": "^3.2.5"
+    "prettier": "^3.5.1"
   }
 }
