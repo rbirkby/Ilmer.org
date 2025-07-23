@@ -19,8 +19,10 @@ St Peters church sits alongside the village green in the centre of this pretty v
 
 * Ilmer - 1833-
 * Ilmire - 1833-1949
-* Illmire - 1835-1937
-* Illmer - 1837-1909
+* Illmire - 1818-1937
+* Illmer - 1778-1909
+* Illmere - 1792
+* Hylmere (latin) - 1223
 
 Ilmer has been known as Ilmire and Illmire.
 As late as 1949, the Bucks Herald still occasionally referred to Ilmer as Ilmire.
