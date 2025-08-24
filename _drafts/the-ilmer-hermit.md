@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "The Ilmer hermit"
-description: "The strange tale of Charlie Belgrove."
+title: 'The Ilmer hermit'
+description: 'The strange tale of Charlie Belgrove.'
 comments: true
 category: history
 image: images/ilmer-hermit-thumbnail.jpg

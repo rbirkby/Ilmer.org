@@ -14,7 +14,7 @@ image: images/timeline.png
         <div class="timeline-icon"></div>
         <div class="timeline-content">
           <h2><span class="date">{{ event.date }}</span>{{ event.title }}</h2>
-          <p>{{event.description | renderContent: "md" }}</p>
+          {{event.description | renderContent: "md" }}
           {% if event.references != empty %}
             <span class="reference">Source(s): {{event.references | join: ' <br> '}}</span>
           {% endif %}
