@@ -146,7 +146,7 @@ In 1940, the Parish Room needed redecorating which was undertaken by Frank Roger
 
 [^parish-hall-decoration]: Invoice for work. Source: Bucks Archive, PR/114/87.
 
-The wartime activities didn't escape Ilmer, as in 1942, 7 soldiers slept overnight in the parish hall and plans were made for the vent of an invasion whereby the parish room would be used as a mortuary[^vestryminutes1942].
+The wartime activities didn't escape Ilmer, as in 1942, 7 soldiers slept overnight in the parish hall and plans were made for the event of an invasion whereby the parish room would be used as a mortuary[^vestryminutes1942].
 
 [^vestryminutes1942]: Use of Parish Room for overnight refuge and use during invasion. Source Vestry Minutes 8 April 1942 and 28 April 1942.
 
