@@ -454,7 +454,7 @@
   {
     "date": "23 Jul. 1552",
     "title": "Edwardian Inventory of Church",
-    "description": "An inventory of Ilmer church mentioned Edmund Godwyn and Wylliam Mede.",
+    "description": "An inventory of Ilmer church mentioned Edmund Godwyn and Wylliam Mede. It reported the church included two further bells - a handbell and a Saunse bell, which would have been located outside the church on the Western gable",
     "references": ["The Edwardian inventories for Buckinghamshire, 1908"],
     "labels": ["church"]
   },
@@ -693,17 +693,10 @@
     "labels": ["land", "legal", "manor house", "property"]
   },
   {
-    "date": "1687",
-    "title": "Marcus Parker Becomes Vicar",
-    "description": "Marcus Parker became vicar of Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["church", "person"]
-  },
-  {
     "date": "28 Oct. 1687",
-    "title": "New Vicar Appointed",
-    "description": "Matthew Palmer formally becomes the new vicar, appointed by the Earl of Carnarvon.",
-    "references": ["Lipscomb's History..."],
+    "title": "Marcus Parker Becomes Vicar",
+    "description": "Marcus Parker became [vicar of Ilmer](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=86069). Lipscomb calls the new vicar 'Matthew Palmer', believed to be in error.",
+    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982", "theclergydatabase.org.uk"],
     "labels": ["church", "person"]
   },
   {
@@ -714,17 +707,13 @@
     "labels": ["repair"]
   },
   {
-    "date": "1700",
-    "title": "Charles Cornish Becomes Vicar",
-    "description": "Charles Cornish became vicar of Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["church", "person"]
-  },
-  {
     "date": "2 Jan. 1700",
-    "title": "New Vicar Appointed",
+    "title": "Charles Cornish Becomes Vicar",
     "description": "Charles Cornish is appointed vicar. He later resigns after being offered a church position in Wales.",
-    "references": ["Lipscomb's History... (see Risborough & Pedigree of Carter, p. 135)"],
+    "references": [
+      "Registers and Records of St Peters, Rex Kidd, Dec 1982",
+      "Lipscomb's History... (see Risborough & Pedigree of Carter, p. 135)"
+    ],
     "labels": ["church", "person"]
   },
   {
@@ -737,21 +726,14 @@
   {
     "date": "1709",
     "title": "Manor Passes to Stanhope Family",
-    "description": "The Earl of Carnarvon dies without a male heir. The manor is inherited by his daughter Elizabeth and her husband, Philip Stanhope, Earl of Chesterfield.",
-    "references": ["Lipscomb's History... (see Pedigree of Stanhope under Eythrop)"],
-    "labels": ["death", "inheritance", "manor house", "person", "property"]
-  },
-  {
-    "date": "1709",
-    "title": "Death of Charles Dormer, 2nd Earl of Carnarvon",
-    "description": "Charles Dormer, 2nd Earl of Carnarvon died with no surviving sons, passing the Dormer lands to his eldest grandson.",
-    "references": ["wikipedia"],
-    "labels": ["death", "land", "person"]
+    "description": "[Charles Dormer](https://en.wikipedia.org/wiki/Charles_Dormer,_2nd_Earl_of_Carnarvon), 2nd Earl of Carnarvon died with no surviving sons, passing the Dormer lands to his eldest grandson via his daughter Elizabeth and her husband, Philip Stanhope, Earl of Chesterfield",
+    "references": ["wikipedia", "Lipscomb's History... (see Pedigree of Stanhope under Eythrop)"],
+    "labels": ["death", "inheritance", "manor house", "land", "person"]
   },
   {
     "date": "1714",
     "title": "Death of Philip Stanhope, 2nd Earl of Chesterfield",
-    "description": "Philip Stanhope, 2nd Earl of Chesterfield, widower of Elizabeth Dormer, died.",
+    "description": "[Philip Stanhope](https://en.wikipedia.org/wiki/Philip_Stanhope,_2nd_Earl_of_Chesterfield), 2nd Earl of Chesterfield, widower of Elizabeth Dormer, died.",
     "references": ["wikipedia"],
     "labels": ["death", "person"]
   },
@@ -828,7 +810,7 @@
   {
     "date": "1773",
     "title": "Death of Philip Stanhope, 4th Earl of Chesterfield",
-    "description": "Philip Stanhope, 4th Earl of Chesterfield died. He adopted his cousin and godson who became the 5th Earl and inherited the 'Dormer Lands', including Ilmer. Philip became famous for his 400 'letters to his son' over 30 years, subtitled, the Fine Art of becoming a MAN OF THE WORLD and a GENTLEMAN. Philip wrote the letters to his illegitimate son which were published by his son's widow to fund her pension.",
+    "description": "Philip Stanhope, 4th Earl of Chesterfield died. He adopted his cousin and godson who became the 5th Earl and inherited the 'Dormer Lands', including Ilmer. Philip became famous for his 400 '[letters to his son](https://www.gutenberg.org/ebooks/3351)' over 30 years, subtitled, the Fine Art of becoming a MAN OF THE WORLD and a GENTLEMAN. Philip wrote the letters to his illegitimate son which were published by his son's widow to fund her pension.",
     "references": ["The Buckinghamshire Lieutenancy, Viney"],
     "labels": ["death", "land", "person"]
   },
@@ -948,17 +930,14 @@
     "labels": ["housing", "population"]
   },
   {
-    "date": "1824",
-    "title": "Manor and Farms for Sale",
-    "description": "The manor and farms were put up for sale.",
-    "references": ["London Morning Herald, 8 Jul 1824 & Oxford Journal, 17 Jul 1824"],
-    "labels": ["auction", "farm", "manor house", "property", "sale"]
-  },
-  {
     "date": "3 Jul. 1824",
     "title": "Ilmer Manor and Dairy Farms for Sale",
     "description": "Ilmer Manor and dairy farms were put up for sale, with farms occupied by Abraham Eyre, John West, A Wooster, John Tappin, and John Gomme.",
-    "references": ["Jackson's Oxford journal, 3 Jul 1824"],
+    "references": [
+      "Jackson's Oxford journal, 3 Jul 1824",
+      "London Morning Herald, 8 Jul 1824",
+      "Oxford Journal, 17 Jul 1824"
+    ],
     "labels": ["auction", "farm", "manor house", "property", "sale"]
   },
   {
@@ -1277,7 +1256,7 @@
   {
     "date": "1885",
     "title": "David Goodchild at The Old Vicarage",
-    "description": "David Goodchild was living at The Old Vicarage.",
+    "description": "David Goodchild was living at The Old Vicarage. He was the father of Albert, Ernest, and Thomas Goodchild.",
     "references": ["1885 Electoral Register"],
     "labels": ["church", "person"]
   },
@@ -1291,7 +1270,7 @@
   {
     "date": "7 Mar. 1885",
     "title": "Birth of Charles Belgrove",
-    "description": "Charles Belgrove was born.",
+    "description": "Charles Belgrove was born. Later in life, following a disagreement with his father, he would become known as the Ilmer Hermit.",
     "references": ["Birth registration entry, GRO, 7 May 1885"],
     "labels": ["birth", "person"]
   },
@@ -1319,7 +1298,7 @@
   {
     "date": "20 Dec. 1886",
     "title": "Death of David Goodchild",
-    "description": "David Goodchild, farmer, dies of a heart attack aged 55.",
+    "description": "David Goodchild, farmer, dies of a heart attack aged 55. He was the father of Albert, Ernest, and Thomas Goodchild leaving them orphaned as his wife died the previous year.",
     "references": ["Bucks Herald, 1 Jan 1887", "1881 census"],
     "labels": ["death", "farm", "person", "property"]
   },
@@ -1566,13 +1545,6 @@
     "labels": ["birth"]
   },
   {
-    "date": "26 Jun. 1909",
-    "title": "Church Rededicated",
-    "description": "The church was rededicated following the addition of a new Spire and completion of the west gable.",
-    "references": [],
-    "labels": ["church"]
-  },
-  {
     "date": "5 Feb. 1909",
     "title": "Spire Faculty Granted",
     "image": "/images/john-oldrid-scott.jpg",
@@ -1628,6 +1600,13 @@
     "description": "A 'Rose Fête' is held at the Horsenden Rectory to raise the final £100 needed for the spire. The event, opened by [Lady Susan Trueman](https://cheshammuseum.org.uk/blogs/women-who-have-made-a-difference-locally/#:~:text=Lady%20Susan%20Trueman%2C%20O.B.E.), featured stalls, dances, races, and a Punch and Judy show, successfully raising £40.",
     "references": ["Bucks Herald"],
     "labels": []
+  },
+  {
+    "date": "26 Jun. 1909",
+    "title": "Church Rededicated",
+    "description": "The church was rededicated following the addition of a new Spire and completion of the west gable.",
+    "references": [],
+    "labels": ["church"]
   },
   {
     "date": "5 Jul. 1909",
@@ -2646,7 +2625,6 @@
     "date": "15 Nov. 1968",
     "title": "Sale of Ilmer House",
     "description": "Ilmer House was sold by (Robert) Merrick Attenborough to William Greaves Underwood and his then-wife Susan. Susan later re-married and died in 2025.",
-    "image": "/images/susan.jpg",
     "references": [
       "HM Land Registry title register",
       "Daily Telegraph Obituary 2 Sep 1972",
