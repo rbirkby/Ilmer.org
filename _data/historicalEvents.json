@@ -2043,8 +2043,9 @@
   {
     "date": "21 Jun. 1932",
     "title": "Ilmer House for Auction",
-    "description": "Ilmer House was put up for auction with vacant possession.",
-    "references": ["Bucks Herald, 20 May 1932"],
+    "description": "Ilmer House up for auction with vacant possession.",
+    "image": "/images/ilmerhouse1932.jpg",
+    "references": ["Bucks Herald, 20 May 1932", "Country Life, 11 Jun 1932"],
     "labels": ["auction", "housing", "sale"]
   },
   {
@@ -2148,7 +2149,7 @@
   {
     "date": "1934",
     "title": "Charles Keene's Residence",
-    "description": "Charles Keene, second husband of ELizabeth Goodchild of Ilmer House, lived at 67 Devon Road, Cheam.",
+    "description": "Charles Keene, second husband of Elizabeth Goodchild of Ilmer House, lived at 67 Devon Road, Cheam.",
     "references": ["BT Phone book, 1934"],
     "labels": ["housing", "infrastructure"]
   },
@@ -2261,7 +2262,9 @@
     "date": "1 Dec. 1938",
     "title": "Schedule of Church Contents",
     "description": "A schedule of Church Contents was taken.",
-    "references": ["Clement Oswald Skilbeck of Bledlow, Bucks Archaeological Soc"],
+    "references": [
+      "[Clement Oswald Skilbeck](https://sculpture.gla.ac.uk/mapping/public/view/person.php?id=msib2_1212053007) of Bledlow, Bucks Archaeological Soc"
+    ],
     "labels": ["church"]
   },
   {
@@ -2281,6 +2284,7 @@
   {
     "date": "Jun. 1938",
     "title": "Charles Belgrove Interviewed",
+    "image": "/images/charlesbelgrove.png",
     "description": "Charles Belgrove, the Ilmer Hermit was interviewed and photographed by a national newspaper.",
     "references": ["Daily Mirror, 11 Jun 1938"],
     "labels": []
@@ -2289,6 +2293,7 @@
     "date": "12 Apr. 1939",
     "title": "Church Chimney Repair",
     "description": "Approval was given to repair the church chimney.",
+    "image": "/images/churchchimney.jpg",
     "references": ["Vestry Minutes, 12 Apr 1939"],
     "labels": ["church", "repair"]
   },
@@ -2576,6 +2581,7 @@
     "date": "22 May 1964",
     "title": "Cattle Auction",
     "description": "Manor Farm Ilmer Herd held an auction of 163 cattle.",
+    "image": "/images/ilmerherdsale.jpg",
     "references": ["auction catalogue, Bucks Archaeological Society"],
     "labels": ["auction", "farm", "manor house", "property", "sale"]
   },
@@ -2632,14 +2638,20 @@
     "date": "Sep. 1967",
     "title": "Ilmer on Magazine Cover",
     "description": "Ilmer Church and the old vicarage featured on the cover of Bucks Life magazine.",
+    "image": "/images/buckslife1967.jpg",
     "references": ["Chris Kingham, PRAHS"],
     "labels": ["church", "media", "person"]
   },
   {
     "date": "15 Nov. 1968",
     "title": "Sale of Ilmer House",
-    "description": "Ilmer House was sold by (Robert) Merrick Attenborough to William Greaves Underwood and his wife Susan.",
-    "references": ["HM Land Registry title register", "Daily Telegraph Obituary 2 Sep 1972"],
+    "description": "Ilmer House was sold by (Robert) Merrick Attenborough to William Greaves Underwood and his then-wife Susan. Susan later re-married and died in 2025.",
+    "image": "/images/susan.jpg",
+    "references": [
+      "HM Land Registry title register",
+      "Daily Telegraph Obituary 2 Sep 1972",
+      "Ancestry.com - Susan Underwood"
+    ],
     "labels": ["auction", "housing", "sale"]
   },
   {
@@ -2949,7 +2961,7 @@
     "date": "11 Nov. 1981",
     "title": "Death of (Robert) Douglas Goodchild",
     "description": "(Robert) Douglas Goodchild died aged 68 in Letchworth, Herts.",
-    "references": ["[www.thegazette.co.uk](https://www.thegazette.co.uk)", "Telegraph, 13 Nov 1981"],
+    "references": ["www.thegazette.co.uk", "Telegraph, 13 Nov 1981"],
     "labels": ["death", "person"]
   },
   {

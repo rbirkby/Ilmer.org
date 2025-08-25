@@ -13,18 +13,20 @@ image: images/timeline.png
       <div class="timeline-item {% cycle 'left', 'right' %}">
         <div class="timeline-icon"></div>
         <div class="timeline-content">
-          <h2><span class="date">{{ event.date }}</span>{{ event.title }}</h2>
+          <h2>
+            <span class="date">{{ event.date }}</span>
+            {{ event.title }}</h2>
           {% if event.image %}
-            <img src="{{ event.image }}" alt="{{ event.title }}">
+            <a href="{{event.image}}"><img src="{{ event.image }}" alt="{{ event.title }}"></a>
           {% endif %}
 
-          {{event.description | renderContent: "md" }}
+          {{ event.description | renderContent: "md" }}
           {% if event.references != empty %}
-            <span class="reference">Source(s): {{event.references | join: ' <br> '}}</span>
+            <span class="reference">Source(s): {{ event.references | join: ' <br> ' | renderMarkdownInline }}</span>
           {% endif %}
         </div>
       </div>
     {% endunless %}
-{% endfor %}
+  {% endfor %}
 
 </div>
