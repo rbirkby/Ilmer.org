@@ -2,5 +2,9 @@
   "editor.rulers": [80, 120],
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.renderWhitespace": "all"
+  "editor.renderWhitespace": "all",
+  "[liquid]": {
+    "editor.defaultFormatter": "sissel.shopify-liquid",
+    "editor.formatOnSave": true
+  }
 }
