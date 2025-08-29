@@ -186,18 +186,18 @@
     "labels": ["legal", "manor house", "property"]
   },
   {
-    "date": "30 April 1349",
-    "title": "New Vicar Appointed",
-    "description": "John de Horwood is appointed as the new vicar by Margery, the Prioress of Stodley.",
-    "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
-  },
-  {
     "date": "9 Mar. 1349",
     "title": "Vicar Granted Land",
     "description": "Sir Richard Gladewyne, vicar, was granted a plot 100ft x 50ft, facing east by John de Molyns. An additional grant of 2 plots totalling 7.5 acres was also made.",
     "references": ["Calendar of Close Roles of Edward iii, 1349"],
     "labels": ["church", "land", "person"]
+  },
+  {
+    "date": "30 April 1349",
+    "title": "New Vicar Appointed",
+    "description": "John de Horwood is appointed as the new vicar by Margery, the Prioress of Stodley.",
+    "references": ["Willis's Manuscripts, Bodleian Library"],
+    "labels": ["church", "person"]
   },
   {
     "date": "res. 1349",
@@ -1616,6 +1616,13 @@
     "labels": ["business", "farm", "property", "sale"]
   },
   {
+    "date": "16 Sep. 1909",
+    "title": "Organist dies",
+    "description": "Longtime church organist Martha Belgrove dies. A window in the church was later dedicated to her memory.",
+    "references": [],
+    "labels": ["church", "death"]
+  },
+  {
     "date": "c. 1910",
     "title": "Number of Houses in Ilmer",
     "description": "There were 12 houses in Ilmer.",
@@ -2084,6 +2091,13 @@
     "labels": []
   },
   {
+    "date": "Q4 1933",
+    "title": "Marriage of Elizabeth Goodchild",
+    "description": "Elizabeth Goodchild, widow of Albert Goodchild, (nee Mason), marries Charles Keene at Epsom Registry Office.",
+    "references": ["findmypast marriage search"],
+    "labels": ["marriage", "person"]
+  },
+  {
     "date": "15 Jun. 1934",
     "title": "(Robert) Merrick Attenborough in Play",
     "description": "R M H Attenborough, son of (Robert) Harold Attenborough, appeared in the cast of a play at Massey Agricultural College, New Zealand.",
@@ -2103,13 +2117,6 @@
     "description": "Edward Albert Goodchild of Saunderton was buried.",
     "references": ["Bucks Herald, 24 Aug 1934", "Registers and Records of St Peters, Rex Kidd, Dec 1982"],
     "labels": []
-  },
-  {
-    "date": "Q4 1933",
-    "title": "Marriage of Elizabeth Goodchild",
-    "description": "Elizabeth Goodchild, widow of Albert Goodchild, (nee Mason), marries Charles Keene at Epsom Registry Office.",
-    "references": ["findmypast marriage search"],
-    "labels": ["marriage", "person"]
   },
   {
     "date": "1934",
@@ -2217,13 +2224,6 @@
     "labels": ["housing"]
   },
   {
-    "date": "20 Dec. 1937",
-    "title": "Driver Fined",
-    "description": "(Robert) Douglas Goodchild, son of Albert Goodchild late of Ilmer House, was stopped for driving without sidelights and fined £1.",
-    "references": ["Bucks Herald, 21 Jan 1938"],
-    "labels": ["housing"]
-  },
-  {
     "date": "7 Apr. 1937",
     "title": "Church Warden",
     "description": "(Robert) Harold Attenborough of Ilmer House became church warden.",
@@ -2236,6 +2236,13 @@
     "description": "Ilmer House was first recorded in the Land Registry.",
     "references": ["HM Land Registry title register"],
     "labels": ["housing", "land"]
+  },
+  {
+    "date": "20 Dec. 1937",
+    "title": "Driver Fined",
+    "description": "(Robert) Douglas Goodchild, son of Albert Goodchild late of Ilmer House, was stopped for driving without sidelights and fined £1.",
+    "references": ["Bucks Herald, 21 Jan 1938"],
+    "labels": ["housing"]
   },
   {
     "date": "1 Dec. 1938",
@@ -2537,8 +2544,8 @@
   },
   {
     "date": "c. 1962",
-    "title": "Blaster Bates at ShellStar Site",
-    "description": "Blaster Bates blew tree stumps out of the ground to make way for the ShellStar demonstration centre.",
+    "title": "Blaster Bates at Shell Site",
+    "description": "[Blaster Bates](https://en.wikipedia.org/wiki/Blaster_Bates) blew tree stumps out of the ground to make way for the Shell demonstration farm.",
     "references": ["Recollection of Les Lane of 2 The Green"],
     "labels": []
   },
@@ -2622,17 +2629,6 @@
     "labels": ["church", "media", "person"]
   },
   {
-    "date": "15 Nov. 1968",
-    "title": "Sale of Ilmer House",
-    "description": "Ilmer House was sold by (Robert) Merrick Attenborough to William Greaves Underwood and his then-wife Susan. Susan later re-married and died in 2025.",
-    "references": [
-      "HM Land Registry title register",
-      "Daily Telegraph Obituary 2 Sep 1972",
-      "Ancestry.com - Susan Underwood"
-    ],
-    "labels": ["auction", "housing", "sale"]
-  },
-  {
     "date": "Late 1960s",
     "title": "Church Refurbishment by Parishioners",
     "description": "Redecoration and reconstruction work on the church, costing £1,000, is carried out and funded by the parishioners.",
@@ -2668,10 +2664,28 @@
     "labels": ["death", "housing", "person"]
   },
   {
+    "date": "15 Nov. 1968",
+    "title": "Sale of Ilmer House",
+    "description": "Ilmer House was sold by (Robert) Merrick Attenborough to William Greaves Underwood and his then-wife Susan. Susan later re-married and died in 2025.",
+    "references": [
+      "HM Land Registry title register",
+      "Daily Telegraph Obituary 2 Sep 1972",
+      "Ancestry.com - Susan Underwood"
+    ],
+    "labels": ["auction", "housing", "sale"]
+  },
+  {
     "date": "c. Dec. 1968",
     "title": "Death of Charles Belgrove",
     "description": "Charles Belgrove, the Ilmer Hermit, dies aged 84 in Lockington.",
     "references": [],
+    "labels": ["death", "person"]
+  },
+  {
+    "date": "31 Jan. 1969",
+    "title": "Charles Belgrove Official Date of Death",
+    "description": "The Ilmer Hermit, Charles Belgrove's official date of death is recorded.",
+    "references": ["Probate record, December 1971"],
     "labels": ["death", "person"]
   },
   {
@@ -2722,13 +2736,6 @@
     "description": "The first community history leaflet of Ilmer Church was written by Dudley Scales Leuw. It was subsequently updated by Janet Wilson.",
     "references": ["leaflet attribution"],
     "labels": ["church", "community"]
-  },
-  {
-    "date": "31 Jan. 1969",
-    "title": "Charles Belgrove Official Date of Death",
-    "description": "The Ilmer Hermit, Charles Belgrove's official date of death is recorded.",
-    "references": ["Probate record, December 1971"],
-    "labels": ["death", "person"]
   },
   {
     "date": "16 Oct. 1970",
@@ -3178,17 +3185,17 @@
     "labels": ["church"]
   },
   {
-    "date": "2000",
+    "date": "12 November 2000",
     "title": "Death of (Annie) Mavis Head",
     "description": "(Annie) Mavis Head, wife of (Stanley) Frank Head, resident of Old Orchard, died and is buried in Ilmer churchyard.",
-    "references": [],
+    "references": ["https://www.thegazette.co.uk/notice/L-56356-344"],
     "labels": ["church", "death", "person"]
   },
   {
-    "date": "2001",
+    "date": "23 February 2001",
     "title": "Death of (Stanley) Frank Head",
     "description": "(Stanley) Frank Head, resident of Old Orchard, died and is buried in Ilmer churchyard.",
-    "references": [],
+    "references": ["https://www.thegazette.co.uk/notice/L-56455-355"],
     "labels": ["church", "death", "person"]
   },
   {
