@@ -32,6 +32,7 @@
   --timeline-link: var(--archive-border, inherit);
   --timeline-blockquote: var(--archive-background, initial);
   --timeline-count-bg: var(--archive-border, #0366d6);
+  --timeline-card-shadow: color-mix(in srgb, white 50%, var(--archive-border) 50%);
 }
 
 body {
@@ -188,7 +189,7 @@ main {
       position: relative;
       border: 1px solid var(--timeline-card-border);
       border-radius: 6px;
-      box-shadow: 0 1px 3px var(--timeline-card-shadow);
+      box-shadow: 0 0 13px var(--timeline-card-shadow);
       filter: var(--timeline-distort);
 
       h2 {
