@@ -19,9 +19,15 @@ image: images/timeline.png
 
 {% assign labels = historicalEvents | uniqueLabels %}
 <select>
-  <option value="">All Categories</option>
+  <option value="">
+    <span class="label-name">All Events</span>
+    <span class="label-count">{{ historicalEvents | size }}</span>
+  </option>
   {% for label in labels %}
-    <option value="{{ label }}">{{ label }}</option>
+    <option value="{{ label.label }}">
+      <span class="label-name">{{ label.label }}</span>
+      <span class="label-count">{{ label.count }}</span>
+    </option>
   {% endfor %}
 </select>
 
