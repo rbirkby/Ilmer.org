@@ -803,7 +803,7 @@
   {
     "date": "14 Sep. 1752",
     "title": "Change of calendar",
-    "description": "The UK changed from the Julian calendar to the Gregorian calendar.",
+    "description": "Great Britain changed from the Julian calendar to the Gregorian calendar.",
     "references": ["wikipedia"],
     "labels": []
   },
@@ -2691,6 +2691,7 @@
   {
     "date": "11 Feb. 1969",
     "title": "Burial of Charles Belgrove",
+    "image": "/images/charles-belgrove-sketch.png",
     "description": "Charles Belgrove, the Ilmer Hermit, was buried.",
     "references": ["Parish Records, Burials"],
     "labels": []
@@ -2945,14 +2946,14 @@
   {
     "date": "11 Nov. 1981",
     "title": "Death of (Robert) Douglas Goodchild",
-    "description": "(Robert) Douglas Goodchild died aged 68 in Letchworth, Herts.",
+    "description": "(Robert) Douglas Goodchild died aged 68 in Letchworth, Herts. He had founded the nursery on what are now the units next to Ilmer Meadows.",
     "references": ["www.thegazette.co.uk", "Telegraph, 13 Nov 1981"],
     "labels": ["death", "person"]
   },
   {
     "date": "1981",
     "title": "Bells Restored and Re-hung",
-    "description": "The church bells were restored by Whites of Appleton and re-hung.",
+    "description": "The church bells were restored by Whites of Appleton and re-hung. They were also converted to swing chiming",
     "references": [
       "Parish church history pamphlet",
       "St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999",
@@ -3047,7 +3048,7 @@
   {
     "date": "1988",
     "title": "New Dwellings Approved",
-    "description": "The Builders' Yard received approval to erect 2 new dwellings - The Sidings and Bridge House.",
+    "description": "The Builders' Yard adjacent to The Rosery received approval to erect 2 new dwellings - The Sidings and Bridge House.",
     "references": ["Wycombe district planning approvals", "Bucks Examiner, 11 Nov 1994"],
     "labels": ["housing"]
   },

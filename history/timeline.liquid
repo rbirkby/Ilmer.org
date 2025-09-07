@@ -7,10 +7,28 @@ tags: [post]
 image: images/timeline.png
 ---
 
+<script type="module">
+  document.getElementsByTagName('select')[0].addEventListener('change', function() {
+    const category = this.value;
+    document.querySelectorAll('.timeline-item').forEach(item => {
+      const categories = JSON.parse(item.getAttribute('data-categories'));
+      item.classList.toggle('hidden', category !== '' && !categories.includes(category));
+    });
+  });
+</script>
+
+{% assign labels = historicalEvents | uniqueLabels %}
+<select>
+  <option value="">All Categories</option>
+  {% for label in labels %}
+    <option value="{{ label }}">{{ label }}</option>
+  {% endfor %}
+</select>
+
 <div id="timeline-container">
   {% for event in historicalEvents %}
     {% unless event.hidden %}
-      <div class="timeline-item {% cycle 'left', 'right' %}">
+      <div class="timeline-item" data-categories='{{ event.labels | jsonStringify }}'>
         <div class="timeline-icon"></div>
         <div class="timeline-content">
           <h2>

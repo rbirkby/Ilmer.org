@@ -13,4 +13,7 @@ export default function (eleventyConfig) {
   const mdIt = markdownIt({ html: true, linkify: true }).disable('code');
   const inline = (content) => mdIt.renderInline(content);
   eleventyConfig.addFilter('renderMarkdownInline', inline);
+
+  eleventyConfig.addFilter('jsonStringify', JSON.stringify);
+  eleventyConfig.addFilter('uniqueLabels', (events) => [...new Set(events.flatMap(({ labels }) => labels))]);
 }
