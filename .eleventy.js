@@ -15,5 +15,12 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter('renderMarkdownInline', inline);
 
   eleventyConfig.addFilter('jsonStringify', JSON.stringify);
-  eleventyConfig.addFilter('uniqueLabels', (events) => [...new Set(events.flatMap(({ labels }) => labels))]);
+  eleventyConfig.addFilter('uniqueLabels', (events) =>
+    [...new Set(events.flatMap(({ labels }) => labels))]
+      .map((label) => ({
+        label,
+        count: events.filter((event) => event.labels.includes(label)).length
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label))
+  );
 }

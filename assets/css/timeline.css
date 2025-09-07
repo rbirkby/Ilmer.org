@@ -31,6 +31,7 @@
   --timeline-background-shadow-color: rgba(236 197 120);
   --timeline-link: var(--archive-border, inherit);
   --timeline-blockquote: var(--archive-background, initial);
+  --timeline-count-bg: var(--archive-border, #0366d6);
 }
 
 body {
@@ -46,6 +47,22 @@ select {
   position: absolute;
   top: 20px;
   right: 20px;
+}
+
+option {
+  display: flex;
+
+  .label-count {
+    font-size: 0.6em;
+    border-radius: 2px;
+    background-color: var(--timeline-count-bg);
+    line-height: 1em;
+    padding: 2px;
+    color: white;
+  }
+  .label-name {
+    flex-grow: 1;
+  }
 }
 
 main {
