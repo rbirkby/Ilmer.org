@@ -41,14 +41,14 @@
   {
     "date": "1229",
     "title": "Church Grant Confirmed",
-    "description": "A legal agreement (a fine) is made between Ralph Fitz-Bernard and the Prioress of Stodeley, further securing the nunnery's rights to the church.",
+    "description": "A legal agreement (a fine) is made between Ralph Fitz-Bernard and the Prioress of Stodeley (Studley), further securing the nunnery's rights to the church.",
     "references": ["Fine Rolls, 14 Henry III"],
     "labels": ["church", "legal"]
   },
   {
     "date": "1230",
     "title": "Church Income Reassigned",
-    "description": "The church's main income (the rectory) is formally assigned to the Nuns of Stodeley, who in return must provide a vicar for the parish.",
+    "description": "The church's main income (the rectory) is formally assigned to the Nuns of Stodeley (Studley), who in return must provide a vicar for the parish.",
     "references": [
       "Dunkin's History, p. 68",
       "Fine Rolls for Buckinghamshire, 14 Henry III, nos. 87, 98",
@@ -80,7 +80,7 @@
   {
     "date": "d. 1267",
     "title": "Death of Vicar Walter",
-    "description": "Walter, the Vicar of Ilmer who had been appointed by the Prioress of Stodeley, dies.",
+    "description": "Walter, the Vicar of Ilmer who had been appointed by the Prioress of Stodeley (Studley), dies.",
     "references": [
       "Dodsworth's Manuscripts, Vol. 107, Bodleian Library",
       "Kennet's Parochial Antiquities, Vol. 1, p. 374"
@@ -90,7 +90,7 @@
   {
     "date": "c. 1278",
     "title": "Land Granted to Stodley Priory",
-    "description": "The Hundred Rolls record that Albreda de Jarpanwile, aunt of the manor's holder, gave one virgate of land (approximately 30 acres) in Ilmer in 'pure alms' to the Prioress of Stodley.",
+    "description": "The Hundred Rolls record that Albreda de Jarpanwile, aunt of the manor's holder, gave one virgate of land (approximately 30 acres) in Ilmer in 'pure alms' to the Prioress of Stodley (Studley).",
     "references": ["Rotuli Hundredorum (Hundred Rolls)"],
     "labels": ["land", "manor house", "property"]
   },
@@ -153,7 +153,7 @@
   {
     "date": "7 Jan. 1338",
     "title": "Ilmer Custumal Recorded",
-    "description": "An Ilmer Custumal was recorded.",
+    "description": "An Ilmer Custumal (economic, political, and social customs) was written and still exists at Kew.",
     "references": ["National Archives"],
     "labels": []
   },
@@ -195,7 +195,7 @@
   {
     "date": "30 April 1349",
     "title": "New Vicar Appointed",
-    "description": "John de Horwood is appointed as the new vicar by Margery, the Prioress of Stodley.",
+    "description": "John de Horwood is appointed as the new vicar by Margery, the Prioress of Stodley (Studley).",
     "references": ["Willis's Manuscripts, Bodleian Library"],
     "labels": ["church", "person"]
   },
@@ -251,7 +251,7 @@
   {
     "date": "21 May 1388",
     "title": "New Vicar Appointed",
-    "description": "Thomas Haddon is appointed as vicar by Elizabeth Freemantle, the Prioress of Stodley.",
+    "description": "Thomas Haddon is appointed as vicar by Elizabeth Freemantle, the Prioress of Stodley (Studley).",
     "references": ["Willis's Manuscripts, Bodleian Library"],
     "labels": ["church", "person"]
   },
@@ -312,18 +312,18 @@
     "labels": ["church", "person"]
   },
   {
-    "date": "20 June 1452",
-    "title": "New Vicar Appointed",
-    "description": "John Seler is appointed as the new vicar.",
-    "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
-  },
-  {
     "date": "d. 1452",
     "title": "Death of Vicar Howes",
     "description": "Thomas (or John) Howes, who had been vicar since at least 1447, dies.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
     "labels": ["church", "death", "person"]
+  },
+  {
+    "date": "20 June 1452",
+    "title": "New Vicar Appointed",
+    "description": "John Seler is appointed as the new vicar.",
+    "references": ["Willis's Manuscripts, Bodleian Library"],
+    "labels": ["church", "person"]
   },
   {
     "date": "12 Nov. 1460",
@@ -340,16 +340,16 @@
     "labels": ["government", "land"]
   },
   {
-    "date": "31 July 1466",
-    "title": "New Vicar Appointed",
-    "description": "Henry Stodysbury is appointed as the new vicar.",
+    "date": "res. 1466",
+    "title": "Vicar Robert Byrcham Resigns",
+    "description": "Robert Byrcham resigns his position as vicar.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
     "labels": ["church", "person"]
   },
   {
-    "date": "res. 1466",
-    "title": "Vicar Robert Byrcham Resigns",
-    "description": "Robert Byrcham resigns his position as vicar.",
+    "date": "31 July 1466",
+    "title": "New Vicar Appointed",
+    "description": "Henry Stodysbury is appointed as the new vicar.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
     "labels": ["church", "person"]
   },
@@ -391,7 +391,7 @@
   {
     "date": "c. 1500",
     "title": "First Bell Cast",
-    "description": "The first of the three church bells was cast. It is inscribed Sancta Margareta ora pro nobis. Between 1494-1509, William Hasylwood, the likely founder of this bell, wass active as a bell caster at his foundry in Reading",
+    "description": "The first of the three church bells was cast. It is inscribed *Sancta Margareta ora pro nobis*. Between 1494-1509, William Hasylwood, the likely founder of this bell, was active as a bell caster at his foundry in Reading",
     "references": ["The church bells of Buckinghamshire, Cocks, 1897"],
     "labels": ["church"]
   },
@@ -510,7 +510,7 @@
   {
     "date": "1586",
     "title": "Second Bell Cast",
-    "description": "The second of the church bells was cast. It is inscribed Gloria in excelcuc (sic) deo 1586.",
+    "description": "The second of the church bells was cast. It is inscribed *Gloria in excelcuc (sic) deo 1586*.",
     "references": [],
     "labels": ["church"]
   },
@@ -552,7 +552,7 @@
   {
     "date": "June 1615",
     "title": "Robert Dormer Becomes a Baron",
-    "description": "Shortly after, Sir Robert Dormer is ennobled, becoming Baron Dormer of Wenge.",
+    "description": "Shortly after, Sir Robert Dormer is ennobled, becoming Baron Dormer of Wenge (Wing).",
     "references": ["Lipscomb's History..."],
     "labels": []
   },
@@ -566,7 +566,7 @@
   {
     "date": "1618",
     "title": "Third Bell Cast",
-    "description": "The third of the church bells was cast. It is inscribed Henri Knight made mee ano 1618.",
+    "description": "The third of the church bells was cast. It is inscribed *Henri Knight made mee ano 1618*.",
     "references": [],
     "labels": ["church"]
   },
@@ -622,16 +622,9 @@
   {
     "date": "1662",
     "title": "Church Aisle Demolished",
-    "description": "Permission is granted to tear down a side aisle or vestry of the church and use the materials for repairs. The aisle is never rebuilt.",
-    "references": ["Lipscomb's History..."],
+    "description": "Permission is granted to tear down a side aisle or vestry of the church and use the materials for repairs. The aisle is never rebuilt however the blocked-up doorway on the south aspect is still visible today.",
+    "references": ["Lipscomb's History...", "SHEHAN"],
     "labels": ["building", "church", "construction", "repair"]
-  },
-  {
-    "date": "1662",
-    "title": "Licence to Remove Church Vestry",
-    "description": "A licence was granted to remove the church vestry on the south side.",
-    "references": ["SHEHAN"],
-    "labels": ["church"]
   },
   {
     "date": "1669",
@@ -696,13 +689,17 @@
     "date": "28 Oct. 1687",
     "title": "Marcus Parker Becomes Vicar",
     "description": "Marcus Parker became [vicar of Ilmer](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=86069). Lipscomb calls the new vicar 'Matthew Palmer', believed to be in error.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982", "theclergydatabase.org.uk"],
+    "references": [
+      "Registers and Records of St Peters, Rex Kidd, Dec 1982",
+      "theclergydatabase.org.uk",
+      "Lipscomb's History..."
+    ],
     "labels": ["church", "person"]
   },
   {
     "date": "1694",
     "title": "Highway Repair Indictment Discharged",
-    "description": "Ilmer inhabitants were discharged from an indictment after repairing the highway from Bicester to Wycombe through Ilmer.",
+    "description": "Ilmer inhabitants were discharged from an indictment after repairing the highway from Bicester to Wycombe through Ilmer. This is likely to be the footpath taking a north-westerly route from the railway bridge and the bridleway south-easterly from the railway bridge.",
     "references": ["Calendar to the session records"],
     "labels": ["repair"]
   },
@@ -780,25 +777,18 @@
     "labels": []
   },
   {
-    "date": "13 Aug. 1746",
-    "title": "New Vicar Inducted",
-    "description": "James Andrew formally takes up his position as the new vicar.",
-    "references": ["Lipscomb's History..."],
-    "labels": ["church", "person"]
-  },
-  {
-    "date": "1746",
-    "title": "James Andrew Becomes Vicar",
-    "description": "James Andrew became vicar of Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["church", "person"]
-  },
-  {
     "date": "d. 1746",
     "title": "Death of Vicar Stanbridge",
     "description": "Henry Stanbridge, the Vicar of Ilmer, dies.",
     "references": ["Lipscomb's History..."],
     "labels": ["church", "death", "person"]
+  },
+  {
+    "date": "13 Aug. 1746",
+    "title": "New Vicar Inducted",
+    "description": "James Andrew formally takes up his position as the new vicar.",
+    "references": ["Lipscomb's History...", "Registers and Records of St Peters, Rex Kidd, Dec 1982"],
+    "labels": ["church", "person"]
   },
   {
     "date": "14 Sep. 1752",
@@ -911,7 +901,7 @@
   {
     "date": "4 Nov. 1817",
     "title": "Moreton John Edward Frewen Admitted to Gray's Inn",
-    "description": "Moreton John Edward Frewen was admitted to Gray's Inn.",
+    "description": "Moreton John Edward Frewen was admitted to Gray's Inn. He would later inherit the Manor of Ilmer.",
     "references": ["Register of Admissions to Gray's Inn, 1889"],
     "labels": []
   },
@@ -926,13 +916,13 @@
     "date": "1821",
     "title": "Population Recorded",
     "description": "The population was 68 (of which 40 were female) in 12 houses.",
-    "references": ["Book screenshots on GDrive"],
+    "references": [],
     "labels": ["housing", "population"]
   },
   {
     "date": "3 Jul. 1824",
     "title": "Ilmer Manor and Dairy Farms for Sale",
-    "description": "Ilmer Manor and dairy farms were put up for sale, with farms occupied by Abraham Eyre, John West, A Wooster, John Tappin, and John Gomme.",
+    "description": "Ilmer Manor and dairy farms were put up for sale, with farms occupied by Abraham Eyre, John West, A Wooster, John Tappin, and John Gomme. The manor was probably purchased by Dr (Rev) Edward Frewen.",
     "references": [
       "Jackson's Oxford journal, 3 Jul 1824",
       "London Morning Herald, 8 Jul 1824",
@@ -964,7 +954,7 @@
   {
     "date": "16 Nov. 1831",
     "title": "Cottages and Land at Lockington for Sale",
-    "description": "Cottages and Land at Lockington, currently occupied by John Allen, were to be sold.",
+    "description": "Cottages and Land at Lockington, currently occupied by John Allen, were to be sold. By the turn of the century, all residents would have abandoned the hamlet of Lockington. For half of the 20th century, Lockington would become the residence of the hermit Charles Belgrove.",
     "references": ["Bucks Gazette, 5 Nov 1831"],
     "labels": ["auction", "land", "sale"]
   },
@@ -978,23 +968,16 @@
   {
     "date": "1831",
     "title": "Birth of David Goodchild",
-    "description": "David Goodchild was born in Risborough.",
+    "description": "David Goodchild was born in Risborough. David was the father of Albert who would build Ilmer House.",
     "references": ["1871 census"],
     "labels": ["birth", "person"]
   },
   {
-    "date": "1833",
+    "date": "1833-1834",
     "title": "William Edwards Partridge Becomes Vicar",
-    "description": "William Edwards Partridge became vicar of Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
+    "description": "William Edwards Partridge became vicar of Ilmer, appointed by the 6th Earl of Chesterfield.",
+    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982", "SHEHAN"],
     "labels": ["church", "document", "person"]
-  },
-  {
-    "date": "1834",
-    "title": "Partridge Appointed Vicar by Earl",
-    "description": "W.E. Partridge was appointed vicar by the 6th Earl of Chesterfield.",
-    "references": ["SHEHAN"],
-    "labels": ["church", "person"]
   },
   {
     "date": "25 Mar. 1835",
@@ -1006,14 +989,14 @@
   {
     "date": "1837",
     "title": "Farm Occupants Recorded",
-    "description": "John Eggleton Junr was at Middle House Farm and John Tapping at Upper House Farm.",
+    "description": "John Eggleton Junr was at Middle House Farm (adjacent to September/October cottages) and John Tapping at Upper House Farm (now Ilmer House).",
     "references": ["poll book"],
     "labels": ["farm", "housing", "property"]
   },
   {
     "date": "1839",
     "title": "Tithe Map Shows Middle Farm",
-    "description": "The tithe map shows the existence of Middle Farm.",
+    "description": "The tithe map shows the existence of Middle Farm sited on the pasture adjacent to September and October cottages.",
     "references": [],
     "labels": ["farm", "map", "property"]
   },
@@ -1027,7 +1010,7 @@
   {
     "date": "1842",
     "title": "Marriage of Vicar W. E. Partridge",
-    "description": "At Swallowfield, Berkshire, the Rev. W. E. Partridge, Vicar of Ilmer, marries Lucy-Olivia-Hobart Anderdon, only surviving child of Oliver Anderdon, esq. Q.C.",
+    "description": "At Swallowfield, Berkshire, the Rev. W. E. Partridge, Vicar of Ilmer, marries Lucy-Olivia-Hobart Anderdon, only surviving child of Oliver Anderdon, esq. Q.C. Any connection to Anderdons farm in Longwick is unknown.",
     "references": ["Gentleman's Magazine, Nov 1842, Vol 18"],
     "labels": ["church", "marriage", "person"]
   },
@@ -1055,7 +1038,7 @@
   {
     "date": "2 Feb. 1853",
     "title": "Birth of George Wooster",
-    "description": "George Wooster was born to Sarah and James Wooster (farmer).",
+    "description": "George Wooster was born to Sarah and James Wooster (farmer). He would later emigrate to the USA and write about his later return visit to Ilmer.",
     "references": ["Birth registration HM GRO"],
     "labels": ["birth", "farm", "person", "property"]
   },
@@ -1162,7 +1145,7 @@
   {
     "date": "4 Jun. 1870",
     "title": "Birth of Elizabeth Mason",
-    "description": "Elizabeth Mason (later Goodchild) was born. She subsequently married Albert Goodchild and Charles Keene.",
+    "description": "Elizabeth Mason (later Goodchild) was born. She subsequently married Albert Goodchild and Charles Keene. Her birth-date is contentious with some records suggesting 16 Dec 1872.",
     "references": ["Daily Telegraph, 6 Jun 1962"],
     "labels": ["birth", "person"]
   },
@@ -1193,7 +1176,7 @@
   {
     "date": "29 Sep. 1873",
     "title": "Birth of Albert Goodchild",
-    "description": "Albert Goodchild was born in Ilmer to David and Elizabeth.",
+    "description": "Albert Goodchild was born in Ilmer to David and Elizabeth. Albert would later build Ilmer House.",
     "references": ["HM GRO birth registration"],
     "labels": ["birth", "person"]
   },
@@ -1221,7 +1204,7 @@
   {
     "date": "3 Apr. 1881",
     "title": "Census Data",
-    "description": "The population was 63. David and Elizabeth Goodchild lived in Ilmer with four children.",
+    "description": "The population was 63. David and Elizabeth Goodchild lived in Ilmer with four children. This may have been in the Old Vicarage.",
     "references": ["Census"],
     "labels": ["population"]
   },
@@ -1235,7 +1218,7 @@
   {
     "date": "Jul. 1882",
     "title": "Upper Farm for Sale",
-    "description": "Upper Farm was put up for sale with tenant Mr Belgrove, alongside Ford Farm and Aston Mullins Farm.",
+    "description": "Upper Farm was put up for sale with tenant Mr Belgrove, alongside Ford Farm and Aston Mullins Farm. Upper Farm later became known as Ilmer House.",
     "references": ["Bucks Herald, 22 Jul 1882"],
     "labels": ["auction", "farm", "property", "sale"]
   },
@@ -1453,7 +1436,7 @@
   {
     "date": "28 Oct. 1902",
     "title": "Charles Belgrove Emigrates",
-    "description": "Charles Belgrove departs Liverpool for Quebec, destination Winnipeg. Charles soon returned, disliking the weather, and became better known as the Ilmer Hermit.",
+    "description": "Charles Belgrove departs Liverpool for Quebec, destination Winnipeg. Charles soon returned, disliking the weather, and became better known as the Ilmer Hermit. It is not know what the purpose of his visit was, however Quebec was also the destination of Ernest Goodchild who emigrated 10 years earlier when Charles was 7 and Ernest was 13. Perhaps Charles intended to visit Ernest?",
     "references": ["Board of Trade, Outwards Passenger Lists", "Obituary by Basil Purssell"],
     "labels": []
   },
@@ -1539,7 +1522,7 @@
   {
     "date": "1909",
     "title": "George Wooster Visits Ilmer",
-    "description": "George Wooster, son of Sarah Wooster, returned to visit his birthplace of Ilmer from his home in the USA.",
+    "description": "George Wooster, son of Sarah Wooster, returned to visit his birthplace of Ilmer from his home in the USA. He wrote about his visit in the 'Meriwether Vindicator' newspaper in 1909.",
     "image": "/images/georgewooster.jpg",
     "references": ["Meriwether Vindicator, 1909"],
     "labels": ["birth"]
@@ -1646,7 +1629,7 @@
   {
     "date": "1911",
     "title": "Residents Listed",
-    "description": "Miss A Phillips, George Gomme, Albert Goodchild, Thomas Goodchild, Alfred Hill, and George Kingham are listed as residents. Miss Moreton is the principal landowner.",
+    "description": "Miss A Phillips, George Gomme, Albert Goodchild, Thomas Goodchild, Alfred Hill, and George Kingham are listed as residents. Miss Moreton is the principal landowner. Miss A Phillips lived at the Old Vicarage.",
     "references": ["Kelly's 1911"],
     "labels": ["land"]
   },
@@ -1667,23 +1650,16 @@
   {
     "date": "27 Oct. 1911",
     "title": "Lockington Meadow Unsold",
-    "description": "Lockington meadow remained unsold at auction.",
+    "description": "Lockington meadow remained unsold at auction. Lockington is the nearby abandoned hamlet and home for many years of the Ilmer Hermit. It is now known as Hermit's Wood.",
     "references": ["Bucks Herald, 4 Nov 1911"],
     "labels": ["auction", "sale"]
   },
   {
     "date": "12 Nov. 1911",
     "title": "Birth of Robert Merrick Harling Attenborough",
-    "description": "(Robert) Merrick Harling Attenborough was born to (Robert) Harold Attenborough, future owner of Ilmer House.",
+    "description": "(Robert) Merrick Harling Attenborough was born to (Robert) Harold Attenborough, future owner of Ilmer House. Merrick would later farm Manor Farm and live at Close End.",
     "references": ["HM GRO birth registration"],
     "labels": ["birth", "housing", "person"]
-  },
-  {
-    "date": "1912",
-    "title": "Manor Farm for Sale",
-    "description": "Manor Farm was advertised for sale.",
-    "references": ["Oxford Chronicle, 15 Nov, 1912"],
-    "labels": ["auction", "farm", "manor house", "property", "sale"]
   },
   {
     "date": "20 Jan. 1912",
@@ -1691,6 +1667,13 @@
     "description": "Miss Moreton died and the estate transferred to 'Mrs Carter'. Sister Elizabeth Moreton had life benefit of the manor of Ilmer and had paid for the village hall.",
     "references": ["Victoria History of the County of Buckingham vol 4", "probate records"],
     "labels": ["death", "manor house", "person", "property"]
+  },
+  {
+    "date": "1912",
+    "title": "Manor Farm for Sale",
+    "description": "Manor Farm was advertised for sale. This farm had been part of the Manor of Ilmer in the life benefit of Miss Moreton.",
+    "references": ["Oxford Chronicle, 15 Nov, 1912"],
+    "labels": ["auction", "farm", "manor house", "property", "sale"]
   },
   {
     "date": "7 Mar. 1912",
@@ -1723,7 +1706,7 @@
   {
     "date": "16 Jan. 1913",
     "title": "Birth of (Robert) Douglas Goodchild",
-    "description": "(Robert) Douglas Goodchild was born to Albert and Elizabeth Goodchild in Tulse Hill.",
+    "description": "(Robert) Douglas Goodchild was born to Albert and Elizabeth Goodchild in Tulse Hill. He would later build the nursery and glasshouses at Ilmer Meadows.",
     "references": ["familysearch.org", "HM GRO birth register"],
     "labels": ["birth", "person"]
   },
@@ -1868,7 +1851,7 @@
   {
     "date": "29 Jun. 1925",
     "title": "Churchyard Footpath Diverted",
-    "description": "The footpath through the churchyard was diverted.",
+    "description": "The footpath through the churchyard was diverted. This was probably to allow for the construction of Ilmer House. as the footpath had previously run from the road to the north-east of the church, through the rear of the churchyard, and exited towards Ilmer House.",
     "references": ["Bucks Herald, 25 Apr 1925"],
     "labels": ["church"]
   },
@@ -1910,14 +1893,14 @@
   {
     "date": "Oct. 1928",
     "title": "Electric Lighting Faculty Granted",
-    "description": "Faculty was granted to install electric lighting in the church.",
+    "description": "Faculty was granted to install electric lighting in the church. The oil lamp holders were re-purposed to become electric light fittings and these still exist today.",
     "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
     "labels": ["church"]
   },
   {
     "date": "1 Apr. 1929",
     "title": "Ilmer Halt Station Opens",
-    "description": "LNER station Ilmer Halt opened. It was to close in 1963.",
+    "description": "LNER station Ilmer Halt opened. It was to close in 1963 only 34 years later.",
     "image": "/images/ilmer-halt-ticket.jpg",
     "references": ["Bucks Herald, 5 Apr 1929"],
     "labels": ["infrastructure"]
@@ -2009,7 +1992,7 @@
   {
     "date": "1932",
     "title": "Church Electric Lighting",
-    "description": "Ilmer church had electric lighting, with the cost recorded as a 1931 expenditure.",
+    "description": "Ilmer church had electric lighting, with the electricity cost recorded as a 1931 expenditure.",
     "references": ["Vestry minutes, 10 Jan 1932"],
     "labels": ["church"]
   },
@@ -2343,7 +2326,7 @@
   {
     "date": "1942",
     "title": "Cowman Wage Complaint",
-    "description": "R.M.H Attenborough complained that the minimum wage for a cowman in Bucks was higher than in Herts.",
+    "description": "R.M.H Attenborough complained in the local newspaper that the minimum wage for a cowman in Bucks was higher than in Herts.",
     "references": ["Bucks Herald, 6 Feb 1942"],
     "labels": []
   },
@@ -2357,7 +2340,7 @@
   {
     "date": "8 Apr. 1942",
     "title": "Invasion Preparations",
-    "description": "The vestry was informed of local arrangements in the event of an invasion, including using the Church Room as a mortuary.",
+    "description": "The church council was informed of local arrangements in-place for the event of an invasion, including the use of the Church Room (Parish Room) as a mortuary.",
     "references": ["Vestry minutes, 8 Apr 1942"],
     "labels": ["church"]
   },
@@ -2455,7 +2438,7 @@
   {
     "date": "24 Apr. 1953",
     "title": "Eviction of Tenants",
-    "description": "(Robert) Merrick Attenborough successfully applied for the eviction of the tenants of Lodge Cottage and Ilmer Cottage.",
+    "description": "(Robert) Merrick Attenborough successfully applied for the eviction of the tenants of Lodge Cottage and Ilmer Cottage. The site of Lodge Cottage is now Folly Cottage, while Ilmer Cottage became the pair of cottages known as September and October cottages.",
     "references": ["Bucks Advertiser, 24 Apr 1953"],
     "labels": []
   },
@@ -2518,7 +2501,7 @@
   {
     "date": "Oct. 1960",
     "title": "ShellStar Purchases Lower Farm",
-    "description": "Lower Farm was purchased by ShellStar.",
+    "description": "Lower Farm was purchased by ShellStar, aka ShellMex, to be used as a demonstration farm.",
     "references": ["Shell archive, The Hague"],
     "labels": ["farm", "property"]
   },
@@ -2680,8 +2663,8 @@
   {
     "date": "c. Dec. 1968",
     "title": "Death of Charles Belgrove",
-    "description": "Charles Belgrove, the Ilmer Hermit, dies aged 84 in Lockington.",
-    "references": [],
+    "description": "Charles Belgrove, the Ilmer Hermit, dies aged 84 in Lockington. His body was found by Les Bailey and with the help of a tractor driven by cowman John Shurrock was brought back to Ilmer.",
+    "references": ["Former resident (Shurrock) recollections"],
     "labels": ["death", "person"]
   },
   {
@@ -2809,7 +2792,7 @@
   {
     "date": "1972",
     "title": "ShellStar Office Extension Approved",
-    "description": "Approval was granted to extend the ShellStar office building in the grounds of Lower Farm.",
+    "description": "Approval was granted to extend the ShellStar office building in the grounds of Lower Farm. The building no longer exists.",
     "references": ["Wycombe district planning approvals"],
     "labels": ["building", "farm", "property"]
   },
@@ -2893,7 +2876,7 @@
   {
     "date": "Jun. 1978",
     "title": "Church Fundraising Whist Drive",
-    "description": "Mollie Shurrock held a whist drive in aid of the church restoration fund.",
+    "description": "Mollie Shurrock held a whist drive in aid of the church restoration fund. The Shurrocks lived at Manor Farm.",
     "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
     "labels": ["church"]
   },
@@ -3065,14 +3048,14 @@
   {
     "date": "1 Nov. 1989",
     "title": "Keir Starmer on Kilroy",
-    "description": "Keir Starmer, future prime minister, appeared on TV talk-show \"Kilroy\" about rave culture, representing the National Council for Civil Liberties.",
+    "description": "Keir Starmer, future prime minister, appeared on TV talk-show \"Kilroy\" about rave culture, representing the National Council for Civil Liberties. It had been just 3 months since the Longwick rave, which will have been on Keir's mind.",
     "references": [],
     "labels": ["media"]
   },
   {
     "date": "1989",
     "title": "Lodge Cottages for Sale",
-    "description": "1 & 2 Lodge Cottages and 6 acres of adjoining pasture were put up for sale by auction.",
+    "description": "1 & 2 Lodge Cottages and 6 acres of adjoining pasture were put up for sale by auction. Folly Cottage was later built on the site.",
     "references": ["Raffety Buckland, 1989, Sale particulars. Copy in Bucks archive"],
     "labels": ["auction", "sale"]
   },
@@ -3140,7 +3123,7 @@
   {
     "date": "1992",
     "title": "Shellstar Offices Demolished",
-    "description": "The Shellstar offices were demolished. The site is now a private museum.",
+    "description": "The Shellstar offices were demolished. A new building was later erected and is now a private museum.",
     "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
     "labels": []
   },
