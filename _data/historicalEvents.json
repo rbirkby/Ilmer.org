@@ -1918,6 +1918,7 @@
     "date": "1 Apr. 1929",
     "title": "Ilmer Halt Station Opens",
     "description": "LNER station Ilmer Halt opened. It was to close in 1963.",
+    "image": "/images/ilmer-halt-ticket.jpg",
     "references": ["Bucks Herald, 5 Apr 1929"],
     "labels": ["infrastructure"]
   },
@@ -2553,6 +2554,8 @@
     "date": "7 Jan. 1963",
     "title": "Ilmer Halt Closes",
     "description": "Ilmer Halt station is closed. It had only been open for 34 years.",
+    "image": "/images/ilmer-halt-timetable.jpg",
+    "smallimage": "/images/ilmer-halt-timetable-cropped.jpg",
     "references": ["Birmingham Post, 2 Jan 1963"],
     "labels": ["infrastructure"]
   },

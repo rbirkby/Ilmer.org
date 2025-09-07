@@ -34,7 +34,9 @@ image: images/timeline.png
           <h2>
             <span class="date">{{ event.date }}</span>
             {{ event.title }}</h2>
-          {% if event.image %}
+          {% if event.smallimage %}
+            <a href="{{event.image}}"><img src="{{ event.smallimage }}" alt="{{ event.title }}"></a>
+          {% elsif event.image %}
             <a href="{{event.image}}"><img src="{{ event.image }}" alt="{{ event.title }}"></a>
           {% endif %}
 
