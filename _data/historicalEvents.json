@@ -2606,6 +2606,7 @@
     "date": "1967",
     "title": "Donation from Chitty Chitty Bang Bang Filming",
     "description": "The church received a donation of £250 from Shell Farm, from the filming of [Chitty Chitty Bang Bang](https://en.wikipedia.org/wiki/Chitty_Chitty_Bang_Bang).",
+    "image": "/images/chittychittybangbang2.jpg",
     "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
     "labels": ["church", "farm", "media", "property"]
   },
@@ -2673,7 +2674,7 @@
   {
     "date": "c. Dec. 1968",
     "title": "Death of Charles Belgrove",
-    "description": "Charles Belgrove, the Ilmer Hermit, dies aged 84 in Lockington. His body was found by Les Bailey and with the help of a tractor driven by cowman John Shurrock was brought back to Ilmer.",
+    "description": "Charles Belgrove, the Ilmer Hermit, dies aged 84 in Lockington. His body was found by Manor Farm employee Les Bailey of Lodge Cottage and with the help of a tractor driven by John E Shurrock was brought back to Ilmer.",
     "references": ["Former resident (Shurrock) recollections"],
     "labels": ["death", "person"]
   },
@@ -2907,7 +2908,7 @@
   {
     "date": "1979",
     "title": "Residents Leave Ilmer",
-    "description": "Mr J & Mrs Molly Shurrock, cowman and residents of Manor Farm, left Ilmer to live in Bledlow. Mrs Shurrock had rented the Church Close land where she kept goats, calves and sheep.",
+    "description": "Mr J & Mrs Molly Shurrock, residents of Manor Farm, left Ilmer to live in Bledlow. Mrs Shurrock had rented the Church Close land where she kept goats, calves and sheep.",
     "references": ["Bucks Free Press, 27 Jul 1979"],
     "labels": ["church", "farm", "land", "manor house", "property"]
   },
@@ -3250,6 +3251,7 @@
     "date": "18 Jan. 2018",
     "title": "Death of George Harper",
     "description": "George Harper, churchwarden, parish council chair and longtime resident died.",
+    "image": "/images/george-harper.jpg",
     "references": [],
     "labels": ["church", "death", "person"]
   },
