@@ -421,6 +421,7 @@
     "title": "Church Property Granted After Dissolution",
     "description": "Following the Dissolution of the Monasteries, King Henry VIII grants the church property and its income (the Rectory) to John Croke of Chilton.",
     "references": ["Lipscomb's History... (see Chilton, p. 130)", "Patent Rolls, 31 Henry VIII"],
+    "image": "/images/john-croke.jpg",
     "labels": ["church", "economy", "property"]
   },
   {
@@ -461,7 +462,7 @@
   {
     "date": "c. 1553",
     "title": "Dormer Family Acquires Manor",
-    "description": "The manor is now owned by the Dormer family. A royal inquiry confirms that William Dormer holds the title to Ilmer.",
+    "description": "The manor is now owned by the Dormer family. A royal inquiry confirms that [William Dormer](https://www.historyofparliamentonline.org/volume/1558-1603/member/dormer-sir-william-1514-75) holds the title to Ilmer.",
     "references": ["Lysons's Magna Britannia, Vol. 1, p. 583", "Lipscomb's History... (see Pedigree of Dormer)"],
     "labels": ["manor house", "property"]
   },
@@ -496,8 +497,11 @@
   {
     "date": "1575",
     "title": "Death of William Dormer",
-    "description": "William Dormer, lord of the manor, dies and is succeeded by his son, Robert.",
-    "references": ["Lipscomb's History..."],
+    "description": "William Dormer, lord of the manor, dies and is succeeded by his son, Robert. His will included: \n > I give to William Clerk ten pounds, and he to enjoy his farm which he now occupieth at Ilmer, paying yearly the usual rent as he now doth for term of his life",
+    "references": [
+      "Lipscomb's History...",
+      "[Probate](http://www.oxford-shakespeare.com/Probate/PROB_11-35_ff_197-8.pdf) proved 20 Oct 1552, National Archives"
+    ],
     "labels": ["death", "document", "manor house", "person", "property"]
   },
   {
@@ -505,6 +509,7 @@
     "title": "Crown Sells Off Former Church Lands",
     "description": "Queen Elizabeth I grants small parcels of land, originally given to fund lights in the church, to new owners.",
     "references": ["Patent Rolls, 28 Elizabeth I"],
+    "image": "/images/elizabeth-I.jpg",
     "labels": ["church", "land"]
   },
   {
@@ -636,7 +641,7 @@
   {
     "date": "1677",
     "title": "William Lillingston Becomes Vicar",
-    "description": "William Lillingston became vicar of Ilmer.",
+    "description": "[William Lillingston](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=99037) became vicar of Ilmer.",
     "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
     "labels": ["church", "document", "person"]
   },
@@ -650,7 +655,7 @@
   {
     "date": "8 June 1677",
     "title": "New Vicar Appointed",
-    "description": "John Lillingston is appointed as the new vicar by Charles Dormer, Earl of Carnarvon.",
+    "description": "[John Lillingston](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=176711) is appointed as the new vicar by Charles Dormer, Earl of Carnarvon.",
     "references": ["Subscription Book at Aylesbury"],
     "labels": ["church", "person"]
   },
@@ -679,6 +684,7 @@
     "date": "23 April 1685",
     "title": "Falconry Claim Denied at Coronation",
     "description": "At the coronation of King James II, Charles Dormer, 2nd Earl of Carnarvon claim to the hereditary role of Marshall, Surveyor and Conservator of His Majesties Hawks in England is denied. The role was held due to his holding of the Manor of Ilmer.",
+    "image": "/images/charles-dormer.png",
     "references": [
       "Sandford's History and Account of Claims, p. 16",
       "History of the coronation of James II, Sandford, 1687"
@@ -706,7 +712,7 @@
   {
     "date": "2 Jan. 1700",
     "title": "Charles Cornish Becomes Vicar",
-    "description": "Charles Cornish is appointed vicar. He later resigns after being offered a church position in Wales.",
+    "description": "[Charles Cornish](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=12365) is appointed vicar. He later resigns after being offered a church position in Wales.",
     "references": [
       "Registers and Records of St Peters, Rex Kidd, Dec 1982",
       "Lipscomb's History... (see Risborough & Pedigree of Carter, p. 135)"
@@ -716,7 +722,7 @@
   {
     "date": "26 Sept. 1700",
     "title": "Death of Former Vicar Palmer",
-    "description": "Matthew Palmer, a former vicar of Ilmer, is buried at the nearby parish of Dinton.",
+    "description": "Matthew Palmer (Marcus Parker?), a former vicar of Ilmer, is buried at the nearby parish of Dinton.",
     "references": ["Dinton Parish Register"],
     "labels": ["church", "death", "person"]
   },
@@ -742,17 +748,10 @@
     "labels": ["repair"]
   },
   {
-    "date": "1722",
-    "title": "Henry Stanbridge Becomes Vicar",
-    "description": "Henry Stanbridge became vicar of Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["church", "person"]
-  },
-  {
     "date": "27 Sept. 1722",
-    "title": "New Vicar Appointed",
-    "description": "Henry Stanbridge is appointed as the new vicar by William Stanhope, Esq.",
-    "references": ["Lipscomb's History..."],
+    "title": "Henry Stanbridge Becomes Vicar",
+    "description": "[Henry Stanbridge](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=76866) became vicar of Ilmer, appointed by William Stanhope, Esq",
+    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982", "Lipscomb's History..."],
     "labels": ["church", "person"]
   },
   {
@@ -786,14 +785,14 @@
   {
     "date": "13 Aug. 1746",
     "title": "New Vicar Inducted",
-    "description": "James Andrew formally takes up his position as the new vicar.",
+    "description": "[James Andrew](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=1451) formally takes up his position as the new vicar.",
     "references": ["Lipscomb's History...", "Registers and Records of St Peters, Rex Kidd, Dec 1982"],
     "labels": ["church", "person"]
   },
   {
     "date": "14 Sep. 1752",
     "title": "Change of calendar",
-    "description": "Great Britain changed from the Julian calendar to the Gregorian calendar.",
+    "description": "Great Britain changed from the Julian calendar to the Gregorian calendar losing the 11 days from 2nd September.",
     "references": ["wikipedia"],
     "labels": []
   },
@@ -801,6 +800,7 @@
     "date": "1773",
     "title": "Death of Philip Stanhope, 4th Earl of Chesterfield",
     "description": "Philip Stanhope, 4th Earl of Chesterfield died. He adopted his cousin and godson who became the 5th Earl and inherited the 'Dormer Lands', including Ilmer. Philip became famous for his 400 '[letters to his son](https://www.gutenberg.org/ebooks/3351)' over 30 years, subtitled, the Fine Art of becoming a MAN OF THE WORLD and a GENTLEMAN. Philip wrote the letters to his illegitimate son which were published by his son's widow to fund her pension.",
+    "image": ["/images/philip-dormer.jpg"],
     "references": ["The Buckinghamshire Lieutenancy, Viney"],
     "labels": ["death", "land", "person"]
   },
@@ -828,7 +828,7 @@
   {
     "date": "1791",
     "title": "Thomas Jones Becomes Vicar",
-    "description": "Thomas Jones became vicar of Ilmer.",
+    "description": "[Thomas Jones](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=67728) became vicar of Ilmer.",
     "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
     "labels": ["church", "person"]
   },
@@ -948,7 +948,9 @@
     "date": "1830",
     "title": "Risborough to Thame Turnpike Completed",
     "description": "The A4129, the turnpike road from Risborough to Thame, was completed. No longer did travelers from Thame to Risborough need to travel via Towersey and Ilmer, with its damp and boggy roads.",
-    "references": ["Making the road from Risborough to Thame, Bucks archaeological soc"],
+    "references": [
+      "[Making the road from Risborough to Thame](https://bas1.org.uk/product/bp5-turnpike/), Bucks archaeological soc"
+    ],
     "labels": ["infrastructure"]
   },
   {
@@ -975,7 +977,7 @@
   {
     "date": "1833-1834",
     "title": "William Edwards Partridge Becomes Vicar",
-    "description": "William Edwards Partridge became vicar of Ilmer, appointed by the 6th Earl of Chesterfield.",
+    "description": "[William Edwards Partridge](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=72112) became vicar of Ilmer, appointed by the 6th Earl of Chesterfield.",
     "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982", "SHEHAN"],
     "labels": ["church", "document", "person"]
   },
@@ -997,6 +999,7 @@
     "date": "1839",
     "title": "Tithe Map Shows Middle Farm",
     "description": "The tithe map shows the existence of Middle Farm sited on the pasture adjacent to September and October cottages.",
+    "image": ["/images/middle-farm.jpg"],
     "references": [],
     "labels": ["farm", "map", "property"]
   },
@@ -1025,6 +1028,7 @@
     "date": "1850",
     "title": "Architect G.E. Street Appointed",
     "description": "The Oxford Diocese appoints the renowned ecclesiastical architect [George Edmund Street](https://www.oxforddnb.com/view/10.1093/ref:odnb/9780198614128.001.0001/odnb-9780198614128-e-26659) to oversee the renovation of churches, eventually including the 'dilapidated' St. Peter's in Ilmer.",
+    "image": ["/images/george-edmund-street.jpg"],
     "references": [],
     "labels": ["church"]
   },
@@ -1060,6 +1064,7 @@
     "date": "30 Aug. 1860",
     "title": "Restored Church Reopened",
     "description": "Following extensive restoration by G.E. Street, St. Peter's Church is formally reopened on Thursday, 30th August, by Bishop Samuel Wilberforce, just two months after his famous Oxford debate opposing Darwin's theory of evolution.",
+    "image": ["/images/samuel-wilberforce.jpg"],
     "references": [],
     "labels": ["church"]
   },
@@ -1067,6 +1072,7 @@
     "date": "1860",
     "title": "Church Harmonium",
     "description": "The church had a harmonium situated in the chancel adjacent to the window-seat sculptures. Later photographs show the harmonium against the south wall of the nave adjacent to the rood screen.",
+    "image": ["/images/harmonium.jpg"],
     "references": ["SHEHAN. Plan for 1860 commemorative stone replacement, 1983"],
     "labels": ["church"]
   },
@@ -1125,6 +1131,7 @@
     "date": "16 May 1868",
     "title": "Ilmer Mentioned in Punch Magazine",
     "description": "Ilmer is mentioned in [Punch magazine](https://books.google.co.uk/books?id=V5gwAAAAYAAJ&dq=editions%3Ao0ZG0cjtFIAC&pg=PA212#v=onepage&q=Sarah%20Wooster&f=false), relating the role of Ilmer's Sarah Wooster to the women's suffrage movement.",
+    "image": ["/images/sarah-wooster-punch.jpg"],
     "references": [],
     "labels": ["media"]
   },
@@ -1198,6 +1205,7 @@
     "date": "17 Nov. 1881",
     "title": "James Clare Enlists",
     "description": "18 year old James Clare signed up for the Grenadier Guards, serving for 12 years.",
+    "image": ["/images/james-clare.jpg"],
     "references": ["Short Service Army Form"],
     "labels": []
   },
@@ -1766,7 +1774,8 @@
   {
     "date": "26 Jul. 1918",
     "title": "Thomas Goodchild Buys Land",
-    "description": "Freehold land at Lockington was bought by tenant T Goodchild for £60. Thomas was the elder brother of Albert Goodchild and had looked after Albert when their parents died.",
+    "description": "Freehold land at Lockington was bought by tenant T Goodchild for £60. Thomas was the elder brother of Albert Goodchild and had looked after Albert when their parents died. \n\n\n Lockington is the nearby abandoned hamlet and home for many years of the Ilmer Hermit. It is now known as Hermit's Wood.",
+    "image": "/images/lockington-map.jpg",
     "references": ["Bucks Herald, 3 Aug 1918"],
     "labels": ["death", "inheritance", "land", "person"]
   },
@@ -2404,6 +2413,7 @@
     "date": "1946",
     "title": "Dudley Leuw Runs Ilmer Nurseries",
     "description": "Dudley Scales Leuw began running Ilmer Nurseries. He eventually retired in 1969 and lived to the age of 100.",
+    "image": "/images/dudley-leuw.jpg",
     "references": ["Leamington Spa Courier, 8 Sep 2000"],
     "labels": []
   },
@@ -2487,7 +2497,7 @@
   {
     "date": "Jun. 1958",
     "title": "Marriage of (Annie) Mavis Attenborough",
-    "description": "(Annie) Mavis Attenborough, daughter of (Robert) Harold Attenborough of Ilmer House, married (Stanley) Frank Head.",
+    "description": "(Annie) Mavis Attenborough, daughter of (Robert) Harold Attenborough of Ilmer House, married (Stanley) Frank Head. They were given the land on which Old Orchard is built as a wedding gift by Harold.",
     "references": ["Ancestry tree"],
     "labels": ["housing", "marriage", "person"]
   },
