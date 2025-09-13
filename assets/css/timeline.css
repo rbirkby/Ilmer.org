@@ -191,6 +191,7 @@ main {
       border-radius: 6px;
       box-shadow: 0 0 13px var(--timeline-card-shadow);
       filter: var(--timeline-distort);
+      overflow: hidden;
 
       h2 {
         margin-top: 0;
