@@ -11,7 +11,7 @@
     "title": "Norman Survey (Domesday Book)",
     "description": "The manor is recorded as belonging to the powerful Odo, Bishop of Bayeux, and is managed by his tenant, Robert. Its taxable value is £4.",
     "references": ["Liber Censualis (Domesday Book), Vol. 1, folio 144"],
-    "labels": ["economy", "manor house", "property"]
+    "labels": ["economy", "manor", "property"]
   },
   {
     "date": "1203",
@@ -36,7 +36,7 @@
     "title": "Manor Claim Settled",
     "description": "A legal claim to half the manor by other descendants of the Romenel family is settled, securing the title for Albreda de Jarponville.",
     "references": ["Fine Rolls, 6 Henry III"],
-    "labels": ["legal", "manor house", "property"]
+    "labels": ["legal", "manor", "property"]
   },
   {
     "date": "1229",
@@ -68,7 +68,7 @@
     "title": "Death of John Fitz-Bernard",
     "description": "The lord of the manor, John Fitz-Bernard, dies. Guardianship of his heir is granted to Imbert de Puges.",
     "references": ["Escheats Rolls, 44 Henry III, no. 22", "Testa de Nevill, p. 245"],
-    "labels": ["death", "inheritance", "manor house", "person", "property"]
+    "labels": ["death", "inheritance", "manor", "person", "property"]
   },
   {
     "date": "21 Oct. 1267",
@@ -92,7 +92,7 @@
     "title": "Land Granted to Stodley Priory",
     "description": "The Hundred Rolls record that Albreda de Jarpanwile, aunt of the manor's holder, gave one virgate of land (approximately 30 acres) in Ilmer in 'pure alms' to the Prioress of Stodley (Studley).",
     "references": ["Rotuli Hundredorum (Hundred Rolls)"],
-    "labels": ["land", "manor house", "property"]
+    "labels": ["land", "manor", "property"]
   },
   {
     "date": "1291-1292",
@@ -106,14 +106,14 @@
     "title": "Death of Ralph Fitz-Bernard",
     "description": "Ralph Fitz-Bernard dies while holding the title to the manor of Ilmer.",
     "references": ["Escheats Rolls, 34 Edward I, no. 53"],
-    "labels": ["death", "manor house", "person", "property"]
+    "labels": ["death", "manor", "person", "property"]
   },
   {
     "date": "1315",
     "title": "Manor Sold to Blacket",
     "description": "Thomas Fitz-Bernard sells the estate to John Blacket.",
     "references": ["Fine Rolls, 9 Edward II, no. 208", "Willis's Manuscripts, Bodleian Library, Vol. 16, p. 120"],
-    "labels": ["manor house", "property"]
+    "labels": ["manor", "property"]
   },
   {
     "date": "c. 1327-1377",
@@ -127,69 +127,69 @@
     "title": "Death of John Blacket",
     "description": "The new owner of the manor, John Blacket, dies.",
     "references": ["Escheats Rolls, 2 Edward III, no. 27"],
-    "labels": ["death", "manor house", "person", "property"]
+    "labels": ["death", "manor", "person", "property"]
   },
   {
     "date": "1335",
     "title": "Manor Sold to de Molyns",
     "description": "John Blacket the elder sells the Ilmer estate to the powerful and influential Sir John de Molyns.",
     "references": ["Fine Rolls, 9 Edward III"],
-    "labels": ["manor house", "property"]
+    "labels": ["manor", "property"]
   },
   {
     "date": "1336",
     "title": "Private Park Created",
     "description": "Sir John de Molyns receives a royal license from Edward III to enclose his woods at Ilmer, creating a private hunting park.",
     "references": ["Dugdale's Baronage of England, Vol. 2, p. 145", "Lipscomb"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "1337",
     "title": "Feudal Privileges Granted",
     "description": "Sir John de Molyns is granted exclusive hunting rights (known as 'free warren') and other valuable feudal privileges for his estates.",
     "references": ["Lipscomb's History... (see Brill, p. 99)", "Charter Rolls, 11 Edward III, membrane 12"],
-    "labels": []
+    "labels": ["legal"]
   },
   {
     "date": "7 Jan. 1338",
     "title": "Ilmer Custumal Recorded",
     "description": "An Ilmer Custumal (economic, political, and social customs) was written and still exists at Kew.",
     "references": ["National Archives"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "Mar. 1338",
     "title": "Manor Held in Serjeanty",
     "description": "Sir John Moleyns of Stoke Poges held the manor of Ilmer in serjeanty as keeper of the king's hawks.",
     "references": ["Oxford Dictionary of National Biography"],
-    "labels": ["manor house", "property"]
+    "labels": ["manor", "property"]
   },
   {
     "date": "1340",
     "title": "Manor Seized by the King",
     "description": "After Sir John de Molyns falls from royal favour, his extensive properties, including the manor of Ilmer, are seized by the Crown.",
     "references": ["Lipscomb's History... (see Stoke Poges)", "Fine Rolls, 16 Edward III, membrane 14"],
-    "labels": ["manor house", "property"]
+    "labels": ["manor", "property"]
   },
   {
     "date": "1346",
     "title": "Manor Restored",
     "description": "The manor is returned to Sir John de Molyns, along with a new charter confirming his ownership and the royal services attached to it.",
     "references": ["Lipscomb's History..."],
-    "labels": ["manor house", "property"]
+    "labels": ["manor", "property"]
   },
   {
     "date": "1348",
     "title": "Legal Claim Dropped",
     "description": "Isabella, daughter of a previous owner, formally gives up any legal claim she might have had to the manor of Ilmer.",
     "references": ["Close Rolls, 22 Edward III, membrane 27"],
-    "labels": ["legal", "manor house", "property"]
+    "labels": ["legal", "manor", "property"]
   },
   {
     "date": "9 Mar. 1349",
     "title": "Vicar Granted Land",
     "description": "Sir Richard Gladewyne, vicar, was granted a plot 100ft x 50ft, facing east by John de Molyns. An additional grant of 2 plots totalling 7.5 acres was also made.",
-    "references": ["Calendar of Close Roles of Edward iii, 1349"],
+    "references": ["Calendar of Close Rolls of Edward III, 1349"],
     "labels": ["church", "land", "person"]
   },
   {
@@ -211,7 +211,7 @@
     "title": "Manor Seized Again",
     "description": "The manor is seized by the Crown once more after Sir John de Molyns fails to appear in court. It is then transferred to his son, William.",
     "references": ["Originalia Rolls, 35 Edward III, no. 13", "Abbreviation of the Originalia Rolls, Vol. 2, p. 255"],
-    "labels": ["legal", "manor house", "property"]
+    "labels": ["legal", "manor", "property"]
   },
   {
     "date": "1360",
@@ -281,7 +281,7 @@
     "title": "Royal Service Defined",
     "description": "The specific duty for holding the manor is defined as feeding the King's falcons and presenting one sparrow-hawk to the King each year.",
     "references": ["Lipscomb's History... (see Stoke Poges and Brill, p. 99)", "Harleian Manuscripts, no. 34"],
-    "labels": ["manor house", "property"]
+    "labels": ["manor", "property"]
   },
   {
     "date": "18 Dec. 1411",
@@ -302,7 +302,7 @@
     "title": "Hungerford Family Inherits Manor",
     "description": "The manor passes to the Hungerford family through the marriage of the Molyns heiress, Alianore, to Robert Hungerford.",
     "references": ["Lipscomb's History..."],
-    "labels": ["inheritance", "manor house", "marriage", "property"]
+    "labels": ["inheritance", "manor", "marriage", "property"]
   },
   {
     "date": "13 Sept. 1447",
@@ -365,7 +365,7 @@
     "title": "Property Sales During Forfeiture",
     "description": "A legal transaction (a fine) is recorded for Ilmer and other manors, suggesting parts of the estate were sold off while seized by the Crown.",
     "references": ["Fine Rolls, 14 Edward IV"],
-    "labels": ["auction", "legal", "manor house", "property", "sale"]
+    "labels": ["auction", "legal", "manor", "property", "sale"]
   },
   {
     "date": "4 Oct. 1474",
@@ -420,7 +420,11 @@
     "date": "26 Feb. 1539",
     "title": "Church Property Granted After Dissolution",
     "description": "Following the Dissolution of the Monasteries, King Henry VIII grants the church property and its income (the Rectory) to John Croke of Chilton.",
-    "references": ["Lipscomb's History... (see Chilton, p. 130)", "Patent Rolls, 31 Henry VIII"],
+    "references": [
+      "Lipscomb's History... (see Chilton, p. 130)",
+      "Patent Rolls, 31 Henry VIII",
+      "[History of Parliament](https://www.historyofparliamentonline.org/volume/1558-1603/member/croke-john-ii-1530-1608)"
+    ],
     "image": "/images/john-croke.jpg",
     "labels": ["church", "economy", "property"]
   },
@@ -436,7 +440,7 @@
     "title": "Death of Earl of Huntingdon",
     "description": "George, Earl of Huntingdon, dies. His family had acquired the manor by marrying the Hungerford heiress.",
     "references": ["Lipscomb's History..."],
-    "labels": ["death", "inheritance", "manor house", "marriage", "person", "property"]
+    "labels": ["death", "inheritance", "manor", "marriage", "person", "property"]
   },
   {
     "date": "14 Dec. 1551",
@@ -464,12 +468,12 @@
     "title": "Dormer Family Acquires Manor",
     "description": "The manor is now owned by the Dormer family. A royal inquiry confirms that [William Dormer](https://www.historyofparliamentonline.org/volume/1558-1603/member/dormer-sir-william-1514-75) holds the title to Ilmer.",
     "references": ["Lysons's Magna Britannia, Vol. 1, p. 583", "Lipscomb's History... (see Pedigree of Dormer)"],
-    "labels": ["manor house", "property"]
+    "labels": ["manor", "property"]
   },
   {
     "date": "Feb. 1556",
     "title": "Vicar Prepares Will",
-    "description": "Vicar James Withington writes his will, requesting to be buried in Ilmer church.",
+    "description": "Vicar [James Withington](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=153939) writes his will, requesting to be buried in Ilmer church.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
     "labels": ["church", "document", "person"]
   },
@@ -478,12 +482,12 @@
     "title": "New Vicar Appointed",
     "description": "John Swainson is appointed as vicar by the lord of the manor, Sir Robert Dormer.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "manor house", "person", "property"]
+    "labels": ["church", "manor", "person", "property"]
   },
   {
     "date": "d. 1558",
     "title": "Death of Vicar Palmer",
-    "description": "John Palmer, the Vicar of Ilmer, dies.",
+    "description": "[John Palmer](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=149707), the Vicar of Ilmer, dies.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
     "labels": ["church", "death", "person"]
   },
@@ -495,14 +499,15 @@
     "labels": ["church", "document", "person"]
   },
   {
-    "date": "1575",
+    "date": "17 May 1575",
     "title": "Death of William Dormer",
-    "description": "William Dormer, lord of the manor, dies and is succeeded by his son, Robert. His will included: \n > I give to William Clerk ten pounds, and he to enjoy his farm which he now occupieth at Ilmer, paying yearly the usual rent as he now doth for term of his life",
+    "description": "Sir William Dormer, lord of the manor, dies and is succeeded by his son, Robert. His will included: \n > I give to William Clerk ten pounds, and he to enjoy his farm which he now occupieth at Ilmer, paying yearly the usual rent as he now doth for term of his life",
     "references": [
       "Lipscomb's History...",
-      "[Probate](http://www.oxford-shakespeare.com/Probate/PROB_11-35_ff_197-8.pdf) proved 20 Oct 1552, National Archives"
+      "[Probate](http://www.oxford-shakespeare.com/Probate/PROB_11-35_ff_197-8.pdf) proved 20 Oct 1552, National Archives",
+      "[History of Parliament](https://www.historyofparliamentonline.org/volume/1558-1603/member/dormer-sir-william-1514-75)"
     ],
-    "labels": ["death", "document", "manor house", "person", "property"]
+    "labels": ["death", "document", "manor", "person", "property"]
   },
   {
     "date": "12 Aug. 1585",
@@ -531,7 +536,7 @@
     "title": "Robert Dormer Knighted",
     "description": "Robert Dormer, the lord of the manor, is knighted by the Queen.",
     "references": ["Lipscomb's History..."],
-    "labels": ["manor house", "property"]
+    "labels": ["manor", "property"]
   },
   {
     "date": "1599",
@@ -552,21 +557,21 @@
     "title": "Robert Dormer Becomes a Baronet",
     "description": "Sir Robert Dormer is elevated to the rank of Baronet.",
     "references": ["Lipscomb's History..."],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "June 1615",
     "title": "Robert Dormer Becomes a Baron",
     "description": "Shortly after, Sir Robert Dormer is ennobled, becoming Baron Dormer of Wenge (Wing).",
     "references": ["Lipscomb's History..."],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "18 Nov. 1616",
     "title": "Death of Baron Dormer",
     "description": "Baron Dormer, who as lord of the manor was also the King's Master Falconer, dies.",
     "references": ["Lipscomb's History..."],
-    "labels": ["death", "manor house", "person", "property"]
+    "labels": ["death", "manor", "person", "property"]
   },
   {
     "date": "1618",
@@ -629,7 +634,7 @@
     "title": "Church Aisle Demolished",
     "description": "Permission is granted to tear down a side aisle or vestry of the church and use the materials for repairs. The aisle is never rebuilt however the blocked-up doorway on the south aspect is still visible today.",
     "references": ["Lipscomb's History...", "SHEHAN"],
-    "labels": ["building", "church", "construction", "repair"]
+    "labels": ["building", "church", "repair"]
   },
   {
     "date": "1669",
@@ -689,7 +694,7 @@
       "Sandford's History and Account of Claims, p. 16",
       "History of the coronation of James II, Sandford, 1687"
     ],
-    "labels": ["land", "legal", "manor house", "property"]
+    "labels": ["land", "legal", "manor", "property"]
   },
   {
     "date": "28 Oct. 1687",
@@ -731,7 +736,7 @@
     "title": "Manor Passes to Stanhope Family",
     "description": "[Charles Dormer](https://en.wikipedia.org/wiki/Charles_Dormer,_2nd_Earl_of_Carnarvon), 2nd Earl of Carnarvon died with no surviving sons, passing the Dormer lands to his eldest grandson via his daughter Elizabeth and her husband, Philip Stanhope, Earl of Chesterfield",
     "references": ["wikipedia", "Lipscomb's History... (see Pedigree of Stanhope under Eythrop)"],
-    "labels": ["death", "inheritance", "manor house", "land", "person"]
+    "labels": ["death", "inheritance", "land", "manor", "person"]
   },
   {
     "date": "1714",
@@ -773,7 +778,7 @@
     "title": "Small Tithes Dispute",
     "description": "An order for William Bowden of Ilmer to pay John Grace of Princes Risborough for two years' small tithes of wool and lamb was quashed.",
     "references": [],
-    "labels": []
+    "labels": ["legal"]
   },
   {
     "date": "d. 1746",
@@ -794,13 +799,13 @@
     "title": "Change of calendar",
     "description": "Great Britain changed from the Julian calendar to the Gregorian calendar losing the 11 days from 2nd September.",
     "references": ["wikipedia"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "1773",
     "title": "Death of Philip Stanhope, 4th Earl of Chesterfield",
     "description": "Philip Stanhope, 4th Earl of Chesterfield died. He adopted his cousin and godson who became the 5th Earl and inherited the 'Dormer Lands', including Ilmer. Philip became famous for his 400 '[letters to his son](https://www.gutenberg.org/ebooks/3351)' over 30 years, subtitled, the Fine Art of becoming a MAN OF THE WORLD and a GENTLEMAN. Philip wrote the letters to his illegitimate son which were published by his son's widow to fund her pension.",
-    "image": ["/images/philip-dormer.jpg"],
+    "image": "/images/philip-dormer.jpg",
     "references": ["The Buckinghamshire Lieutenancy, Viney"],
     "labels": ["death", "land", "person"]
   },
@@ -809,21 +814,21 @@
     "title": "Poor Relief Costs Recorded",
     "description": "The annual cost of supporting the parish's poor is recorded as £47 12s.",
     "references": ["Lipscomb's History..."],
-    "labels": []
+    "labels": ["church", "economy"]
   },
   {
     "date": "1778",
     "title": "Survey of Stanhope Family Estates",
     "description": "A survey of the Buckinghamshire estates of the Stanhope family (Earls of Chesterfield) was conducted.",
     "references": ["Bucks Archives"],
-    "labels": []
+    "labels": ["economy"]
   },
   {
     "date": "1783",
     "title": "Poor Relief Costs Drop",
     "description": "The cost of supporting the parish's poor drops significantly to £28.",
     "references": ["Lipscomb's History..."],
-    "labels": []
+    "labels": ["church", "economy"]
   },
   {
     "date": "1791",
@@ -836,7 +841,7 @@
     "date": "Nov. 1795",
     "title": "Farm Occupied by Thomas Kingham for Sale",
     "description": "A farm in the occupation of Thomas Kingham was put up for sale.",
-    "references": ["Oxford Journal, 7 Nov 1975"],
+    "references": ["Oxford Journal, 7 Nov 1795"],
     "labels": ["auction", "farm", "occupation", "property", "sale"]
   },
   {
@@ -858,7 +863,7 @@
     "title": "Ilmer Manor for Auction",
     "description": "Ilmer Manor, consisting of dairy farms of 463 acres, was to be sold at auction.",
     "references": ["Jackson's Oxford journal, 13 May 1809"],
-    "labels": ["auction", "farm", "manor house", "property", "sale"]
+    "labels": ["auction", "farm", "manor", "property", "sale"]
   },
   {
     "date": "1809",
@@ -868,7 +873,7 @@
       "Bucks Archives, Records of the Buckinghamshire estates of the Stanhope family",
       "national archives"
     ],
-    "labels": ["auction", "manor house", "property", "sale"]
+    "labels": ["auction", "manor", "property", "sale"]
   },
   {
     "date": "1810",
@@ -903,7 +908,7 @@
     "title": "Moreton John Edward Frewen Admitted to Gray's Inn",
     "description": "Moreton John Edward Frewen was admitted to Gray's Inn. He would later inherit the Manor of Ilmer.",
     "references": ["Register of Admissions to Gray's Inn, 1889"],
-    "labels": []
+    "labels": ["manor"]
   },
   {
     "date": "1821",
@@ -928,7 +933,7 @@
       "London Morning Herald, 8 Jul 1824",
       "Oxford Journal, 17 Jul 1824"
     ],
-    "labels": ["auction", "farm", "manor house", "property", "sale"]
+    "labels": ["auction", "farm", "manor", "property", "sale"]
   },
   {
     "date": "1826",
@@ -965,7 +970,7 @@
     "title": "Moreton Frewen Inherits Property",
     "description": "Moreton John Edward Frewen succeeded his father, Dr (Rev) Edward Frewen, who had amassed a 'considerable landed property'. This included the Manor of Ilmer, however on his death the lifetime benefit of the Manor would pass to a number of women in his extended family.",
     "references": ["Burke, A Genealogical and Heraldic History of the Commoners of Great Britain, 1838"],
-    "labels": ["death", "land", "manor house", "property"]
+    "labels": ["death", "land", "manor", "property"]
   },
   {
     "date": "1831",
@@ -986,7 +991,7 @@
     "title": "Wycombe Poor Law Union Formed",
     "description": "The Wycombe Poor Law Union was formed, with Ilmer as one of the founding 33 parishes.",
     "references": ["https://www.workhouses.org.uk/Wycombe"],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "1837",
@@ -999,7 +1004,7 @@
     "date": "1839",
     "title": "Tithe Map Shows Middle Farm",
     "description": "The tithe map shows the existence of Middle Farm sited on the pasture adjacent to September and October cottages.",
-    "image": ["/images/middle-farm.jpg"],
+    "image": "/images/middle-farm.jpg",
     "references": [],
     "labels": ["farm", "map", "property"]
   },
@@ -1008,7 +1013,7 @@
     "title": "Manor Ownership Recorded",
     "description": "Moreton John Edward Frewen and Vice Admiral Henry Raper were joint owners of the manor.",
     "references": ["Apportionment of the Rent Charge, Tithe Map, 26 Mar 1841"],
-    "labels": ["manor house", "property"]
+    "labels": ["manor", "property"]
   },
   {
     "date": "1842",
@@ -1022,13 +1027,13 @@
     "title": "Partridge Becomes Owner of Horsenden Manor",
     "description": "W.E. Partridge becomes owner of Horsenden Manor.",
     "references": [],
-    "labels": ["manor house", "property"]
+    "labels": ["manor", "property"]
   },
   {
     "date": "1850",
     "title": "Architect G.E. Street Appointed",
     "description": "The Oxford Diocese appoints the renowned ecclesiastical architect [George Edmund Street](https://www.oxforddnb.com/view/10.1093/ref:odnb/9780198614128.001.0001/odnb-9780198614128-e-26659) to oversee the renovation of churches, eventually including the 'dilapidated' St. Peter's in Ilmer.",
-    "image": ["/images/george-edmund-street.jpg"],
+    "image": "/images/george-edmund-street.jpg",
     "references": [],
     "labels": ["church"]
   },
@@ -1058,13 +1063,13 @@
     "title": "Church Refurbishment",
     "description": "The church chancel was rebuilt and the nave refurbished, mostly paid for by Rev W.E. Partridge. A commemoration stone was installed on the north wall. By 1983 this stone had significantly degraded and was replaced with a like-for-like replacement",
     "references": [],
-    "labels": ["building", "church", "construction"]
+    "labels": ["building", "church"]
   },
   {
     "date": "30 Aug. 1860",
     "title": "Restored Church Reopened",
     "description": "Following extensive restoration by G.E. Street, St. Peter's Church is formally reopened on Thursday, 30th August, by Bishop Samuel Wilberforce, just two months after his famous Oxford debate opposing Darwin's theory of evolution.",
-    "image": ["/images/samuel-wilberforce.jpg"],
+    "image": "/images/samuel-wilberforce.jpg",
     "references": [],
     "labels": ["church"]
   },
@@ -1072,7 +1077,7 @@
     "date": "1860",
     "title": "Church Harmonium",
     "description": "The church had a harmonium situated in the chancel adjacent to the window-seat sculptures. Later photographs show the harmonium against the south wall of the nave adjacent to the rood screen.",
-    "image": ["/images/harmonium.jpg"],
+    "image": "/images/harmonium.jpg",
     "references": ["SHEHAN. Plan for 1860 commemorative stone replacement, 1983"],
     "labels": ["church"]
   },
@@ -1088,14 +1093,14 @@
     "title": "Ilmer Manor House Occupant",
     "description": "Ilmer Manor House was in the possession of John Eggleton, farmer.",
     "references": ["SHEAHAN"],
-    "labels": ["farm", "housing", "manor house", "property"]
+    "labels": ["farm", "housing", "manor", "property"]
   },
   {
     "date": "1862",
     "title": "Lord of the Manor",
     "description": "Moreton John Edwin Frewen was the Lord of the Manor.",
     "references": ["SHEAHAN", "Victoria History of the County of Buckingham vol 4"],
-    "labels": ["manor house", "property"]
+    "labels": ["manor", "property"]
   },
   {
     "date": "1 Nov. 1863",
@@ -1131,7 +1136,7 @@
     "date": "16 May 1868",
     "title": "Ilmer Mentioned in Punch Magazine",
     "description": "Ilmer is mentioned in [Punch magazine](https://books.google.co.uk/books?id=V5gwAAAAYAAJ&dq=editions%3Ao0ZG0cjtFIAC&pg=PA212#v=onepage&q=Sarah%20Wooster&f=false), relating the role of Ilmer's Sarah Wooster to the women's suffrage movement.",
-    "image": ["/images/sarah-wooster-punch.jpg"],
+    "image": "/images/sarah-wooster-punch.jpg",
     "references": [],
     "labels": ["media"]
   },
@@ -1140,14 +1145,14 @@
     "title": "Farmers and Officials Listed",
     "description": "Richard Belgrove, John Eggleton, Mrs Hannah Gomme, and Mrs Sarah Wooster are listed as farmers. Moreton John Edwin Frewen and Mrs Raper are joint lords of the manor.",
     "references": ["Kelly's 1869"],
-    "labels": ["farm", "manor house", "property"]
+    "labels": ["farm", "manor", "property"]
   },
   {
     "date": "1869-1880+",
     "title": "Manor Ownership",
     "description": "Mrs Raper and Moreton John Edwin Frewen jointly held the manor.",
     "references": ["Victoria History of the County of Buckingham vol 4"],
-    "labels": ["manor house", "property"]
+    "labels": ["manor", "property"]
   },
   {
     "date": "4 Jun. 1870",
@@ -1164,7 +1169,7 @@
       "Burke's Genealogical and Heraldic History of the Landed Gentry, 1925",
       "Will and testament 1867 with codicil 1869"
     ],
-    "labels": ["death", "farm", "manor house", "person", "property"]
+    "labels": ["death", "farm", "manor", "person", "property"]
   },
   {
     "date": "2 Apr. 1871",
@@ -1205,9 +1210,9 @@
     "date": "17 Nov. 1881",
     "title": "James Clare Enlists",
     "description": "18 year old James Clare signed up for the Grenadier Guards, serving for 12 years.",
-    "image": ["/images/james-clare.jpg"],
+    "image": "/images/james-clare.jpg",
     "references": ["Short Service Army Form"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "3 Apr. 1881",
@@ -1221,7 +1226,7 @@
     "title": "Death of Sarah Maria Clotilda Raper",
     "description": "Sarah Maria Clotilda Raper died and bequeathed part of her estate for the annual benefit of the poor. The Rapers were land-owners including the Manor of Ilmer.",
     "references": ["Bucks Advertiser, 6th May 1882", "Victoria History of the County of Buckingham vol 3"],
-    "labels": ["death", "land", "manor house", "person", "property"]
+    "labels": ["death", "land", "manor", "person", "property"]
   },
   {
     "date": "Jul. 1882",
@@ -1235,7 +1240,7 @@
     "title": "Landowners and Farmers Listed",
     "description": "Moreton John Edwin Frewen and Mrs Raper are listed as joint owners of the manor. Edwin Morris, John Read, Richard Belgrove, and Mrs Hannah Gomme are listed as farmers.",
     "references": ["Kelly's 1883"],
-    "labels": ["farm", "land", "manor house", "property"]
+    "labels": ["farm", "land", "manor", "property"]
   },
   {
     "date": "12 Dec. 1885",
@@ -1256,7 +1261,7 @@
     "title": "Burial of Elizabeth Goodchild",
     "description": "Elizabeth Goodchild was buried. Elizabeth was the mother of Albert, Ernest, and Thomas Goodchild and wife of David who was to die the following year.",
     "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": []
+    "labels": ["death"]
   },
   {
     "date": "7 Mar. 1885",
@@ -1277,7 +1282,7 @@
     "title": "John Ormond Becomes Rector",
     "description": "John Ormond became rector of Horsenden with Ilmer.",
     "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "1886",
@@ -1312,14 +1317,14 @@
     "title": "John Read at Manor Farm",
     "description": "Mr Read, farmer, was at Manor Farm.",
     "references": ["Bucks Advertiser & Aylesbury News, 11 Sep 1886"],
-    "labels": ["farm", "manor house", "property"]
+    "labels": ["farm", "manor", "property"]
   },
   {
     "date": "1887",
     "title": "Manor Ownership",
     "description": "General Raper and Moreton John Edwin Frewen jointly held the manor.",
     "references": ["Victoria History of the County of Buckingham vol 4"],
-    "labels": ["manor house", "property"]
+    "labels": ["manor", "property"]
   },
   {
     "date": "1888",
@@ -1341,7 +1346,7 @@
     "description": "Mrs Moreton-Craigie died, and the estate comprising Manor Farm, Lower Farm and Coldharbour Farm transferred to her sister, Miss Elizabeth Moreton. Sister Elizabeth Moreton was a founder member of the Clewer Sisters, Community of St John the Baptist near Windsor.",
     "references": ["Victoria History of the County of Buckingham vol 4", "A Place in Life, Valerie Bonham, 1992"],
     "image": "/images/SisterMoreton.jpg",
-    "labels": ["death", "farm", "manor house", "person", "property"]
+    "labels": ["death", "farm", "manor", "person", "property"]
   },
   {
     "date": "1892",
@@ -1362,7 +1367,7 @@
     "title": "Church Restoration",
     "description": "The church roof was repaired, the porch re-built, the belfry and bells rehung, a new stove installed, and an iron fence erected.",
     "references": ["Royal Commission on Historic Monuments", "Bucks Herald, Oct 14, 1893"],
-    "labels": ["building", "church", "construction", "repair"]
+    "labels": ["building", "church", "repair"]
   },
   {
     "date": "8 Oct. 1893",
@@ -1397,7 +1402,7 @@
     "title": "Miss Moreton Living in Torquay",
     "description": "By 1894, Miss Elizabeth Moreton, Sister Elizabeth, owner of the Manor of Ilmer through a lifetime benefit, was living in Torquay leasing a property known as Cyprus on Ridgeway Road.",
     "references": ["HEAD, 1895", "Bucks Archive D-X_91 Deeds, 13 Nov. 1894"],
-    "labels": ["infrastructure", "manor house", "property"]
+    "labels": ["infrastructure", "manor", "property"]
   },
   {
     "date": "29 Sep. 1897",
@@ -1411,7 +1416,7 @@
     "title": "John Edwin Varley Becomes Rector",
     "description": "John Edwin Varley became rector of Horsenden with Ilmer.",
     "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "1899",
@@ -1425,7 +1430,7 @@
     "title": "Farm Tenancies Begin",
     "description": "Alfred Hill's tenancy began at Manor Farm and George Gomme's tenancy began at Coldharbour.",
     "references": ["Lloyd George Domesday Survey, ~1913"],
-    "labels": ["farm", "manor house", "property"]
+    "labels": ["farm", "manor", "property"]
   },
   {
     "date": "1901",
@@ -1446,14 +1451,14 @@
     "title": "Charles Belgrove Emigrates",
     "description": "Charles Belgrove departs Liverpool for Quebec, destination Winnipeg. Charles soon returned, disliking the weather, and became better known as the Ilmer Hermit. It is not know what the purpose of his visit was, however Quebec was also the destination of Ernest Goodchild who emigrated 10 years earlier when Charles was 7 and Ernest was 13. Perhaps Charles intended to visit Ernest?",
     "references": ["Board of Trade, Outwards Passenger Lists", "Obituary by Basil Purssell"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "1903",
     "title": "Landowners and Residents Listed",
     "description": "Miss Moreton is the lady of the manor. Residents include Richard Belgrove, Thomas Goodchild, Alfred Hill, and George Kingham.",
     "references": ["Kelly's 1903"],
-    "labels": ["land", "manor house", "property"]
+    "labels": ["land", "manor", "property"]
   },
   {
     "date": "27 Sep. 1903",
@@ -1476,28 +1481,28 @@
     "references": [
       "1989 sale particulars, Raffety Buckland & Ilmer/Upper Farm sale particulars 1905, all in Bucks Archives"
     ],
-    "labels": ["building", "construction"]
+    "labels": ["building"]
   },
   {
     "date": "17 Jan. 1907",
     "title": "Parish Room Opened",
     "description": "The Parish room, paid for by Miss Moreton, was opened. Sister Elizabeth Moreton, founder member of the Clewer Sisters, Community of St John the Baptist near Windsor, held life-benefit of the manor of Ilmer. She often contributed to religious causes in the village.",
     "references": ["South Bucks Standard, 25 Jan 1907"],
-    "labels": ["community", "manor house", "property"]
+    "labels": ["community", "manor", "property"]
   },
   {
     "date": "1907",
     "title": "Landowners and Residents Listed",
     "description": "Miss Moreton is the lady of the manor. Residents include Daniel W Cook, Richard Belgrove, George Gomme, Thomas Goodchild, Alfred Hill, and George Kingham.",
     "references": ["Kelly's 1907"],
-    "labels": ["land", "manor house", "property"]
+    "labels": ["land", "manor", "property"]
   },
   {
     "date": "1907",
     "title": "Albert Goodchild's Business",
     "description": "Albert Goodchild was listed as a wholesaler at the Foreign Flower market, Covent Garden, London. He would later acquire the Manor of Ilmer and build Ilmer House on the site of Upper Farm.",
     "references": ["Kelly's 1907"],
-    "labels": ["business", "farm", "housing", "manor house", "property", "sale"]
+    "labels": ["business", "farm", "housing", "manor", "property", "sale"]
   },
   {
     "date": "2 Aug. 1907",
@@ -1511,7 +1516,7 @@
     "title": "Burial of Ettie Gomme",
     "description": "'Ettie' Nellie Gomme, aged 5, was buried.",
     "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": []
+    "labels": ["death"]
   },
   {
     "date": "1908",
@@ -1548,21 +1553,21 @@
     "title": "Ilmer House Built",
     "description": "Ilmer house was built by Albert Goodchild. Albert had acquired the Manor of Ilmer and built the house on the site of Upper Farm.",
     "references": ["Bucks Herald, 20 May 1932", "Lloyd George Survey, 11 Dec 1913"],
-    "labels": ["building", "construction", "farm", "housing", "manor house", "property"]
+    "labels": ["building", "farm", "housing", "manor", "property"]
   },
   {
     "date": "15 Feb. 1909",
     "title": "Spire Fundraising Concert",
     "description": "As part of the effort to raise £300 for a new spire, a packed Parish Room is the venue for a performance of a 'Sleeping Beauty' cantata.",
     "references": [],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "Mar. 1909",
     "title": "Spire Fundraising",
     "description": "The spire fund needed £350, with current subscriptions totalling £190 including £100 from Miss Moreton.",
     "references": ["Bucks Herald, 6 Mar 1909"],
-    "labels": []
+    "labels": ["church", "economy"]
   },
   {
     "date": "20 Apr. 1909",
@@ -1590,7 +1595,7 @@
     "title": "Rose Fête Raises Funds for Spire",
     "description": "A 'Rose Fête' is held at the Horsenden Rectory to raise the final £100 needed for the spire. The event, opened by [Lady Susan Trueman](https://cheshammuseum.org.uk/blogs/women-who-have-made-a-difference-locally/#:~:text=Lady%20Susan%20Trueman%2C%20O.B.E.), featured stalls, dances, races, and a Punch and Judy show, successfully raising £40.",
     "references": ["Bucks Herald"],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "26 Jun. 1909",
@@ -1632,7 +1637,7 @@
     "title": "Harry Morton Gorham Becomes Rector",
     "description": "Harry Morton Gorham became rector of Horsenden with Ilmer.",
     "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "1911",
@@ -1646,14 +1651,14 @@
     "title": "Census Data",
     "description": "Census data lists residents at Manor Farm, Lower Farm, and other locations. Albert and Elizabeth Goodchild lived in Beckenham with six children.",
     "references": ["census"],
-    "labels": ["farm", "manor house", "population", "property"]
+    "labels": ["farm", "manor", "population", "property"]
   },
   {
     "date": "22 Jun. 1911",
     "title": "Coronation Celebration",
     "description": "The parish room hosted a celebration of the coronation of George V.",
     "references": ["Bucks Herald 1 Jul 1911"],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "27 Oct. 1911",
@@ -1674,28 +1679,28 @@
     "title": "Death of Miss Moreton and Estate Transfer",
     "description": "Miss Moreton died and the estate transferred to 'Mrs Carter'. Sister Elizabeth Moreton had life benefit of the manor of Ilmer and had paid for the village hall.",
     "references": ["Victoria History of the County of Buckingham vol 4", "probate records"],
-    "labels": ["death", "manor house", "person", "property"]
+    "labels": ["death", "manor", "person", "property"]
   },
   {
     "date": "1912",
     "title": "Manor Farm for Sale",
     "description": "Manor Farm was advertised for sale. This farm had been part of the Manor of Ilmer in the life benefit of Miss Moreton.",
     "references": ["Oxford Chronicle, 15 Nov, 1912"],
-    "labels": ["auction", "farm", "manor house", "property", "sale"]
+    "labels": ["auction", "farm", "manor", "property", "sale"]
   },
   {
     "date": "7 Mar. 1912",
     "title": "Miss Moreton Probate",
     "description": "Probate for Miss Moreton's estate was recorded. Sister Elizabeth Moreton had life benefit of the manor of Ilmer and had paid for the village hall.",
     "references": ["probate records"],
-    "labels": ["legal", "manor house", "property"]
+    "labels": ["legal", "manor", "property"]
   },
   {
     "date": "1912+",
     "title": "Estate Sale",
     "description": "Mrs Carter sold the estate: Manor and Lower Farm were purchased by Mr W Hill and Mr A A Kingham, and Coldharbour Farm was purchased by Mr A Fisher.",
     "references": ["Victoria History of the County of Buckingham vol 4"],
-    "labels": ["auction", "farm", "manor house", "property", "sale"]
+    "labels": ["auction", "farm", "manor", "property", "sale"]
   },
   {
     "date": "3 Jul. 1912",
@@ -1709,7 +1714,7 @@
     "title": "Farm Auction Particulars",
     "description": "Auction particulars for Manor Farm & Lower Farm were issued.",
     "references": ["London Met Archives, ref: LMA/4673/D/01/035/016"],
-    "labels": ["auction", "farm", "manor house", "property", "sale"]
+    "labels": ["auction", "farm", "manor", "property", "sale"]
   },
   {
     "date": "16 Jan. 1913",
@@ -1730,7 +1735,7 @@
     "title": "Manor Farm Tenancy",
     "description": "Alfred Hill was the tenant farmer at Manor Farm, owned by Elizabeth Moreton.",
     "references": ["Lloyd George Survey, 1913"],
-    "labels": ["farm", "manor house", "property"]
+    "labels": ["farm", "manor", "property"]
   },
   {
     "date": "12 Dec. 1915",
@@ -1744,7 +1749,7 @@
     "title": "Residents Listed",
     "description": "Residents included Miss A Phillips, George Gomme, Albert Goodchild, Thomas Goodchild, Alfred Hill, and George Kingham.",
     "references": ["Kelly's 1915"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "31 May 1916",
@@ -1791,14 +1796,14 @@
     "title": "War Memorial Faculty Granted",
     "description": "Faculty was granted for the war memorial.",
     "references": ["Church Report - St Peter's Church, Ilmer, Report 1999, by Janet Wilson"],
-    "labels": []
+    "labels": ["church", "legal"]
   },
   {
     "date": "1920",
     "title": "War Memorial Erected",
     "description": "The Great War memorial tablet was erected.",
     "references": ["Registers and Records of Ilmer Parish, Rex A Kidd"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "1920",
@@ -1812,14 +1817,14 @@
     "title": "Census Data",
     "description": "Residents at Lower Farm, Manor Farm, and Coldharbour Farm are listed.",
     "references": ["census"],
-    "labels": ["farm", "manor house", "property"]
+    "labels": ["farm", "manor", "property"]
   },
   {
     "date": "1921",
     "title": "Albert Goodchild's Residence",
     "description": "Albert and Elizabeth Goodchild lived at 132 Tulse Hill. They had also built Ilmer House.",
     "references": ["19 June, 1921 census"],
-    "labels": ["building", "construction", "housing"]
+    "labels": ["building", "housing"]
   },
   {
     "date": "2 Nov. 1922",
@@ -1855,7 +1860,7 @@
     "title": "Electricity Lines Proposed",
     "description": "A proposal was made to lay electricity lines to Ilmer.",
     "references": ["London Gazette, 16 Dec 1924"],
-    "labels": []
+    "labels": ["infrastructure"]
   },
   {
     "date": "29 Jun. 1925",
@@ -1869,7 +1874,7 @@
     "title": "Teenager Fined",
     "description": "(Robert) Douglas Goodchild, son of Albert Goodchild, aged 13, was fined 7s 6d for riding a cycle without a light.",
     "references": ["Bucks Herald 1 May 1926"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "1926",
@@ -1919,7 +1924,7 @@
     "title": "Arthur Montague Berry Becomes Rector",
     "description": "Arthur Montague Berry became rector of Horsenden with Ilmer.",
     "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "1929",
@@ -1954,7 +1959,7 @@
     "title": "Burial of Thomas Goodchild",
     "description": "Thomas Goodchild was buried.",
     "references": ["Ilmer parish records"],
-    "labels": []
+    "labels": ["death"]
   },
   {
     "date": "15 Jul. 1931",
@@ -1968,7 +1973,7 @@
     "title": "Burial of Albert Goodchild",
     "description": "Albert Goodchild was buried.",
     "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": []
+    "labels": ["death"]
   },
   {
     "date": "4 Dec. 1931",
@@ -1996,7 +2001,7 @@
     "title": "Burial of Owen Goodchild",
     "description": "Owen Goodchild of Watlington was buried.",
     "references": ["Registers and records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": []
+    "labels": ["death"]
   },
   {
     "date": "1932",
@@ -2046,7 +2051,7 @@
     "title": "Arthur Montague Berry Ceases as Rector",
     "description": "Arthur Montague Berry ceased as rector of Horsenden with Ilmer.",
     "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "1933",
@@ -2060,7 +2065,7 @@
     "title": "Construction of Ilmer Nurseries Begins",
     "description": "Construction of Ilmer Nurseries by (Robert) Douglas Goodchild, son of Albert Goodchild of Ilmer House, began. The business venture was ultimately unsuccessful for Douglas.",
     "references": ["Bucks Herald, 24 Nov 1939"],
-    "labels": ["building", "business", "construction", "housing"]
+    "labels": ["building", "business", "housing"]
   },
   {
     "date": "Feb. 1933",
@@ -2074,14 +2079,14 @@
     "title": "Motorcycle Trial",
     "description": "Ilmer Lane formed part of the Putnam Cup motorcycle trial, where most competitors got stuck in the mud.",
     "references": ["Bucks Advertiser, 14 Apr 1933"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "9 May 1933",
     "title": "Man Fined for After-Hours Drinking",
     "description": "(Robert) Douglas Goodchild, youngest son of Albert and Elizabeth Goodchild, was fined £1 for consuming beer during unlicensed hours at the Six Bells, Thame.",
     "references": ["Bucks Herald, 21 May, 1933"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "Q4 1933",
@@ -2109,7 +2114,7 @@
     "title": "Burial of Edward Albert Goodchild",
     "description": "Edward Albert Goodchild of Saunderton was buried.",
     "references": ["Bucks Herald, 24 Aug 1934", "Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": []
+    "labels": ["death"]
   },
   {
     "date": "1934",
@@ -2123,7 +2128,7 @@
     "title": "(Robert) Merrick Attenborough at College",
     "description": "(Robert) Merrick Attenborough, son of (Robert) Harold Attenborough, held several positions in clubs at Massey Agricultural College.",
     "references": ["The Bleat, Massey Agricultural College Students' Association, 1934"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "1934",
@@ -2151,7 +2156,7 @@
     "title": "Ilmer Nurseries Expanded",
     "description": "(Robert) Douglas Goodchild (son of Albert Goodchild late of Ilmer House) built 2 further greenhouses at Ilmer Nurseries.",
     "references": ["Bucks Herald, 24 Nov 1939"],
-    "labels": ["building", "construction", "housing"]
+    "labels": ["building", "housing"]
   },
   {
     "date": "1936",
@@ -2186,7 +2191,7 @@
     "title": "Parish Mission Room Correspondence",
     "description": "Parish correspondence and a copy of the plan of the 'Mission Room' in Ilmer from 1936-1938 are recorded.",
     "references": ["Parish records held in Bucks Archive"],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "28 Mar. 1936",
@@ -2258,7 +2263,7 @@
     "title": "Parish Room Ownership Discussed",
     "description": "Ownership of the parish room was discussed.",
     "references": ["Vestry minutes, 20 Apr 1938"],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "Jun. 1938",
@@ -2266,7 +2271,7 @@
     "image": "/images/charlesbelgrove.png",
     "description": "Charles Belgrove, the Ilmer Hermit was interviewed and photographed by a national newspaper.",
     "references": ["Daily Mirror, 11 Jun 1938"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "12 Apr. 1939",
@@ -2316,7 +2321,7 @@
     "title": "Parish Hall Redecorated",
     "description": "Ilmer Parish Hall, also known as the Mission Room, was redecorated by Frank Rogers of Longwick. The exterior was painted green and the interior white",
     "references": ["Receipt for work, parish records in Bucks archive"],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "24 Jul. 1940",
@@ -2337,7 +2342,7 @@
     "title": "Cowman Wage Complaint",
     "description": "R.M.H Attenborough complained in the local newspaper that the minimum wage for a cowman in Bucks was higher than in Herts.",
     "references": ["Bucks Herald, 6 Feb 1942"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "1942",
@@ -2393,14 +2398,14 @@
     "title": "Longwick Becomes Independent Parish",
     "description": "Longwick became an independent parish.",
     "references": ["Stanley Freese 1946 The Windmills and Watermills of Buckinghamshire"],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "1946",
     "title": "Edmund Pipe Becomes Rector",
     "description": "Edmund Walter Samuel Pipe became rector of Horsenden with Ilmer.",
     "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "1946",
@@ -2415,7 +2420,7 @@
     "description": "Dudley Scales Leuw began running Ilmer Nurseries. He eventually retired in 1969 and lived to the age of 100.",
     "image": "/images/dudley-leuw.jpg",
     "references": ["Leamington Spa Courier, 8 Sep 2000"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "16 Aug. 1947",
@@ -2443,14 +2448,14 @@
     "title": "Manor Farm Cottage Built",
     "description": "Manor Farm Cottage was built.",
     "references": ["Bucks Free Press, 27 Jul 1979"],
-    "labels": ["building", "construction", "farm", "manor house", "property"]
+    "labels": ["building", "farm", "manor", "property"]
   },
   {
     "date": "24 Apr. 1953",
     "title": "Eviction of Tenants",
     "description": "(Robert) Merrick Attenborough successfully applied for the eviction of the tenants of Lodge Cottage and Ilmer Cottage. The site of Lodge Cottage is now Folly Cottage, while Ilmer Cottage became the pair of cottages known as September and October cottages.",
     "references": ["Bucks Advertiser, 24 Apr 1953"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "5 Dec. 1953",
@@ -2492,7 +2497,7 @@
     "title": "Puppy Show",
     "description": "A puppy show was held at Close End, residence of (Robert) Merrick Attenborough",
     "references": ["Bucks Examiner, 13 Jun 1958"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "Jun. 1958",
@@ -2541,7 +2546,7 @@
     "title": "Blaster Bates at Shell Site",
     "description": "[Blaster Bates](https://en.wikipedia.org/wiki/Blaster_Bates) blew tree stumps out of the ground to make way for the Shell demonstration farm.",
     "references": ["Recollection of Les Lane of 2 The Green"],
-    "labels": []
+    "labels": ["farm"]
   },
   {
     "date": "7 Jan. 1963",
@@ -2565,7 +2570,7 @@
     "description": "Manor Farm Ilmer Herd held an auction of 163 cattle.",
     "image": "/images/ilmerherdsale.jpg",
     "references": ["auction catalogue, Bucks Archaeological Society"],
-    "labels": ["auction", "farm", "manor house", "property", "sale"]
+    "labels": ["auction", "farm", "manor", "property", "sale"]
   },
   {
     "date": "Dec. 1964",
@@ -2615,7 +2620,7 @@
     "title": "Old Orchard Built",
     "description": "The house Old Orchard was built. The land was a wedding gift from (Robert) Harold Attenborough to his daughter Mavis.",
     "references": ["Ilmer conservation area character survey"],
-    "labels": ["building", "construction", "housing", "land"]
+    "labels": ["building", "housing", "land"]
   },
   {
     "date": "Sep. 1967",
@@ -2626,14 +2631,14 @@
     "labels": ["church", "media", "person"]
   },
   {
-    "date": "Late 1960s",
+    "date": "c. 1968 (Late 1960s)",
     "title": "Church Refurbishment by Parishioners",
     "description": "Redecoration and reconstruction work on the church, costing £1,000, is carried out and funded by the parishioners.",
     "references": [],
-    "labels": ["church", "construction"]
+    "labels": ["building", "church"]
   },
   {
-    "date": "1968, 1971, 1973",
+    "date": "1968 (also 1971, 1973)",
     "title": "Residents of Ilmer House",
     "description": "William Greaves Underwood's parents-in-law, Alan Philip Lloyd Cogswell, known as Coggie and Mrs (Audrey) Sylvia Cogswell, known as Dum, lived at Ilmer House. Alan was an anaesthetist and lawyer, whilst Sylvia was an expert and author in orthoptics under her maiden name of Jackson.",
     "references": ["Prior's Field Old Girls' Magazine", "Nicknames from Ancestry.com"],
@@ -2691,14 +2696,14 @@
     "image": "/images/charles-belgrove-sketch.png",
     "description": "Charles Belgrove, the Ilmer Hermit, was buried.",
     "references": ["Parish Records, Burials"],
-    "labels": []
+    "labels": ["death"]
   },
   {
     "date": "1969",
     "title": "Edmund Pipe Ceases as Rector",
     "description": "Edmund Walter Samuel Pipe ceased as rector of Horsenden with Ilmer.",
     "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "1969",
@@ -2712,7 +2717,7 @@
     "title": "(Robert) Merrick Attenborough Retires as Pack Master",
     "description": "(Robert) Merrick Attenborough, pack master since 1957, retired from the role. Merrick farmed Manor Farm and lived at Close End.",
     "references": ["Bailys Hunting Directory, 1998"],
-    "labels": ["farm", "manor house", "property"]
+    "labels": ["farm", "manor", "property"]
   },
   {
     "date": "1969",
@@ -2726,7 +2731,7 @@
     "title": "Jim Lawrence Takes Over Ilmer Nurseries",
     "description": "Jim Lawrence took over running Ilmer Nurseries from Dudley Scales Leuw.",
     "references": [],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "1969",
@@ -2740,7 +2745,7 @@
     "title": "Manor Farm for Sale",
     "description": "Manor Farm, consisting of 302 acres and 4 cottages, was put up for sale.",
     "references": ["Sale particulars, Jackson Stops property, Historic England Archive", "Bucks Free Press 9 Oct 1970"],
-    "labels": ["auction", "farm", "manor house", "property", "sale"]
+    "labels": ["auction", "farm", "manor", "property", "sale"]
   },
   {
     "date": "1970",
@@ -2761,14 +2766,14 @@
     "title": "Manor Farm Sold",
     "description": "Manor Farm was sold after auction.",
     "references": ["Bucks Free Press, 23 Oct 1970"],
-    "labels": ["auction", "farm", "manor house", "property", "sale"]
+    "labels": ["auction", "farm", "manor", "property", "sale"]
   },
   {
     "date": "Jun. 1971",
     "title": "Farmhouse Plans Approved",
     "description": "Plans were approved to build a farmhouse at Manor Farm.",
     "references": ["Bucks Free Press, 18 Jun 1971"],
-    "labels": ["farm", "housing", "manor house", "property"]
+    "labels": ["farm", "housing", "manor", "property"]
   },
   {
     "date": "Aug. 1971",
@@ -2783,7 +2788,7 @@
     "description": "Paul Richard Hall of 'The Caravan, The Rosery, Ilmer' received a bankruptcy notice.",
     "references": ["www.thegazette.co.uk"],
     "hidden": true,
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "7 Nov. 1971",
@@ -2812,10 +2817,10 @@
     "title": "Eton College Buys Manor Farm",
     "description": "Eton College bought Manor Farm from Benjamin Smith.",
     "references": ["Bucks Free Press, 27 Jul 1979", "Eton College Archives, MISC ALHC 498"],
-    "labels": ["farm", "manor house", "property"]
+    "labels": ["farm", "manor", "property"]
   },
   {
-    "date": "1970s",
+    "date": "c. 1975 (1970s)",
     "title": "Parish Room Demolished",
     "description": "The wooden Parish Room, which had been donated by Miss Moreton in 1907 and served as a village hall and meeting space, is demolished. It had been purchased by J Pryor of the Old Vicarage in 1971.",
     "references": [],
@@ -2826,7 +2831,7 @@
     "title": "Tennis Court Construction Approved",
     "description": "Planning approval was granted for the construction of a tennis court opposite 'Ilmer Cottage'. The cottage is now known as September and October Cottages.",
     "references": ["Wycombe district planning approvals"],
-    "labels": ["building", "construction", "legal"]
+    "labels": ["building", "legal"]
   },
   {
     "date": "Dec. 1976",
@@ -2847,7 +2852,7 @@
     "title": "Spire and Bell Restoration Fund",
     "description": "A fundraising campaign is initiated to raise £8,000 as the spire required new shingle tiles and the tower and bells were in need of restoration. The target was met within two years.",
     "references": [],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "15 & 16 Jul. 1978",
@@ -2875,7 +2880,7 @@
     "title": "First Ilmer Grand Fete",
     "description": "The first Ilmer Grand Fete was held.",
     "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "7 Oct. 1978",
@@ -2910,14 +2915,14 @@
     "title": "Residents Leave Ilmer",
     "description": "Mr J & Mrs Molly Shurrock, residents of Manor Farm, left Ilmer to live in Bledlow. Mrs Shurrock had rented the Church Close land where she kept goats, calves and sheep.",
     "references": ["Bucks Free Press, 27 Jul 1979"],
-    "labels": ["church", "farm", "land", "manor house", "property"]
+    "labels": ["church", "farm", "land", "manor", "property"]
   },
   {
     "date": "Jul. 1979",
     "title": "Engagement Announcement",
     "description": "Joanna Hadwen Attenborough, daughter of Merrick of Close End, was engaged to Nicholas Palmer Kyle Montgomery.",
     "references": ["Daily Telegraph, 12 Jul 1979"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "1980",
@@ -2938,7 +2943,7 @@
     "title": "Altar Linen Embroidered",
     "description": "Altar linen was embroidered with IHS by Betty Attenborough of Close End.",
     "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "11 Nov. 1981",
@@ -3033,7 +3038,7 @@
     "title": "Last Ilmer Fete",
     "description": "The last Ilmer fete was held.",
     "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "1988",
@@ -3103,7 +3108,7 @@
     "title": "Folly Cottage Erection Approved",
     "description": "Planning approval was granted for the demolition of the semi-detached cottages known as Lodge Cottages and erection of Folly Cottage.",
     "references": ["Wycombe district planning decisions"],
-    "labels": []
+    "labels": ["legal"]
   },
   {
     "date": "1991",
@@ -3129,14 +3134,14 @@
     "title": "Barn Dance",
     "description": "A barn dance was held in a dutch barn.",
     "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "1992",
     "title": "Shellstar Offices Demolished",
     "description": "The Shellstar offices were demolished. A new building was later erected and is now a private museum.",
     "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "1992",
@@ -3150,7 +3155,7 @@
     "title": "Font Cover Base Replaced",
     "description": "The base of the octagonal font cover was replaced with 19th-century oak.",
     "references": ["Church Report - St Peter's Church, Ilmer, Report 1999, by Janet Wilson"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "14 Jul. 1994",
@@ -3158,7 +3163,7 @@
     "description": "Arthur John Hook of Close End received a bankruptcy order.",
     "references": ["www.thegazette.co.uk"],
     "hidden": true,
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "Jun - Jul 1996",
@@ -3208,21 +3213,21 @@
     "title": "Lectern and Pews Restored",
     "description": "The lectern and pews were restored.",
     "references": ["plaque attached to pew"],
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "18 Aug. 2009",
     "title": "Parish Records Archived",
     "description": "The parish council agreed to archive parish records at the County Archive.",
     "references": ["Minutes of the Parish Council Meeting, 18 Aug 2009"],
-    "labels": []
+    "labels": ["church"]
   },
   {
     "date": "c. 2009",
     "title": "Death of (Robert) Merrick Attenborough",
     "description": "(Robert) Merrick Attenborough, former resident, farmer of Manor Farm and resident of Close End died.",
     "references": [],
-    "labels": ["death", "farm", "manor house", "person", "property"]
+    "labels": ["death", "farm", "manor", "person", "property"]
   },
   {
     "date": "26 Apr. 2011",
@@ -3230,7 +3235,7 @@
     "description": "Benjamin Karl Lovelock, a window cleaner of Ilmer Meadows, received a bankruptcy order.",
     "references": ["www.thegazette.co.uk"],
     "hidden": true,
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "2012",
@@ -3245,7 +3250,7 @@
     "description": "Graham Harold Eden of Ilmer Meadows received a bankruptcy order.",
     "references": ["www.thegazette.co.uk"],
     "hidden": true,
-    "labels": []
+    "labels": ["document"]
   },
   {
     "date": "18 Jan. 2018",

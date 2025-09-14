@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ilmer.org/schemas/historicalEvents.schema.json",
+  "title": "Historical Events",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["date", "title", "description"],
+    "additionalProperties": false,
+    "properties": {
+      "date": { "type": "string", "description": "Display date (free text, e.g., '7 Jan. 1338', 'c. 1500')" },
+      "title": { "type": "string" },
+      "description": { "type": "string", "description": "Markdown supported" },
+      "labels": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Categories used for filtering"
+      },
+      "references": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Source references (markdown inline allowed)"
+      },
+      "image": {
+        "type": "string",
+        "description": "Primary image path"
+      },
+      "smallimage": {
+        "type": "string",
+        "description": "Thumbnail image path"
+      },
+      "hidden": { "type": "boolean", "description": "Hide this event from the timeline" }
+    }
+  }
+}
