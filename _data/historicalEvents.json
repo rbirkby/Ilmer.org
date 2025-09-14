@@ -1085,7 +1085,7 @@
     "date": "1861",
     "title": "Population Recorded",
     "description": "The population was 79.",
-    "references": ["Census, Kelly's 1869"],
+    "references": ["1861 Census", "Kelly's 1869"],
     "labels": ["population"]
   },
   {
@@ -1175,7 +1175,7 @@
     "date": "2 Apr. 1871",
     "title": "Census Data",
     "description": "The population was 70. Farm occupants included Richard and Martha Belgrove, Thomas and Mary Eggleton, and Henry and Sarah Gomm. David and Elizabeth Goodchild lived in Longwick.",
-    "references": ["Census"],
+    "references": ["1871 Census"],
     "labels": ["farm", "population", "property"]
   },
   {
@@ -1189,14 +1189,16 @@
     "date": "29 Sep. 1873",
     "title": "Birth of Albert Goodchild",
     "description": "Albert Goodchild was born in Ilmer to David and Elizabeth. Albert would later build Ilmer House.",
-    "references": ["HM GRO birth registration"],
+    "references": ["HM GRO birth registration", "ancestry.com"],
+    "image": "/images/albert-goodchild.jpg",
     "labels": ["birth", "person"]
   },
   {
     "date": "31 May 1878",
     "title": "Birth of Ernest Goodchild",
-    "description": "Ernest Goodchild was born in Ilmer to David and Elizabeth.",
+    "description": "Ernest Goodchild was born in Ilmer to David and Elizabeth. Following the death of his parents when he was 8, Ernest emigrated to Canada aged 13.",
     "references": ["HM GRO Birth registration"],
+    "image": "/images/ernest-goodchild.jpg",
     "labels": ["birth", "person"]
   },
   {
@@ -1218,7 +1220,7 @@
     "date": "3 Apr. 1881",
     "title": "Census Data",
     "description": "The population was 63. David and Elizabeth Goodchild lived in Ilmer with four children. This may have been in the Old Vicarage.",
-    "references": ["Census"],
+    "references": ["1881 Census"],
     "labels": ["population"]
   },
   {
@@ -1330,14 +1332,15 @@
     "date": "1888",
     "title": "Thomas Goodchild at The Old Vicarage",
     "description": "Thomas Goodchild was living at The Old Vicarage. He was the older brother of Albert and Ernest Goodchild.",
-    "references": ["1888 Electoral Register"],
+    "references": ["1888 Electoral Register", "ancestry.com"],
+    "image": "/images/thomas-goodchild.jpg",
     "labels": ["church", "person"]
   },
   {
     "date": "5 Apr. 1891",
     "title": "Census Data",
     "description": "The population was 48. Albert Goodchild, aged 17, worked as a Gardener in Wycombe.",
-    "references": ["census"],
+    "references": ["1891 census"],
     "labels": ["population"]
   },
   {
@@ -1443,7 +1446,7 @@
     "date": "31 Mar. 1901",
     "title": "Census Data",
     "description": "The population was 51. Farm occupants and families are listed. Albert and Elizabeth Goodchild lived in Beckenham.",
-    "references": ["Census"],
+    "references": ["1901 Census"],
     "labels": ["farm", "population", "property"]
   },
   {
@@ -1528,14 +1531,14 @@
   {
     "date": "16 Jul. 1909",
     "title": "Ilmer Farm Auction Date",
-    "description": "The auction date for 'Ilmer Farm' was set.",
+    "description": "The auction date for 'Ilmer Farm' was set. This farm was to become the site of Ilmer House, also known as Upper Farm.",
     "references": ["West Herts and Watford Observer, 26 Jun 1909"],
     "labels": ["auction", "farm", "property", "sale"]
   },
   {
     "date": "1909",
     "title": "George Wooster Visits Ilmer",
-    "description": "George Wooster, son of Sarah Wooster, returned to visit his birthplace of Ilmer from his home in the USA. He wrote about his visit in the 'Meriwether Vindicator' newspaper in 1909.",
+    "description": "George Wooster, son of Sarah Wooster, returned to visit his birthplace of Ilmer from his home in the USA. He wrote about his visit in the 'Meriwether Vindicator' newspaper in 1909. He described how the railway line had been built over the family well, suggesting that the farm was Lower Farm.",
     "image": "/images/georgewooster.jpg",
     "references": ["Meriwether Vindicator, 1909"],
     "labels": ["birth"]
@@ -1586,7 +1589,7 @@
   {
     "date": "May 1909",
     "title": "Ilmer Farm for Auction",
-    "description": "'Ilmer Farm' was put up for auction alongside Aston Mullins farm.",
+    "description": "'Ilmer Farm' was put up for auction alongside Aston Mullins farm.  This farm was to become the site of Ilmer House, also known as Upper Farm.",
     "references": ["London Evening Standard, 29 May 1909"],
     "labels": ["auction", "farm", "property", "sale"]
   },
@@ -1600,7 +1603,8 @@
   {
     "date": "26 Jun. 1909",
     "title": "Church Rededicated",
-    "description": "The church was rededicated following the addition of a new Spire and completion of the west gable.",
+    "description": "The church was rededicated following the addition of a new Spire and completion of the west gable. Previously, the west gable end had been a half-hip. The change in stonework is still visible today.",
+    "image": "/images/west-gable.jpg",
     "references": [],
     "labels": ["church"]
   },
@@ -1650,7 +1654,7 @@
     "date": "2 Apr. 1911",
     "title": "Census Data",
     "description": "Census data lists residents at Manor Farm, Lower Farm, and other locations. Albert and Elizabeth Goodchild lived in Beckenham with six children.",
-    "references": ["census"],
+    "references": ["1911 census"],
     "labels": ["farm", "manor", "population", "property"]
   },
   {
@@ -1816,7 +1820,7 @@
     "date": "19 Jun. 1921",
     "title": "Census Data",
     "description": "Residents at Lower Farm, Manor Farm, and Coldharbour Farm are listed.",
-    "references": ["census"],
+    "references": ["19 June, 1921 census"],
     "labels": ["farm", "manor", "property"]
   },
   {
@@ -1893,7 +1897,7 @@
   {
     "date": "1927",
     "title": "Church Stove Repaired",
-    "description": "The church stove was repaired.",
+    "description": "The church stove was repaired. It was likely to have been an octagonal Tortoise stove, a popular brand at the time and visible in historical photographs.",
     "references": ["Vestry minutes"],
     "labels": ["church", "repair"]
   },
@@ -1993,7 +1997,8 @@
     "date": "10 Mar. 1932",
     "title": "Death of Owen Goodchild",
     "description": "Owen Goodchild died aged 54.",
-    "references": ["Ilmer graveyard"],
+    "image": "/images/owen-goodchild.jpg",
+    "references": ["Ilmer graveyard", "ancestry.com"],
     "labels": ["death", "person"]
   },
   {
@@ -2313,7 +2318,9 @@
     "date": "4 Dec. 1939",
     "title": "A. Goodchild Ltd Incorporated",
     "description": "'A. Goodchild Ltd' was incorporated with Jack Goodchild as director. The Covent Garden flower wholesaler, founded by Albert Goodchild of Ilmer House, traded for many years until it was finally disolved in 2021.",
-    "references": ["Companies House incorporation, 1939"],
+    "references": [
+      "[Companies House incorporation](https://find-and-update.company-information.service.gov.uk/company/00358118), 1939"
+    ],
     "labels": ["housing", "sale"]
   },
   {
@@ -2737,7 +2744,8 @@
     "date": "1969",
     "title": "First Ilmer Church History Leaflet",
     "description": "The first community history leaflet of Ilmer Church was written by Dudley Scales Leuw. It was subsequently updated by Janet Wilson.",
-    "references": ["leaflet attribution"],
+    "image": "/images/church-leaflet.jpg",
+    "references": ["leaflet attribution", "Bucks Archaeological Society"],
     "labels": ["church", "community"]
   },
   {
@@ -2859,6 +2867,7 @@
     "title": "Ilmer Flower Festival",
     "description": "The Ilmer flower festival raised £250 for the Church Restoration Fund.",
     "references": ["Flower festival scrapbook & letter from Rector, Ilmer church"],
+    "image": "/images/flower-festival.jpg",
     "labels": ["church"]
   },
   {
@@ -2908,6 +2917,7 @@
     "title": "Church Spire Re-shingled",
     "description": "The church spire was re-shingled from donations totalling £8,000.",
     "references": ["Parish church history pamphlet"],
+    "image": "/images/reshingling.jpg",
     "labels": ["church"]
   },
   {
