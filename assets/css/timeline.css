@@ -45,9 +45,12 @@ select,
 }
 
 select {
-  position: absolute;
+  position: sticky;
+  float: right;
+  margin-top: -100px;
+  backdrop-filter: blur(4px);
+  z-index: 1;
   top: 20px;
-  right: 20px;
 }
 
 option {

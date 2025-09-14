@@ -18,7 +18,7 @@ image: images/timeline.png
 </script>
 
 {% assign labels = historicalEvents | uniqueLabels %}
-<select>
+<select name="filter">
   <option value="">
     <span class="label-name">All Events</span>
     <span class="label-count">{{ historicalEvents | size }}</span>

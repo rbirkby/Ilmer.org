@@ -5,7 +5,7 @@
   "type": "array",
   "items": {
     "type": "object",
-    "required": ["date", "title", "description"],
+    "required": ["date", "title", "description", "labels"],
     "additionalProperties": false,
     "properties": {
       "date": { "type": "string", "description": "Display date (free text, e.g., '7 Jan. 1338', 'c. 1500')" },
@@ -14,11 +14,15 @@
       "labels": {
         "type": "array",
         "items": { "type": "string" },
+        "minItems": 0,
+        "uniqueItems": true,
         "description": "Categories used for filtering"
       },
       "references": {
         "type": "array",
         "items": { "type": "string" },
+        "minItems": 0,
+        "uniqueItems": true,
         "description": "Source references (markdown inline allowed)"
       },
       "image": {
