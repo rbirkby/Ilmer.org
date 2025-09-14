@@ -23,11 +23,11 @@
       },
       "image": {
         "type": "string",
-        "description": "Primary image path or array of paths"
+        "description": "Primary image path"
       },
       "smallimage": {
         "type": "string",
-        "description": "Thumbnail image path or array of paths"
+        "description": "Thumbnail image path"
       },
       "hidden": { "type": "boolean", "description": "Hide this event from the timeline" }
     }
