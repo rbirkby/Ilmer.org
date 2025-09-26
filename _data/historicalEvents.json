@@ -109,10 +109,14 @@
     "labels": ["death", "manor", "person", "property"]
   },
   {
-    "date": "1315",
+    "date": "25 November 1315",
     "title": "Manor Sold to Blacket",
-    "description": "Thomas Fitz-Bernard sells the estate to John Blacket.",
-    "references": ["Fine Rolls, 9 Edward II, no. 208", "Willis's Manuscripts, Bodleian Library, Vol. 16, p. 120"],
+    "description": "Thomas Fitz-Bernard sells the estate of Adynton', Ilmere and Aston' Bernard to John Blacket (or Blaket).",
+    "references": [
+      "[Fine Rolls, 9 Edward II, no. 208](http://aalt.law.uh.edu/AALT7/CP25%281%29/CP25_1_18_60-73/IMG_0310.htm)",
+      "Willis's Manuscripts, Bodleian Library, Vol. 16, p. 120",
+      "[CP 25/1/18/68](https://www.medievalgenealogy.org.uk/fines/abstracts/CP_25_1_18_68.shtml)"
+    ],
     "labels": ["manor", "property"]
   },
   {
@@ -130,10 +134,13 @@
     "labels": ["death", "manor", "person", "property"]
   },
   {
-    "date": "1335",
+    "date": "20 January 1336",
     "title": "Manor Sold to de Molyns",
-    "description": "John Blacket the elder sells the Ilmer estate to the powerful and influential Sir John de Molyns.",
-    "references": ["Fine Rolls, 9 Edward III"],
+    "description": "John Blacket the elder sells the Aston' Bernard' and Ilmere estate to the powerful and influential Sir John de Molyns for 100 pounds sterling.",
+    "references": [
+      "[Fine Rolls, 9 Edward III](http://aalt.law.uh.edu/AALT7/CP25%281%29/CP25_1_19/IMG_0139.htm)",
+      "[CP 25/1/19/81](https://www.medievalgenealogy.org.uk/fines/abstracts/CP_25_1_19_81.shtml#1)"
+    ],
     "labels": ["manor", "property"]
   },
   {
