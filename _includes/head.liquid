@@ -2,17 +2,49 @@
 <html lang="en">
 
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <link rel="stylesheet" href="/assets/css/style.css" media="all">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
 
   <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="canonical" href="{{ site.url }}{{ url }}">
+  
   <title>{% if title %}{{ title }} &#8211; {% endif %}{{ site.title }}</title>
   <meta name="description" content="{{ description }}">
   <meta name="keywords" content="{{ tags | join: ', ' }}">
+  <meta name="author" content="Ilmer Community">
 
-
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
   <meta property="og:locale" content="en_US">
   <meta property="og:title" content="{% if title %}{{ title }} &#8211; {% endif %}{{ site.title }}">
   <meta property="og:description" content="{% if description %}{{ description | strip_html | strip_newlines | truncate: 120  }}{% else %}{{ content | strip_html | strip_newlines | truncate: 120 }}{% endif %}">
   <meta property="og:url" content="{{ site.url }}{{ url }}">
   <meta property="og:site_name" content="{{ site.title }}">
+  {% if image %}<meta property="og:image" content="{{ site.url }}{{ image }}">{% endif %}
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="{{ site.url }}{{ url }}">
+  <meta property="twitter:title" content="{% if title %}{{ title }} &#8211; {% endif %}{{ site.title }}">
+  <meta property="twitter:description" content="{% if description %}{{ description | strip_html | strip_newlines | truncate: 120  }}{% else %}{{ content | strip_html | strip_newlines | truncate: 120 }}{% endif %}">
+  {% if image %}<meta property="twitter:image" content="{{ site.url }}{{ image }}">{% endif %}
+
+  <!-- Structured data for local history -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "{{ site.title }}",
+    "url": "{{ site.url }}",
+    "description": "Local history website for Ilmer village",
+    "about": {
+      "@type": "Place",
+      "name": "Ilmer",
+      "description": "Historic village in Buckinghamshire, England"
+    }
+  }
+  </script>
 </head>
