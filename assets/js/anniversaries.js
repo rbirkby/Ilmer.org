@@ -94,15 +94,21 @@ class TimelineAnniversary extends LitElement {
 
   render() {
     return html`
-      <div class="anniversary-tile" data-date="${this.originalDate ?? ''}" @click="${this._handleClick}">
+      <a
+        href="#${this.originalDate ?? ''}"
+        class="anniversary-tile"
+        data-date="${this.originalDate ?? ''}"
+        @click="${this._handleClick}"
+      >
         <div class="anniversary-date-label">${this.relativeDate ?? ''}</div>
         <div class="anniversary-title">${this.title ?? ''}</div>
         <div class="anniversary-meta">${this.yearsAgo ?? ''} years ago (${this.originalDate ?? ''})</div>
-      </div>
+      </a>
     `;
   }
 
-  _handleClick() {
+  _handleClick(event) {
+    event.preventDefault(); // Prevent default anchor navigation
     const eventDate = this.originalDate;
     if (eventDate) {
       TimelineAnniversary.scrollToTimelineEvent(eventDate);
