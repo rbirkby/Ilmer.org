@@ -403,6 +403,8 @@ main + footer {
 
   /* Tile - styled like timeline cards */
   .anniversary-tile {
+    display: block;
+    text-decoration: none;
     background: var(--timeline-card-bg);
     padding: 18px;
     border: 1px solid var(--timeline-card-border);
