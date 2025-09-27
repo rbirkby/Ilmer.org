@@ -15,7 +15,27 @@ image: images/timeline.png
       item.classList.toggle('hidden', category !== '' && !categories.includes(category));
     });
   });
+
+  document.getElementById('scroll-to-top').addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 </script>
+
+<button
+  id="scroll-to-top"
+  title="Click to scroll back to the top of the page"
+  style="display: none;">
+  ▲
+</button>
+
+
+<script type="module" src="/assets/js/anniversaries.js"></script>
+<timeline-anniversaries>
+  {% assign filteredEvents = historicalEvents | where_exp: "event", "event.hidden != true" %}
+  <script type="application/json" data-events>
+    [{% for event in filteredEvents %}{"date":{{ event.date | jsonify }},"title":{{ event.title | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
+  </script>
+</timeline-anniversaries>
 
 {% assign labels = historicalEvents | uniqueLabels %}
 <select name="filter">
