@@ -61,9 +61,15 @@ image: images/timeline.png
             <span class="date">{{ event.date }}</span>
             {{ event.title }}</h2>
           {% if event.smallimage %}
-            <a href="{{event.image}}"><img src="{{ event.smallimage }}" alt="{{ event.title }}"></a>
+            <a href="{{event.image}}"><img
+                src="{{ event.smallimage }}"
+                loading="lazy"
+                alt="{{ event.title }}"></a>
           {% elsif event.image %}
-            <a href="{{event.image}}"><img src="{{ event.image }}" alt="{{ event.title }}"></a>
+            <a href="{{event.image}}"><img
+                src="{{ event.image }}"
+                loading="lazy"
+                alt="{{ event.title }}"></a>
           {% endif %}
 
           {{ event.description | renderContent: "md" }}

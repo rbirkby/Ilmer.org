@@ -1,7 +1,6 @@
 import {
   LitElement,
-  html,
-  css
+  html
 } from 'https://cdn.skypack.dev/pin/lit@v3.3.1-mozE5P6MGQybGvSM4ae5/mode=imports,min/optimized/lit.js';
 
 // Date utility class for handling date calculations and formatting
@@ -80,12 +79,6 @@ class TimelineAnniversary extends LitElement {
     yearsAgo: { type: String, attribute: 'years-ago' },
     originalDate: { type: String, attribute: 'original-date' }
   };
-
-  static styles = css`
-    :host {
-      display: block;
-    }
-  `;
 
   createRenderRoot() {
     // Return this instead of creating shadow root to allow global CSS
@@ -167,12 +160,6 @@ class TimelineAnniversaries extends LitElement {
     events: { type: Array, state: true },
     anniversaries: { type: Array, state: true }
   };
-
-  static styles = css`
-    :host {
-      display: block;
-    }
-  `;
 
   createRenderRoot() {
     // Return this instead of creating shadow root to allow global CSS
