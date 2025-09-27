@@ -368,7 +368,21 @@ main + footer {
 }
 
 /* Anniversaries Styles */
+@keyframes anniversaries-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    max-height: 1000px; /* Large enough value */
+  }
+}
+
 #anniversaries-container.anniversaries-container {
+  animation: anniversaries-entrance 0.8s ease-out forwards;
   background: var(--archive-background, #ecd8b3);
   background-image: var(--timeline-background-image);
   padding: 20px;
