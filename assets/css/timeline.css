@@ -47,7 +47,7 @@ select,
 select {
   position: sticky;
   float: right;
-  margin-top: -100px;
+  /* margin-top: -100px; */
   backdrop-filter: blur(4px);
   z-index: 1;
   top: 20px;
@@ -283,4 +283,186 @@ blockquote {
 
 main + footer {
   margin-top: 0;
+}
+
+/* Scroll to top button color variables */
+:root {
+  --scroll-btn-bg: color(srgb 1 1 1 / 0.25);
+  --scroll-btn-border: color(srgb 0 0.482 1 / 0.3);
+  --scroll-btn-shadow: color(srgb 0 0 0 / 0.15);
+  --scroll-btn-text: #007bff;
+  --scroll-btn-text-shadow: color(srgb 0 0 0 / 0.2);
+  --scroll-btn-hover-bg: color(srgb 0 0.482 1 / 0.15);
+  --scroll-btn-hover-border: color(srgb 0 0.482 1 / 0.4);
+  --scroll-btn-hover-text: #0056b3;
+}
+
+/* Scroll to top button styles with CSS scroll-driven animation */
+#scroll-to-top {
+  position: fixed;
+  top: 20px;
+  left: max(30px, calc(50% - min(590px, 50vw - 30px)));
+  z-index: 1000;
+  background: var(--scroll-btn-bg);
+  backdrop-filter: blur(15px);
+  border: 2px solid var(--scroll-btn-border);
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  box-shadow: 0 8px 32px var(--scroll-btn-shadow);
+  transition: all 0.3s ease;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  font-weight: 900;
+  color: var(--scroll-btn-text);
+  text-shadow: 0 2px 4px var(--scroll-btn-text-shadow);
+  font-family: Arial, sans-serif;
+  line-height: 1;
+
+  /* CSS Scroll-driven animation for visibility */
+  animation: scroll-button-visibility linear both;
+  animation-timeline: scroll(root);
+  animation-range: 0px 800px;
+
+  &:hover {
+    background: var(--scroll-btn-hover-bg);
+    border-color: var(--scroll-btn-hover-border);
+    transform: scale(1.05);
+    box-shadow: 0 12px 48px var(--scroll-btn-shadow);
+    color: var(--scroll-btn-hover-text);
+  }
+
+  @media (max-width: 768px) {
+    top: 30px;
+    left: 20px;
+    width: 38px;
+    height: 38px;
+    font-size: 21px;
+  }
+
+  @media (max-width: 480px) {
+    top: 25px;
+    left: 15px;
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+  }
+}
+
+/* Keyframes for scroll-driven visibility animation */
+@keyframes scroll-button-visibility {
+  0%,
+  80% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+/* Anniversaries Styles */
+#anniversaries-container.anniversaries-container {
+  background: var(--archive-background, #ecd8b3);
+  background-image: var(--timeline-background-image);
+  padding: 20px;
+  margin: 20px 0;
+  border: 2px solid var(--archive-border, #7f6a40);
+  border-radius: 6px;
+  box-shadow: 0 0 13px var(--timeline-card-shadow);
+  filter: var(--timeline-distort);
+  position: relative;
+
+  /* Heading & intro text */
+  .anniversaries-heading {
+    color: var(--archive-heading, #2a2315);
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+    font-weight: 700;
+    font-variant-emoji: text;
+  }
+  .anniversaries-date-intro {
+    margin-bottom: 15px;
+    color: var(--timeline-text, #586069);
+    line-height: 1.6;
+  }
+
+  .anniversary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  /* Tile - styled like timeline cards */
+  .anniversary-tile {
+    background: var(--timeline-card-bg);
+    padding: 18px;
+    border: 1px solid var(--timeline-card-border);
+    border-left: 4px solid var(--archive-border, #7f6a40);
+    border-radius: 6px;
+    box-shadow: 0 0 13px var(--timeline-card-shadow);
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    cursor: pointer;
+    filter: var(--timeline-distort);
+    position: relative;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px var(--timeline-card-shadow);
+    }
+
+    .anniversary-date-label {
+      color: var(--archive-border, #7f6a40);
+      font-weight: bold;
+      font-size: 0.9em;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .anniversary-title {
+      color: var(--timeline-title, var(--archive-heading));
+      font-weight: 700;
+      margin-bottom: 8px;
+      line-height: 1.3;
+      font-size: 1.1em;
+    }
+    .anniversary-meta {
+      color: var(--timeline-reference, #6a737d);
+      font-size: 0.85em;
+      font-style: italic;
+      margin-top: 8px;
+    }
+  }
+
+  /* No results message */
+  .no-anniversaries {
+    color: var(--timeline-reference, #666);
+    font-style: italic;
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  /* Responsive grid adjustments */
+  @media (max-width: 768px) {
+    .anniversary-grid {
+      grid-template-columns: 1fr !important;
+      gap: 12px;
+    }
+    padding: 16px;
+  }
+  @media (min-width: 769px) and (max-width: 1200px) {
+    .anniversary-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+  }
 }
