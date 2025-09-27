@@ -482,3 +482,113 @@ main + footer {
     }
   }
 }
+
+/* Image Lightbox Popover Styles */
+#image-lightbox {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  height: auto;
+  max-width: min(90vw, 800px);
+  max-height: min(85vh, 600px);
+  background: rgb(0 0 0 / 0.95);
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem 2rem 2rem;
+  box-sizing: border-box;
+  z-index: 1000;
+  margin: 0;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgb(0 0 0 / 0.8);
+  pointer-events: none;
+}
+
+#image-lightbox:popover-open {
+  pointer-events: auto;
+}
+
+#image-lightbox::backdrop {
+  background: rgb(0 0 0 / 0.6);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgb(255 255 255 / 0.1);
+  border: 2px solid rgb(255 255 255 / 0.3);
+  color: white;
+  font-size: 2rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 1001;
+}
+
+.lightbox-close:hover,
+.lightbox-close:focus {
+  background: rgb(255 255 255 / 0.2);
+  border-color: rgb(255 255 255 / 0.5);
+  transform: scale(1.1);
+}
+
+#lightbox-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.5);
+}
+
+#lightbox-caption {
+  color: white;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  max-width: 100%;
+  text-shadow: 0 2px 4px rgb(0 0 0 / 0.8);
+}
+
+/* Timeline image cursor to indicate clickability */
+.timeline-image-link {
+  cursor: zoom-in;
+  transition: opacity 0.2s ease;
+}
+
+.timeline-image-link:hover {
+  opacity: 0.8;
+}
+
+/* Popover animation */
+#image-lightbox {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.8);
+  transition: opacity 0.3s ease, transform 0.3s ease, overlay 0.3s ease allow-discrete, display 0.3s ease allow-discrete;
+}
+
+#image-lightbox:popover-open {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Starting style for entrance animation */
+@starting-style {
+  #image-lightbox:popover-open {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
