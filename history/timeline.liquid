@@ -19,6 +19,30 @@ image: images/timeline.png
   document.getElementById('scroll-to-top').addEventListener('click', function() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+
+  // Image lightbox functionality
+  const lightbox = document.getElementById('image-lightbox');
+  const lightboxImage = document.getElementById('lightbox-image');
+  const lightboxCaption = document.getElementById('lightbox-caption');
+
+  // Handle clicks on timeline images
+  document.addEventListener('click', function(event) {
+    const imageLink = event.target.closest('.timeline-image-link');
+    if (imageLink) {
+      event.preventDefault();
+
+      const fullImageSrc = imageLink.getAttribute('data-full-image');
+      const caption = imageLink.getAttribute('data-caption');
+
+      if (fullImageSrc) {
+        lightboxImage.src = fullImageSrc;
+        lightboxImage.alt = caption ?? '';
+        lightboxCaption.textContent = caption ?? '';
+
+        lightbox.showPopover();
+      }
+    }
+  });
 </script>
 
 <button
@@ -51,6 +75,16 @@ image: images/timeline.png
   {% endfor %}
 </select>
 
+<!-- Image lightbox popover -->
+<div id="image-lightbox" popover>
+  <button
+    popovertarget="image-lightbox"
+    class="lightbox-close"
+    aria-label="Close lightbox">&times;</button>
+  <img id="lightbox-image" alt="" />
+  <p id="lightbox-caption"></p>
+</div>
+
 <div id="timeline-container">
   {% for event in historicalEvents %}
     {% unless event.hidden %}
@@ -61,12 +95,20 @@ image: images/timeline.png
             <span class="date">{{ event.date }}</span>
             {{ event.title }}</h2>
           {% if event.smallimage %}
-            <a href="{{event.image}}"><img
+            <a
+              href="{{event.image}}"
+              class="timeline-image-link"
+              data-full-image="{{event.image}}"
+              data-caption="{{ event.title }}"><img
                 src="{{ event.smallimage }}"
                 loading="lazy"
                 alt="{{ event.title }}"></a>
           {% elsif event.image %}
-            <a href="{{event.image}}"><img
+            <a
+              href="{{event.image}}"
+              class="timeline-image-link"
+              data-full-image="{{event.image}}"
+              data-caption="{{ event.title }}"><img
                 src="{{ event.image }}"
                 loading="lazy"
                 alt="{{ event.title }}"></a>
