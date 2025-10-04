@@ -4,7 +4,7 @@ import {
 } from 'https://cdn.skypack.dev/pin/lit@v3.3.1-mozE5P6MGQybGvSM4ae5/mode=imports,min/optimized/lit.js';
 
 // Major anniversary milestones
-const MAJOR_MILESTONES = new Set([132, 10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000]);
+const MAJOR_MILESTONES = new Set([10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000]);
 
 // Date utility class for handling date calculations and formatting
 class DateUtils {
