@@ -42,7 +42,9 @@ wrote about it being 50 foot deep in the following magazine article:
 
 #### Census Transcripts
 
-[Census records](/assets/pdfs/lockington-all-years.pdf), transcribed by Deborah Dobbs
+[Census records](/assets/pdfs/lockington-all-years.pdf), transcribed by Deborah Dobbs.
+
+Note: The original 1861 census records Mary Allen being 99 years old, but based on prior census transcripts this is incorrect and Mary would have been 90 years old.
 
 <table>
   <thead>
