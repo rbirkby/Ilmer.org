@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Lockington"
-description: "An abandoned hamlet, once home to 33 people, lies secluded in undergrowth just off a popular footpath."
+title: 'Lockington'
+description: 'An abandoned hamlet, once home to 33 people, lies secluded in undergrowth just off a popular footpath.'
 category: history
 tags: [farming, post]
 image: images/lockington-photo.jpg
@@ -11,7 +11,7 @@ Lockington, or sometimes Lookington, was situated south-east of Ilmer in what is
 
 ![Lockington map](/images/lockington.jpg)
 
-[Census records](http://www.saunderton.demon.co.uk/basic_saunderton/pdf/lockington%20all%20years.pdf) for 1841 show 22 inhabitants in 5 dwellings comprising 11 members of the Allen family, 2 Roberts, a Gregory, 3 Burnhams and 5 Watsons living in Lockington.
+[Census records](/assets/pdfs/lockington-all-years.pdf) for 1841 show 22 inhabitants in 5 dwellings comprising 11 members of the Allen family, 2 Roberts, a Gregory, 3 Burnhams and 5 Watsons living in Lockington.
 
 ![Building](/images/lockington-dwelling.jpg)
 
@@ -35,7 +35,42 @@ Nearby is another well, this time about 5 foot in diameter with an early 20th ce
 
 ![Another well](/images/lockington-well2.jpg)
 
-This well is probably the one Charlie built. Basil Purssell, Bucks Herald artist and local musician, 
+This well is probably the one Charlie built. Basil Purssell, Bucks Herald artist and local musician,
 wrote about it being 50 foot deep in the following magazine article:
 
 [![Magazine Feature](/images/ilmer-hermit-thumbnail.jpg)](/images/ilmer-hermit.jpg)
+
+#### Census Transcripts
+
+[Census records](/assets/pdfs/lockington-all-years.pdf), transcribed by Deborah Dobbs
+
+<table>
+  <thead>
+    <tr>
+      <th>Year</th>
+      <th>Dwelling number</th>
+      <th>Forename</th>
+      <th>Surname</th>
+      <th>Relation to head</th>
+      <th>Condition</th>
+      <th>Age</th>
+      <th>Occupation</th>
+      <th>Where born</th>
+    </tr>
+  </thead>
+<tbody>
+{%- for item in lockington-census %}
+  <tr>
+    <td>{{ item.year }}</td>
+    <td data-type="number">{{ item['dwelling number'] }}</td>
+    <td>{{ item.forename }}</td>
+    <td>{{ item.surname }}</td>
+    <td>{{ item['relation to head'] }}</td>
+    <td>{{ item.condition }}</td>
+    <td data-type="number">{{ item.age }}</td>
+    <td>{{ item.occupation }}</td>
+    <td>{{ item.born }}</td>
+  </tr>
+{% endfor -%}
+<tbody>
+</table>

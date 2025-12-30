@@ -1254,7 +1254,7 @@
   {
     "date": "12 Dec. 1885",
     "title": "Death of Elizabeth Goodchild",
-    "description": "Elizabeth, wife of David Goodchild, farmer, dies of 'fatty degeneration of the heart'.",
+    "description": "Elizabeth, wife of David Goodchild, farmer, dies of 'fatty degeneration of the heart'. ",
     "references": ["Bucks Herald, 26 Dec 1885"],
     "labels": ["death", "farm", "person", "property"]
   },
@@ -1342,6 +1342,13 @@
     "references": ["1888 Electoral Register", "ancestry.com"],
     "image": "/images/thomas-goodchild.jpg",
     "labels": ["church", "person"]
+  },
+  {
+    "date": "22 Apr 1889",
+    "title": "Tea given to parishoners on Easter Monday",
+    "description": "Tea, athletic sports and games was held at Horsenden for parishioners of Horsenden and Illmire. The event was hosted by Rev J Ormonde.",
+    "references": ["Bucks Herald, 27 Apr 1889"],
+    "labels": ["church", "event"]
   },
   {
     "date": "5 Apr. 1891",
@@ -1534,6 +1541,13 @@
     "description": "Albert Goodchild was listed as a wholesaler at the Foreign Flower market in Covent Garden, London.",
     "references": ["Kelly's 1908"],
     "labels": ["business", "sale"]
+  },
+  {
+    "date": "12 Apr 1909",
+    "title": "Children's Union stall at bazaar on Easter Monday",
+    "description": "A stall run by Mrs Matthews of Ilmer was held at Horsenden Rectory in aid of the Church of England Waifs' and Strays' Society. Mrs Matthews was also secretary.",
+    "references": ["Bucks Advertiser, 17 Apr 1909"],
+    "labels": ["church", "community"]
   },
   {
     "date": "16 Jul. 1909",
@@ -2465,6 +2479,13 @@
     "labels": ["building", "farm", "manor", "property"]
   },
   {
+    "date": "14 Aug 1950",
+    "title": "Lower farm crop fire",
+    "description": "1.5 acres of oats were destroyed by fire. The Risborough fire brigade attended.",
+    "references": ["Bucks Advertiser, 18 Aug 1950"],
+    "labels": ["fire", "farm"]
+  },
+  {
     "date": "24 Apr. 1953",
     "title": "Eviction of Tenants",
     "description": "(Robert) Merrick Attenborough successfully applied for the eviction of the tenants of Lodge Cottage and Ilmer Cottage. The site of Lodge Cottage is now Folly Cottage, while Ilmer Cottage became the pair of cottages known as September and October cottages.",
@@ -3035,6 +3056,13 @@
     "description": "Ilmer House was put up for sale.",
     "references": ["Bucks Examiner, 1 Mar 1985", "Brown & Murray estate agents"],
     "labels": ["auction", "housing", "sale"]
+  },
+  {
+    "date": "1986",
+    "title": "Book records survey of life in Aylesbury Vale villages",
+    "description": "This Doomsday survey recorded a population of 64, with a Fete on late-May bank holiday and a Barbeque in August, both at Severalles Farm (Lower Farm). It also recorded a village Cricket team. The compilation for Ilmer was provided by Susan Underwood of Ilmer House.",
+    "references": ["Chronicle of the Vale, The Friends of the Vale of Aylesbury, 1986"],
+    "labels": ["infrastructure", "housing"]
   },
   {
     "date": "1987",
