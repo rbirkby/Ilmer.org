@@ -3,9 +3,6 @@ import {
   html
 } from 'https://cdn.skypack.dev/pin/lit@v3.3.1-mozE5P6MGQybGvSM4ae5/mode=imports,min/optimized/lit.js';
 
-// Major anniversary milestones
-const MAJOR_MILESTONES = new Set([10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000]);
-
 // Date utility class for handling date calculations and formatting
 class DateUtils {
   constructor() {
@@ -89,8 +86,6 @@ class TimelineAnniversary extends LitElement {
   }
 
   render() {
-    const years = Number.parseInt(this.yearsAgo ?? '0', 10) || 0;
-    const isMajor = MAJOR_MILESTONES.has(years);
     return html`
       <a
         href="#${this.originalDate ?? ''}"
@@ -98,17 +93,6 @@ class TimelineAnniversary extends LitElement {
         data-date="${this.originalDate ?? ''}"
         @click="${this._handleClick}"
       >
-        ${isMajor
-          ? html`<div
-              class="anniversary-badge"
-              role="img"
-              aria-label="${years} year anniversary badge"
-              title="${years} year anniversary"
-            >
-              <span class="badge-number">${years}</span>
-              <span class="badge-suffix" aria-hidden="true">yrs</span>
-            </div>`
-          : ''}
         <div class="anniversary-date-label">${this.relativeDate ?? ''}</div>
         <div class="anniversary-title">${this.title ?? ''}</div>
         <div class="anniversary-meta">${this.yearsAgo ?? ''} years ago (${this.originalDate ?? ''})</div>
