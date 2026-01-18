@@ -15,14 +15,14 @@ The 1968 film starring Dick Van Dyke had a memorable scene filmed at the railway
 
 #### Now (Jan 2026) and then
 
-![](/images/chitty-frame1.avif)
-![](/images/chitty-2026-frame1-shortDoF.avif)
+![Then](/images/chitty-frame1.avif)
+![Now (2026)](/images/chitty-2026-frame1-shortDoF.avif)
 
-![](/images/chitty-frame2.avif)
-![](/images/chitty-2026-frame2-shortDoF.avif)
+![Then](/images/chitty-frame2.avif)
+![Now (2026)](/images/chitty-2026-frame2-shortDoF.avif)
 
-![](/images/chitty-frame3.avif)
-![](/images/chitty-2026-frame3-shortDoF.avif)
+![Then](/images/chitty-frame3.avif)
+![Now (2026)](/images/chitty-2026-frame3-shortDoF.avif)
 
 ### Railway
 
