@@ -1083,7 +1083,7 @@
   {
     "date": "1860",
     "title": "Church Harmonium",
-    "description": "The church had a harmonium situated in the chancel adjacent to the window-seat sculptures. Later photographs show the harmonium against the south wall of the nave adjacent to the rood screen.",
+    "description": "The church had a harmonium situated in the chancel adjacent to the window-seat sculptures. Later photographs show a reed organ, possibly manufactured by Chicago Cottage Organ Co, against the south wall of the nave adjacent to the rood screen.",
     "image": "/images/harmonium.jpg",
     "references": ["SHEHAN. Plan for 1860 commemorative stone replacement, 1983"],
     "labels": ["church"]
@@ -2340,7 +2340,8 @@
     "title": "A. Goodchild Ltd Incorporated",
     "description": "'A. Goodchild Ltd' was incorporated with Jack Goodchild as director. The Covent Garden flower wholesaler, founded by Albert Goodchild of Ilmer House, traded for many years until it was finally disolved in 2021.",
     "references": [
-      "[Companies House incorporation](https://find-and-update.company-information.service.gov.uk/company/00358118), 1939"
+      "[Companies House incorporation](https://find-and-update.company-information.service.gov.uk/company/00358118), 1939",
+      "https://www.londonpicturearchive.org.uk/view-item?i=130896"
     ],
     "labels": ["housing", "sale"]
   },
@@ -2540,6 +2541,14 @@
     "description": "(Annie) Mavis Attenborough, daughter of (Robert) Harold Attenborough of Ilmer House, married (Stanley) Frank Head. They were given the land on which Old Orchard is built as a wedding gift by Harold.",
     "references": ["Ancestry tree"],
     "labels": ["housing", "marriage", "person"]
+  },
+  {
+    "date": "17 Apr 1959",
+    "title": "Church organ for sale",
+    "description": "Offers requested for a walnut 'pedal organ' manufactured by the Chicago Cottage Organ Co. A separate photo, pre-1912, shows an organ resembling designs from the Chicago Cottage Organ Co.",
+    "image": "/images/harmonium.jpg",
+    "references": ["Bucks Free Press, 17 Apr 1959"],
+    "labels": ["church"]
   },
   {
     "date": "1960",
