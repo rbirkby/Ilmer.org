@@ -33,7 +33,7 @@ By the mid-19th century, the church had fallen into disrepair. In 1850, the Oxfo
 ![1860 commemoration stone](/images/1860-dedication-stone.jpg#right)
 _1860 commemoration stone on North wall_
 
-The commemoration stone on the North wall (restored 1983), has an inscription written by Reverends Partridge and Faber (Saunderton), the brother of hymn writer F Faber. Translated from Latin, it reads:
+The commemoration stone on the North wall (replaced 1983), has an inscription written by Reverends Partridge and Faber (Saunderton), the brother of hymn writer F Faber. Translated from Latin, it reads:
 
 > This church among the most ancient by length of years seriously weakened and decayed at his own proper charge restored and furnished William E. Partridge B.A. vicar of the same and patron in the year of Christ 1860.
 > To God alone be the honour and the glory.
@@ -68,7 +68,7 @@ _John Oldrid Scott_[^6]
 
 In February 1909, Architects John Oldrid Scott and Son (Charles Marriott Oldrid Scott) of Dean’s Yard, Westminster were given faculty to design the replacement spire and remove the half-hip roof to complete the west gable. John Oldrid Scott was the grandson of [Sir Gilbert Scott](https://gilbertscott.org/sir-george-gilbert-scott/), architect of the [Albert Memorial](https://en.wikipedia.org/wiki/Albert_Memorial). He had completed the stone steeple of St Mary’s, Risborough the previous year, which had replaced an older zinc-covered wooden structure.[^7]
 
-[^7]: More details likely to be available in the RIBA Scott archive held in the RIBA Study Room at the V&A. Item ScJO/1-3 - **Account books and papers of John Oldrid Scott, 1873-1916**
+[^7]: Basic book-keeping details are available in the RIBA Scott archive currently held in the RIBA Study Room at the V&A. Item ScJO/1-3 - **Account books and papers of John Oldrid Scott, 1873-1916**. These show 3 interim payments during the course of 1909 towards the full cost indicated as £350.
 
 ![Stonework showing where the Half Hip roof was converted to a full gable end](/images/half-hip-removal.jpg#right)
 _Stonework showing where the Half Hip roof was converted to a full gable end_
@@ -130,6 +130,12 @@ In 1924, a proposal was made to lay electricity lines to Ilmer[^electricity] and
 
 [^wilson]: Source: St Peter’s Church, Ilmer, History and Events, Janet Wilson, 1999
 
+## Church accompaniment
+
+The church was described in 1860 by Shehan as having a harmonium. A pre-1912 photograph shows an organ resembling a harmonium or reed organ. In 1959, a newspaper advertisement[^pedalorgan] offered a walnut pedal organ for sale from the church. The manufacturer was said to be the [Chicago Cottage Organ Co](https://en.wikipedia.org/wiki/The_Cable_Company), which produced organs with a [significant resemblance](https://www.reedsoc.org/index.php/rosdb/vieworgan?ID=11609) to the pre-1912 photograph. Martha Belgrove played the organ for many years until her death in 1909. A window in the church was later dedicated to her memory.
+
+[^pedalorgan]: Source: Bucks Free Press, 17 Apr 1959
+
 ## Memorials
 
 In November 1919, the vestry minutes record the decision to erect the war memorial tablet on the south wall of the nave. The faculty was granted on 13th January 1920 and it was duly erected the same year.
@@ -142,7 +148,7 @@ The opposite window, installed 1991, on the south wall of the nave is by his son
 
 ## Repairs and redecorations
 
-In 1940, the Parish Room needed redecorating which was undertaken by Frank Rogers of Longwick. The exterior was painted green, the interior white and mantlepiece brown. The receipt for work was addressed to Mr W Harper, an Ilmer resident and parish councillor. [^parish-hall-decoration]
+In 1940, the Parish Room needed redecorating which was undertaken by Frank Rogers of Longwick. The exterior was painted green, the interior white and mantlepiece brown. The receipt for work was addressed to Mr W Harper, a parish councillor and father of long-time Ilmer resident George. [^parish-hall-decoration]
 
 [^parish-hall-decoration]: Invoice for work. Source: Bucks Archive, PR/114/87.
 
