@@ -3,7 +3,7 @@ layout: post
 title: "St Peter's"
 description: '12th century church in Ilmer, Buckinghamshire, England'
 category: history
-tags: [church, history]
+tags: [church, history, post]
 image: images/church-linedrawing-postcard.jpg
 ---
 
@@ -37,6 +37,12 @@ The commemoration stone on the North wall (replaced 1983), has an inscription wr
 
 > This church among the most ancient by length of years seriously weakened and decayed at his own proper charge restored and furnished William E. Partridge B.A. vicar of the same and patron in the year of Christ 1860.
 > To God alone be the honour and the glory.
+
+![1860 commemoration stone](/images/original-church-tablet.jpg#left)
+
+In 1983 during replacement of the inscribed stone, erosion of the final sentence required research into the probable final words. Local historian Rex Kidd approached the Bodleian Library for advice. Molly Barratt from the Department of Western Manuscripts responded[^bodleian] that it likely ended `HONOR ET GLORIA`. The new tablet cost £386+VAT.
+
+[^bodleian]: Source: Oxford History Centre, DIOC/1/C/5/1587.
 
 Rev Partridge had purchased Horsenden House in 1848 and purchased the Ilmer benefice from George Stanhope, 6th Earl of Chesterfield in 1858 which enabled him to fund its repair in 1860. Five years later in November 1865, the Church Living was united with Horsenden.
 
@@ -158,7 +164,9 @@ The wartime activities didn't escape Ilmer, as in 1942, 7 soldiers slept overnig
 
 In the late 1960s, redecoration and reconstruction work of the church, amounting to £1,000, was carried out, funded by the parishioners. In particular, the 1964 installation of an oak communion rail made by Ivor Newton of Haddenham[^wilson].
 
-By 1978, the spire required new shingle tiles, and the tower and bells were in need of restoration. Consequently, a fundraising campaign was initiated in January of that year, and within two years, £8,000 had been raised. The bells were restored by Whites of Appleton during 1981[^wilson] and at this time they were converted to swing chiming.
+By 1978, the spire required new shingle tiles, and the tower and bells were in need of restoration. Consequently, a fundraising campaign was initiated in January of that year, and within two years, £8,000 had been raised. The bells were restored by Whites of Appleton during 1981[^wilson] and at this time they were converted to swing chiming. The cost was £1,790+VAT [^bellsfaculty]
+
+[^bellsfaculty]: Letter from Whites dated 7 Aug 1980. Source: Oxford History Centre, DIOC/1/C/5/1587.
 
 In 1993, the base of the octagonal font cover was replaced with 19th century oak[^wilson].
 
