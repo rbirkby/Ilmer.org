@@ -1808,7 +1808,12 @@
     "date": "17 Mar. 1916",
     "title": "Exemption from Military Service",
     "description": "Herbert Smith, son of William Smith of Ray Farm applied for exemption as he did the bulk of the work on the 60 acre farm. He eventually enlisted in Jan. 1917 and was killed in action in Mar. 1918.",
-    "references": ["Bucks Free Press, 17 Mar. 1916", "Bucks Herald, 18 May 1918"],
+    "image": "/images/herbert-smith-1906.jpg",
+    "references": [
+      "Bucks Free Press, 17 Mar. 1916",
+      "Bucks Herald, 18 May 1918",
+      "[Ancestry.com](https://www.ancestry.co.uk/mediaui-viewer/tree/75447233/person/190142749157/media/cc648690-2f34-4556-b958-249200244194)"
+    ],
     "labels": ["farm", "war", "person"]
   },
   {
@@ -1839,9 +1844,9 @@
   {
     "date": "21 Mar. 1918",
     "title": "Farmer killed in action",
-    "description": "Private Herbert Smith of Ray Farm, killed in France aged 33. Royal Berks Regiment, Service No 37781. Herbert left behind wife Elizabeth of the Three Pigeons, Longwick.",
+    "description": "Private (William) Herbert Charles Smith of Ray Farm, killed in the Somme, France aged 33. Royal Berks Regiment, Service No 37781 690860. Herbert left behind wife Elizabeth (born Rogers) of the Three Pigeons, Longwick.",
     "image": "/images/herbert-smith.jpg",
-    "references": ["War Records, 1918", "Bucks Herald, 18 May 1918"],
+    "references": ["War Records, 1918", "Bucks Herald, 18 May 1918", "National Probate Calendar, 1918"],
     "labels": ["farm", "war", "person", "death"]
   },
   {
@@ -1968,7 +1973,7 @@
   {
     "date": "27 Jul. 1927",
     "title": "Farmer died",
-    "description": "William Smith, farmer at Ray Farm, died aged 67 leaving his wife Kate, 3 daughters and son Wilfred. He was a parish constable and co-managed Longwick school. He was burried at the Baptist Church",
+    "description": "William Smith, farmer at Ray Farm, died aged 67 leaving his wife Kate, 3 daughters and son (Reginald) Wilfred. He was a parish constable and co-managed Longwick school. He was burried at the Baptist Church",
     "references": ["Bucks Free Press, 6 Aug. 1927"],
     "labels": ["farm", "death", "person"]
   },
