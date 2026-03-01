@@ -1351,6 +1351,13 @@
     "labels": ["church", "person"]
   },
   {
+    "date": "1888",
+    "title": "Smith family arrive at Rag (Ray) Farm",
+    "description": "The Smith family arrived at Rag (Ray) Farm.",
+    "references": ["Bucks Herald, 8 Dec 1988"],
+    "labels": ["farm", "person"]
+  },
+  {
     "date": "22 Apr 1889",
     "title": "Tea given to parishoners on Easter Monday",
     "description": "Tea, athletic sports and games was held at Horsenden for parishioners of Horsenden and Illmire. The event was hosted by Rev J Ormonde.",
@@ -2423,6 +2430,13 @@
     "labels": ["housing"]
   },
   {
+    "date": "4 Feb. 1942",
+    "title": "Farm survey ",
+    "description": "The Ministry of Food, National Farm Survey describes Ray Farm heavily infested with thistles and managed by R W Smith descibed as 'farmer is a cripple but farming his land to the best of his ability'.",
+    "references": ["MAF 32/930/227, National Archives, 4 Feb 1942"],
+    "labels": ["farm", "war"]
+  },
+  {
     "date": "8 Apr. 1942",
     "title": "Invasion Preparations",
     "description": "The church council was informed of local arrangements in-place for the event of an invasion, including the use of the Church Room (Parish Room) as a mortuary.",
@@ -3149,6 +3163,13 @@
     "description": "The Builders' Yard adjacent to The Rosery received approval to erect 2 new dwellings - The Sidings and Bridge House.",
     "references": ["Wycombe district planning approvals", "Bucks Examiner, 11 Nov 1994"],
     "labels": ["housing"]
+  },
+  {
+    "date": "8 Dec. 1988",
+    "title": "Farmer dies",
+    "description": "Reginald Wilfred (Dick) Smith died aged 82. He was the younger brother of Herbert Smith who was killed in action. In his youth, he had a motorcycle accident resulting in a lifelong leg injury. He left widow Eleanor, a son and a daughter.",
+    "references": ["Bucks Herald, 8 Dec 1988"],
+    "labels": ["farm", "death", "person"]
   },
   {
     "date": "12 Aug. 1989",
