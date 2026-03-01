@@ -109,7 +109,7 @@
     "labels": ["death", "manor", "person", "property"]
   },
   {
-    "date": "25 November 1315",
+    "date": "25 Nov. 1315",
     "title": "Manor Sold to Blacket",
     "description": "Thomas Fitz-Bernard sells the estate of Adynton', Ilmere and Aston' Bernard to John Blacket (or Blaket).",
     "references": [
@@ -134,7 +134,7 @@
     "labels": ["death", "manor", "person", "property"]
   },
   {
-    "date": "20 January 1336",
+    "date": "20 Jan. 1336",
     "title": "Manor Sold to de Molyns",
     "description": "John Blacket the elder sells the Aston' Bernard' and Ilmere estate to the powerful and influential Sir John de Molyns for 100 pounds sterling.",
     "references": [
@@ -200,7 +200,7 @@
     "labels": ["church", "land", "person"]
   },
   {
-    "date": "30 April 1349",
+    "date": "30 Apr. 1349",
     "title": "New Vicar Appointed",
     "description": "John de Horwood is appointed as the new vicar by Margery, the Prioress of Stodley (Studley).",
     "references": ["Willis's Manuscripts, Bodleian Library"],
@@ -249,7 +249,7 @@
     "labels": ["property"]
   },
   {
-    "date": "19 June 1384",
+    "date": "19 Jun. 1384",
     "title": "New Vicar Appointed by Exchange",
     "description": "John Jonason becomes the new vicar after exchanging his previous position with the former vicar, Robert Burkard.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
@@ -326,7 +326,7 @@
     "labels": ["church", "death", "person"]
   },
   {
-    "date": "20 June 1452",
+    "date": "20 Jun. 1452",
     "title": "New Vicar Appointed",
     "description": "John Seler is appointed as the new vicar.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
@@ -354,7 +354,7 @@
     "labels": ["church", "person"]
   },
   {
-    "date": "31 July 1466",
+    "date": "31 Jul. 1466",
     "title": "New Vicar Appointed",
     "description": "Henry Stodysbury is appointed as the new vicar.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
@@ -560,14 +560,14 @@
     "labels": ["church", "person"]
   },
   {
-    "date": "10 June 1615",
+    "date": "10 Jun. 1615",
     "title": "Robert Dormer Becomes a Baronet",
     "description": "Sir Robert Dormer is elevated to the rank of Baronet.",
     "references": ["Lipscomb's History..."],
     "labels": ["document"]
   },
   {
-    "date": "June 1615",
+    "date": "Jun. 1615",
     "title": "Robert Dormer Becomes a Baron",
     "description": "Shortly after, Sir Robert Dormer is ennobled, becoming Baron Dormer of Wenge (Wing).",
     "references": ["Lipscomb's History..."],
@@ -665,7 +665,7 @@
     "labels": ["death", "person"]
   },
   {
-    "date": "8 June 1677",
+    "date": "8 Jun. 1677",
     "title": "New Vicar Appointed",
     "description": "[John Lillingston](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=176711) is appointed as the new vicar by Charles Dormer, Earl of Carnarvon.",
     "references": ["Subscription Book at Aylesbury"],
@@ -693,7 +693,7 @@
     "labels": ["land"]
   },
   {
-    "date": "23 April 1685",
+    "date": "23 Apr. 1685",
     "title": "Falconry Claim Denied at Coronation",
     "description": "At the coronation of King James II, Charles Dormer, 2nd Earl of Carnarvon claim to the hereditary role of Marshall, Surveyor and Conservator of His Majesties Hawks in England is denied. The role was held due to his holding of the Manor of Ilmer.",
     "image": "/images/charles-dormer.png",
@@ -1358,7 +1358,7 @@
     "labels": ["farm", "person"]
   },
   {
-    "date": "22 Apr 1889",
+    "date": "22 Apr. 1889",
     "title": "Tea given to parishoners on Easter Monday",
     "description": "Tea, athletic sports and games was held at Horsenden for parishioners of Horsenden and Illmire. The event was hosted by Rev J Ormonde.",
     "references": ["Bucks Herald, 27 Apr 1889"],
@@ -1557,10 +1557,10 @@
     "labels": ["business", "sale"]
   },
   {
-    "date": "12 Apr 1909",
+    "date": "12 Apr. 1909",
     "title": "Children's Union stall at bazaar on Easter Monday",
     "description": "A stall run by Mrs Matthews of Ilmer was held at Horsenden Rectory in aid of the Church of England Waifs' and Strays' Society. Mrs Matthews was also secretary.",
-    "references": ["Bucks Advertiser, 17 Apr 1909"],
+    "references": ["Bucks Advertiser, 17 Apr. 1909"],
     "labels": ["church", "community"]
   },
   {
@@ -2536,7 +2536,7 @@
     "labels": ["building", "farm", "manor", "property"]
   },
   {
-    "date": "14 Aug 1950",
+    "date": "14 Aug. 1950",
     "title": "Lower farm crop fire",
     "description": "1.5 acres of oats were destroyed by fire. The Risborough fire brigade attended.",
     "references": ["Bucks Advertiser, 18 Aug 1950"],
@@ -3305,14 +3305,14 @@
     "labels": ["church"]
   },
   {
-    "date": "12 November 2000",
+    "date": "12 Nov. 2000",
     "title": "Death of (Annie) Mavis Head",
     "description": "(Annie) Mavis Head, wife of (Stanley) Frank Head, resident of Old Orchard, died and is buried in Ilmer churchyard.",
     "references": ["https://www.thegazette.co.uk/notice/L-56356-344"],
     "labels": ["church", "death", "person"]
   },
   {
-    "date": "23 February 2001",
+    "date": "23 Feb. 2001",
     "title": "Death of (Stanley) Frank Head",
     "description": "(Stanley) Frank Head, resident of Old Orchard, died and is buried in Ilmer churchyard.",
     "references": ["https://www.thegazette.co.uk/notice/L-56455-355"],
