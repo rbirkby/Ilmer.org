@@ -1452,7 +1452,7 @@
   {
     "date": "1899",
     "title": "Landowners and Farmers Listed",
-    "description": "General Raper and Miss Moreton are listed as principal landowners. Farmers include Richard Belgrove, George Gomme, Thomas Goodchild, Alfred Hill, and George Kingham.",
+    "description": "General Raper and Miss Moreton are listed as principal landowners. Farmers include Richard Belgrove, George Gomme, Thomas Goodchild, Alfred Hill, and George Kingham. Additionally, William Smith is the farmer at Rag (Ray) Farm.",
     "references": ["Kelly's 1899"],
     "labels": ["farm", "land", "property"]
   },
@@ -1695,7 +1695,7 @@
   {
     "date": "1911",
     "title": "Residents Listed",
-    "description": "Miss A Phillips, George Gomme, Albert Goodchild, Thomas Goodchild, Alfred Hill, and George Kingham are listed as residents. Miss Moreton is the principal landowner. Miss A Phillips lived at the Old Vicarage.",
+    "description": "Miss A Phillips, George Gomme, Albert Goodchild, Thomas Goodchild, Alfred Hill, and George Kingham are listed as residents. Miss Moreton is the principal landowner. Miss A Phillips lived at the Old Vicarage. William Smith is the farmer at Rag (Ray) Farm.",
     "references": ["Kelly's 1911"],
     "labels": ["land"]
   },
@@ -1800,15 +1800,15 @@
   {
     "date": "1915",
     "title": "Residents Listed",
-    "description": "Residents included Miss A Phillips, George Gomme, Albert Goodchild, Thomas Goodchild, Alfred Hill, and George Kingham.",
+    "description": "Residents included Miss A Phillips, George Gomme, Albert Goodchild, Thomas Goodchild, Alfred Hill, and George Kingham. William Smith is the farmer at Rag (Ray) Farm.",
     "references": ["Kelly's 1915"],
     "labels": ["document"]
   },
   {
     "date": "17 Mar. 1916",
     "title": "Exemption from Military Service",
-    "description": "Herbert Smith, son of William Smith of Ray Farm applied for exemption as he did the bulk of the work on the 60 acre farm.",
-    "references": ["Bucks Free Press, 17 Mar. 1916"],
+    "description": "Herbert Smith, son of William Smith of Ray Farm applied for exemption as he did the bulk of the work on the 60 acre farm. He eventually enlisted in Jan. 1917 and was killed in action in Mar. 1918.",
+    "references": ["Bucks Free Press, 17 Mar. 1916", "Bucks Herald, 18 May 1918"],
     "labels": ["farm", "war", "person"]
   },
   {
@@ -1839,8 +1839,9 @@
   {
     "date": "21 Mar. 1918",
     "title": "Farmer killed in action",
-    "description": "Private Herbert Smith of Ray Farm, killed in France. Royal Berks Regiment, Service No 690860. Herbert left behind wife Elizabeth of the Three Pigeons, Longwick.",
-    "references": ["War Records, 1918"],
+    "description": "Private Herbert Smith of Ray Farm, killed in France aged 33. Royal Berks Regiment, Service No 690860. Herbert left behind wife Elizabeth of the Three Pigeons, Longwick.",
+    "image": "/images/herbert-smith.jpg",
+    "references": ["War Records, 1918", "Bucks Herald, 18 May 1918"],
     "labels": ["farm", "war", "person", "death"]
   },
   {
