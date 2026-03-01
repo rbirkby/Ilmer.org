@@ -1245,6 +1245,13 @@
     "labels": ["auction", "farm", "property", "sale"]
   },
   {
+    "date": "8 Sep. 1882",
+    "title": "Farm workers drunk and disorderly",
+    "description": "Drunk Rag Farm workers Simeon Eggleton and George Gomm described as 'quite incapable' and 'using rough language' to farmer John Read. They lay in the road insulting other men for an hour. Eggleton later told the magistrates that Mr Read had knocked him about with a farm shovel. Mr Read paid their fine.",
+    "references": ["Bucks Advertiser and Aylesbury News, 16 Sep. 1882", "Bucks Free Press, 15 Sep. 1882"],
+    "labels": ["farm", "person"]
+  },
+  {
     "date": "1883",
     "title": "Landowners and Farmers Listed",
     "description": "Moreton John Edwin Frewen and Mrs Raper are listed as joint owners of the manor. Edwin Morris, John Read, Richard Belgrove, and Mrs Hannah Gomme are listed as farmers.",
@@ -1651,6 +1658,20 @@
     "labels": ["housing"]
   },
   {
+    "date": "15 May. 1910",
+    "title": "Farmer's Daughter Marries",
+    "description": "Rosa Smith, eldest daughter of William Smith of Rag (Ray) Farm married William Claydon. The reception was held at Rag Farm.",
+    "references": ["Bucks Free Press, 20 May 1910"],
+    "labels": ["farm", "marriage", "person"]
+  },
+  {
+    "date": "13 Jul. 1910",
+    "title": "Farmer's Wife Injured in Market Place",
+    "description": "Mrs Smith, wife of W Smith of Ray Farm, was kicked in the leg by the horse that pulled their trap. The accident occurred in the Risborough marketplace whereafter she was cared for by Dr. Watson and was severely bruised.",
+    "references": ["South Bucks Standard, 15 Jul. 1910"],
+    "labels": ["farm", "person"]
+  },
+  {
     "date": "Dec. 1910",
     "title": "House Plans Passed",
     "description": "Plans were passed for A Goodchild to build a house on his land in Beckenham. This was the site of his nursery on Ravenscroft Road.",
@@ -1777,6 +1798,13 @@
     "labels": ["document"]
   },
   {
+    "date": "17 Mar. 1916",
+    "title": "Exemption from Military Service",
+    "description": "Herbert Smith, son of William Smith of Ray Farm applied for exemption as he did the bulk of the work on the 60 acre farm.",
+    "references": ["Bucks Free Press, 17 Mar. 1916"],
+    "labels": ["farm", "war", "person"]
+  },
+  {
     "date": "31 May 1916",
     "title": "Albert Goodchild's Nursery Business for Auction",
     "description": "Ilmer House owner, Albert Goodchild's nursery business in Beckenham, including land and plants, was put up for auction.",
@@ -1800,6 +1828,13 @@
     "description": "The parish room piano was sold for £4.",
     "references": ["Vestry meeting minutes, 1918"],
     "labels": ["auction", "sale"]
+  },
+  {
+    "date": "21 Mar. 1918",
+    "title": "Farmer killed in action",
+    "description": "Private Herbert Smith of Ray Farm, killed in France. Royal Berks Regiment, Service No 690860",
+    "references": ["War Records, 1918"],
+    "labels": ["farm", "war", "person", "death"]
   },
   {
     "date": "26 Jul. 1918",
@@ -1921,6 +1956,13 @@
     "description": "The church stove was repaired. It was likely to have been an octagonal Tortoise stove, a popular brand at the time and visible in historical photographs.",
     "references": ["Vestry minutes"],
     "labels": ["church", "repair"]
+  },
+  {
+    "date": "27 Jul. 1927",
+    "title": "Farmer died",
+    "description": "William Smith, farmer at Ray Farm, died aged 67 leaving his wife Kate, 3 daughters and son Wilfred. He was a parish constable and co-managed Longwick school. He was burried at the Baptist Church",
+    "references": ["Bucks Free Press, 6 Aug. 1927"],
+    "labels": ["farm", "death", "person"]
   },
   {
     "date": "Feb. 1928",
