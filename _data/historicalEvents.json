@@ -3173,7 +3173,7 @@
   {
     "date": "8 Dec. 1988",
     "title": "Farmer dies",
-    "description": "Reginald Wilfred (Dick) Smith died aged 82. He was the younger brother of Herbert Smith who was killed in action. In his youth, he had a motorcycle accident resulting in a lifelong leg injury. He left widow Eleanor, a son and a daughter.",
+    "description": "Reginald Wilfred (Dick) Smith died aged 82. He was the younger brother of Herbert Smith who was killed in action. In his youth, Herbert had a motorcycle accident resulting in a lifelong leg injury. He left widow Eleanor, a son and a daughter.",
     "references": ["Bucks Herald, 8 Dec 1988"],
     "labels": ["farm", "death", "person"]
   },
@@ -3181,6 +3181,7 @@
     "date": "12 Aug. 1989",
     "title": "Sunrise 'Back to the future' Rave",
     "description": "The Sunrise 'Back to the future' acid house dance festival was held in fields east of Ilmer, with 15,000 attendees. For the party goers, it became the stuff of legend.",
+    "image": "/images/sunrise-backtothefuture-1989.jpg",
     "references": ["Rave New World, Kirk Field, Nine Eight Books, 2023"],
     "labels": ["housing"]
   },
@@ -3188,6 +3189,7 @@
     "date": "1 Nov. 1989",
     "title": "Keir Starmer on Kilroy",
     "description": "Keir Starmer, future prime minister, appeared on TV talk-show \"Kilroy\" about rave culture, representing the National Council for Civil Liberties. It had been just 3 months since the Longwick rave, which will have been on Keir's mind.",
+    "image": "/images/kilroy.jpg",
     "references": ["[Kilroy, BBC TV 1989](https://youtu.be/3ihm3f1nOn8?si=y7yuVmbzIOcJIV_0&t=1144)"],
     "labels": ["media"]
   },
@@ -3223,6 +3225,7 @@
     "date": "1991",
     "title": "ShellStar Office Demolition Approved",
     "description": "Approval was granted to demolish the former ShellStar office building and erect a 'private display building'.",
+    "image": "/images/shellstar-landjournal19-autumn1965-PeterStrickland.jpg",
     "references": ["Wycombe district planning approvals"],
     "labels": ["building"]
   },
