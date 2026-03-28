@@ -406,7 +406,11 @@
     "date": "15 Mar. 1516",
     "title": "New Vicar Appointed",
     "description": "James Withington is appointed as vicar by the Prioress of Studley.",
-    "references": ["Willis's Manuscripts, Bodleian Library"],
+    "references": [
+      "Willis's Manuscripts, Bodleian Library",
+      "[Will of James Withington](/wills/james-withington), Bucks Archives, DA/WE/8/197",
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=153939) for James Withington"
+    ],
     "labels": ["church", "person"]
   },
   {
@@ -481,7 +485,11 @@
     "date": "Feb. 1556",
     "title": "Vicar Prepares Will",
     "description": "Vicar [James Withington](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=153939) writes his will, requesting to be buried in Ilmer church.",
-    "references": ["Willis's Manuscripts, Bodleian Library"],
+    "references": [
+      "Willis's Manuscripts, Bodleian Library",
+      "[Will of James Withington](/wills/james-withington), Bucks Archives, DA/WE/8/197",
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=153939) for James Withington"
+    ],
     "labels": ["church", "document", "person"]
   },
   {
