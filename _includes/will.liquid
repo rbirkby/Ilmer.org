@@ -1,0 +1,160 @@
+{% include "head" %}
+
+<style>
+  @font-face {
+    font-family: 'Joscelyn';
+    src: url("/assets/fonts/Joscelyn.woff2");
+  }
+
+  h2 {
+    text-align: right;
+  }
+
+  main {
+    background-color: #fbf2e1;
+  }
+
+  .will-body {
+    {% if script == "secretary-hand" %}
+      font-family: "Joscelyn";
+    {% endif %}
+    line-height: 2em;
+    transition: opacity 0.1s ease;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .will-body.modern {
+    font-family: inherit;
+    letter-spacing: 2px;
+  }
+
+  .font-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 0 1.5rem;
+    font-size: 1.4rem;
+    color: #5a4020;
+    cursor: pointer;
+    user-select: none;
+
+    & input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    & .toggle-label {
+      transition: opacity 0.2s;
+    }
+
+    & .toggle-label--secretary {
+      opacity: 1;
+    }
+    & .toggle-label--modern {
+      opacity: 0.45;
+    }
+
+     &:has(input:checked) .toggle-label--secretary {
+      opacity: 0.45;
+    }
+     &:has(input:checked) .toggle-label--modern {
+      opacity: 1;
+    }
+  }
+
+  .toggle-pill {
+    position: relative;
+    width: 4.4rem;
+    height: 2.4rem;
+    background: #c9a05a;
+    border-radius: 9999px;
+    transition: background 0.1s;
+    flex-shrink: 0;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0.3rem;
+      left: 0.3rem;
+      width: 1.8rem;
+      height: 1.8rem;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.1s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    }
+
+    .font-toggle:has(input:checked) & {
+      background: #7a9e7e;
+
+      &::after {
+        transform: translateX(2rem);
+      }
+    }
+  }
+</style>
+
+<header>
+  <div class="container">
+    <div class="mast">
+      <a href="/">Ilmer Past</a>
+    </div>
+    <nav>
+      <a href="/map">Location</a>
+      <a href="/newsroom">News</a>
+      <a href="/about">About</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="article">
+    <p class="breadcrumb">
+      <a href="/wills/">← Wills</a>
+    </p>
+    <h1>{{ title }}</h1>
+    <p class="will-meta">{{ description }}</p>
+
+    {% if script == "secretary-hand" %}
+      <label class="font-toggle">
+        <input
+          type="checkbox"
+          id="fontToggle"
+          onchange="toggleFont(this)">
+        <span class="toggle-label toggle-label--secretary">Secretary Hand</span>
+        <span class="toggle-pill"></span>
+        <span class="toggle-label toggle-label--modern">Modern script</span>
+      </label>
+    {% endif %}
+
+    <div class="will-body">
+      {{ content }}
+    </div>
+
+
+    {% if explanation %}
+      <p class="will-explanation">
+        <a href="{{ explanation }}">Modern-English summary</a>
+      </p>
+    {% endif %}
+
+  </section>
+</main>
+<footer>
+  <div class="container">
+    An Ilmer community project
+  </div>
+</footer>
+
+<script>
+  function toggleFont(checkbox) {
+    const body = document.querySelector('.will-body');
+    body.style.opacity = '0';
+    setTimeout(() => {
+      body.classList.toggle('modern', checkbox.checked);
+      body.style.opacity = '1';
+    }, 100);
+  }
+</script>
