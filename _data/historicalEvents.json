@@ -9,9 +9,23 @@
   {
     "date": "c. 1086",
     "title": "Norman Survey (Domesday Book)",
-    "description": "The manor is recorded as belonging to the powerful Odo, Bishop of Bayeux, and is managed by his tenant, Robert. Its taxable value is £4.",
-    "references": ["Liber Censualis (Domesday Book), Vol. 1, folio 144"],
+    "description": "The manor is recorded as belonging to the powerful Odo, Bishop of Bayeux, and is managed by his tenant, Robert de Romenel. Its taxable value is £4.",
+    "references": ["Liber Censualis (Domesday Book), Vol. 1, folio 144", "Lipscomb's History..."],
     "labels": ["economy", "manor", "property"]
+  },
+  {
+    "date": "c. 1129",
+    "title": "David de Rumenel born",
+    "description": "David de Rumenel, father of Aubrey, is born. During his life, he held the manor of Ilmer and Aston.",
+    "references": [],
+    "labels": ["manor", "property"]
+  },
+  {
+    "date": "c. 1200",
+    "title": "David de Rumenel died",
+    "description": "David de Rumenel, father of Aubrey, dies. During his life, he held the manor of Ilmer and Aston.",
+    "references": [],
+    "labels": ["manor", "property"]
   },
   {
     "date": "1203",
@@ -23,7 +37,7 @@
       "Dunkin's History of Bullington and Ploughley Hundred, p. 133",
       "Testa de Nevill"
     ],
-    "labels": ["church"]
+    "labels": ["church", "manor"]
   },
   {
     "date": "1204",
@@ -229,8 +243,11 @@
   {
     "date": "12 Apr. 1339",
     "title": "John Fitz-Bernard releases all rights to the manor of Ilmer",
-    "description": "Signed at Stoke Poges, all remaining rights to the manor of Ilmer are released by John Fitz-Bernard and he gives these rights to Sir John de Molyns, his wife Egidia, and their son John.",
-    "references": ["Calendar of close rolls, membranes 43d and 39d, 13 Edward III, 13 May 1339"],
+    "description": "Signed at Stoke Poges, all remaining rights to the manor of Ilmer are released by John Fitz-Bernard and he gives these rights to Sir John de Molyns, his wife Egidia, and their son John. John Fitz-Bernard received 100 marks of silver.",
+    "references": [
+      "Calendar of close rolls, membranes 43d and 39d, 13 Edward III, 13 May 1339",
+      "Feet of fines, 13 Edward III, 6 Oct 1339"
+    ],
     "labels": ["manor", "property"]
   },
   {
@@ -652,6 +669,7 @@
     "title": "Death of Baron Dormer",
     "description": "Baron Dormer, who as lord of the manor was also the King's Master Falconer, dies.",
     "references": ["Lipscomb's History..."],
+    "image": "/images/robert-dormer-1st-baron.avif",
     "labels": ["death", "manor", "person", "property"]
   },
   {
@@ -673,6 +691,7 @@
     "title": "Death of Robert Dormer, 1st Earl of Carnarvon",
     "description": "Robert Dormer, 1st Earl of Carnarvon, died in Ascott House, Wing.",
     "references": ["wikipedia"],
+    "image": "/images/1stEarlOfCarnarvon.avif",
     "labels": ["death", "housing", "person"]
   },
   {
