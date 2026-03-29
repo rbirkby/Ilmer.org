@@ -4,7 +4,7 @@
     "title": "Pre-Norman Ownership",
     "description": "Before the Norman Conquest, the Ilmer estate was held by Godwin, a supporter of Earl Lewin, who had the legal right to sell it.",
     "references": ["Liber Censualis (Domesday Book), Vol. 1, folio 144"],
-    "labels": ["legal"]
+    "labels": ["legal", "manor"]
   },
   {
     "date": "c. 1086",
@@ -16,11 +16,12 @@
   {
     "date": "1203",
     "title": "Church Patronage Granted",
-    "description": "The right to appoint the priest (the advowson) of Ilmer Church is granted to the Nunnery of Stodeley (aka Studley Priory) in Oxfordshire.",
+    "description": "The right to appoint the priest (the advowson) of Ilmer Church is granted to the Nunnery of Stodeley (aka Studley Priory) in Oxfordshire by Aubrey, daughter of David de Rumenel. She is otherwise known as Aubrea, Albrea, Albritha, Aubretha, Albreda, Aubreda widow of William de Jarpenville. Their daughter Alice married Thomas Fitz-Bernard.",
     "references": [
       "Lipscomb",
       "Dugdale's Monasticon Anglicanum, Vol. 4, p. 249",
-      "Dunkin's History of Bullington and Ploughley Hundred, p. 133"
+      "Dunkin's History of Bullington and Ploughley Hundred, p. 133",
+      "Testa de Nevill"
     ],
     "labels": ["church"]
   },
@@ -29,14 +30,24 @@
     "title": "Royal Charter for Falconry Duty",
     "description": "King John issues a charter confirming the royal duty of Keeper of the King's Hawks to Thomas Fitz-Bernard and his heirs.",
     "references": ["Cartae Antiquae Rolls, I. 30", "Rymer's Fædera, new Edition, Vol. 1, p. 90"],
-    "labels": ["document", "inheritance"]
+    "labels": ["document", "inheritance", "manor"]
   },
   {
-    "date": "1221",
+    "date": "1221/22",
     "title": "Manor Claim Settled",
-    "description": "A legal claim to half the manor by other descendants of the Romenel family is settled, securing the title for Albreda de Jarponville.",
-    "references": ["Fine Rolls, 6 Henry III"],
+    "description": "A legal claim to half the manor by other descendants of the Romenel family is settled, securing the title for Albreda de Jarponville.\n\n > 6 Hen. III, Westm., octave of S. Hilary [14--20 Jan., 1222]: Rob. Achard, Rog. de Cauz, Aymery de Nodariis, and Gilb. de Sancto Claro pet. and (i) Albreda de Garpervill ten.; a moiety of the manor of ILMERE; (ii) Alice wid. Thorn. s. Bernard ten. ; a moiety of the manor of ESTON ; (iii) Ralf s. Bernard; a moiety of the manor of ADINTON; R.R.A. and G. claim the moieties as their reasonable portion of the inheritance which was of David de Romenel their ancestor; they quitclaimed; saving to G. 1 hide land in  Sucot which he formerly held of Albr. ; A. A. and R. gave to R.R.A. and G. 40 mks. of silver. ",
+    "references": [
+      "Fine Rolls, 6 Henry III",
+      "[Feet of Fines, 6 Henry III, no. 16](https://www.bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-04.pdf)"
+    ],
     "labels": ["legal", "manor", "property"]
+  },
+  {
+    "date": "abt 1226",
+    "title": "Aubrea de Japenville's Death",
+    "description": "Aubrea de Japenville dies. Her daughter Alice, wife of Thomas Fitz-Bernard, inherits the manor of Ilmer and Aston.",
+    "references": ["Archaeologia Cantiana, Vol. XIII, pp. 365-366"],
+    "labels": ["manor", "property", "death"]
   },
   {
     "date": "1229",
@@ -66,8 +77,30 @@
   {
     "date": "1259",
     "title": "Death of John Fitz-Bernard",
-    "description": "The lord of the manor, John Fitz-Bernard, dies. Guardianship of his heir is granted to Imbert de Puges.",
-    "references": ["Escheats Rolls, 44 Henry III, no. 22", "Testa de Nevill, p. 245"],
+    "description": "The lord of the manor, John Fitz-Bernard, dies. Guardianship of his heir is granted to Imbert de Puges who had married Joan de Aguillon, widow of Fitz-Bernard (Note: There are doubts over whether Joan was the wife of John). The Ilmer manor descended to his son Ralph.",
+    "references": [
+      "Escheats Rolls, 44 Henry III, no. 22",
+      "Testa de Nevill, p. 245",
+      "[Archaeologia Cantiana, Kent Archaeological Society, Volume 13, 1880](https://books.google.co.uk/books?id=0CxKAAAAYAAJ&lpg=PA370&pg=PA369#v=onepage&q&f=false)"
+    ],
+    "labels": ["death", "inheritance", "manor", "person", "property"]
+  },
+  {
+    "date": "30 Oct 1259",
+    "title": "Ralph, son of John Fitz-Bernard, age variously stated as 13, 14 and 15, is his heir",
+    "description": "Estun and Ylmer manor (Aston and Ilmer) are mentioned in the Calendar of Inquisitions Post Mortem.",
+    "references": [
+      "Calendar of Inquisitions Post Mortem, [44 Henry III, no. 468](https://www.british-history.ac.uk/inquis-post-mortem/vol1/pp129-137)"
+    ],
+    "labels": ["inheritance", "manor", "person", "property"]
+  },
+  {
+    "date": "1263",
+    "title": "Death of Imbert de Puges",
+    "description": "Imbert de Puges dies.",
+    "references": [
+      "[The Careers and Legacy of Mathias Bezill, Imbert Pugeys and Peter de Champvent](https://www.cambridge.org/core/books/abs/thirteenth-century-england-x/three-alien-royal-stewards-in-thirteenthcentury-england-the-careers-and-legacy-of-mathias-bezill-imbert-pugeys-and-peter-de-champvent/77E859B283AFE78EEBA0449072DD5510)"
+    ],
     "labels": ["death", "inheritance", "manor", "person", "property"]
   },
   {
@@ -102,22 +135,35 @@
     "labels": ["church", "economy", "person"]
   },
   {
-    "date": "1305",
+    "date": "1305/06",
     "title": "Death of Ralph Fitz-Bernard",
-    "description": "Ralph Fitz-Bernard dies while holding the title to the manor of Ilmer.",
-    "references": ["Escheats Rolls, 34 Edward I, no. 53"],
+    "description": "Ralph Fitz-Bernard, son of John, grandson of Ralph, dies while holding the title to the manor of Ilmer. Ralph's son John had pre-deceased him in 1297. And so his heir was John's son, Ralph's grandson, Thomas (b 1288, d 1322, wife Bona). The manor along with Aston was assigned to his widow Agatha in dower.",
+    "references": [
+      "Escheats Rolls, 34 Edward I, no. 53",
+      "Calendar Close Rolls Edward I, 1 Nov. 1306",
+      "Cokayne, G. E. [The complete peerage, Volume 5](https://archive.org/details/CokayneG.E.TheCompletePeerageSecondEditionVolume5EAGO/page/n209/mode/2up)"
+    ],
     "labels": ["death", "manor", "person", "property"]
   },
   {
     "date": "25 Nov. 1315",
     "title": "Manor Sold to Blacket",
-    "description": "Thomas Fitz-Bernard sells the estate of Adynton', Ilmere and Aston' Bernard to John Blacket (or Blaket).",
+    "description": "Thomas Fitz-Bernard sells the estate of Adynton', Ilmere and Aston' Bernard to John Blacket (or Blaket) but only to take posession once Thomas' wife Agatha had died. She died 1 Feb. 1333/4.",
     "references": [
       "[Fine Rolls, 9 Edward II, no. 208](http://aalt.law.uh.edu/AALT7/CP25%281%29/CP25_1_18_60-73/IMG_0310.htm)",
       "Willis's Manuscripts, Bodleian Library, Vol. 16, p. 120",
       "[CP 25/1/18/68](https://www.medievalgenealogy.org.uk/fines/abstracts/CP_25_1_18_68.shtml)"
     ],
     "labels": ["manor", "property"]
+  },
+  {
+    "date": "Dec. 1322",
+    "title": "Thomas Fitz-Bernard Dies",
+    "description": "Husband of Agatha, Thomas Fitz-Bernard dies.",
+    "references": [
+      "Cokayne, G. E. [The complete peerage, Volume 5](https://archive.org/details/CokayneG.E.TheCompletePeerageSecondEditionVolume5EAGO/page/n209/mode/2up)"
+    ],
+    "labels": ["death", "manor", "property"]
   },
   {
     "date": "c. 1327-1377",
@@ -127,16 +173,25 @@
     "labels": ["economy", "farm", "land", "property"]
   },
   {
-    "date": "1328",
+    "date": "10 Jan 1328/29",
     "title": "Death of John Blacket",
-    "description": "The new owner of the manor, John Blacket, dies.",
+    "description": "The future owner (reversion) of the manor, John Blacket, dies.",
     "references": ["Escheats Rolls, 2 Edward III, no. 27"],
     "labels": ["death", "manor", "person", "property"]
   },
   {
+    "date": "1 Feb. 1333/4",
+    "title": "Death of Agatha, Widow of Thomas Fitz-Bernard",
+    "description": "Agatha, widow of Thomas Fitz-Bernard, dies.",
+    "references": [
+      "Cokayne, G. E. [The complete peerage, Volume 5](https://archive.org/details/CokayneG.E.TheCompletePeerageSecondEditionVolume5EAGO/page/n209/mode/2up)"
+    ],
+    "labels": ["death", "manor", "person", "property"]
+  },
+  {
     "date": "20 Jan. 1336",
-    "title": "Manor Sold to de Molyns",
-    "description": "John Blacket the elder sells the Aston' Bernard' and Ilmere estate to the powerful and influential Sir John de Molyns for 100 pounds sterling.",
+    "title": "Manor sold to de Molyns",
+    "description": "John Blacket, son of John Blacket the elder, sells the Aston Bernard and Ilmere estate to the powerful and influential Sir John de Molyns and wife Egidia for 100 pounds sterling.",
     "references": [
       "[Fine Rolls, 9 Edward III](http://aalt.law.uh.edu/AALT7/CP25%281%29/CP25_1_19/IMG_0139.htm)",
       "[CP 25/1/19/81](https://www.medievalgenealogy.org.uk/fines/abstracts/CP_25_1_19_81.shtml#1)"
@@ -148,7 +203,7 @@
     "title": "Private Park Created",
     "description": "Sir John de Molyns receives a royal license from Edward III to enclose his woods at Ilmer, creating a private hunting park.",
     "references": ["Dugdale's Baronage of England, Vol. 2, p. 145", "Lipscomb"],
-    "labels": ["document"]
+    "labels": ["document", "manor"]
   },
   {
     "date": "1337",
@@ -172,10 +227,21 @@
     "labels": ["manor", "property"]
   },
   {
-    "date": "1340",
+    "date": "12 Apr. 1339",
+    "title": "John Fitz-Bernard releases all rights to the manor of Ilmer",
+    "description": "Signed at Stoke Poges, all remaining rights to the manor of Ilmer are released by John Fitz-Bernard and he gives these rights to Sir John de Molyns, his wife Egidia, and their son John.",
+    "references": ["Calendar of close rolls, membranes 43d and 39d, 13 Edward III, 13 May 1339"],
+    "labels": ["manor", "property"]
+  },
+  {
+    "date": "Dec. 1340",
     "title": "Manor Seized by the King",
     "description": "After Sir John de Molyns falls from royal favour, his extensive properties, including the manor of Ilmer, are seized by the Crown.",
-    "references": ["Lipscomb's History... (see Stoke Poges)", "Fine Rolls, 16 Edward III, membrane 14"],
+    "references": [
+      "Lipscomb's History... (see Stoke Poges)",
+      "Fine Rolls, 16 Edward III, membrane 14",
+      "[The first fall of Sir John Molyns, G. R. Elvey, Bucks AS](http://www.bucksas.org.uk/rob/rob_19_2_194.pdf)"
+    ],
     "labels": ["manor", "property"]
   },
   {
@@ -195,7 +261,7 @@
   {
     "date": "9 Mar. 1349",
     "title": "Vicar Granted Land",
-    "description": "Sir Richard Gladewyne, vicar, was granted a plot 100ft x 50ft, facing east by John de Molyns. An additional grant of 2 plots totalling 7.5 acres was also made.",
+    "description": "Sir Richard Gladewyne, vicar, was granted a plot 100ft x 50ft, facing east by John de Molyns. An additional grant of 2 plots totalling 7.5 acres was also made in Middlefurlong Undertoun and Middlefurlong benorth.",
     "references": ["Calendar of Close Rolls of Edward III, 1349"],
     "labels": ["church", "land", "person"]
   },
@@ -239,14 +305,14 @@
       "Fine Rolls, 40 Edward III, folio 158",
       "Dugdale's Baronage of England, Vol. 2, p. 147"
     ],
-    "labels": ["death", "person", "property"]
+    "labels": ["death", "person", "property", "manor"]
   },
   {
     "date": "1381",
     "title": "Property Descends to Sir Richard Molines",
     "description": "Ilmer property descends to Sir Richard Molines.",
     "references": ["Stoke Poges, a concise account of the church and manor, and also of the poet, Thomas Gray, 1896"],
-    "labels": ["property"]
+    "labels": ["property", "manor"]
   },
   {
     "date": "19 Jun. 1384",
@@ -497,7 +563,7 @@
     "title": "New Vicar Appointed",
     "description": "John Swainson is appointed as vicar by the lord of the manor, Sir Robert Dormer.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "manor", "person", "property"]
+    "labels": ["church", "person", "property"]
   },
   {
     "date": "d. 1558",
@@ -822,7 +888,7 @@
     "description": "Philip Stanhope, 4th Earl of Chesterfield died. He adopted his cousin and godson who became the 5th Earl and inherited the 'Dormer Lands', including Ilmer. Philip became famous for his 400 '[letters to his son](https://www.gutenberg.org/ebooks/3351)' over 30 years, subtitled, the Fine Art of becoming a MAN OF THE WORLD and a GENTLEMAN. Philip wrote the letters to his illegitimate son which were published by his son's widow to fund her pension.",
     "image": "/images/philip-dormer.jpg",
     "references": ["The Buckinghamshire Lieutenancy, Viney"],
-    "labels": ["death", "land", "person"]
+    "labels": ["death", "land", "person", "manor"]
   },
   {
     "date": "1776",
@@ -921,7 +987,7 @@
   {
     "date": "4 Nov. 1817",
     "title": "Moreton John Edward Frewen Admitted to Gray's Inn",
-    "description": "Moreton John Edward Frewen was admitted to Gray's Inn. He would later inherit the Manor of Ilmer.",
+    "description": "Moreton John Edward Frewen was admitted to Gray's Inn. He would later inherit the Manor of Ilmer from his father Dr (Rev) Edward Frewen.",
     "references": ["Register of Admissions to Gray's Inn, 1889"],
     "labels": ["manor"]
   },
@@ -1775,7 +1841,7 @@
     "title": "Farm Auction Particulars",
     "description": "Auction particulars for Manor Farm & Lower Farm were issued.",
     "references": ["London Met Archives, ref: LMA/4673/D/01/035/016"],
-    "labels": ["auction", "farm", "manor", "property", "sale"]
+    "labels": ["auction", "farm", "property", "sale"]
   },
   {
     "date": "16 Jan. 1913",
@@ -1796,7 +1862,7 @@
     "title": "Manor Farm Tenancy",
     "description": "Alfred Hill was the tenant farmer at Manor Farm, owned by Elizabeth Moreton.",
     "references": ["Lloyd George Survey, 1913"],
-    "labels": ["farm", "manor", "property"]
+    "labels": ["farm", "property"]
   },
   {
     "date": "12 Dec. 1915",
@@ -1898,7 +1964,7 @@
     "title": "Census Data",
     "description": "Residents at Lower Farm, Manor Farm, and Coldharbour Farm are listed.",
     "references": ["19 June, 1921 census"],
-    "labels": ["farm", "manor", "property"]
+    "labels": ["farm", "property"]
   },
   {
     "date": "1921",
@@ -2547,7 +2613,7 @@
     "title": "Manor Farm Cottage Built",
     "description": "Manor Farm Cottage was built.",
     "references": ["Bucks Free Press, 27 Jul 1979"],
-    "labels": ["building", "farm", "manor", "property"]
+    "labels": ["building", "farm", "property"]
   },
   {
     "date": "14 Aug. 1950",
@@ -2684,7 +2750,7 @@
     "description": "Manor Farm Ilmer Herd held an auction of 163 cattle.",
     "image": "/images/ilmerherdsale.jpg",
     "references": ["auction catalogue, Bucks Archaeological Society"],
-    "labels": ["auction", "farm", "manor", "property", "sale"]
+    "labels": ["auction", "farm", "property", "sale"]
   },
   {
     "date": "Dec. 1964",
@@ -2831,7 +2897,7 @@
     "title": "(Robert) Merrick Attenborough Retires as Pack Master",
     "description": "(Robert) Merrick Attenborough, pack master since 1957, retired from the role. Merrick farmed Manor Farm and lived at Close End.",
     "references": ["Bailys Hunting Directory, 1998"],
-    "labels": ["farm", "manor", "property"]
+    "labels": ["farm", "property"]
   },
   {
     "date": "1969",
@@ -2860,7 +2926,7 @@
     "title": "Manor Farm for Sale",
     "description": "Manor Farm, consisting of 302 acres and 4 cottages, was put up for sale.",
     "references": ["Sale particulars, Jackson Stops property, Historic England Archive", "Bucks Free Press 9 Oct 1970"],
-    "labels": ["auction", "farm", "manor", "property", "sale"]
+    "labels": ["auction", "farm", "property", "sale"]
   },
   {
     "date": "1970",
@@ -2881,14 +2947,14 @@
     "title": "Manor Farm Sold",
     "description": "Manor Farm was sold after auction.",
     "references": ["Bucks Free Press, 23 Oct 1970"],
-    "labels": ["auction", "farm", "manor", "property", "sale"]
+    "labels": ["auction", "farm", "property", "sale"]
   },
   {
     "date": "Jun. 1971",
     "title": "Farmhouse Plans Approved",
     "description": "Plans were approved to build a farmhouse at Manor Farm.",
     "references": ["Bucks Free Press, 18 Jun 1971"],
-    "labels": ["farm", "housing", "manor", "property"]
+    "labels": ["farm", "housing", "property"]
   },
   {
     "date": "Aug. 1971",
@@ -2932,7 +2998,7 @@
     "title": "Eton College Buys Manor Farm",
     "description": "Eton College bought Manor Farm from Benjamin Smith.",
     "references": ["Bucks Free Press, 27 Jul 1979", "Eton College Archives, MISC ALHC 498"],
-    "labels": ["farm", "manor", "property"]
+    "labels": ["farm", "property"]
   },
   {
     "date": "c. 1975 (1970s)",
@@ -3032,7 +3098,7 @@
     "title": "Residents Leave Ilmer",
     "description": "Mr J & Mrs Molly Shurrock, residents of Manor Farm, left Ilmer to live in Bledlow. Mrs Shurrock had rented the Church Close land where she kept goats, calves and sheep.",
     "references": ["Bucks Free Press, 27 Jul 1979"],
-    "labels": ["church", "farm", "land", "manor", "property"]
+    "labels": ["church", "farm", "land", "property"]
   },
   {
     "date": "Jul. 1979",
@@ -3361,7 +3427,7 @@
     "title": "Death of (Robert) Merrick Attenborough",
     "description": "(Robert) Merrick Attenborough, former resident, farmer of Manor Farm and resident of Close End died.",
     "references": [],
-    "labels": ["death", "farm", "manor", "person", "property"]
+    "labels": ["death", "farm", "person", "property"]
   },
   {
     "date": "26 Apr. 2011",
