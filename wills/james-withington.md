@@ -1,7 +1,7 @@
 ---
 layout: will
 title: Vicar James Withington
-description: The last will and testament of James Withington, vicar of Ilmer, 1556
+description: The last will and testament of James Withington, vicar of Ilmer, 1556. Held at Bucks Archives ref DA/WE/8/197 and DA/WF/2/367.
 category: wills
 script: secretary-hand
 transcriber: Gemini 3 Flash Preview
