@@ -597,6 +597,13 @@
     "labels": ["church", "economy"]
   },
   {
+    "date": "1538/39",
+    "title": "George Hastings sells the manor to Robert Dormer",
+    "description": "George, Earl of Huntingdon and his son Francis, Lord Hastings, sells the manor of Ilmer to Robert Dormer. The year earlier, they had sold Aston Mullins to Michael Dormer.",
+    "references": ["Victoria History of the County of Buckingham vol4, Waddesdon"],
+    "labels": ["manor", "property"]
+  },
+  {
     "date": "26 Feb. 1539",
     "title": "Church Property Granted After Dissolution",
     "description": "Following the Dissolution of the Monasteries, King Henry VIII grants the church property and its income (the Rectory) to John Croke of Chilton.",
@@ -618,9 +625,9 @@
   {
     "date": "24 Mar. 1544",
     "title": "Death of Earl of Huntingdon",
-    "description": "George, Earl of Huntingdon, dies. He was the son of Edward Hastings and Mary de Hungerford, the Hungerford heiress. He had inherited the manor of Ilmer through his mother. The manor is inherited by his son Francis, 2nd Earl of Huntingdon. In 1510, George's wife, Anne Stafford, had been one of Henry VIII's mistresses.",
+    "description": "George Hastings, 1st Earl of Huntingdon, dies. He was the son of Edward Hastings and Mary de Hungerford, the Hungerford heiress. He had inherited the manor of Ilmer through his mother. In 1510, George's wife, Anne Stafford, had been one of Henry VIII's mistresses.",
     "references": ["Lipscomb's History..."],
-    "labels": ["death", "inheritance", "manor", "marriage", "person", "property"]
+    "labels": ["death", "manor", "marriage", "person", "property"]
   },
   {
     "date": "14 Dec. 1551",
