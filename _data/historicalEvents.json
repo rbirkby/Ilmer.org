@@ -180,11 +180,27 @@
     "labels": ["death", "manor", "property"]
   },
   {
+    "date": "4 Mar. 1327",
+    "title": "John Blaket claims theft of property",
+    "description": "Theft of forty horses, fifty oxen, sixty bullocks, thirty cows and two hundred swine, worth £100 from manors of Ilmer, Aston and Addington. John Blaket appears to have a history of claiming similar thefts across his manors in Buckinghamshire and beyond.",
+    "references": [
+      "Calendar of the patent rolls preserved in the Public Record Office : Edward III, Membrane 26d and membrane 24d"
+    ],
+    "labels": ["manor", "property"]
+  },
+  {
     "date": "c. 1327-1377",
     "title": "Poverty Assessment",
     "description": "During the reign of Edward III, a tax report confirms that the residents of Ilmer were too poor to properly farm the land.",
     "references": ["Inquisitio Nonarum, p. 340"],
     "labels": ["economy", "farm", "land", "property"]
+  },
+  {
+    "date": "18 Feb. 1328",
+    "title": "John Blaket claims theft of property",
+    "description": "Theft of twenty horses, twenty mares, sixty oxen, forty bullocks, forty cows and two hundred swine, worth 200 marks, and felled and carried away his trees from his manors of Ilmer, Aston and Addington.",
+    "references": ["Calendar of the patent rolls preserved in the Public Record Office : Edward III, Membrane 30d"],
+    "labels": ["manor", "property"]
   },
   {
     "date": "10 Jan 1328/29",
@@ -325,10 +341,13 @@
     "labels": ["death", "person", "property", "manor"]
   },
   {
-    "date": "1381",
+    "date": "1380/81",
     "title": "Property Descends to Sir Richard Molines",
-    "description": "Ilmer property descends to Sir Richard Molines.",
-    "references": ["Stoke Poges, a concise account of the church and manor, and also of the poet, Thomas Gray, 1896"],
+    "description": "Ilmer property descends to Sir Richard Molines, son of Sir William Molines.",
+    "references": [
+      "Stoke Poges, a concise account of the church and manor, and also of the poet, Thomas Gray, 1896",
+      "Lipscomb's History... (see Stoke Poges, vol 4 p. 547)"
+    ],
     "labels": ["property", "manor"]
   },
   {
@@ -337,6 +356,13 @@
     "description": "John Jonason becomes the new vicar after exchanging his previous position with the former vicar, Robert Burkard.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
     "labels": ["church", "person"]
+  },
+  {
+    "date": "abt. 1385",
+    "title": "Sir Richard Molines dies",
+    "description": "Richard dies leaving his heir, William de Moleyns aged 7.",
+    "references": ["Victoria History of the County of Buckingham vol3, stoke poges"],
+    "labels": ["manor", "person"]
   },
   {
     "date": "21 May 1388",
@@ -381,6 +407,13 @@
     "labels": ["church", "person"]
   },
   {
+    "date": "1424",
+    "title": "Sir William de Moleyns dies",
+    "description": "William de Moleyns dies and the manor passes to his son William who was killed in 1429 at the siege of Orleans during the hundred years war.",
+    "references": ["Victoria History of the County of Buckingham vol3, stoke poges"],
+    "labels": ["manor", "person"]
+  },
+  {
     "date": "4 Aug. 1424",
     "title": "New Vicar Formally Admitted",
     "description": "William Gibbes is formally admitted as the Vicar of Ilmer.",
@@ -388,9 +421,16 @@
     "labels": ["church", "person"]
   },
   {
+    "date": "1429",
+    "title": "William de Moleyns is killed during the siege of Orleans",
+    "description": "William de Moleyns dies at the siege of Orleans during the hundred years war. He is succeeded by his only daughter Eleanor (Alianor) aged 3 years old. She marries Robert de Hungerford.",
+    "references": ["Victoria History of the County of Buckingham vol3, stoke poges"],
+    "labels": ["manor", "person"]
+  },
+  {
     "date": "1440",
     "title": "Hungerford Family Inherits Manor",
-    "description": "The manor passes to the Hungerford family through the marriage of the Molyns heiress, Alianore, to Robert Hungerford.",
+    "description": "The manor passes to the Hungerford family through the marriage of the Molyns heiress, Alianore (Eleanor), to Robert Hungerford. He styled himself Lord Moleyns, 1st Baron Moleyns.",
     "references": ["Lipscomb's History..."],
     "labels": ["inheritance", "manor", "marriage", "property"]
   },
@@ -430,6 +470,13 @@
     "labels": ["government", "land"]
   },
   {
+    "date": "1464",
+    "title": "Robert Hungerford beheaded as a Lancastrian",
+    "description": "Robert Hungerford, husband of Eleanor de Molyns, is captured at the battle of Hexham and beheaded at Newcastle before being buried in Salisbury Cathedral. The manor of Ilmer is inherited by his son Sir Thomas Hungerford.",
+    "references": ["Victoria History of the County of Buckingham vol3, stoke poges"],
+    "labels": ["manor", "person"]
+  },
+  {
     "date": "res. 1466",
     "title": "Vicar Robert Byrcham Resigns",
     "description": "Robert Byrcham resigns his position as vicar.",
@@ -449,6 +496,13 @@
     "description": "Following the resignation of Henry Stodysbury, John Sunday is appointed as the new vicar.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
     "labels": ["church", "person"]
+  },
+  {
+    "date": "17 Jan 1469",
+    "title": "Sir Thomas Hungerford beheaded",
+    "description": "Thomas Hungerford, son of Robert Hungerford, is beheaded at Salisbury. The manor of Ilmer eventually reverts to Mary (daughter of Sir Thomas) and her husband Sir Edward Hastings.",
+    "references": ["Victoria History of the County of Buckingham vol3, stoke poges", "Lipscomb's History..."],
+    "labels": ["manor", "person"]
   },
   {
     "date": "1474",
@@ -488,13 +542,27 @@
   {
     "date": "12 Dec 1500",
     "title": "Manor leased to Walter Curson",
-    "description": "Sixty acres of land in the manor of Ilmer is leased to Walter Curson (of Waterperry) for 30 years. The land is held by Sir Richard Sacheverell MP and his wife Lady Mary Hungerford (widow of Edward 2nd Baron Hastings and great-granddaughter of Sir William Moleyns). Walter enclosed the land to pasture putting 6 people out of work.",
+    "description": "Sixty acres of land in the manor of Ilmer is leased to Walter Curson (of Waterperry) for 30 years. The land is later held by Sir Richard Sacheverell MP and his wife Lady Mary Hungerford (widow of Edward 2nd Baron Hastings and great-granddaughter of Sir William Moleyns). Walter enclosed the land to pasture putting 6 people out of work.",
     "references": [
       "Hampshire Archives, [44M69/A7/3/2](https://archivescatalogue.hants.gov.uk/records/69044/1/7/3/2)",
       "Chancery Returns, Inquisition of Oct. 1517, Membrane 25",
       "[The domesday of inclosures Vol 1.](https://archive.org/details/bwb_KV-352-031_1/page/n5/mode/2up), I. S. Leadam, 1897."
     ],
     "labels": ["manor", "property", "lease"]
+  },
+  {
+    "date": "1506",
+    "title": "Sir Edward Hastings dies",
+    "description": "Edward Hastings, husband of Mary (daughter of Thomas de Hungerford) dies. Five years later, Mary marries Sir Richard Sacheverell.",
+    "references": ["Victoria History of the County of Buckingham vol3, stoke poges"],
+    "labels": ["manor", "person"]
+  },
+  {
+    "date": "1511",
+    "title": "Lady Mary Hungerford marries Sir Richard Sacheverell",
+    "description": "Mary Hungerford, widow of Edward Hastings, marries Sir Richard Sacheverell.",
+    "references": ["Lipscomb's History...stoke poges"],
+    "labels": ["manor", "person"]
   },
   {
     "date": "15 Mar. 1516",
@@ -548,9 +616,9 @@
     "labels": ["church"]
   },
   {
-    "date": "1543",
+    "date": "24 Mar. 1544",
     "title": "Death of Earl of Huntingdon",
-    "description": "George, Earl of Huntingdon, dies. His family had acquired the manor by marrying the Hungerford heiress.",
+    "description": "George, Earl of Huntingdon, dies. He was the son of Edward Hastings and Mary de Hungerford, the Hungerford heiress. He had inherited the manor of Ilmer through his mother. The manor is inherited by his son Francis, 2nd Earl of Huntingdon. In 1510, George's wife, Anne Stafford, had been one of Henry VIII's mistresses.",
     "references": ["Lipscomb's History..."],
     "labels": ["death", "inheritance", "manor", "marriage", "person", "property"]
   },
