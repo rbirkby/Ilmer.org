@@ -435,7 +435,7 @@
     "labels": ["inheritance", "manor", "marriage", "property"]
   },
   {
-    "date": "13 Sept. 1447",
+    "date": "13 Sep. 1447",
     "title": "New Vicar Appointed",
     "description": "Thomas Spencer is appointed as vicar by the Convent of Studley.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
@@ -498,7 +498,7 @@
     "labels": ["church", "person"]
   },
   {
-    "date": "17 Jan 1469",
+    "date": "17 Jan. 1469",
     "title": "Sir Thomas Hungerford beheaded",
     "description": "Thomas Hungerford, son of Robert Hungerford, is beheaded at Salisbury. The manor of Ilmer eventually reverts to Mary (daughter of Sir Thomas) and her husband Sir Edward Hastings.",
     "references": ["Victoria History of the County of Buckingham vol3, stoke poges", "Lipscomb's History..."],
@@ -540,7 +540,7 @@
     "labels": ["church"]
   },
   {
-    "date": "12 Dec 1500",
+    "date": "12 Dec. 1500",
     "title": "Manor leased to Walter Curson",
     "description": "Sixty acres of land in the manor of Ilmer is leased to Walter Curson (of Waterperry) for 30 years. The land is later held by Sir Richard Sacheverell MP and his wife Lady Mary Hungerford (widow of Edward 2nd Baron Hastings and great-granddaughter of Sir William Moleyns). Walter enclosed the land to pasture putting 6 people out of work.",
     "references": [
@@ -551,14 +551,14 @@
     "labels": ["manor", "property", "lease"]
   },
   {
-    "date": "1506",
+    "date": "8 Nov. 1506",
     "title": "Sir Edward Hastings dies",
-    "description": "Edward Hastings, husband of Mary (daughter of Thomas de Hungerford) dies. Five years later, Mary marries Sir Richard Sacheverell.",
+    "description": "Edward Hastings, husband of Mary (daughter of Thomas de Hungerford) dies. Soon after, Mary marries Sir Richard Sacheverell.",
     "references": ["Victoria History of the County of Buckingham vol3, stoke poges"],
     "labels": ["manor", "person"]
   },
   {
-    "date": "1511",
+    "date": "1 May 1509",
     "title": "Lady Mary Hungerford marries Sir Richard Sacheverell",
     "description": "Mary Hungerford, widow of Edward Hastings, marries Sir Richard Sacheverell.",
     "references": ["Lipscomb's History...stoke poges"],
@@ -694,6 +694,13 @@
     "labels": ["death", "document", "manor", "person", "property"]
   },
   {
+    "date": "12 Jun. 1583",
+    "title": "Susan Coningsby probate",
+    "description": "Susan Coningsby, an important person in the village, requests to be buried in the chancel. \n\n> The Will of SUSAN CONINGSBY, wife of Thomas Coningsby, Gent. of Ilmer, in Co. Bucks. 4 June 1583. To be buried in the chancel by my late husband Thomas Rawlyth, of Ilmer, of whom I am exˣ. To my son William my wedding ring. To my son George a Turkey ring. To my daughter Dorothy a grogram gown. To my daughter Lyer a ring and a chain of pearl and gold. I make my husband Thomas Coningsby, exr. \n\n Prob. at Aylesbury 12 June 1583 ",
+    "references": ["Lincolnshire wills probate"],
+    "labels": ["death", "person"]
+  },
+  {
     "date": "12 Aug. 1585",
     "title": "Crown Sells Off Former Church Lands",
     "description": "Queen Elizabeth I grants small parcels of land, originally given to fund lights in the church, to new owners.",
@@ -823,11 +830,15 @@
     "labels": ["building", "church", "repair"]
   },
   {
-    "date": "1669",
+    "date": "17 Jul. 1669",
     "title": "Quaker Meetings Hosted",
-    "description": "Thomas Saunders hosted Quaker meetings at his house in Ilmer.",
-    "references": ["The_1669_Return_of_Nonconformist_Conventicles", "Memories of Jordans and the Chalfonts"],
-    "labels": ["housing", "meeting"]
+    "description": "Thomas Saunders hosted Quaker meetings at his house in Ilmer. In his return to Archbishop Sheldon, Curate Thomas Lillingston noted that 12-14 people calling themselves 'Anabaptist' attended Thomas Saunders house in Ilmer every Wednesday.",
+    "references": [
+      "The_1669_Return_of_Nonconformist_Conventicles",
+      "Memories of Jordans and the Chalfonts",
+      "Buckinghamshire Dissent and Parish Life, Buckinghamshire Record Society"
+    ],
+    "labels": ["housing", "meeting", "church"]
   },
   {
     "date": "1677",
@@ -916,6 +927,13 @@
     "description": "Matthew Palmer (Marcus Parker?), a former vicar of Ilmer, is buried at the nearby parish of Dinton.",
     "references": ["Dinton Parish Register"],
     "labels": ["church", "death", "person"]
+  },
+  {
+    "date": "1706",
+    "title": "Resident non-conformists identified",
+    "description": "The return to Bishop Wake identified 2 non-conformist families, one Jew family and a Quaker family.",
+    "references": ["Buckinghamshire Dissent and Parish Life, Buckinghamshire Record Society"],
+    "labels": ["housing", "meeting", "church"]
   },
   {
     "date": "1709",
