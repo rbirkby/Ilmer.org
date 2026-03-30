@@ -486,6 +486,17 @@
     "labels": ["church"]
   },
   {
+    "date": "12 Dec 1500",
+    "title": "Manor leased to Walter Curson",
+    "description": "Sixty acres of land in the manor of Ilmer is leased to Walter Curson (of Waterperry) for 30 years. The land is held by Sir Richard Sacheverell MP and his wife Lady Mary Hungerford (widow of Edward 2nd Baron Hastings and great-granddaughter of Sir William Moleyns). Walter enclosed the land to pasture putting 6 people out of work.",
+    "references": [
+      "Hampshire Archives, [44M69/A7/3/2](https://archivescatalogue.hants.gov.uk/records/69044/1/7/3/2)",
+      "Chancery Returns, Inquisition of Oct. 1517, Membrane 25",
+      "[The domesday of inclosures Vol 1.](https://archive.org/details/bwb_KV-352-031_1/page/n5/mode/2up), I. S. Leadam, 1897."
+    ],
+    "labels": ["manor", "property", "lease"]
+  },
+  {
     "date": "15 Mar. 1516",
     "title": "New Vicar Appointed",
     "description": "James Withington is appointed as vicar by the Prioress of Studley.",
@@ -502,6 +513,13 @@
     "description": "John Taylor, the Vicar of Ilmer, dies.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
     "labels": ["church", "death", "person"]
+  },
+  {
+    "date": "1522",
+    "title": "Mr Sacheverell is Lord of the Manor",
+    "description": "Mr. Sacheverell is cheiffe Lord by yeare with a value of land and tenements (valor terr' et tent') of £24 6s 8d. Walter Curson holds land to the value of 2s. Neither of them are resident as their value of goods (Valor bonorum) is nil.\n\n [Certificate of Musters](/history/certificate-of-musters-1522)",
+    "references": ["The Certificate of Musters in Buckinghamshire for 1522, A C Chibnall, 1973"],
+    "labels": ["manor", "property"]
   },
   {
     "date": "1534",
