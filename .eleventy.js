@@ -8,7 +8,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('assets');
   eleventyConfig.addPassthroughCopy('favicon.ico');
   eleventyConfig.addPassthroughCopy({
-    'node_modules/markdown-it-github-alerts/styles/github-base.css': 'assets/css/markdown-it-github-alerts.css'
+    'node_modules/markdown-it-github-alerts/styles/*.css': 'assets/css'
   });
 
   eleventyConfig.amendLibrary('md', (mdLib) => mdLib.use(markdownItFootnote));

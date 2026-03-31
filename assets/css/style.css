@@ -1,4 +1,5 @@
-@import url('/assets/css/markdown-it-github-alerts.css');
+@import url('/assets/css/github-base.css');
+@import url('/assets/css/github-colors-light.css');
 
 html {
   font-size: 62.5%;
