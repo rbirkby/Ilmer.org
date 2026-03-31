@@ -1,11 +1,15 @@
 import markdownItFootnote from 'markdown-it-footnote';
 import { RenderPlugin } from '@11ty/eleventy';
 import markdownIt from 'markdown-it';
+import MarkdownItGitHubAlerts from 'markdown-it-github-alerts';
 
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('images');
   eleventyConfig.addPassthroughCopy('assets');
   eleventyConfig.addPassthroughCopy('favicon.ico');
+  eleventyConfig.addPassthroughCopy({
+    'node_modules/markdown-it-github-alerts/styles/github-base.css': 'assets/css/markdown-it-github-alerts.css'
+  });
 
   eleventyConfig.amendLibrary('md', (mdLib) => mdLib.use(markdownItFootnote));
   eleventyConfig.addPlugin(RenderPlugin);
@@ -23,4 +27,6 @@ export default function (eleventyConfig) {
       }))
       .sort((a, b) => a.label.localeCompare(b.label))
   );
+
+  eleventyConfig.amendLibrary('md', (mdLib) => mdLib.use(MarkdownItGitHubAlerts));
 }
