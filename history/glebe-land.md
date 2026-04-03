@@ -15,7 +15,7 @@ The close was described as owned by the Trustees of Churchland viz The Vicar and
 
 ![The tithe map tenancy of Church Close](/images/tithemap-churchclose-tenant.avif)
 
-![1654 survey of the manor](/images/churchclose-1654.avif#left)
+![1654 survey of the manor](/images/churchclose-1779.avif#left)
 
 In 1657, a survey of the glebe lands of Ilmer itemised a parcel of size 1·3·5¾. It is described as a meadow and named “Hurst” or similar. A Hurst is a wooded mound. Perhaps this is the Church Close?
 
