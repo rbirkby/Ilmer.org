@@ -148,7 +148,7 @@
     "date": "1291-1292",
     "title": "Church Valued for Papal Taxation",
     "description": "The Taxatio Ecclesiastica, a survey ordered by Pope Nicholas IV, assessed the Church of Ilmere at £4 6s 8d and the vicarage at £1 13s 4d, for a total tax assessment of £6.",
-    "references": ["Taxatio Ecclesiastica of Pope Nicholas IV, 1291-92"],
+    "references": ["[Taxatio Ecclesiastica](https://www.dhi.ac.uk/taxatio) of Pope Nicholas IV, 1291-92"],
     "labels": ["church", "economy", "person"]
   },
   {
@@ -2909,14 +2909,14 @@
   {
     "date": "Oct. 1960",
     "title": "ShellStar Purchases Lower Farm",
-    "description": "Lower Farm was purchased by ShellStar, aka ShellMex, to be used as a demonstration farm.",
+    "description": "Lower Farm was purchased by ShellStar, aka ShellMex, to be used as a [demonstration farm](/history/demonstration-farm).",
     "references": ["Shell archive, The Hague"],
     "labels": ["farm", "property"]
   },
   {
     "date": "1960",
     "title": "Farm Manager Appointed",
-    "description": "R.T.R Pierce was appointed manager of the ShellStar demonstration farm.",
+    "description": "R.T.R Pierce was appointed manager of the ShellStar [demonstration farm](/history/demonstration-farm).",
     "references": ["Birmingham Post, 25 Jul 1970"],
     "labels": ["farm", "property"]
   },
@@ -3151,7 +3151,7 @@
   {
     "date": "1970-1975",
     "title": "Farm Manager",
-    "description": "John A. Farmer was the manager of the ShellStar demonstration farm, Lower Farm.",
+    "description": "John A. Farmer was the manager of the ShellStar [demonstration farm](/history/demonstration-farm), Lower Farm.",
     "references": ["Daily Post, 8 Aug 1991"],
     "labels": ["farm", "property"]
   },
@@ -3202,7 +3202,7 @@
   {
     "date": "1972",
     "title": "ShellStar Office Extension Approved",
-    "description": "Approval was granted to extend the ShellStar office building in the grounds of Lower Farm. The building no longer exists.",
+    "description": "Approval was granted to extend the [ShellStar office building](/history/demonstration-farm) in the grounds of Lower Farm. The building no longer exists.",
     "references": ["Wycombe district planning approvals"],
     "labels": ["building", "farm", "property"]
   },
@@ -3511,7 +3511,7 @@
   {
     "date": "1991",
     "title": "ShellStar Office Demolition Approved",
-    "description": "Approval was granted to demolish the former ShellStar office building and erect a 'private display building'.",
+    "description": "Approval was granted to demolish the [former ShellStar office building](/history/demonstration-farm) and erect a 'private display building'.",
     "image": "/images/shellstar-landjournal19-autumn1965-PeterStrickland.avif",
     "references": ["Wycombe district planning approvals"],
     "labels": ["building"]
