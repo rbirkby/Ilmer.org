@@ -64,14 +64,14 @@ section.article {
 
   & p:has(img[src*='#right']) {
     float: right;
-    width: 40%;
+    max-width: 40%;
     margin: 0 0 0 10px;
     clear: right;
   }
 
   & p:has(img[src*='#left']) {
     float: left;
-    width: 40%;
+    max-width: 40%;
     margin: 0 10px 0 0;
     clear: left;
   }

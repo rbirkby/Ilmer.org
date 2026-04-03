@@ -19,6 +19,8 @@ The Autumn 1965 issue of Shellstar's journal featured an article on Lower Farm, 
 [![Page 34](/images/Land19/Shellstar-Land19-page34%20Large.avif)](/images/Land19/Shellstar-Land19-page34%20Large.avif)
 [![Page 35](/images/Land19/Shellstar-Land19-page35%20Large.avif)](/images/Land19/Shellstar-Land19-page35%20Large.avif)
 
-A keen fisherman, Roger Pierce went on to write the [Puffin Book of Freshwater Fishing](https://archive.org/details/freshwaterfishin0000unse_w8o9). He left Ilmer in 1970.
+![Cheshire Observer, 24 Jul 1970](/images/RTRPierce.avif#right)
+
+A keen fisherman, Roger Pierce later authored the [Puffin Book of Freshwater Fishing](https://archive.org/details/freshwaterfishin0000unse_w8o9). In 1970, he departed Ilmer to establish the new Shellstar Tech Support and PR department. By that point, he wore an eye patch — possibly acquired during his time at the farm.
 
 \* Top image shows the inside of the Lower Farm training centre. Angood & Pugh Photographers.
