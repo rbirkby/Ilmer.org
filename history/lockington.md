@@ -44,7 +44,7 @@ wrote about it being 50 foot deep in the following magazine article:
 
 #### Memories of Charles Belgrove
 
-Bob Uglow, farmer of A J Walker farm based in Bledlow/Holly Green remembered Charles in the [Bledlow cum Saunderton parish magazine](https://www.bledlowcumsaundertonparishcouncil.gov.uk/sign-up-to-our-newsletter/) - _The Messenger_.
+Bob Uglow, farmer of A J Walker's Sandpit farm in Bledlow/Holly Green remembered Charles in the [Bledlow cum Saunderton parish magazine](https://www.bledlowcumsaundertonparishcouncil.gov.uk/sign-up-to-our-newsletter/) - _The Messenger_.
 
 > Last month Philip Smith wrote a sentimental piece in _The Messenger_, recalling the life of Charlie Belgrove entitled ‘The Ilmer Hermit’. It brought back memories of my early days in Bledlow.
 >
