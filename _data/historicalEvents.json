@@ -10,7 +10,10 @@
     "date": "c. 1086",
     "title": "Norman Survey (Domesday Book)",
     "description": "The manor is recorded as belonging to the powerful Odo, Bishop of Bayeux, and is managed by his tenant, Robert de Romenel. Its taxable value is £4.",
-    "references": ["Liber Censualis (Domesday Book), Vol. 1, folio 144", "Lipscomb's History..."],
+    "references": [
+      "Liber Censualis (Domesday Book), Vol. 1, folio 144",
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "labels": ["economy", "manor", "property"]
   },
   {
@@ -118,13 +121,6 @@
     "labels": ["death", "inheritance", "manor", "person", "property"]
   },
   {
-    "date": "21 Oct. 1267",
-    "title": "New Vicar Appointed",
-    "description": "Walter de Ilmere is appointed as the new vicar by Elizabeth, Prioress of Stodley.",
-    "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
-  },
-  {
     "date": "d. 1267",
     "title": "Death of Vicar Walter",
     "description": "Walter, the Vicar of Ilmer who had been appointed by the Prioress of Stodeley (Studley), dies.",
@@ -132,7 +128,14 @@
       "Dodsworth's Manuscripts, Vol. 107, Bodleian Library",
       "Kennet's Parochial Antiquities, Vol. 1, p. 374"
     ],
-    "labels": ["church", "death", "person"]
+    "labels": ["church", "death", "person", "vicar"]
+  },
+  {
+    "date": "21 Oct. 1267",
+    "title": "Walter de Ilmere appointed vicar",
+    "description": "Walter de Ilmere is appointed as the new vicar by Elizabeth, Prioress of Stodley.",
+    "references": ["Willis's Manuscripts, Bodleian Library"],
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "c. 1278",
@@ -239,7 +242,10 @@
     "date": "1337",
     "title": "Feudal Privileges Granted",
     "description": "Sir John de Molyns is granted exclusive hunting rights (known as 'free warren') and other valuable feudal privileges for his estates.",
-    "references": ["Lipscomb's History... (see Brill, p. 99)", "Charter Rolls, 11 Edward III, membrane 12"],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847 (see Brill, p. 99)",
+      "Charter Rolls, 11 Edward III, membrane 12"
+    ],
     "labels": ["legal"]
   },
   {
@@ -271,7 +277,7 @@
     "title": "Manor Seized by the King",
     "description": "After Sir John de Molyns falls from royal favour, his extensive properties, including the manor of Ilmer, are seized by the Crown.",
     "references": [
-      "Lipscomb's History... (see Stoke Poges)",
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847 (see Stoke Poges)",
       "Fine Rolls, 16 Edward III, membrane 14",
       "[The first fall of Sir John Molyns, G. R. Elvey, Bucks AS](http://www.bucksas.org.uk/rob/rob_19_2_194.pdf)"
     ],
@@ -281,7 +287,9 @@
     "date": "1346",
     "title": "Manor Restored",
     "description": "The manor is returned to Sir John de Molyns, along with a new charter confirming his ownership and the royal services attached to it.",
-    "references": ["Lipscomb's History..."],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "labels": ["manor", "property"]
   },
   {
@@ -299,18 +307,18 @@
     "labels": ["church", "land", "person"]
   },
   {
-    "date": "30 Apr. 1349",
-    "title": "New Vicar Appointed",
-    "description": "John de Horwood is appointed as the new vicar by Margery, the Prioress of Stodley (Studley).",
-    "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
-  },
-  {
     "date": "res. 1349",
     "title": "Vicar Richard Gladwin Resigns",
     "description": "Richard Gladwin resigns from his position as Vicar of Ilmer.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
+  },
+  {
+    "date": "30 Apr. 1349",
+    "title": "John de Horwood appointed vicar",
+    "description": "John de Horwood is appointed as the new vicar by Margery, the Prioress of Stodley (Studley).",
+    "references": ["Willis's Manuscripts, Bodleian Library"],
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "1359",
@@ -346,16 +354,16 @@
     "description": "Ilmer property descends to Sir Richard Molines, son of Sir William Molines.",
     "references": [
       "Stoke Poges, a concise account of the church and manor, and also of the poet, Thomas Gray, 1896",
-      "Lipscomb's History... (see Stoke Poges, vol 4 p. 547)"
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847 (see Stoke Poges, vol 4 p. 547)"
     ],
     "labels": ["property", "manor"]
   },
   {
     "date": "19 Jun. 1384",
-    "title": "New Vicar Appointed by Exchange",
+    "title": "John Jonason appointed vicar by exchange",
     "description": "John Jonason becomes the new vicar after exchanging his previous position with the former vicar, Robert Burkard.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "abt. 1385",
@@ -366,45 +374,48 @@
   },
   {
     "date": "21 May 1388",
-    "title": "New Vicar Appointed",
+    "title": "Thomas Haddon appointed vicar",
     "description": "Thomas Haddon is appointed as vicar by Elizabeth Freemantle, the Prioress of Stodley (Studley).",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "5 Feb. 1395",
-    "title": "New Vicar Appointed After Resignation",
+    "title": "Robert Green appointed vicar after resignation",
     "description": "Following the resignation of Thomas Haddon, Robert Green is appointed as the new vicar.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "27 Nov. 1397",
-    "title": "New Vicar Appointed After Resignation",
+    "title": "John Chicheley appointed vicar after resignation",
     "description": "After Robert Green resigns, John Chicheley is appointed as the new vicar.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "30 Oct. 1402",
-    "title": "New Vicar Appointed After Resignation",
+    "title": "John Ayliffe appointed vicar after resignation",
     "description": "Following the resignation of John Chicheley, John Ayliffe is appointed as the new vicar.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "1409",
     "title": "Royal Service Defined",
     "description": "The specific duty for holding the manor is defined as feeding the King's falcons and presenting one sparrow-hawk to the King each year.",
-    "references": ["Lipscomb's History... (see Stoke Poges and Brill, p. 99)", "Harleian Manuscripts, no. 34"],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847 (see Stoke Poges and Brill, p. 99)",
+      "Harleian Manuscripts, no. 34"
+    ],
     "labels": ["manor", "property"]
   },
   {
     "date": "18 Dec. 1411",
-    "title": "New Vicar Appointed by Exchange",
+    "title": "John Barre appointed vicar by exchange",
     "description": "John Barre becomes vicar of Ilmer after exchanging positions with the previous vicar, John Crook.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "1424",
@@ -415,10 +426,10 @@
   },
   {
     "date": "4 Aug. 1424",
-    "title": "New Vicar Formally Admitted",
+    "title": "William Gibbes formally admitted as vicar",
     "description": "William Gibbes is formally admitted as the Vicar of Ilmer.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "1429",
@@ -431,42 +442,46 @@
     "date": "1440",
     "title": "Hungerford Family Inherits Manor",
     "description": "The manor passes to the Hungerford family through the marriage of the Molyns heiress, Alianore (Eleanor), to Robert Hungerford. He styled himself Lord Moleyns, 1st Baron Moleyns.",
-    "references": ["Lipscomb's History..."],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "labels": ["inheritance", "manor", "marriage", "property"]
   },
   {
     "date": "13 Sep. 1447",
-    "title": "New Vicar Appointed",
+    "title": "Thomas Spencer appointed vicar",
     "description": "Thomas Spencer is appointed as vicar by the Convent of Studley.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "d. 1452",
     "title": "Death of Vicar Howes",
     "description": "Thomas (or John) Howes, who had been vicar since at least 1447, dies.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "death", "person"]
+    "labels": ["church", "death", "person", "vicar"]
   },
   {
     "date": "20 Jun. 1452",
-    "title": "New Vicar Appointed",
+    "title": "John Seler appointed vicar",
     "description": "John Seler is appointed as the new vicar.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "12 Nov. 1460",
-    "title": "New Vicar Appointed",
+    "title": "John Bennet appointed vicar",
     "description": "John Bennet is appointed as vicar by the Convent of Studley.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "1461",
     "title": "Lands Forfeited During Wars of the Roses",
     "description": "As a Lancastrian supporter, Robert Hungerford is declared a traitor by Parliament, and all his lands are forfeited to the Crown.",
-    "references": ["Lipscomb's History..."],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "labels": ["government", "land"]
   },
   {
@@ -478,21 +493,21 @@
   },
   {
     "date": "res. 1466",
-    "title": "Vicar Robert Byrcham Resigns",
+    "title": "Robert Byrcham resigns as vicar",
     "description": "Robert Byrcham resigns his position as vicar.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
     "labels": ["church", "person"]
   },
   {
     "date": "31 Jul. 1466",
-    "title": "New Vicar Appointed",
+    "title": "Henry Stodysbury appointed vicar",
     "description": "Henry Stodysbury is appointed as the new vicar.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
     "labels": ["church", "person"]
   },
   {
     "date": "19 Dec. 1467",
-    "title": "New Vicar Appointed After Resignation",
+    "title": "John Sunday appointed vicar after resignation",
     "description": "Following the resignation of Henry Stodysbury, John Sunday is appointed as the new vicar.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
     "labels": ["church", "person"]
@@ -501,7 +516,10 @@
     "date": "17 Jan. 1469",
     "title": "Sir Thomas Hungerford beheaded",
     "description": "Thomas Hungerford, son of Robert Hungerford, is beheaded at Salisbury. The manor of Ilmer eventually reverts to Mary (daughter of Sir Thomas) and her husband Sir Edward Hastings.",
-    "references": ["Victoria History of the County of Buckingham vol3, stoke poges", "Lipscomb's History..."],
+    "references": [
+      "Victoria History of the County of Buckingham vol3, stoke poges",
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "labels": ["manor", "person"]
   },
   {
@@ -513,23 +531,25 @@
   },
   {
     "date": "4 Oct. 1474",
-    "title": "New Vicar Appointed After Resignation",
+    "title": "Robert Richardson appointed vicar after resignation",
     "description": "After John Sunday resigns, Robert Richardson is appointed as the new vicar.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "22 Dec. 1479",
-    "title": "New Vicar Appointed After Resignation",
+    "title": "Richard ap Jenner appointed vicar after resignation",
     "description": "Richard ap Jenner is appointed vicar after Robert Richardson resigns in his favour.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "c. 1485",
     "title": "Lands Restored to Family",
     "description": "When King Henry VII takes the throne, the treason charge against the Hungerford family is reversed, and their lands are returned.",
-    "references": ["Lipscomb's History..."],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "labels": ["inheritance", "land"]
   },
   {
@@ -561,26 +581,28 @@
     "date": "1 May 1509",
     "title": "Lady Mary Hungerford marries Sir Richard Sacheverell",
     "description": "Mary Hungerford, widow of Edward Hastings, marries Sir Richard Sacheverell.",
-    "references": ["Lipscomb's History...stoke poges"],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847stoke poges"
+    ],
     "labels": ["manor", "person"]
   },
   {
     "date": "15 Mar. 1516",
-    "title": "New Vicar Appointed",
-    "description": "James Withington is appointed as vicar by the Prioress of Studley.",
+    "title": "James Withington appointed vicar",
+    "description": "James (Jacobus) Withington is appointed as vicar by the Prioress of Studley.",
     "references": [
       "Willis's Manuscripts, Bodleian Library",
       "[Will of James Withington](/wills/james-withington), Bucks Archives, DA/WE/8/197",
       "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=153939) for James Withington"
     ],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "d. 1516",
     "title": "Death of Vicar Taylor",
     "description": "John Taylor, the Vicar of Ilmer, dies.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "death", "person"]
+    "labels": ["church", "death", "person", "vicar"]
   },
   {
     "date": "1522",
@@ -608,7 +630,7 @@
     "title": "Church Property Granted After Dissolution",
     "description": "Following the Dissolution of the Monasteries, King Henry VIII grants the church property and its income (the Rectory) to John Croke of Chilton.",
     "references": [
-      "Lipscomb's History... (see Chilton, p. 130)",
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847 (see Chilton, p. 130)",
       "Patent Rolls, 31 Henry VIII",
       "[History of Parliament](https://www.historyofparliamentonline.org/volume/1558-1603/member/croke-john-ii-1530-1608)"
     ],
@@ -626,7 +648,9 @@
     "date": "24 Mar. 1544",
     "title": "Death of Earl of Huntingdon",
     "description": "George Hastings, 1st Earl of Huntingdon, dies. He was the son of Edward Hastings and Mary de Hungerford, the Hungerford heiress. He had inherited the manor of Ilmer through his mother. In 1510, George's wife, Anne Stafford, had been one of Henry VIII's mistresses.",
-    "references": ["Lipscomb's History..."],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "labels": ["death", "manor", "marriage", "person", "property"]
   },
   {
@@ -654,13 +678,16 @@
     "date": "c. 1553",
     "title": "Dormer Family Acquires Manor",
     "description": "The manor is now owned by the Dormer family. A royal inquiry confirms that [William Dormer](https://www.historyofparliamentonline.org/volume/1558-1603/member/dormer-sir-william-1514-75) holds the title to Ilmer.",
-    "references": ["Lysons's Magna Britannia, Vol. 1, p. 583", "Lipscomb's History... (see Pedigree of Dormer)"],
+    "references": [
+      "Lysons's Magna Britannia, Vol. 1, p. 583",
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847 (see Pedigree of Dormer)"
+    ],
     "labels": ["manor", "property"]
   },
   {
     "date": "Feb. 1556",
     "title": "Vicar Prepares Will",
-    "description": "Vicar [James Withington](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=153939) writes his will, requesting to be buried in Ilmer church.",
+    "description": "Vicar [James (Jacobus) Withington](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=153939) writes his will, requesting to be buried in Ilmer church.",
     "references": [
       "Willis's Manuscripts, Bodleian Library",
       "[Will of James Withington](/wills/james-withington), Bucks Archives, DA/WE/8/197",
@@ -669,18 +696,18 @@
     "labels": ["church", "document", "person"]
   },
   {
-    "date": "11 Jan. 1558",
-    "title": "New Vicar Appointed",
-    "description": "John Swainson is appointed as vicar by the lord of the manor, Sir Robert Dormer.",
-    "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person", "property"]
-  },
-  {
     "date": "d. 1558",
     "title": "Death of Vicar Palmer",
     "description": "[John Palmer](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=149707), the Vicar of Ilmer, dies.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "death", "person"]
+    "labels": ["church", "death", "person", "vicar"]
+  },
+  {
+    "date": "11 Jan. 1558",
+    "title": "John Swainson appointed vicar",
+    "description": "John Swainson is appointed as vicar by the lord of the manor, Sir Robert Dormer.",
+    "references": ["Willis's Manuscripts, Bodleian Library"],
+    "labels": ["church", "person", "property", "vicar"]
   },
   {
     "date": "7 Oct. 1568",
@@ -694,7 +721,7 @@
     "title": "Death of William Dormer",
     "description": "Sir William Dormer, lord of the manor, dies and is succeeded by his son, Robert. His will included: \n > I give to William Clerk ten pounds, and he to enjoy his farm which he now occupieth at Ilmer, paying yearly the usual rent as he now doth for term of his life",
     "references": [
-      "Lipscomb's History...",
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847",
       "[Probate](http://www.oxford-shakespeare.com/Probate/PROB_11-35_ff_197-8.pdf) proved 20 Oct 1552, National Archives",
       "[History of Parliament](https://www.historyofparliamentonline.org/volume/1558-1603/member/dormer-sir-william-1514-75)"
     ],
@@ -733,7 +760,9 @@
     "date": "1591",
     "title": "Robert Dormer Knighted",
     "description": "Robert Dormer, the lord of the manor, is knighted by the Queen.",
-    "references": ["Lipscomb's History..."],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "labels": ["manor", "property"]
   },
   {
@@ -745,30 +774,36 @@
   },
   {
     "date": "3 Oct. 1612",
-    "title": "New Vicar Appointed",
+    "title": "Thomas Vandrey appointed vicar",
     "description": "Thomas Vandrey is appointed as the new vicar by Sir Robert Dormer.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "10 Jun. 1615",
     "title": "Robert Dormer Becomes a Baronet",
     "description": "Sir Robert Dormer is elevated to the rank of Baronet.",
-    "references": ["Lipscomb's History..."],
-    "labels": ["document"]
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
+    "labels": ["document", "person"]
   },
   {
     "date": "Jun. 1615",
     "title": "Robert Dormer Becomes a Baron",
     "description": "Shortly after, Sir Robert Dormer is ennobled, becoming Baron Dormer of Wenge (Wing).",
-    "references": ["Lipscomb's History..."],
-    "labels": ["document"]
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
+    "labels": ["document", "person"]
   },
   {
     "date": "18 Nov. 1616",
     "title": "Death of Baron Dormer",
     "description": "Baron Dormer, who as lord of the manor was also the King's Master Falconer, dies.",
-    "references": ["Lipscomb's History..."],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "image": "/images/robert-dormer-1st-baron.avif",
     "labels": ["death", "manor", "person", "property"]
   },
@@ -826,7 +861,9 @@
     "date": "c. 1657",
     "title": "Parish Farmland Enclosed",
     "description": "The traditional open-field farming system in Ilmer is ended as the entire parish is enclosed into private fields.",
-    "references": ["Lipscomb's History..."],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "labels": ["farm", "land", "property"]
   },
   {
@@ -840,7 +877,10 @@
     "date": "1662",
     "title": "Church Aisle Demolished",
     "description": "Permission is granted to tear down a side aisle or vestry of the church and use the materials for repairs. The aisle is never rebuilt however the blocked-up doorway on the south aspect is still visible today.",
-    "references": ["Lipscomb's History...", "SHEHAN"],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847",
+      "History and Topography of Buckinghamshire, J J Sheahan, 1861"
+    ],
     "labels": ["building", "church", "repair"]
   },
   {
@@ -858,8 +898,8 @@
     "date": "1677",
     "title": "William Lillingston Becomes Vicar",
     "description": "[William Lillingston](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=99037) became vicar of Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["church", "document", "person"]
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "labels": ["church", "document", "person", "vicar"]
   },
   {
     "date": "1677",
@@ -870,10 +910,10 @@
   },
   {
     "date": "8 Jun. 1677",
-    "title": "New Vicar Appointed",
-    "description": "[John Lillingston](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=176711) is appointed as the new vicar by Charles Dormer, Earl of Carnarvon.",
+    "title": "John Lillingston appointed vicar",
+    "description": "[John (Johannes) Lillingston](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=176711) is appointed as the new vicar by Charles Dormer, Earl of Carnarvon.",
     "references": ["Subscription Book at Aylesbury"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "2 Feb. 1679",
@@ -884,10 +924,10 @@
   },
   {
     "date": "1682",
-    "title": "Curate Licensed",
+    "title": "William Lillingston licensed as Curate",
     "description": "William Lillingston, the vicar's son, is officially licensed to serve as the assistant priest (Curate) in Ilmer.",
     "references": ["Subscription Book at Aylesbury"],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "2 May 1684",
@@ -910,13 +950,13 @@
   {
     "date": "28 Oct. 1687",
     "title": "Marcus Parker Becomes Vicar",
-    "description": "Marcus Parker became [vicar of Ilmer](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=86069). Lipscomb calls the new vicar 'Matthew Palmer', believed to be in error.",
+    "description": "Marcus (Matthew) Parker became [vicar of Ilmer](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=86069).",
     "references": [
-      "Registers and Records of St Peters, Rex Kidd, Dec 1982",
+      "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
       "theclergydatabase.org.uk",
-      "Lipscomb's History..."
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
     ],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "1694",
@@ -928,17 +968,17 @@
   {
     "date": "2 Jan. 1700",
     "title": "Charles Cornish Becomes Vicar",
-    "description": "[Charles Cornish](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=12365) is appointed vicar. He later resigns after being offered a church position in Wales.",
+    "description": "[Charles (Carolus) Cornish](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=12365) is appointed vicar. He later resigns after being offered a church position in Wales.",
     "references": [
-      "Registers and Records of St Peters, Rex Kidd, Dec 1982",
-      "Lipscomb's History... (see Risborough & Pedigree of Carter, p. 135)"
+      "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847 (see Risborough & Pedigree of Carter, p. 135)"
     ],
-    "labels": ["church", "person"]
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "26 Sept. 1700",
     "title": "Death of Former Vicar Palmer",
-    "description": "Matthew Palmer (Marcus Parker?), a former vicar of Ilmer, is buried at the nearby parish of Dinton.",
+    "description": "Marcus (Matthew) Palmer, a former vicar of Ilmer, is buried at the nearby parish of Dinton.",
     "references": ["Dinton Parish Register"],
     "labels": ["church", "death", "person"]
   },
@@ -953,7 +993,10 @@
     "date": "1709",
     "title": "Manor Passes to Stanhope Family",
     "description": "[Charles Dormer](https://en.wikipedia.org/wiki/Charles_Dormer,_2nd_Earl_of_Carnarvon), 2nd Earl of Carnarvon died with no surviving sons, passing the Dormer lands to his eldest grandson via his daughter Elizabeth and her husband, Philip Stanhope, Earl of Chesterfield",
-    "references": ["wikipedia", "Lipscomb's History... (see Pedigree of Stanhope under Eythrop)"],
+    "references": [
+      "wikipedia",
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847 (see Pedigree of Stanhope under Eythrop)"
+    ],
     "labels": ["death", "inheritance", "land", "manor", "person"]
   },
   {
@@ -973,9 +1016,12 @@
   {
     "date": "27 Sept. 1722",
     "title": "Henry Stanbridge Becomes Vicar",
-    "description": "[Henry Stanbridge](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=76866) became vicar of Ilmer, appointed by William Stanhope, Esq",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982", "Lipscomb's History..."],
-    "labels": ["church", "person"]
+    "description": "[Henry (Henricus) Stanbridge](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=76866) became vicar of Ilmer, appointed by William Stanhope, Esq",
+    "references": [
+      "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "4 Oct. 1722",
@@ -1002,15 +1048,20 @@
     "date": "d. 1746",
     "title": "Death of Vicar Stanbridge",
     "description": "Henry Stanbridge, the Vicar of Ilmer, dies.",
-    "references": ["Lipscomb's History..."],
-    "labels": ["church", "death", "person"]
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
+    "labels": ["church", "death", "person", "vicar"]
   },
   {
     "date": "13 Aug. 1746",
-    "title": "New Vicar Inducted",
+    "title": "James Andrew appointed vicar",
     "description": "[James Andrew](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=1451) formally takes up his position as the new vicar.",
-    "references": ["Lipscomb's History...", "Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["church", "person"]
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847",
+      "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"
+    ],
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "14 Sep. 1752",
@@ -1031,7 +1082,9 @@
     "date": "1776",
     "title": "Poor Relief Costs Recorded",
     "description": "The annual cost of supporting the parish's poor is recorded as £47 12s.",
-    "references": ["Lipscomb's History..."],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "labels": ["church", "economy"]
   },
   {
@@ -1045,15 +1098,17 @@
     "date": "1783",
     "title": "Poor Relief Costs Drop",
     "description": "The cost of supporting the parish's poor drops significantly to £28.",
-    "references": ["Lipscomb's History..."],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "labels": ["church", "economy"]
   },
   {
     "date": "1791",
     "title": "Thomas Jones Becomes Vicar",
     "description": "[Thomas Jones](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=67728) became vicar of Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["church", "person"]
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "labels": ["church", "person", "vicar"]
   },
   {
     "date": "Nov. 1795",
@@ -1097,7 +1152,9 @@
     "date": "1810",
     "title": "Vicarage Income Recorded",
     "description": "The vicar's annual income from church lands and tithe compositions is reported as £72.",
-    "references": ["Lipscomb's History..."],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "labels": ["church", "economy", "land", "person"]
   },
   {
@@ -1118,7 +1175,9 @@
     "date": "1816",
     "title": "Vicarage Income Increases",
     "description": "The vicar's annual income is reported to have increased to £97.",
-    "references": ["Lipscomb's History..."],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "labels": ["church", "economy", "person"]
   },
   {
@@ -1132,7 +1191,9 @@
     "date": "1821",
     "title": "Parish Census",
     "description": "The national census records that Ilmer contains only 12 houses and a total population of 68 people.",
-    "references": ["Lipscomb's History..."],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "labels": ["housing", "population"]
   },
   {
@@ -1157,7 +1218,9 @@
     "date": "1826",
     "title": "Population Grows",
     "description": "The population of the parish has grown to 75 residents.",
-    "references": ["Lipscomb's History..."],
+    "references": [
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+    ],
     "labels": ["population"]
   },
   {
@@ -1201,8 +1264,11 @@
     "date": "1833-1834",
     "title": "William Edwards Partridge Becomes Vicar",
     "description": "[William Edwards Partridge](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=72112) became vicar of Ilmer, appointed by the 6th Earl of Chesterfield.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982", "SHEHAN"],
-    "labels": ["church", "document", "person"]
+    "references": [
+      "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
+      "History and Topography of Buckinghamshire, J J Sheahan, 1861"
+    ],
+    "labels": ["church", "document", "person", "vicar"]
   },
   {
     "date": "25 Mar. 1835",
@@ -1296,7 +1362,10 @@
     "title": "Church Harmonium",
     "description": "The church had a harmonium situated in the chancel adjacent to the window-seat sculptures. Later photographs show a reed organ, possibly manufactured by Chicago Cottage Organ Co, against the south wall of the nave adjacent to the rood screen.",
     "image": "/images/harmonium.jpg",
-    "references": ["SHEHAN. Plan for 1860 commemorative stone replacement, 1983"],
+    "references": [
+      "Sheahan's History and Topography of Buckinghamshire 1861.",
+      "Plan for 1860 commemorative stone replacement, 1983"
+    ],
     "labels": ["church"]
   },
   {
@@ -1487,7 +1556,7 @@
     "date": "23 Dec. 1885",
     "title": "Burial of Elizabeth Goodchild",
     "description": "Elizabeth Goodchild was buried. Elizabeth was the mother of Albert, Ernest, and Thomas Goodchild and wife of David who was to die the following year.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["death"]
   },
   {
@@ -1508,8 +1577,8 @@
     "date": "1886",
     "title": "John Ormond Becomes Rector",
     "description": "John Ormond became rector of Horsenden with Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["church"]
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "labels": ["church", "vicar"]
   },
   {
     "date": "1886",
@@ -1529,7 +1598,7 @@
     "date": "24 Dec. 1886",
     "title": "Burial of David Goodchild",
     "description": "David Goodchild was buried. He was the father of Albert, Ernest, and Thomas Goodchild leaving them orphaned as his wife died the previous year.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["death", "person"]
   },
   {
@@ -1657,8 +1726,8 @@
     "date": "1898",
     "title": "John Edwin Varley Becomes Rector",
     "description": "John Edwin Varley became rector of Horsenden with Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["church"]
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "labels": ["church", "vicar"]
   },
   {
     "date": "1899",
@@ -1757,7 +1826,7 @@
     "date": "4 Aug. 1907",
     "title": "Burial of Ettie Gomme",
     "description": "'Ettie' Nellie Gomme, aged 5, was buried.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["death"]
   },
   {
@@ -1900,8 +1969,8 @@
     "date": "1911",
     "title": "Harry Morton Gorham Becomes Rector",
     "description": "Harry Morton Gorham became rector of Horsenden with Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["church"]
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "labels": ["church", "vicar"]
   },
   {
     "date": "1911",
@@ -2042,8 +2111,8 @@
     "date": "1917",
     "title": "William O'Connor Becomes Rector",
     "description": "William O'Connor became rector of Horsenden with Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["document"]
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "labels": ["document", "vicar"]
   },
   {
     "date": "1918",
@@ -2093,8 +2162,8 @@
     "date": "1920",
     "title": "William Magee Tuke Becomes Rector",
     "description": "William Magee Tuke became rector of Horsenden with Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["document"]
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "labels": ["document", "vicar"]
   },
   {
     "date": "19 Jun. 1921",
@@ -2214,8 +2283,8 @@
     "date": "1929",
     "title": "Arthur Montague Berry Becomes Rector",
     "description": "Arthur Montague Berry became rector of Horsenden with Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["church"]
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "labels": ["church", "vicar"]
   },
   {
     "date": "1929",
@@ -2263,7 +2332,7 @@
     "date": "18 Jul. 1931",
     "title": "Burial of Albert Goodchild",
     "description": "Albert Goodchild was buried.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["death"]
   },
   {
@@ -2292,7 +2361,7 @@
     "date": "12 Mar. 1932",
     "title": "Burial of Owen Goodchild",
     "description": "Owen Goodchild of Watlington was buried.",
-    "references": ["Registers and records of St Peters, Rex Kidd, Dec 1982"],
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["death"]
   },
   {
@@ -2342,7 +2411,7 @@
     "date": "1933",
     "title": "Arthur Montague Berry Ceases as Rector",
     "description": "Arthur Montague Berry ceased as rector of Horsenden with Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["church"]
   },
   {
@@ -2405,15 +2474,18 @@
     "date": "18 Aug. 1934",
     "title": "Burial of Edward Albert Goodchild",
     "description": "Edward Albert Goodchild of Saunderton was buried.",
-    "references": ["Bucks Herald, 24 Aug 1934", "Registers and Records of St Peters, Rex Kidd, Dec 1982"],
+    "references": [
+      "Bucks Herald, 24 Aug 1934",
+      "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"
+    ],
     "labels": ["death"]
   },
   {
     "date": "1934",
     "title": "William O'Connor Becomes Rector",
     "description": "William O'Connor became rector of Horsenden with Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["document"]
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "labels": ["document", "vicar"]
   },
   {
     "date": "1934",
@@ -2685,7 +2757,7 @@
     "date": "1945",
     "title": "William O'Connor Ceases as Rector",
     "description": "William O'Connor ceased as rector of Horsenden with Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["document"]
   },
   {
@@ -2706,8 +2778,8 @@
     "date": "1946",
     "title": "Edmund Pipe Becomes Rector",
     "description": "Edmund Walter Samuel Pipe became rector of Horsenden with Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["church"]
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "labels": ["church", "vicar"]
   },
   {
     "date": "1946",
@@ -2972,7 +3044,7 @@
     "date": "2 Feb. 1968",
     "title": "Service for Sarah Olive Leuw",
     "description": "A service was held at Ilmer Church for Sarah Olive Leuw, aged 95.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["church"]
   },
   {
@@ -3019,7 +3091,7 @@
     "date": "1969",
     "title": "Edmund Pipe Ceases as Rector",
     "description": "Edmund Walter Samuel Pipe ceased as rector of Horsenden with Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["church"]
   },
   {
@@ -3069,8 +3141,8 @@
     "date": "1970",
     "title": "William Hugh Jones Becomes Rector",
     "description": "William Hugh Jones became rector of Princes Risborough with Ilmer.",
-    "references": ["Registers and Records of St Peters, Rex Kidd, Dec 1982"],
-    "labels": ["document"]
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "labels": ["document", "vicar"]
   },
   {
     "date": "1970-1975",
