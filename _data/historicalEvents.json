@@ -361,7 +361,7 @@
   {
     "date": "19 Jun. 1384",
     "title": "John Jonason appointed vicar by exchange",
-    "description": "John Jonason becomes the new vicar after exchanging his previous position with the former vicar, Robert Burkard.",
+    "description": "John Jonason appointed vicar after exchanging his previous position with the former vicar, Robert Burkard.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
     "labels": ["church", "person", "vicar"]
   },
@@ -413,7 +413,7 @@
   {
     "date": "18 Dec. 1411",
     "title": "John Barre appointed vicar by exchange",
-    "description": "John Barre becomes vicar of Ilmer after exchanging positions with the previous vicar, John Crook.",
+    "description": "John Barre appointed vicar of Ilmer after exchanging positions with the previous vicar, John Crook.",
     "references": ["Willis's Manuscripts, Bodleian Library"],
     "labels": ["church", "person", "vicar"]
   },
@@ -896,7 +896,7 @@
   },
   {
     "date": "1677",
-    "title": "William Lillingston Becomes Vicar",
+    "title": "William Lillingston appointed vicar",
     "description": "[William Lillingston](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=99037) became vicar of Ilmer.",
     "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["church", "document", "person", "vicar"]
@@ -949,7 +949,7 @@
   },
   {
     "date": "28 Oct. 1687",
-    "title": "Marcus Parker Becomes Vicar",
+    "title": "Marcus Parker appointed vicar",
     "description": "Marcus (Matthew) Parker became [vicar of Ilmer](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=86069).",
     "references": [
       "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
@@ -967,7 +967,7 @@
   },
   {
     "date": "2 Jan. 1700",
-    "title": "Charles Cornish Becomes Vicar",
+    "title": "Charles Cornish appointed vicar",
     "description": "[Charles (Carolus) Cornish](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=12365) is appointed vicar. He later resigns after being offered a church position in Wales.",
     "references": [
       "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
@@ -1015,7 +1015,7 @@
   },
   {
     "date": "27 Sept. 1722",
-    "title": "Henry Stanbridge Becomes Vicar",
+    "title": "Henry Stanbridge appointed vicar",
     "description": "[Henry (Henricus) Stanbridge](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=76866) became vicar of Ilmer, appointed by William Stanhope, Esq",
     "references": [
       "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
@@ -1105,7 +1105,7 @@
   },
   {
     "date": "1791",
-    "title": "Thomas Jones Becomes Vicar",
+    "title": "Thomas Jones appointed vicar",
     "description": "[Thomas Jones](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=67728) became vicar of Ilmer.",
     "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["church", "person", "vicar"]
@@ -1262,7 +1262,7 @@
   },
   {
     "date": "1833-1834",
-    "title": "William Edwards Partridge Becomes Vicar",
+    "title": "William Edwards Partridge appointed vicar",
     "description": "[William Edwards Partridge](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=72112) became vicar of Ilmer, appointed by the 6th Earl of Chesterfield.",
     "references": [
       "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
@@ -1575,8 +1575,8 @@
   },
   {
     "date": "1886",
-    "title": "John Ormond Becomes Rector",
-    "description": "John Ormond became rector of Horsenden with Ilmer.",
+    "title": "John Ormond appointed Rector",
+    "description": "John Ormond appointed rector of Horsenden with Ilmer.",
     "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["church", "vicar"]
   },
@@ -1669,8 +1669,12 @@
   {
     "date": "28 Apr. 1892",
     "title": "Ernest Goodchild Emigrates",
-    "description": "Ernest William Goodchild departed Liverpool for Quebec, aged 13, as part of the Children's Aid Society of London. He was the younger brother of Albert who were orphaned living in Ilmer. Their older brother, Thomas, cared for them at the Old Vicarage.",
-    "references": ["Board of Trade, Outwards Passenger Lists", "Library and Archives Canada"],
+    "description": "Ernest William Goodchild departed Liverpool for Quebec, aged 13, as part of the [Children's Aid Society](https://www.childrenshomes.org.uk/WinnipegCAS/) of London. He was the younger brother of Albert who were orphaned living in Ilmer. Their older brother, Thomas, cared for them at the Old Vicarage.",
+    "references": [
+      "Board of Trade, Outwards Passenger Lists",
+      "Library and Archives Canada",
+      "[British Home Children Registry](https://homechildrencanada.com/registry?id=6611)"
+    ],
     "labels": ["church", "inheritance", "person"]
   },
   {
@@ -1724,8 +1728,8 @@
   },
   {
     "date": "1898",
-    "title": "John Edwin Varley Becomes Rector",
-    "description": "John Edwin Varley became rector of Horsenden with Ilmer.",
+    "title": "John Edwin Varley appointed Rector",
+    "description": "John Edwin Varley appointed rector of Horsenden with Ilmer.",
     "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["church", "vicar"]
   },
@@ -1967,8 +1971,8 @@
   },
   {
     "date": "1911",
-    "title": "Harry Morton Gorham Becomes Rector",
-    "description": "Harry Morton Gorham became rector of Horsenden with Ilmer.",
+    "title": "Harry Morton Gorham appointed Rector",
+    "description": "Harry Morton Gorham appointed rector of Horsenden with Ilmer.",
     "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["church", "vicar"]
   },
@@ -2109,8 +2113,8 @@
   },
   {
     "date": "1917",
-    "title": "William O'Connor Becomes Rector",
-    "description": "William O'Connor became rector of Horsenden with Ilmer.",
+    "title": "William O'Connor appointed Rector",
+    "description": "William O'Connor appointed rector of Horsenden with Ilmer.",
     "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["document", "vicar"]
   },
@@ -2160,8 +2164,8 @@
   },
   {
     "date": "1920",
-    "title": "William Magee Tuke Becomes Rector",
-    "description": "William Magee Tuke became rector of Horsenden with Ilmer.",
+    "title": "William Magee Tuke appointed Rector",
+    "description": "William Magee Tuke appointed rector of Horsenden with Ilmer.",
     "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["document", "vicar"]
   },
@@ -2281,8 +2285,8 @@
   },
   {
     "date": "1929",
-    "title": "Arthur Montague Berry Becomes Rector",
-    "description": "Arthur Montague Berry became rector of Horsenden with Ilmer.",
+    "title": "Arthur Montague Berry appointed Rector",
+    "description": "Arthur Montague Berry appointed rector of Horsenden with Ilmer.",
     "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["church", "vicar"]
   },
@@ -2482,8 +2486,8 @@
   },
   {
     "date": "1934",
-    "title": "William O'Connor Becomes Rector",
-    "description": "William O'Connor became rector of Horsenden with Ilmer.",
+    "title": "William O'Connor appointed Rector",
+    "description": "William O'Connor appointed rector of Horsenden with Ilmer.",
     "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["document", "vicar"]
   },
@@ -2776,8 +2780,8 @@
   },
   {
     "date": "1946",
-    "title": "Edmund Pipe Becomes Rector",
-    "description": "Edmund Walter Samuel Pipe became rector of Horsenden with Ilmer.",
+    "title": "Edmund Pipe appointed Rector",
+    "description": "Edmund Walter Samuel Pipe appointed rector of Horsenden with Ilmer.",
     "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["church", "vicar"]
   },
@@ -3139,8 +3143,8 @@
   },
   {
     "date": "1970",
-    "title": "William Hugh Jones Becomes Rector",
-    "description": "William Hugh Jones became rector of Princes Risborough with Ilmer.",
+    "title": "William Hugh Jones appointed Rector",
+    "description": "William Hugh Jones appointed rector of Princes Risborough with Ilmer.",
     "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["document", "vicar"]
   },
@@ -3442,7 +3446,7 @@
   {
     "date": "1988",
     "title": "Death of Charles Henry Mardell MBE",
-    "description": "Charles Henry Mardell MBE died. A plaque is in the churchyard. His connection to Ilmer is unknown.",
+    "description": "Charles Henry Mardell MBE died. A plaque is in the churchyard. His connection to Ilmer is unknown. He was the Honorary Secretary of the British Association of the Hard of Hearing which eventually merged with [Hearing Dogs for the Deaf](https://www.hearingdogs.org.uk/) based in nearby Saunderton",
     "references": ["London Gazette, Page 17"],
     "labels": ["church", "death", "person"]
   },
