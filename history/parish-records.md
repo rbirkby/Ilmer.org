@@ -32,13 +32,13 @@ Overall, 268 burials are recorded at an average rate of 1.14 per year.
 
 #### Marriages
 
-Overall, 367 marriages are recorded at an average rate of 1.54 per year.
+Overall, 369 marriages are recorded at an average rate of 1.55 per year.
 
 ![Marriage graph](/images/StPetersIlmerMarriages.svg)
 
 #### Baptisms
 
-Overall, 34 baptisms are recorded at an average rate of 1.52 per year.
+Overall, 450 baptisms are recorded at an average rate of 1.58 per year.
 
 ![Baptism graph](/images/StPetersIlmerBaptisms.svg)
 
