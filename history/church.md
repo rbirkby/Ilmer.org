@@ -180,3 +180,13 @@ The Church was used for the opening scene of the 1996 film [Photographing Faries
 _Ordnance Survey Benchmark_
 
 The North West corner of the church exterior has a carved [Ordnance Survey Bench Mark](https://www.ordnancesurvey.co.uk/benchmarks/) - composed of a horizontal cut datum line over a crow's foot or pheon arrow. This is one of the ½ million bench marks across the UK which, until 1993, were used to record height above sea level. This Bench Mark is at 85.7m above sea level. Ilmer has a second Bench Mark at the south west of the railway bridge. Other nearby Bench Marks are at Ray Farm and on Mill Leys, near the assumed historic site of the Domesday-recorded water mill, adjacent to the bridleway towards Towersey. This last Bench Mark no longer exists.
+
+## From the Historic England Archive
+
+<script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="bb57_01337" theme="aco" style="width: 100%; display: inline-flex; aspect-ratio: 5035/3714; max-width: 5035px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
+
+This historic photograph reveals details of the church's 19th-century interior arrangements. The nave contained a small stove for heating, alongside pendant oil lamps that provided lighting before electrification.
+
+---
+
+<script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="bb98_10627" theme="aco" style="width: 100%; display: inline-flex; aspect-ratio: 5153/3677; max-width: 5153px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
