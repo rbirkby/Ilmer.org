@@ -87,7 +87,7 @@
   {
     "date": "1255-1278",
     "title": "Land Held by Royal Service",
-    "description": "Ilmer is mentioned in the Hundred Rolls (Rotuli Hundredorum) as being held by John son of Bernard by serjeanty, a form of land tenure requiring personal service to the king, which in this case was the keeping of his goshawks.",
+    "description": "Ilmer is mentioned in the Hundred Rolls (Rotuli Hundredorum) as being held by John son of Bernard by serjeanty, a form of land tenure requiring personal service to the king, which in this case was the keeping of his goshawks. \n > Iṫ Eston & Hylmere Joħ fił Bernarđ tenet illas de d̄no Rege ꝑ serganciā ad custodiend' osturcos suos nicħ aliud facit d̄no Reg' & d̄ns Rex ħt custodiā de ħedibʒ suis.\n\n In English, this reads \n > Likewise, Aston and Ilmere: John son of Bernard holds them from the lord King by serjeanty to keep his goshawks; he does nothing else for the lord King, and the lord King has the wardship of his heirs.",
     "references": ["Rotuli Hundredorum (Hundred Rolls), 1255-1278"],
     "labels": ["land", "person"]
   },

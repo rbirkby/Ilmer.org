@@ -26,6 +26,8 @@ sins and to have everlasting life and my body I committ to\
 the earth to be decently interred at the discretion of my\
 executor herein after named and as to my temporal estate which
 
+---
+
 Which it hath pleased the Almighty to enrich me with\
 I give will and dispose of the same as followeth And First\
 I give will and bequeath unto my beloved daughter\
@@ -53,8 +55,9 @@ my decease by my executor herein after named Also I give\
 will and bequeath unto my beloved daughter Ann West\
 the sum of Forty pounds of the like lawful money of\
 Great Britain to be paid to my said daughter Ann her\
-executors or assigns out of my personal estate by my executor\
-herein
+executors or assigns out of my personal estate by my executor
+
+---
 
 herein after named in five years after my decease\
 Also I Give will and bequeath unto my beloved\
@@ -85,8 +88,9 @@ and to partake of his common Meat drink washing\
 lodging and apparel fitting for a person of such a degree\
 until she arrives to the age of twenty one years if she\
 shall so long live And lastly I give will and bequeath\
-unto my beloved son John Kingham (after paying my\
-Just
+unto my beloved son John Kingham (after paying my
+
+---
 
 Just debts and funeral expenses) all and singular\
 and every my money apparel stock of corn Grain hay\
@@ -113,6 +117,8 @@ in the presence of the testator and at his request The\
 mark of Allice West of Owlswick The\
 mark of Susannah Adams of Ilmer\
 Henry Lacey of P Risbro
+
+---
 
 Proved the 6th day of July 1779\
 before the reverend William Stockins Clerk Surrogate\

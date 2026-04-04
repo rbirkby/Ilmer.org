@@ -42,6 +42,12 @@ wrote about it being 50 foot deep in the following magazine article:
 
 [![Daily Mirror Interview](/images/CharlesBelgrove-DailyMirror-June1938.avif)](/images/CharlesBelgrove-DailyMirror-June1938.avif)
 
+#### Aerofilms
+
+1948 Aerofilms photograph showing Lockington when Charles was resident.
+
+<script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="EAW017640" style="width: 100%; display: inline-flex; aspect-ratio: 4600/4106; max-width: 4600px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
+
 #### Memories of Charles Belgrove
 
 Bob Uglow, farmer of A J Walker's Sandpit farm in Bledlow/Holly Green remembered Charles in the [Bledlow cum Saunderton parish magazine](https://www.bledlowcumsaundertonparishcouncil.gov.uk/sign-up-to-our-newsletter/) - _The Messenger_.
