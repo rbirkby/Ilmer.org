@@ -19,7 +19,7 @@ image: images/wills.avif
 
 ## Wills data
 
-The following wills, available in the Bucks Archives, relate to the village of Ilmer.
+The following wills proved at the Archdeacon’s Court are available in the [Bucks Archives](https://www.buckinghamshire.gov.uk/culture-and-tourism/archives/archive-services/copies-of-documents/), relate to the village of Ilmer. Other wills proved at the Prerogative Court of Canterbury and now in the National Archives/PRO at Kew are not listed below. None of the wills listed below were proved at the Peculiar Court of Monks Risborough.
 
 {% assign sortedWills = wills | sort: 'YearProved' %}
 
@@ -59,3 +59,10 @@ The following wills, available in the Bucks Archives, relate to the village of I
 
   </tbody>
 </table>
+
+### Key
+
+| Code  | Description                       |
+| ----- | --------------------------------- |
+| DA/WE | Will Registers                    |
+| DA/WF | Original and File Copies of Wills |
