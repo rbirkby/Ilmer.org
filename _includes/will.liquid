@@ -1,5 +1,12 @@
 {% include "head" %}
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link
+  rel="preconnect"
+  href="https://fonts.gstatic.com"
+  crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
+
 <style>
   @font-face {
     font-family: 'Joscelyn';
@@ -18,6 +25,11 @@
     {% if script == "secretary-hand" %}
       font-family: "Joscelyn";
     {% endif %}
+    {% if script == "round-hand" %}
+      font-family: "Pinyon Script";
+      font-size: 1.5em;
+    {% endif %}
+
     line-height: 2em;
     transition: opacity 0.1s ease;
     white-space: nowrap;
@@ -27,6 +39,7 @@
   .will-body.modern {
     font-family: inherit;
     letter-spacing: 2px;
+    font-size: inherit;
   }
 
   .font-toggle {
@@ -117,13 +130,22 @@
     <h1>{{ title }}</h1>
     <p class="will-meta">{{ description }}</p>
 
-    {% if script == "secretary-hand" %}
+    {% if script == "secretary-hand" or script == "round-hand" %}
       <label class="font-toggle">
         <input
           type="checkbox"
           id="fontToggle"
           onchange="toggleFont(this)">
-        <span class="toggle-label toggle-label--secretary">Secretary Hand</span>
+        <span class="toggle-label toggle-label--secretary">
+          {% case script %}
+            {% when "secretary-hand" %}
+              Secretary Hand
+            {% when "round-hand" %}
+              Round Hand
+            {% else %}
+              Unknown Script
+          {% endcase %}
+        </span>
         <span class="toggle-pill"></span>
         <span class="toggle-label toggle-label--modern">Modern script</span>
       </label>
