@@ -4,7 +4,7 @@ title: Hannah Kingham
 description: The last will and testament of Hannah Kingham. Held at Bucks Archives ref D/A/We/114/18 and D/A/Wf/105/94.
 category: wills
 script: round-hand
-transcriber: Gemini 3 Flash  Preview
+transcriber: Gemini 3 Flash Preview
 tags: [person, will]
 ---
 

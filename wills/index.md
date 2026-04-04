@@ -71,42 +71,42 @@ The following wills proved at the Archdeacon’s Court are available in the [Buc
 
 #### Buckinghamshire Probate Index
 
-| Date | Name                                                          | Occupation         | Value    | References                   |
-| ---- | ------------------------------------------------------------- | ------------------ | -------- | ---------------------------- |
-| 1492 | Trippe, William                                               |                    |          | D/A/V/1 fo.5                 |
-| 1551 | Goodwyne, John                                                |                    | £41-6-8  | D/A/We/154/73                |
-| 1551 | Godwyn, John                                                  |                    |          | ORO 185/117                  |
-| 1555 | DORRELL, Dorell, Edmund                                       |                    |          | D/A/We/8/97                  |
-| 1555 | ROSELL, William                                               |                    |          | D/A/Wf/2/250                 |
-| 1556 | [WITHINGTON, Wythingto[n], James](/wills/james-withington.md) | (vicar), clerk     |          | D/A/We/8/197 D/A/Wf/2/367    |
-| 1557 | Darell, Elizabeth                                             |                    |          | D/A/Wf/3/72                  |
-| 1557 | Tryppe, James                                                 |                    |          | D/A/Wf/3/246                 |
-| 1557 | TYTING, Thomas                                                | (vicar of), priest |          | D/A/We/10/32 D/A/Wf/3/241    |
-| 1558 | Godwyne, Edmund (Yemmant)                                     |                    |          | D/A/We/12/94 D/A/Wf/4/144    |
-| 1558 | Goddyne, Thomas                                               |                    |          | D/A/We/12/101 D/A/Wf/4/145   |
-| 1559 | Darell, John                                                  |                    |          | D/A/We/12/38 D/A/Wf/4/104    |
-| 1559 | OLD, William                                                  |                    |          | D/A/We/154/219 D/A/Wf/5/160  |
-| 1560 | MEAD, Richard                                                 | husbandman         |          | D/A/We/13/39 D/A/Wf/5/330    |
-| 1568 | SWAYNSON, Richard                                             | vicar              |          | D/A/We/16/163                |
-| 1573 | Trippe, James                                                 |                    | £39-10-8 | D/A/We/17/1                  |
-| 1573 | Tryppe, John                                                  |                    | £11-18-2 | D/A/Wf/7/221                 |
-| 1576 | RALEGHE, Thomas                                               | gentleman, nuncup  |          | D/A/Wf/8/156                 |
-| 1579 | DORRELL, William (younger)                                    |                    |          | D/A/Wf/8/312                 |
-| 1584 | DARRELL, Eleanor                                              |                    |          | D/A/Wf/10/30                 |
-| 1593 | ?, William                                                    | husbandman, nuncup |          | D/A/Wf/12/173                |
-| 1593 | ROBINS, James                                                 | husbandman         |          | D/A/Wf/12/253                |
-| 1597 | HESTER, William                                               | husbandman         |          | D/A/Wf/13/254                |
-| 1598 | Robyns, Agnes                                                 |                    |          | D/A/We/154/268 D/A/Wf/14/108 |
-| 1607 | Yonge, Matthew                                                | husbandman         |          | D/A/Wf/17/249                |
-| 1612 | WRIGHT, Martin                                                | clerk              |          | D/A/We/24/211 D/A/Wf/19/276  |
-| 1619 | Younge, John                                                  | husbandman         |          | D/A/We/27/6                  |
-| 1619 | Edmund (elder)                                                | husbandman         |          | D/A/We/27/238 D/A/Wf/23/83   |
-| 1623 | BIGG, Bigge, Christopher                                      | yeoman             |          | D/A/We/28A/145 D/A/Wf/24/239 |
-| 1631 | Boudo[n], Katherine                                           | widow              |          | D/A/Wf/28/214                |
-| 1635 | ?, William                                                    | husbandman         |          | D/A/We/30/202 D/A/Wf/30/222  |
-| 1637 | GODDEN, William                                               | admin              |          | D/A/We/149/16                |
-| 1638 | Brookes, Edmund                                               | husbandman         |          | D/A/We/32/139 D/A/Wf/32/129  |
-| 1639 | ROBINS, Martin                                                | batchelor, nuncup  |          | D/A/We/33/164 D/A/Wf/33/195  |
+| Date | Name                                                       | Occupation         | Value    | References                   |
+| ---- | ---------------------------------------------------------- | ------------------ | -------- | ---------------------------- |
+| 1492 | Trippe, William                                            |                    |          | D/A/V/1 fo.5                 |
+| 1551 | Goodwyne, John                                             |                    | £41-6-8  | D/A/We/154/73                |
+| 1551 | Godwyn, John                                               |                    |          | ORO 185/117                  |
+| 1555 | DORRELL, Dorell, Edmund                                    |                    |          | D/A/We/8/97                  |
+| 1555 | ROSELL, William                                            |                    |          | D/A/Wf/2/250                 |
+| 1556 | [WITHINGTON, Wythingto[n], James](/wills/james-withington) | (vicar), clerk     |          | D/A/We/8/197 D/A/Wf/2/367    |
+| 1557 | Darell, Elizabeth                                          |                    |          | D/A/Wf/3/72                  |
+| 1557 | Tryppe, James                                              |                    |          | D/A/Wf/3/246                 |
+| 1557 | TYTING, Thomas                                             | (vicar of), priest |          | D/A/We/10/32 D/A/Wf/3/241    |
+| 1558 | Godwyne, Edmund (Yemmant)                                  |                    |          | D/A/We/12/94 D/A/Wf/4/144    |
+| 1558 | Goddyne, Thomas                                            |                    |          | D/A/We/12/101 D/A/Wf/4/145   |
+| 1559 | Darell, John                                               |                    |          | D/A/We/12/38 D/A/Wf/4/104    |
+| 1559 | OLD, William                                               |                    |          | D/A/We/154/219 D/A/Wf/5/160  |
+| 1560 | MEAD, Richard                                              | husbandman         |          | D/A/We/13/39 D/A/Wf/5/330    |
+| 1568 | SWAYNSON, Richard                                          | vicar              |          | D/A/We/16/163                |
+| 1573 | Trippe, James                                              |                    | £39-10-8 | D/A/We/17/1                  |
+| 1573 | Tryppe, John                                               |                    | £11-18-2 | D/A/Wf/7/221                 |
+| 1576 | RALEGHE, Thomas                                            | gentleman, nuncup  |          | D/A/Wf/8/156                 |
+| 1579 | DORRELL, William (younger)                                 |                    |          | D/A/Wf/8/312                 |
+| 1584 | DARRELL, Eleanor                                           |                    |          | D/A/Wf/10/30                 |
+| 1593 | Dorrell, William                                           | husbandman, nuncup |          | D/A/Wf/12/173                |
+| 1593 | ROBINS, James                                              | husbandman         |          | D/A/Wf/12/253                |
+| 1597 | HESTER, William                                            | husbandman         |          | D/A/Wf/13/254                |
+| 1598 | Robyns, Agnes                                              |                    |          | D/A/We/154/268 D/A/Wf/14/108 |
+| 1607 | Yonge, Matthew                                             | husbandman         |          | D/A/Wf/17/249                |
+| 1612 | WRIGHT, Martin                                             | clerk              |          | D/A/We/24/211 D/A/Wf/19/276  |
+| 1619 | Younge, John                                               | husbandman         |          | D/A/We/27/6                  |
+| 1619 | Dorrell Edmund (elder)                                     | husbandman         |          | D/A/We/27/238 D/A/Wf/23/83   |
+| 1623 | BIGG, Bigge, Christopher                                   | yeoman             |          | D/A/We/28A/145 D/A/Wf/24/239 |
+| 1631 | Boudo[n], Katherine                                        | widow              |          | D/A/Wf/28/214                |
+| 1635 | Dorrell, William                                           | husbandman         |          | D/A/We/30/202 D/A/Wf/30/222  |
+| 1637 | GODDEN, William                                            | admin              |          | D/A/We/149/16                |
+| 1638 | Brookes, Edmund                                            | husbandman         |          | D/A/We/32/139 D/A/Wf/32/129  |
+| 1639 | ROBINS, Martin                                             | batchelor, nuncup  |          | D/A/We/33/164 D/A/Wf/33/195  |
 
 _nuncup or nuncupative means the will was given orally_
 
@@ -117,7 +117,7 @@ William Trippe's will was contested. Records of Buckinghamshire, Bucks Archaeolo
 > Edmund Bolles at the instance of William Trippe in a case of impeding the last will of William Trippe, deceased.
 > The parties appeared and mutually agreed to stand by the award of the rector of Aston and the Vicar of Ilmer, whatever the terms;
 > under penalty of 10s. half of which should go to the parish church and the other half to the office provided that the award was given within the feast of Michaelmas next to come.
-> Agreement and the ease dismissed.
+> Agreement and the case dismissed.
 
 Trippe was also mentioned in [Part I](http://www.bucksas.org.uk/rob/rob_11_1_27.pdf) of the above folio:
 
