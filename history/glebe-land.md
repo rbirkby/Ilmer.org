@@ -62,3 +62,5 @@ In contemporary annual reports for the Princes Risborough with Ilmer PCC, Church
 #### 1948 - Aerofilms
 
 ![Aerofilms 1948](/images/aerofilms-churchclose-1948.avif)
+
+<script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="EAW017638" style="width: 100%; display: inline-flex; aspect-ratio: 4780/3959; max-width: 4780px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->

@@ -606,7 +606,8 @@
     "Notes": null,
     "Codicil": null,
     "FragileCode": null,
-    "OriginalCode": "1"
+    "OriginalCode": "1",
+    "Transcription": "/wills/hannah-kingham-1790"
   },
   {
     "WillID": "10959",
@@ -968,5 +969,25 @@
     "Codicil": null,
     "FragileCode": null,
     "OriginalCode": null
+  },
+  {
+    "WillID": "63996",
+    "LastName": "Withington",
+    "FirstName": null,
+    "Occupation": "clerk",
+    "Place": null,
+    "DaysWill": null,
+    "MonthWill": null,
+    "YearWill": null,
+    "DaysProved": null,
+    "MonthProved": null,
+    "YearProved": null,
+    "DAWe": "8 197",
+    "DAWf": "2 367",
+    "Notes": null,
+    "Codicil": null,
+    "FragileCode": null,
+    "OriginalCode": null,
+    "Transcription": "/wills/james-withington"
   }
 ]
