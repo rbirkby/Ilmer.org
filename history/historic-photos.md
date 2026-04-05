@@ -9,6 +9,16 @@ image: images/FlowerFestivalVillageGreen.avif
 
 The photo above shows Valerie Alsford's refreshments at the 1978 Church Flower Festival, organised by Janet Wilson of 2, The Green. The photo is taken from the driveway of Old Orchard.
 
+The large tree in the background collapsed on 10th March 2019:
+
+![Fallen tree outside 1 The Green, Linda Corstorphine, 2019](/images/fallen-tree-march-2019.avif)
+
+Another photo from 1988 of a horse and trap beside The Green, published in the South Bucks Star, 19 Aug 1988.
+
+![Horse and Trap, J P Photography, 1988](/images/horse-trap-village-green-1988.avif)
+
+### Aerial Photos
+
 The following photos are from Aerofilms, taken in 1948. Click on the photos to zoom in.
 
 <script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="EAW017651" style="width: 100%; display: inline-flex; aspect-ratio: 4560/4145; max-width: 4560px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
