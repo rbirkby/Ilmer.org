@@ -4,8 +4,10 @@ title: 'Historic Photos'
 description: 'Historic Photos of Ilmer'
 category: history
 tags: [history, post]
-image: images/church-drawing2-unknown-1978.avif
+image: images/FlowerFestivalVillageGreen.avif
 ---
+
+The photo above shows Valerie Alsford's refreshments at the 1978 Church Flower Festival, organised by Janet Wilson of 2, The Green. The photo is taken from the driveway of Old Orchard.
 
 The following photos are from Aerofilms, taken in 1948. Click on the photos to zoom in.
 
@@ -23,7 +25,7 @@ Ilmer House. A passenger train is on the railway line.
 
 <script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="EAW017640" style="width: 100%; display: inline-flex; aspect-ratio: 4600/4106; max-width: 4600px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
 
-Ilmer in the middle, North Mill in the foreground, and Lockington, the home of Charles Belgrove, in-between.
+Ilmer in the middle, North Mill in the foreground, and Lockington (Hermit's Wood or Hermit's Copse), the home of Charles Belgrove, in-between.
 
 ---
 
@@ -53,7 +55,7 @@ Lower Farm, Ilmer Halt, the glass houses of the nursery and the barns of Manor F
 
 <script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="EAW017646" style="width: 100%; display: inline-flex; aspect-ratio: 4640/4063; max-width: 4640px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
 
-Ilmer House and the Church. The Church chimney is clearly visible. Manor Farm is at the top right and a small barn can be seen behind the tree in what is now the horse paddocks top left. On the right is the Old Vicarage. At this time, it was just a single bay.
+Ilmer House and the Church. The Church chimney is clearly visible. Manor Farm is at the top right and a small barn can be seen behind the tree in what is now the horse paddocks top left. On the right is the Old Vicarage.
 
 ---
 
@@ -90,3 +92,15 @@ Ilmer House
 <script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="EAW017635" style="width: 100%; display: inline-flex; aspect-ratio: 4650/4051; max-width: 4650px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
 
 Ilmer House and Lodge Cottages (now demolished), which occupied the site of present-day Folly Cottage.
+
+---
+
+### Towards 2000
+
+This fascinating documentary was commissioned and sponsored by the Longwick-cum-Ilmer Parish Council to create a time capsule of our community in the year leading up to 2000. Originally distributed on DVD to every household in the village, this film captures the unique spirit and daily life of Longwick and its surrounding hamlets.
+
+The full DVD is 1 hour 32 minutes long, of which 5 minutes cover Ilmer.
+
+Do you remember this project? Do you recognise anyone, or perhaps even a younger version of yourself? Share your memories and stories!
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/l5HFBkExQu0?si=mcrPahq1kkYlirun" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
