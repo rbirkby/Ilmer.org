@@ -23,4 +23,6 @@ The Autumn 1965 issue of Shellstar's journal featured an article on Lower Farm, 
 
 A keen fisherman, Roger Pierce later authored the [Puffin Book of Freshwater Fishing](https://archive.org/details/freshwaterfishin0000unse_w8o9). In 1970, he departed Ilmer to establish the new Shellstar Tech Support and PR department. By that point, he wore an eye patch — possibly acquired during his time at the farm.
 
+The aerial photo taken in 1965 by Aerofilms shows the double-tracked railway line. The Halt was decommissioned in 1963 and the line single-tracked in Autumn 1968.
+
 \* Top image shows the inside of the Lower Farm training centre. Angood & Pugh Photographers.

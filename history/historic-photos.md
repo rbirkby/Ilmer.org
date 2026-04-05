@@ -7,15 +7,18 @@ tags: [history, post]
 image: images/FlowerFestivalVillageGreen.avif
 ---
 
+### The Green
+
 The photo above shows Valerie Alsford's refreshments at the 1978 Church Flower Festival, organised by Janet Wilson of 2, The Green. The photo is taken from the driveway of Old Orchard.
 
-The [large tree](https://maps.app.goo.gl/nGQaxDzqXyk2mZNeA) in the background collapsed on 10th March 2019:
-
 ![Fallen tree outside 1 The Green, Linda Corstorphine, 2019](/images/fallen-tree-march-2019.avif)
-
-Another photo from 1988 of a horse and trap beside The Green, published in the South Bucks Star, 19 Aug 1988.
+The [large tree](https://maps.app.goo.gl/nGQaxDzqXyk2mZNeA) in the background collapsed on 10th March 2019
 
 ![Horse and Trap, J P Photography, 1988](/images/horse-trap-village-green-1988.avif)
+Horse and trap beside The Green, published in the South Bucks Star, 19 Aug 1988
+
+![Celebrations to mark the 50th anniversary of VE Day on the village green, J Harper](/images/VEDay-50thAnniversary.avif)
+Celebrations to mark the 50th anniversary of VE Day on the village green, May 1995
 
 ### Aerial Photos
 
@@ -107,8 +110,8 @@ Ilmer House and Lodge Cottages (now demolished), which occupied the site of pres
 
 ### Shellstar at Lower Farm
 
-![Slide of the dutch barn and former cowshed at Lower Farm, approximately 1972](/images/LowerFarm-unknown-date.avif)
-Dutch barn at Lower Farm
+![Slide of the dutch barn and former cowshed at Lower Farm, approximately 1963](/images/LowerFarm-unknown-date.avif)
+Dutch barn at Lower Farm, approximately 1963.
 
 ![Slide of the dutch barn and former cowshed at Lower Farm, John Tarlton SC72, 1972](/images/LowerFarm-1972.avif)
 Lower Farm with a sign saying "Shellstar Limited". John Tarlton SC72, 1972.
@@ -121,11 +124,24 @@ Construction, along with a similar cowshed at Manor Farm and a farm house at Col
 
 [^1]: Deeds in Bucks Archive, D-X_91.
 
+### Ilmer Halt
+
+![3rd class single ticket from Haddenham to Ilmer Halt](/images/ilmer-halt-ticket.jpg#right)
+
+Ilmer Halt was an on-request station which opened 1st April 1929 serving the London and North-Eastern Railway Company. A passenger census in the week to 20th January 1962 showed on average five people joined or left the trains on average each day[^2]. Passenger services from the halt were withdrawn from January 7th 1963 after almost 34 years of operation.
+
+![](/images/ilmer-halt-viewingplatform.avif)
+A group of men using the Halt platform to watch over the adjacent field. One man is using a megaphone.
+
+[^2]: Bucks Free Press, 13 Apr. 1962
+
 ### Towards 2000
 
 This fascinating documentary was commissioned and sponsored by the Longwick-cum-Ilmer Parish Council to create a time capsule of our community in the year leading up to 2000. Originally distributed on DVD to every household in the village, this film captures the unique spirit and daily life of Longwick and its surrounding hamlets.
 
-The full DVD is 1 hour 32 minutes long, of which 5 minutes cover Ilmer.
+The full DVD[^3] is 1 hour 32 minutes long, of which 5 minutes cover Ilmer.
+
+[^3]: Additionally, deposited in the Bucks Archives, reference [AR_83-2009](https://archives.buckinghamshire.gov.uk/records/PR_136/UNCAT/AR_83-2009)
 
 Do you remember this project? Do you recognise anyone, or perhaps even a younger version of yourself? Share your memories and stories!
 
