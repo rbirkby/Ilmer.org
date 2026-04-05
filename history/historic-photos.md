@@ -9,7 +9,7 @@ image: images/FlowerFestivalVillageGreen.avif
 
 The photo above shows Valerie Alsford's refreshments at the 1978 Church Flower Festival, organised by Janet Wilson of 2, The Green. The photo is taken from the driveway of Old Orchard.
 
-The large tree in the background collapsed on 10th March 2019:
+The [large tree](https://maps.app.goo.gl/nGQaxDzqXyk2mZNeA) in the background collapsed on 10th March 2019:
 
 ![Fallen tree outside 1 The Green, Linda Corstorphine, 2019](/images/fallen-tree-march-2019.avif)
 
@@ -23,7 +23,7 @@ The following photos are from Aerofilms, taken in 1948. Click on the photos to z
 
 <script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="EAW017651" style="width: 100%; display: inline-flex; aspect-ratio: 4560/4145; max-width: 4560px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
 
-Ilmer Road and what appears to be a hayrick.
+Ilmer Lane and what appears to be a hayrick.
 
 ---
 
@@ -104,6 +104,22 @@ Ilmer House
 Ilmer House and Lodge Cottages (now demolished), which occupied the site of present-day Folly Cottage.
 
 ---
+
+### Shellstar at Lower Farm
+
+![Slide of the dutch barn and former cowshed at Lower Farm, approximately 1972](/images/LowerFarm-unknown-date.avif)
+Dutch barn at Lower Farm
+
+![Slide of the dutch barn and former cowshed at Lower Farm, John Tarlton SC72, 1972](/images/LowerFarm-1972.avif)
+Lower Farm with a sign saying "Shellstar Limited". John Tarlton SC72, 1972.
+
+The white, former cowshed in the centre was constructed between 1903-1904. It was described[^1] in a letter of October 1903:
+
+> At the Lower Farm a cow house of bricks and a tile roof of sufficient capacity to tie 16. cows with a mixing house of the same materials adjoining.
+
+Construction, along with a similar cowshed at Manor Farm and a farm house at Coldharbour, was paid for under the will of Moreton John Edward Frewen and the beneficiary and ["tenant for life"](https://www.legislation.gov.uk/ukpga/Vict/45-46/38/enacted), Miss Elizabeth Moreton. The cost was paid out of the proceeds of selling the adjacent land to the Great Western and Great Central Joint Railway for the new line.
+
+[^1]: Deeds in Bucks Archive, D-X_91.
 
 ### Towards 2000
 
