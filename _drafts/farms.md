@@ -1,22 +1,24 @@
 ---
 layout: post
-title: "Farms"
-description: "A farming community."
+title: 'Farms'
+description: 'A farming community.'
 category: history
 tags: [farming]
 ---
 
 The farms in the village have come and gone, and changed names too.
 
-* Lower Farm
-* Ilmer House Farm
-* Ilmer Farm
-* Manor Farm
-* Severalles
-* Upper Manor Farm
-* Upper Farm
-* Lower House Farm
-* Cold Harbour Farm
+- Lower Farm
+- Ilmer House Farm
+- Ilmer Farm
+- Manor Farm
+- Severalles
+- Upper Manor Farm
+- Upper Farm
+- Lower House Farm
+- Cold Harbour Farm
+- Middle Farm
+- Bumpers Farm
 
 ### Severalles / Lower Farm / Lower House Farm
 
@@ -33,7 +35,6 @@ Stanley died aged 66 in August 1947, 3 months after his wife passed.
 After his father died, William built up a poultry flock, but neglected to send his eggs to the official ministry of food approved package station. The law caught up with him in 1949 when he was fined £20 and £6 5s costs for selling 104 dozen eggs illegally.
 
 Despite these convictions, the prosecutor described it as "an isolated act of foolishness".
-
 
 ### Upper Manor Farm / Ilmer House Farm / Upper Farm
 
@@ -55,10 +56,8 @@ A Mr W White is recorded as being resident in the house until about 1936 followe
 
 During the 1970s, a new farm residence was constructed - what is now Upper Manor Farm which allowed Ilmer House to part ways with its farmland.
 
-
 ![Ilmer house on 26th July 1948](/images/EAW017636.jpg)
 http://www.britainfromabove.org.uk/image/eaw017636
-
 
 ### Manor Farm
 
