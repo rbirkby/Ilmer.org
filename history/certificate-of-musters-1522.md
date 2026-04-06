@@ -3,7 +3,7 @@ layout: post
 title: Ilmer and Aston Mullins, Certificate of Musters, 1522
 description: The Certificate of Musters in Buckinghamshire for 1522, A C Chibnall, 1973
 category: history
-tags: []
+tags: [military]
 ---
 
 | Name                                                         | Valor terr' et tent'<br> £ s. d. | Valor bonorum<br> £ s. d. |
@@ -26,8 +26,8 @@ tags: []
 | John Haystar                                                 |                                  |                     1 0 0 |
 | Rob. Warton¹                                                 |                                  |                      13 4 |
 | Wm. Asley                                                    |                                  |                      16 0 |
-| Hen, servaunte to ye vicar¹                                  |                                  |                      10 0 |
+| Hen, servaunte to ye vicar[^1]                               |                                  |                      10 0 |
 | Sir John Hampden                                             |                            2 0 0 |                           |
-| John Watters¹                                                |                              2 0 |                    13 6 8 |
+| John Watters[^1]                                             |                              2 0 |                    13 6 8 |
 
-¹ Six bows.
+[^1]: Six bows.
