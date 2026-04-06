@@ -201,7 +201,7 @@
   {
     "date": "18 Feb. 1328",
     "title": "John Blaket claims theft of property",
-    "description": "Theft of twenty horses, twenty mares, sixty oxen, forty bullocks, forty cows and two hundred swine, worth 200 marks, and felled and carried away his trees from his manors of Ilmer, Aston and Addington.",
+    "description": "Theft of twenty horses, twenty mares, sixty oxen, forty bullocks, forty cows and two hundred swine, worth 200 marks (1.5 marks = £1), and felled and carried away his trees from his manors of Ilmer, Aston and Addington.",
     "references": ["Calendar of the patent rolls preserved in the Public Record Office : Edward III, Membrane 30d"],
     "labels": ["manor", "property"]
   },
@@ -265,7 +265,7 @@
   {
     "date": "12 Apr. 1339",
     "title": "John Fitz-Bernard releases all rights to the manor of Ilmer",
-    "description": "Signed at Stoke Poges, all remaining rights to the manor of Ilmer are released by John Fitz-Bernard and he gives these rights to Sir John de Molyns, his wife Egidia, and their son John. John Fitz-Bernard received 100 marks of silver.",
+    "description": "Signed at Stoke Poges, all remaining rights to the manor of Ilmer are released by John Fitz-Bernard and he gives these rights to Sir John de Molyns, his wife Egidia, and their son John. John Fitz-Bernard received 100 marks (1.5 marks = £1) of silver.",
     "references": [
       "Calendar of close rolls, membranes 43d and 39d, 13 Edward III, 13 May 1339",
       "Feet of fines, 13 Edward III, 6 Oct 1339"
@@ -441,9 +441,10 @@
   {
     "date": "1440",
     "title": "Hungerford Family Inherits Manor",
-    "description": "The manor passes to the Hungerford family through the marriage of the Molyns heiress, Alianore (Eleanor), to Robert Hungerford. He styled himself Lord Moleyns, 1st Baron Moleyns.",
+    "description": "The manor passes to the Hungerford family through the marriage of the Molyns heiress, Alianore (Eleanor), to Robert Hungerford (aged between 10 and 12). He styled himself Lord Moleyns, 1st Baron Moleyns.",
     "references": [
-      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847",
+      "Dictionary of National Biography, 1885-1900, Vol. 28, Sidney Lee"
     ],
     "labels": ["inheritance", "manor", "marriage", "property"]
   },
@@ -469,6 +470,15 @@
     "labels": ["church", "person", "vicar"]
   },
   {
+    "date": "17 Jul. 1453",
+    "title": "Robert, Lord Hungerford, Lord Molyns captured at the Battle of Castillon",
+    "description": "Castillon was the final battle of the Hundred Years' War. His mother, Margaret Lady Hungerford, paid his ransom following 7 years of imprisonment. His mother's will of 8 Aug. 1476 shows it cost £9,961 to repatriate him - a phenomenal sum equivalent to £10 million today. £3,000 was borrowed from the Medici bank agent and secured on the estates of Lady Moleyns - including the Manor of Ilmer, eventually paid off in 1465. The London branch of Medici was liquidated in 1478 partly due to loaning too much to Lancastrian supporters such as Robert.",
+    "references": [
+      "[Counting the cost of war: the Moleyns ransom and the Hungerford land sales, M.A. Hicks](https://southernhistorysociety.org.uk/wp-content/uploads/2021/07/Vol-08_1986_MA-Hicks-Cutting-the-cost-of-war-the-Moleyns-Ransom-the-Hungerford-Land-Sales-1453-87.pdf)"
+    ],
+    "labels": ["manor", "property"]
+  },
+  {
     "date": "12 Nov. 1460",
     "title": "John Bennet appointed vicar",
     "description": "John Bennet is appointed as vicar by the Convent of Studley.",
@@ -485,10 +495,13 @@
     "labels": ["government", "land"]
   },
   {
-    "date": "1464",
+    "date": "18 May 1464",
     "title": "Robert Hungerford beheaded as a Lancastrian",
-    "description": "Robert Hungerford, husband of Eleanor de Molyns, is captured at the battle of Hexham and beheaded at Newcastle before being buried in Salisbury Cathedral. The manor of Ilmer is inherited by his son Sir Thomas Hungerford.",
-    "references": ["Victoria History of the County of Buckingham vol3, stoke poges"],
+    "description": "Robert Hungerford, husband of Eleanor de Molyns, is captured on 15 May 1464 at the battle of Hexham and beheaded at Newcastle before being buried in Salisbury Cathedral. The manor of Ilmer is inherited by his son Sir Thomas Hungerford.",
+    "references": [
+      "Victoria History of the County of Buckingham vol3, stoke poges",
+      "Dictionary of National Biography, 1885-1900, Vol. 28, Sidney Lee"
+    ],
     "labels": ["manor", "person"]
   },
   {
@@ -513,9 +526,18 @@
     "labels": ["church", "person"]
   },
   {
+    "date": "ABT 24 Mar. 1468",
+    "title": "Alianore (Eleanor) Hungerford de Molyns, widow of Robert, Lord Hungerford, marries Sir Oliver Manyngham",
+    "description": "Alianore died 1476, but not before they had a daughter, Frideswide who married Thomas Oxenbridge in 1489.",
+    "references": [
+      "Cokayne, G. E. [The complete peerage, Volume 5](https://archive.org/details/CokayneG.E.TheCompletePeerageSecondEditionVolume5EAGO/page/n209/mode/2up)"
+    ],
+    "labels": ["manor", "person"]
+  },
+  {
     "date": "17 Jan. 1469",
     "title": "Sir Thomas Hungerford beheaded",
-    "description": "Thomas Hungerford, son of Robert Hungerford, is beheaded at Salisbury. The manor of Ilmer eventually reverts to Mary (daughter of Sir Thomas) and her husband Sir Edward Hastings.",
+    "description": "Thomas Hungerford, son of Robert Hungerford, is beheaded at Salisbury after joinging in the Earl of Warwick's attempt to restore Lancastrian Henry VI. The manor of Ilmer eventually reverts to Mary (daughter of Sir Thomas) and her husband Sir Edward Hastings.",
     "references": [
       "Victoria History of the County of Buckingham vol3, stoke poges",
       "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
@@ -608,7 +630,7 @@
     "date": "1522",
     "title": "Mr Sacheverell is Lord of the Manor",
     "description": "Mr. Sacheverell is cheiffe Lord by yeare with a value of land and tenements (valor terr' et tent') of £24 6s 8d. Walter Curson holds land to the value of 2s. Neither of them are resident as their value of goods (Valor bonorum) is nil.\n\n [Certificate of Musters](/history/certificate-of-musters-1522)",
-    "references": ["The Certificate of Musters in Buckinghamshire for 1522, A C Chibnall, 1973"],
+    "references": ["1522 Military Survey: The Certificate of Musters in Buckinghamshire for 1522, A C Chibnall, 1973"],
     "labels": ["manor", "property"]
   },
   {
@@ -1123,6 +1145,13 @@
     "description": "Lease agreements with Lord Chesterfield mentioned Lower Farm, Middle Farm, and 'Coal Harbour' Farm.",
     "references": ["the W.H.Smith estate papers, Reading University"],
     "labels": ["farm", "property"]
+  },
+  {
+    "date": "1798",
+    "title": "Posse Commitatus recorded",
+    "description": "The posse commitatus, a record of the able-bodied men available for military service, was recorded. For Ilmer, [6 farmers, 7 servants and 10 labourers were listed](/history/posse-comitatus-1798).",
+    "references": ["THE BUCKINGHAMSHIRE POSSE COMITATUS, 1798, Buckinghamshire Record Society"],
+    "labels": ["population"]
   },
   {
     "date": "1806",
@@ -3191,6 +3220,13 @@
     "description": "[Sir William Willatt Slack](https://en.wikipedia.org/wiki/William_Slack_(surgeon)), Willie to friends and his wife [Lady Joan](https://history.rcplondon.ac.uk/inspiring-physicians/lady-joan-slack) (half-sister to Betty Attenborough) had a weekend retreat at Ilmer Cottage (now September/October cottages). He was the Queen's Surgeon between 1975 and 1990, being promoted to Serjeant Surgeon to Her Majesty the Queen in 1983. His Obituary in the Times, said \n > Sir William and his wife Lady Joan, bought a country cottage where, no sooner had they arrived for the weekend, Slack could be seen tilling their acre of ground no matter what the time or weather. He grew far too many potatoes, leeks, courgettes and other vegetables for the family to eat, so the excess was distributed to friends and neighbours by the barrowload.",
     "references": ["HM Land Registry title register", "The Times obituary, 2019"],
     "labels": ["inheritance"]
+  },
+  {
+    "date": "28 Jun. 1972",
+    "title": "Outline planning permission granted for Ilmer Meadows",
+    "description": "Outline planning permission was granted for construction of Ilmer Meadows on the site of Ilmer Nurseries.\n > use of land for the erection of an agricultural dwellinghouse and garage on part of Ilmer Nurseries, Ilmer, Princes Risborough, Bucks.",
+    "references": ["Outline perm WR/560/72 and application WR/3216/72, Wycombe Rural District Council"],
+    "labels": ["housing", "building"]
   },
   {
     "date": "1 Sep. 1972",
