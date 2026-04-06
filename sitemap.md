@@ -2,12 +2,15 @@
 permalink: /sitemap.xml
 eleventyExcludeFromCollections: true
 ---
-<?xml version="1.0" encoding="utf-8"?>
+
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    {% for page in collections.post %}
-        <url>
-            <loc>{{ site.url }}{{ page.url | url }}</loc>
-            <lastmod>{{ page.date }}</lastmod>
-        </url>
-    {% endfor %}
+{%- for item in collections.post %}
+{%- unless item.data.ignore == true %}
+  <url>
+    <loc>{{site.url}}{{ item.url }}</loc>
+    <lastmod>{{ item.date | date: '%Y-%m-%d' }}</lastmod>
+  </url>
+{%- endunless %}
+{%- endfor %}
 </urlset>
