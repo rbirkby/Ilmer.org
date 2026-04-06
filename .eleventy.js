@@ -10,6 +10,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({
     'node_modules/markdown-it-github-alerts/styles/*.css': 'assets/css'
   });
+  eleventyConfig.addPassthroughCopy('robots.txt');
 
   eleventyConfig.amendLibrary('md', (mdLib) => mdLib.use(markdownItFootnote));
   eleventyConfig.addPlugin(RenderPlugin);
