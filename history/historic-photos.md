@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'Historic Photos'
-description: 'Historic Photos of Ilmer'
+description: 'Old and historic Photos of Ilmer'
 category: history
 tags: [history, post]
 image: images/FlowerFestivalVillageGreen.avif

@@ -3060,13 +3060,6 @@
     "labels": ["building", "church"]
   },
   {
-    "date": "1968 (also 1971, 1973)",
-    "title": "Residents of Ilmer House",
-    "description": "William Greaves Underwood's parents-in-law, Alan Philip Lloyd Cogswell, known as Coggie and Mrs (Audrey) Sylvia Cogswell, known as Dum, lived at Ilmer House. Alan was an anaesthetist and lawyer, whilst Sylvia was an expert and author in orthoptics under her maiden name of Jackson.",
-    "references": ["Prior's Field Old Girls' Magazine", "Nicknames from Ancestry.com"],
-    "labels": ["housing"]
-  },
-  {
     "date": "29 Jan. 1968",
     "title": "Death of Sarah Olive Leuw",
     "description": "Sarah Olive Leuw, mother of Dudley Scales Leuw of The Old Vicarage died.",
@@ -3097,6 +3090,13 @@
       "Ancestry.com - Susan Underwood"
     ],
     "labels": ["auction", "housing", "sale"]
+  },
+  {
+    "date": "1968 (also 1971, 1973)",
+    "title": "Residents of Ilmer House",
+    "description": "William Greaves Underwood's parents-in-law, Alan Philip Lloyd Cogswell, known as Coggie and Mrs (Audrey) Sylvia Cogswell, known as Dum, lived at Ilmer House. Alan was an anaesthetist and lawyer, whilst Sylvia was an expert and author in orthoptics under her maiden name of Jackson.",
+    "references": ["Prior's Field Old Girls' Magazine", "Nicknames from Ancestry.com"],
+    "labels": ["housing"]
   },
   {
     "date": "c. Dec. 1968",
