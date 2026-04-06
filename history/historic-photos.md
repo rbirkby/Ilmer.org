@@ -128,7 +128,7 @@ Construction, along with a similar cowshed at Manor Farm and a farm house at Col
 
 ![3rd class single ticket from Haddenham to Ilmer Halt](/images/ilmer-halt-ticket.jpg#right)
 
-Ilmer Halt was an on-request station which opened 1st April 1929 serving the London and North-Eastern Railway Company. A passenger census in the week to 20th January 1962 showed on average five people joined or left the trains on average each day at the halt[^2]. Passenger services from the halt were withdrawn from January 7th 1963 after almost 34 years of operation.
+Ilmer Halt was an on-request station which opened 1st April 1929 serving the London and North-Eastern Railway Company. A passenger census in the week to 20th January 1962 showed on average five people joined or left the trains each day at the halt[^2]. Passenger services from the halt were withdrawn from January 7th 1963 after almost 34 years of operation.
 
 ![](/images/ilmer-halt-viewingplatform.avif)
 A group of men using the Halt platform to watch over the adjacent field. One man is using a megaphone.
