@@ -1,13 +1,21 @@
 ---
 layout: post
-title: 'Fields'
-description: 'The fields of Ilmer'
+title: 'Fields and farming'
+description: 'The fields and farms of Ilmer'
 category: history
 tags: [history, post]
 image: images/1778PlanOfTheParishOfIlmer.avif
 ---
 
 According to [Lipscomb](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), Ilmer manor had been enclosed into private fields by 1657. The enclosure process began much earlier (over a century before) when [Walter Curson](https://archive.org/details/bwb_KV-352-031_1/page/n5/mode/2up) enclosed sixty acres he leased from Lady Mary Hungerford.
+
+### Farms
+
+<ul>
+{%- for item in collections.farm -%}
+    <li><a href="{{ item.url }}">{{ item.data.title }}</a></li>
+{%- endfor -%}
+</ul>
 
 ### Tithe Map
 
