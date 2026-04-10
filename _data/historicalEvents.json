@@ -1067,6 +1067,20 @@
     "labels": ["legal"]
   },
   {
+    "date": "13 Jan. 1732",
+    "title": "52 acres of land to be sold in London",
+    "description": "Estate of the late, bankrupt John Walter of Snow-Hill, London to be auctioned at the London Guildhall. Land at Ilmer let to Mr Steward.",
+    "references": ["London Gazette, 13 Jan 1732 with corrections 23 Jan 1732"],
+    "labels": ["land"]
+  },
+  {
+    "date": "1741",
+    "title": "Atypical burials recorded",
+    "description": "19 burials are recorded, including 6 from a single family and 4 from another family. Most years, Ilmer recorded no more than 5 burials in a year, so this atypical record indicates a contagious illness such as smallpox or influenza may have been present in the village.",
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "labels": ["death", "person"]
+  },
+  {
     "date": "d. 1746",
     "title": "Death of Vicar Stanbridge",
     "description": "Henry Stanbridge, the Vicar of Ilmer, dies.",
@@ -2081,6 +2095,15 @@
     "description": "Auction particulars for Manor Farm & Lower Farm were issued.",
     "references": ["London Met Archives, ref: LMA/4673/D/01/035/016"],
     "labels": ["auction", "farm", "property", "sale"]
+  },
+  {
+    "date": "20 Nov. 1912",
+    "title": "Ilmer Court Rolls sold at auction",
+    "description": "Formerly the property of Robert W Blathwayt of Dyrham Park, Chippenham.",
+    "references": [
+      "[Catalogue of Important and Interesting Historical and Eclesiastical Manuscripts](https://babel.hathitrust.org/cgi/pt?id=hvd.hnmrr8&seq=7&q1=ilmerehttps://babel.hathitrust.org/cgi/imgsrv/download/pdf?id=hvd.hnmrr8&attachment=1&tracker=D3), Sotheby's, 20 Nov. 1912"
+    ],
+    "labels": ["auction", "sale"]
   },
   {
     "date": "16 Jan. 1913",
