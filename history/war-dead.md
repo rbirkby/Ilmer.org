@@ -9,7 +9,7 @@ tags: [military]
 | Name                                            | Conflict               | Location              | Date              | Casualty Record       | Age |
 | ----------------------------------------------- | ---------------------- | --------------------- | ----------------- | --------------------- | --: |
 | Sir William de Moleyns                          | Hundred Years War      | [Siege of Orleans][1] | 1429              |                       |     |
-| [Robert 3rd Baron Hungerford (Lord Moleyns)][2] | [Wars of the Roses][3] | [Battle of Hexam][4]  | May 18 1464       | Beheaded at Newcastle |  35 |
+| [Robert 3rd Baron Hungerford (Lord Moleyns)][2] | [Wars of the Roses][3] | [Battle of Hexam][4]  | May 18 1464       | Beheaded at Newcastle | ~35 |
 | [Sir Thomas Hungerford][5]                      | [Wars of the Roses][3] | Salisbury             | January 17 1469   | Beheaded              | ~29 |
 | Aubrey S Gomme                                  | Great War              | France                | April 9 1917      | Killed in action      |  24 |
 | William J Clayton                               | Great War              |                       | April 28 1917     | Wounded and Missing   |  20 |

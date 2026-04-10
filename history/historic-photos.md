@@ -120,7 +120,7 @@ The white, former cowshed in the centre was constructed between 1903-1904. It wa
 
 > At the Lower Farm a cow house of bricks and a tile roof of sufficient capacity to tie 16. cows with a mixing house of the same materials adjoining.
 
-Construction, along with a similar cowshed at Manor Farm and a farm house at Coldharbour, was paid for under the will of Moreton John Edward Frewen and the beneficiary and ["tenant for life"](https://www.legislation.gov.uk/ukpga/Vict/45-46/38/enacted), Miss Elizabeth Moreton. The cost was paid out of the proceeds of selling the adjacent land to the Great Western and Great Central Joint Railway for the new line.
+Construction, along with a similar cowshed at Manor Farm and a farm house at [Coldharbour](/history/coldharbour), was paid for under the will of Moreton John Edward Frewen and the beneficiary and ["tenant for life"](https://www.legislation.gov.uk/ukpga/Vict/45-46/38/enacted), Miss Elizabeth Moreton. The cost was paid out of the proceeds of selling the adjacent land to the Great Western and Great Central Joint Railway for the new line.
 
 [^1]: Deeds in Bucks Archive, D-X_91.
 
