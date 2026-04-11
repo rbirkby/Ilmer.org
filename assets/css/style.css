@@ -57,23 +57,40 @@ section.article {
     width: 100%;
   }
 
-  & p:has(img) {
+  & p:has(img),
+  & p.image-frame {
+    position: relative;
     font-size: 0.8em;
     line-height: 1.2em;
   }
 
-  & p:has(img[src*='#right']) {
+  & p.image-frame img {
+    display: block;
+  }
+
+  & p:has(img[src*='#right']),
+  & p.image-frame--right {
     float: right;
     max-width: 40%;
     margin: 0 0 0 10px;
     clear: right;
   }
 
-  & p:has(img[src*='#left']) {
+  & p:has(img[src*='#left']),
+  & p.image-frame--left {
     float: left;
     max-width: 40%;
     margin: 0 10px 0 0;
     clear: left;
+  }
+
+  & p.image-frame--bwphoto {
+    overflow: hidden;
+    border-radius: 0.8rem;
+  }
+
+  & p.image-frame.is-colorized img {
+    filter: saturate(1.05) contrast(1.02);
   }
 
   & a {

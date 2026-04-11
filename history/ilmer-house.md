@@ -13,9 +13,9 @@ Tragedy struck in December 1885 when Elizabeth died of "fatty degeneration of th
 
 Their older brother Thomas, who had been lodging at Horsenden Cottage near Longwick at the 1881 census moved to the Old Vicarage with his young family by the 1888 Electoral Register and was looking after Albert, Owen and Ernest. Thomas, a poultry farmer, along with another brother John were executors of David's will when Thomas was 22.
 
-![Albert Goodchild](/images/albert-goodchild.jpg#left)
+![Albert Goodchild](/images/albert-goodchild.jpg#left,bwphoto)
 
-By the time of the 1891 census, Albert then aged 17 was living in Wycombe in a property just north of the railway station called Townfield Terrace. He was working as a gardener. In 1894 he married Elizabeth Mason in Bromley, London and by 1901 he is recorded in Kelly's directory as a nurseryman in Ravenscroft Road, Beckenham, London.
+By the time of the 1891 census, Albert then aged 17 was living in Wycombe in a property just north of the railway station called [Townfield Terrace](https://swop-demo.co.uk/swop-image/rhw47059/). He was working as a gardener. In 1894, Albert married Elizabeth Mason in Bromley, London and by 1898 he was selling bedding plants as Goodchild & Butcher from the Wooden Cottage Nursery on Ravenscroft Road, Beckenham, London. Kelly's directory 1901 recorded him as a nurseryman at the Ravenscroft Road address.
 
 Meanwhile, in 1892, his youngest brother Ernest aged 13 [departed Liverpool](https://homechildrencanada.com/registry?id=6611) bound for Quebec and arrived at the [Children's Aid Society Reception Home](https://www.childrenshomes.org.uk/WinnipegCAS/) in Winnipeg. He returned to Ilmer/Longwick at least once as an adult but lived the rest of his life in Canada with his wife and children.
 
@@ -31,7 +31,7 @@ Despite having property on Ravenscroft Road in Beckenham London, Albert also had
 
 Albert sold his nursery business in Beckenham in 1916 and purchased the Old Vicarage in 1927. He re-routed the public footpath that originally ran between the Old Vicarage and the eastern chancel of the church, leading past Ilmer House. From 1925, the footpath was diverted the other side of the farm barns. In 1928, he offered to supply electricity to Ilmer Church from the Ilmer House generator. But in 1931, Albert died aged 57 leaving widow Elizabeth and children including his youngest child (Robert) Douglas. It was Douglas who would go on to start building the nursery and glasshouses in the centre of the village on what is now Ilmer Meadows. Douglas lived at the Old Vicarage.
 
-![](/images/ilmer-house-unknown.avif)
+![](/images/ilmer-house-unknown.avif#bwphoto)
 Springtime at Ilmer House. Unknown Date. Source: Flickr - ewart white, john field
 
 Elizabeth married their long-standing solicitor Charles Keene in 1933 and moved to live with him at 67 Devon Road, Cheam, London. In 1932, Ilmer House was put up for auction (see photo at top of page) and by 1935, **William White** was living there.

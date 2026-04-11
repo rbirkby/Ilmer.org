@@ -1819,6 +1819,16 @@
     "labels": ["land", "manor", "property"]
   },
   {
+    "date": "25 Feb 1903",
+    "title": "Man found hanged at Albert Goodchild's Nursery in Beckenham",
+    "description": "Richard Minard, found hanged in his home, wooden cottage nursery. His elderly sister and carer had died a few months earlier.",
+    "references": [
+      "The Bromley Telegraph and Chislehurst Chronicle, 28 Feb 1903",
+      "The Beckenham Journal, Penge and Sydenham Advertiser, 28 Feb 1903"
+    ],
+    "labels": ["death", "property"]
+  },
+  {
     "date": "27 Sep. 1903",
     "title": "Death of Sarah Kingham",
     "description": "Sarah, wife of George Kingham, died aged 60.",
