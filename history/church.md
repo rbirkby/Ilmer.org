@@ -195,8 +195,12 @@ This historic photograph reveals details of the church's 19th-century interior a
 
 A church leaflet, originally produced by Dudley Scales Leuw (DSL) and updated in 1980. Courtesy of the Bucks Archaelogical Society.
 
-<object data="/assets/pdfs/StPetersIlmer1980.pdf" type="application/pdf" width="800px" height="1100px">
-    <embed src="/assets/pdfs/StPetersIlmer1980.pdf">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="/assets/pdfs/StPetersIlmer1980.pdf">Download PDF</a>.</p>
-    </embed>
-</object>
+<div class="pdf-embed">
+  <object data="/assets/pdfs/StPetersIlmer1980.pdf" type="application/pdf">
+    <embed src="/assets/pdfs/StPetersIlmer1980.pdf" />
+    <p>
+      This browser does not support PDFs. Please download the PDF to view it:
+      <a href="/assets/pdfs/StPetersIlmer1980.pdf">Download PDF</a>.
+    </p>
+  </object>
+</div>

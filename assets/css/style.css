@@ -101,6 +101,25 @@ section.article {
       text-decoration: underline;
     }
   }
+
+  & .pdf-embed {
+    width: 100%;
+    max-width: 100%;
+    margin: 1.5em 0;
+  }
+
+  & .pdf-embed object {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: clamp(42rem, 140vw, 110rem);
+    border: 0;
+  }
+
+  & .pdf-embed embed {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 body > header {
