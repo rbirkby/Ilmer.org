@@ -112,7 +112,8 @@ section.article {
     display: block;
     width: 100%;
     max-width: 100%;
-    height: clamp(42rem, 140vw, 110rem);
+    min-height: 60rem;
+    height: clamp(60rem, 140vw, 110rem);
     border: 0;
   }
 
