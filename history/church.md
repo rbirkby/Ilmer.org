@@ -12,7 +12,7 @@ _Title image: A view of Ilmer Church on a postcard_
 
 ## Church History
 
-![Ilmer Church without spire](/images/church-no-spire.jpg#right)
+![Ilmer Church without spire](/images/church-no-spire.jpg#right,bwphoto)
 _Ilmer Church without spire_[^1]
 [^1]: Ilmer Church, pre-1909, without spire. Copyright Sydney Newton until 2031.
 
@@ -50,7 +50,7 @@ Church warden at the time was Mr Richard Belgrove, farm tenant of Upper Farm als
 
 Following his work for the diocese, George Edmund Street went on to design The Law Courts on London’s Strand.
 
-![Sister Elizabeth Moreton](/images/SisterMoreton.jpg#right)
+![Sister Elizabeth Moreton](/images/SisterMoreton.jpg#right,bwphoto)
 _Sister Elizabeth Moreton_[^4]
 [^4]: Sr Elizabeth CSJB and an unknown companion. Source: [A Place in Life](https://www.amazon.co.uk/PLACE-LIFE-CLEWER-HOUSE-MERCY/dp/0950871028), Valerie Bonham, 1992
 
@@ -62,7 +62,7 @@ In 1907, Miss Moreton once again supported the community by donating a new Paris
 
 ## A new spire
 
-![St Peter's without spire](/images/church-no-spire2.jpg#right)
+![St Peter's without spire](/images/church-no-spire2.jpg#right,bwphoto)
 _St Peter's, pre-1909, without spire_[^5]
 [^5]: St Peter's without spire. Source: Unknown
 
