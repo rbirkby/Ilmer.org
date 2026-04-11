@@ -44,8 +44,12 @@ Overall, 450 baptisms are recorded at an average rate of 1.58 per year.
 
 ## Registers and records of St Peter's Ilmer
 
-<object data="/assets/pdfs/RegistersAndRecordsOfStPetersIlmer-Digitised.pdf" type="application/pdf" width="800px" height="1100px">
-    <embed src="/assets/pdfs/RegistersAndRecordsOfStPetersIlmer-Digitised.pdf">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="/assets/pdfs/RegistersAndRecordsOfStPetersIlmer-Digitised.pdf">Download PDF</a>.</p>
-    </embed>
-</object>
+<div class="pdf-embed">
+  <object data="/assets/pdfs/RegistersAndRecordsOfStPetersIlmer-Digitised.pdf" type="application/pdf">
+    <embed src="/assets/pdfs/RegistersAndRecordsOfStPetersIlmer-Digitised.pdf" />
+    <p>
+      This browser does not support PDFs. Please download the PDF to view it:
+      <a href="/assets/pdfs/RegistersAndRecordsOfStPetersIlmer-Digitised.pdf">Download PDF</a>.
+    </p>
+  </object>
+</div>
