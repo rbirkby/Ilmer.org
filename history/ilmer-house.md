@@ -15,7 +15,7 @@ Their older brother Thomas, who had been lodging at Horsenden Cottage near Longw
 
 ![Albert Goodchild](/images/albert-goodchild.jpg#left)
 
-By the time of the 1891 census, Albert then aged 17 was living in Wycombe in a property just north of the railway station called Townfield Terrace. He was working as a gardener. In 1894 he married Elizabeth Mason in Bromley, London and by 1901 he is recorded in Kelly's directory as a nurseryman in Ravenscroft Road, Beckenham, London.
+By the time of the 1891 census, Albert then aged 17 was living in Wycombe in a property just north of the railway station called Townfield Terrace. He was working as a gardener. In 1894 he married Elizabeth Mason in Bromley, London and by 1898 he was selling bedding plants as Goodchild & Butcher from the Wooden Cottage Nursery on Ravenscroft Road, Beckenham, London. Kelly's directory 1901 recorded him as a nurseryman at the Ravenscroft Road address.
 
 Meanwhile, in 1892, his youngest brother Ernest aged 13 [departed Liverpool](https://homechildrencanada.com/registry?id=6611) bound for Quebec and arrived at the [Children's Aid Society Reception Home](https://www.childrenshomes.org.uk/WinnipegCAS/) in Winnipeg. He returned to Ilmer/Longwick at least once as an adult but lived the rest of his life in Canada with his wife and children.
 
