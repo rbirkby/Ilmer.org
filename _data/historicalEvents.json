@@ -1824,12 +1824,13 @@
   {
     "date": "25 Feb 1903",
     "title": "Man found hanged at Albert Goodchild's Nursery in Beckenham",
-    "description": "Richard Minard, found hanged in his home, wooden cottage nursery. His elderly sister and carer had died a few months earlier. Since the 2021 redevelopment, this location is known as Minard Court, Ravenscroft Road.",
+    "description": "Richard Minard, found hanged in his home, wooden cottage nursery. Probate 22 Apr 1903 leaving £542 19s 5d. His elderly sister and carer had died a few months earlier. He was described as an eccentric who baked string in the oven for dinner. Since the 2021 redevelopment, this location is known as Minard Court, Ravenscroft Road.",
     "references": [
       "The Bromley Telegraph and Chislehurst Chronicle, 28 Feb 1903",
-      "The Beckenham Journal, Penge and Sydenham Advertiser, 28 Feb 1903"
+      "The Beckenham Journal, Penge and Sydenham Advertiser, 28 Feb 1903",
+      "The Norwood News and Penge Urban District Chronicle, 16 May 1903"
     ],
-    "labels": ["death", "property"]
+    "labels": ["death", "property", "business"]
   },
   {
     "date": "27 Sep. 1903",

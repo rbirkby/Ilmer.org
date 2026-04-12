@@ -1,4 +1,5 @@
 import '/assets/js/ai-colorize-toggle.js';
+import { initImageLightbox } from '/assets/js/image-lightbox.js';
 
 const COLORIZE_WORKER_URL = '/assets/js/colorize-worker.js';
 
@@ -21,6 +22,17 @@ function parseImageTags(img) {
     .split(',')
     .map((tag) => decodeURIComponent(tag).trim().toLowerCase())
     .filter(Boolean);
+}
+
+function stripHashFromImageSrc(src) {
+  const value = src ?? '';
+  const hashIndex = value.indexOf('#');
+
+  if (hashIndex === -1) {
+    return value;
+  }
+
+  return value.slice(0, hashIndex);
 }
 
 function setButtonProgress(button, progress) {
@@ -240,14 +252,16 @@ function registerColorizeButton(img, container) {
 }
 
 function enhanceArticleImages() {
+  const articleSection = document.querySelector('section.article');
   const articleImages = document.querySelectorAll('section.article img');
+  const lightboxAllEnabled = articleSection?.dataset.lightboxAll === 'true';
   let hasColorizableImages = false;
 
   articleImages.forEach((img) => {
     const tags = parseImageTags(img);
     const container = img.closest('p');
 
-    if (!container || tags.length === 0) {
+    if (!container) {
       return;
     }
 
@@ -266,6 +280,43 @@ function enhanceArticleImages() {
       container.classList.add('image-frame--full');
     }
 
+    const lightboxEnabledForImage = lightboxAllEnabled || tags.includes('lightbox');
+    if (lightboxEnabledForImage) {
+      const fullImageSrc = stripHashFromImageSrc(img.getAttribute('src') ?? img.src);
+      const caption = img.alt || '';
+      const linkedParent = img.closest('a');
+
+      if (linkedParent) {
+        linkedParent.classList.add('article-image-link');
+
+        if (!linkedParent.getAttribute('href')) {
+          linkedParent.setAttribute('href', fullImageSrc);
+        }
+
+        if (!linkedParent.hasAttribute('data-full-image')) {
+          linkedParent.setAttribute('data-full-image', fullImageSrc);
+        }
+
+        if (!linkedParent.hasAttribute('data-caption')) {
+          linkedParent.setAttribute('data-caption', caption);
+        }
+
+        if (!linkedParent.hasAttribute('aria-label')) {
+          linkedParent.setAttribute('aria-label', `Open image: ${caption || 'image'}`);
+        }
+      } else {
+        const link = document.createElement('a');
+        link.className = 'article-image-link';
+        link.href = fullImageSrc;
+        link.setAttribute('data-full-image', fullImageSrc);
+        link.setAttribute('data-caption', caption);
+        link.setAttribute('aria-label', `Open image: ${caption || 'image'}`);
+
+        img.parentNode.insertBefore(link, img);
+        link.appendChild(img);
+      }
+    }
+
     if (!tags.includes('bwphoto') || container.querySelector('ai-colorize-toggle')) {
       return;
     }
@@ -282,6 +333,8 @@ function enhanceArticleImages() {
 
     registerColorizeButton(img, container);
   });
+
+  initImageLightbox({ triggerSelector: '.article-image-link' });
 
   if (hasColorizableImages && 'serviceWorker' in navigator) {
     navigator.serviceWorker.register('/assets/js/colorize-sw.js').catch(() => {});

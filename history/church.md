@@ -5,6 +5,7 @@ description: '12th century church in Ilmer, Buckinghamshire, England'
 category: history
 tags: [church, history, post]
 image: images/church-linedrawing-postcard.jpg
+lightbox: true
 ---
 
 _Title image: A view of Ilmer Church on a postcard_
