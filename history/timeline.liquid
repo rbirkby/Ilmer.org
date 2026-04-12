@@ -8,6 +8,8 @@ image: images/timeline.png
 ---
 
 <script type="module">
+  import { initImageLightbox } from '/assets/js/image-lightbox.js';
+
   document.getElementsByTagName('select')[0].addEventListener('change', function() {
     const category = this.value;
     document.querySelectorAll('.timeline-item').forEach(item => {
@@ -20,29 +22,7 @@ image: images/timeline.png
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  // Image lightbox functionality
-  const lightbox = document.getElementById('image-lightbox');
-  const lightboxImage = document.getElementById('lightbox-image');
-  const lightboxCaption = document.getElementById('lightbox-caption');
-
-  // Handle clicks on timeline images
-  document.addEventListener('click', function(event) {
-    const imageLink = event.target.closest('.timeline-image-link');
-    if (imageLink) {
-      event.preventDefault();
-
-      const fullImageSrc = imageLink.getAttribute('data-full-image');
-      const caption = imageLink.getAttribute('data-caption');
-
-      if (fullImageSrc) {
-        lightboxImage.src = fullImageSrc;
-        lightboxImage.alt = caption ?? '';
-        lightboxCaption.textContent = caption ?? '';
-
-        lightbox.showPopover();
-      }
-    }
-  });
+  initImageLightbox({ triggerSelector: '.timeline-image-link' });
 </script>
 
 <button

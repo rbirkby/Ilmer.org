@@ -18,7 +18,7 @@
       <img src="/{{image}}">
     </figure>
   {% endif %}
-  <section class="article">
+  <section class="article" data-lightbox-all="{{ lightbox | default: false }}">
 
     <h1>{{ title }}</h1>
 
@@ -26,6 +26,15 @@
 
     {{ content }}
   </section>
+
+  <div id="image-lightbox" popover>
+    <button
+      popovertarget="image-lightbox"
+      class="lightbox-close"
+      aria-label="Close lightbox">&times;</button>
+    <img id="lightbox-image" alt="" />
+    <p id="lightbox-caption"></p>
+  </div>
 </main>
 <footer>
   <div class="container">
