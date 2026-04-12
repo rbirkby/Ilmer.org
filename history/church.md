@@ -193,7 +193,7 @@ This historic photograph reveals details of the church's 19th-century interior a
 
 ## St Peter's Church, Ilmer pamphlet
 
-A church leaflet, originally produced by Dudley Scales Leuw (DSL) and updated in 1980. Courtesy of the Bucks Archaelogical Society.
+A church leaflet, originally produced by Dudley Scales Leuw (DSL) and updated in 1980. Courtesy of the Bucks Archaeological Society.
 
 <div class="pdf-embed">
   <object data="/assets/pdfs/StPetersIlmer1980.pdf" type="application/pdf">
