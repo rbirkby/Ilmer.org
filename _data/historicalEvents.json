@@ -1793,8 +1793,11 @@
   {
     "date": "1901",
     "title": "Albert Goodchild's Business",
-    "description": "Albert Goodchild is listed as a nurseryman in Beckenham. He had been orphaned aged 13 living in Ilmer.",
-    "references": ["London Suburban, Kelly's Directory Vol II Pt 1 Southern, 1901"],
+    "description": "Albert Goodchild is listed as a nurseryman in Beckenham. He had been orphaned aged 13 living in Ilmer. The nursery was on Ravenscroft Road, previously known as Wooden Cottage Nursery owned by Richard Minard since 1882. At least 4 nurserys existed along the length of Ravenscroft Road.",
+    "references": [
+      "London Suburban, Kelly's Directory Vol II Pt 1 Southern, 1901",
+      "158-160 Ravenscroft Road UK land registry title summary"
+    ],
     "labels": ["business"]
   },
   {
@@ -1821,7 +1824,7 @@
   {
     "date": "25 Feb 1903",
     "title": "Man found hanged at Albert Goodchild's Nursery in Beckenham",
-    "description": "Richard Minard, found hanged in his home, wooden cottage nursery. His elderly sister and carer had died a few months earlier.",
+    "description": "Richard Minard, found hanged in his home, wooden cottage nursery. His elderly sister and carer had died a few months earlier. Since the 2021 redevelopment, this location is known as Minard Court, Ravenscroft Road.",
     "references": [
       "The Bromley Telegraph and Chislehurst Chronicle, 28 Feb 1903",
       "The Beckenham Journal, Penge and Sydenham Advertiser, 28 Feb 1903"
