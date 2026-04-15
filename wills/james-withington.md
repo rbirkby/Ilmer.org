@@ -37,7 +37,7 @@ of shete & a mattress & a coverlet & ij blankets\
 of wheate & to James Hale the yonger an other\
 halfe quarter of wheate <abbr title="Item">It</abbr> I gyve to Willm
 
-Dowell of longwike a quarter of wheat &\
+Dowell of longe wike a quarter of wheat &\
 a quarter of barley <abbr title="Item">It</abbr> I gyve to Edmude\
 maide a quarter of wheat & a quarter of\
 barley <abbr title="Item">It</abbr> I gyve to <abbr title="Robert">Robt</abbr> Gobbe a comb & a\
@@ -72,7 +72,7 @@ I gyve to his sister Agnes a busshel of wheate\
 to his ffiffte doughter & John bukkyne iij bz of\
 wheat & iij bz of malt <abbr title="Item">It</abbr> I gyve to Willm\
 dowell iij acres of wheat in lake furlonge that\
-liethe next to the longe pike waye <abbr title="Item">It</abbr> I gyve to\
+liethe next to the longe wike waye <abbr title="Item">It</abbr> I gyve to\
 John Hale of Bledlowe viijd <abbr title="Item">It</abbr> I gyve\
 to Elizabeth my <abbr title="servaunts">svaunt</abbr> xijd <abbr title="Item">It</abbr> I gyve to Isab[e]ll\
 & Alis my <abbr title="servaunts">svaunts</abbr> either of them viijd\
