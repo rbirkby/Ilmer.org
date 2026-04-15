@@ -42,6 +42,16 @@ Overall, 450 baptisms are recorded at an average rate of 1.58 per year.
 
 ![Baptism graph](/images/StPetersIlmerBaptisms.svg)
 
+#### Interesting discoveries
+
+**A Recorded Suicide**: On June 13, 1704, the burial of Mary Gomm was recorded with the grim note: "who laid violent hand upon her selfe."
+
+**The "Base Born" and Lacemakers**: There are numerous records of "base born" or "illegitimate" children. Interestingly, in the 1820s–1840s, the mother's occupation is frequently listed as "lacemaker".
+
+**Simultaneous Deaths**: The burial register occasionally hints at untold tragedies, such as sudden illness or accidents. On May 14, 1740, husband and wife Edward and Elizabeth Oxley "were both buried" on the exact same day
+
+The [Burying in Woollen Acts 1666-1680](https://en.wikipedia.org/wiki/Burying_in_Woollen_Acts) were acts of parliament requiring the dead to be buried in English woollen shrouds designed to force people to buy English wool to prop up the textile industry. The law was eventually changed in 1814. The notes on the transcript states that who was buried in such a way is omitted from the transcript.
+
 ## Registers and records of St Peter's Ilmer
 
 <div class="pdf-embed">
