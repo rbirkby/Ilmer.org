@@ -1,17 +1,32 @@
 ---
 layout: post
-title: 'Coldharbour'
-description: 'Along the bridleway to Towersey is a copse which hides an historic settlement with a sad story.'
+title: Coldharbour
+description: Along the bridleway to Towersey is a copse which hides an historic settlement with a sad story.
 category: history
 tags: [farm, fatality, death, post]
-image: images/coldharbour.jpg
+image: images/coldharbour-barn.jpg
+lightbox: true
 ---
 
-Coldharbour was a hamlet with a single farm along what is now the bridleway between Ilmer and Towersey. Historically, places called Coldharbour were abandoned refuges along ancient roman roads. It is likely the farm was created at this site.
+Coldharbour was a small hamlet centered around a single farm situated along what is now the bridleway between Ilmer and Towersey. The name itself reflects the settlement's historical significance—places called Coldharbour were typically abandoned refuges established along ancient Roman roads, and this farm was likely created at such a location. The Gomme family (also spelled Gomm) farmed at Coldharbour for over 400 years, establishing deep roots in the area. Today, little remains of this once-thriving homestead except for a weathered wooden barn and an old well hidden among the undergrowth.
 
-![coldharbour map](/images/coldharbour.jpg)
+![The historic well at Coldharbour, one of the few remnants of the abandoned settlement](/images/coldharbour-well.jpg#left)
+Historic well at Coldharbour
 
-A particularly sad story about the farm comes from 1907 when the farmers son, aged just 12, accidently shot and killed his sister aged 5 with a gun which had been left loaded. In addition to appearing in the Bucks Herald, the shooting was also covered in newspapers such as the Western Gazette, the Cheltenham Chronicle and the Taunton Courier.
+A modern farmhouse was built in 1904 using proceeds from the sale of land to the Great Western and Great Central Joint Railway. The farmhouse was demolished in the early 1960s when Shellstar took over farming operations at Coldharbour as part of their [Demonstration Farm](/history/demonstration-farm).
+
+A letter[^1] dated October 1903 from (Sister) Elizabeth Moreton, tenant for life of the Ilmer estate under the trustees of Moreton John Edward Frewen's will, outlines the planned construction:
+
+[^1]: Bucks Archives, [D-X_91](https://archives.buckinghamshire.gov.uk/records/D-X_91).
+
+> At the Coldharbour Farm, a farm-house of bricks with a tile roof containing four bedrooms, a parlour, a living kitchen, scullery, dairy and larder
+
+![Historical map depicting Coldharbour's location along the bridleway between Ilmer and Towersey](/images/coldharbour.jpg#right)
+Coldharbour location map
+
+A particularly tragic event occurred at the farm in 1907 when the farmer's 12-year-old son accidentally discharged a loaded gun, fatally wounding his 5-year-old sister. The incident was widely reported, appearing not only in the Bucks Herald but also in the Western Gazette, Cheltenham Chronicle, and Taunton Courier.
+
+---
 
 Bucks Herald, 10 August 1907
 
