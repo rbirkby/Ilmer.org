@@ -5,6 +5,7 @@ description: 'The history of Ilmer House'
 category: history
 tags: [history, post, property]
 image: images/ilmerhouse1932.jpg
+lightbox: true
 ---
 
 Born in September 1873 to parents David and Elizabeth, **Albert Goodchild** was the 7th of 9 children. An elder brother had died in infancy. At the 1871 census, his parents were living in Longwick, but by the time of Albert's birth, they had moved to the Old Vicarage in Ilmer.
