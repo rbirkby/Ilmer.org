@@ -24,7 +24,7 @@ In 1741, there were a surprising number of burials consisting of:
 - Meade/Meads × 1
 - Munday × 1
 
-The records show that 1741 was a year of exceptionally high mortality for the parish, particularly in May and November. The Woolvin family was hit hardest, with six members (including four children and the mother, Margaret) buried within a single month between October 26 and November 23. Similarly, the Buckland family lost four members (William, Sarah, John, and another William) in late May of that same year.
+The records show that 1741 was a year of exceptionally high mortality for the parish, particularly in May and November. The Woolvin family was hit hardest, with six members (including four children and the mother, Margaret) buried within a single month between October 26th and November 23rd. Similarly, the Buckland family lost four members (William, Sarah, John, and another William) in late May of that same year.
 
 Overall, 268 burials are recorded at an average rate of 1.14 per year.
 
