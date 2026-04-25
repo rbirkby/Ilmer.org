@@ -7,7 +7,7 @@ tags: [history, farm, post]
 image: images/shellstar-training-centre.avif
 ---
 
-Purchased in October 1960 by the Shell Chemical Company, Lower Farm was a location for evaluating modern farming techniques, demostrating fertilisers and pesticides, training distributors and carrying out field demonstrations. The facility covered 360 acres included a dairy unit, pig unit, beef and cereals. At Lower Farm, a demonstration and training centre was built (the 'T' shaped building in the aerial photo), since demolished.
+Purchased in October 1960 by the Shell Chemical Company, Lower Farm was a location for evaluating modern farming techniques, demonstrating fertilisers and pesticides, training distributors and carrying out field demonstrations. The facility covered 360 acres included a dairy unit, pig unit, beef and cereals. At Lower Farm, a demonstration and training centre was built (the 'T' shaped building in the aerial photo), since demolished.
 
 The Autumn 1965 issue of Shellstar's journal featured an article on Lower Farm, Ilmer.
 
