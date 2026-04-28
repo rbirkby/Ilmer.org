@@ -52,7 +52,8 @@ The following wills proved at the Archdeacon’s Court are available in the [Buc
   <td>{{ proved_date | date: "%d %b %Y" | replace: "-", "" }}</td>
   <td>
     {% if will.DAWe %} D/A/We/{{ will.DAWe | replace: " ", "/" | replace: "//", "/" }} {% endif %}<br>
-    {% if will.DAWf %} D/A/Wf/{{ will.DAWf | replace: " ", "/" | replace: "//", "/" }} {% endif %}
+    {% if will.DAWf %} D/A/Wf/{{ will.DAWf | replace: " ", "/" | replace: "//", "/" }} {% endif %}<br>
+    {% if will.OtherRef %} <a href="https://archives.buckinghamshire.gov.uk/records/{{will.OtherRef}}">{{will.OtherRef}}</a> {% endif %}
   </td>
 </tr>
 {% endfor %}
