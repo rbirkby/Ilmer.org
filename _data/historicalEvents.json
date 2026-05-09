@@ -1208,6 +1208,16 @@
     "labels": ["farm", "property"]
   },
   {
+    "date": "17 Dec 1812",
+    "title": "Moreton John Edward Frewen marries Sarah Jenkins",
+    "description": "Moreton John Edward Frewen is married to Sarah, daughter of Rev. David Jenkins. He would later inherit the Manor of Ilmer from his father Dr (Rev) Edward Frewen DD. His maternal grandfather was Rev. Richard Moreton of Little Moreton Hall.",
+    "references": [
+      "[A Cambridge Alumni Database (ACAD)](https://venn.lib.cam.ac.uk/cgi-bin/search-2018.pl?sur=&suro=w&fir=&firo=c&cit=&cito=c&c=all&z=all&tex=FRWN812MJ&sye=&eye=&col=all&maxcount=50)",
+      "[A Cambridge Alumni Database (ACAD) - Edward Frewen](https://venn.lib.cam.ac.uk/cgi-bin/search-2018.pl?sur=&suro=w&fir=&firo=c&cit=&cito=c&c=all&z=all&tex=FRWN765E&sye=&eye=&col=all&maxcount=50)"
+    ],
+    "labels": ["manor"]
+  },
+  {
     "date": "1815",
     "title": "Death of Philip Stanhope, 5th Earl of Chesterfield",
     "description": "Philip Stanhope, 5th Earl of Chesterfield died.",
@@ -1226,8 +1236,11 @@
   {
     "date": "4 Nov. 1817",
     "title": "Moreton John Edward Frewen Admitted to Gray's Inn",
-    "description": "Moreton John Edward Frewen was admitted to Gray's Inn. He would later inherit the Manor of Ilmer from his father Dr (Rev) Edward Frewen.",
-    "references": ["Register of Admissions to Gray's Inn, 1889"],
+    "description": "Moreton John Edward Frewen was admitted to Gray's Inn, 3 years after entering Jesus College Cambridge. He would later inherit the Manor of Ilmer from his father Dr (Rev) Edward Frewen DD.",
+    "references": [
+      "[Register of Admissions to Gray's Inn, 1889](https://archive.org/details/registerofadmiss00gray)",
+      "[A Cambridge Alumni Database (ACAD)](https://venn.lib.cam.ac.uk/cgi-bin/search-2018.pl?sur=&suro=w&fir=&firo=c&cit=&cito=c&c=all&z=all&tex=FRWN812MJ&sye=&eye=&col=all&maxcount=50)"
+    ],
     "labels": ["manor"]
   },
   {
@@ -1494,7 +1507,7 @@
   {
     "date": "17 Jan. 1871",
     "title": "Death of Moreton John Edward Frewen",
-    "description": "Moreton John Edward Frewen died childless. Ownership of Ilmer farms transferred to his cousin, Mrs Moreton-Cragie. On Mrs Moreton-Cragie's subsequent death, the life benefit of the manor of Ilmer transferred to her sister, Elizabeth Moreton.",
+    "description": "Moreton John Edward Frewen died childless. Ownership of Ilmer farms transferred to his cousin, Mrs Moreton-Cragie, daughter of William Moreton, granddaughter of Rev Richard Moreton of Little Moreton Hall. On Mrs Moreton-Cragie's subsequent death, the life benefit of the manor of Ilmer transferred to her sister, Elizabeth Moreton.",
     "references": [
       "Burke's Genealogical and Heraldic History of the Landed Gentry, 1925",
       "Will and testament 1867 with codicil 1869"
@@ -2030,7 +2043,10 @@
     "date": "1911",
     "title": "Harry Morton Gorham appointed Rector",
     "description": "Harry Morton Gorham appointed rector of Horsenden with Ilmer.",
-    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "references": [
+      "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
+      "[A Cambridge Alumni Database (ACAD)](https://venn.lib.cam.ac.uk/cgi-bin/search-2018.pl?sur=&suro=w&fir=&firo=c&cit=&cito=c&c=all&z=all&tex=GRN887HM&sye=&eye=&col=all&maxcount=50)"
+    ],
     "labels": ["church", "vicar"]
   },
   {
