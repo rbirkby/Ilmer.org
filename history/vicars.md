@@ -4,7 +4,7 @@ title: Vicars
 description: "Vicars of St Peter's Ilmer"
 category: history
 tags: [vicar, history, post]
-image: images/church-drawing-unknown-1978.jpg
+image: images/church-drawing-unknown-1978.avif
 ---
 
 {% assign filteredEvents = historicalEvents | where_exp: "event", "event.labels contains 'vicar'" %}
@@ -67,4 +67,4 @@ image: images/church-drawing-unknown-1978.jpg
   </section>
 {% endif %}
 
-<small>\* _Drawing of Ilmer Church, taken from 1978 Flower Festival scrapbook. Artist unknown._</small>
+<small>\* _Drawing of Ilmer Church from handbill sold in aid of the Ilmer Church restoration fund, printed by Judges Ltd, Hastings. Reproduced in 1978 Flower Festival scrapbook. Artist unknown._</small>
