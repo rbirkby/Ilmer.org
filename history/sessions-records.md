@@ -37,7 +37,7 @@ Similar order for the house where Thomas Kinge dwells.
 
 p. 210. Orders.
 
-Order referring to certain justices the appeal of Thomas Walter of lllmore against his rates.
+Order referring to certain justices the appeal of Thomas Walter of **lllmore** against his rates.
 
 ---
 
@@ -111,11 +111,11 @@ Richard Corbey of Great Marlow, farmer, John Eason, senior, of Wing, grazier, Wi
 
 p. 342. Presentments of the grand jury.
 
-The inhabitants of Ilmore, for not repairing part of the highway from Bisceter, co. Oxford, to Chepping Wycombe, near the land of William Young.
+The inhabitants of **Ilmore**, for not repairing part of the highway from Bisceter, co. Oxford, to Chepping Wycombe, near the land of William Young.
 
 p. 344. Chief constables sworn.
 
-Ilmore . . . . Edward Gomme vice William Bowden.
+**Ilmore** . . . . Edward Gomme vice William Bowden.
 
 ---
 
@@ -378,7 +378,7 @@ p.14. The indictments against the inhabitants of **Ilmer** for not repairing the
 
 ## Michaelmas Session, 8th October, 1724 [11 George I]
 
-p.30. The removal order of John Edwards, Jane his wife, and Jane their daughter, from Kingsey to Ilmore, was quashed. (Sess.R.88/42)
+p.30. The removal order of John Edwards, Jane his wife, and Jane their daughter, from Kingsey to **Ilmore**, was quashed. (Sess.R.88/42)
 
 ---
 
