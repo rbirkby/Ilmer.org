@@ -33,13 +33,41 @@ Similar order for the house where Thomas Kinge dwells.
 
 ---
 
+## EASTER SESSION, 1682.
+
+p. 210. Orders.
+
+Order referring to certain justices the appeal of Thomas Walter of lllmore against his rates.
+
+---
+
 ## EASTER SESSION, 1683.
+
+pp. 287-288. Petty constables sworn.
 
 **Illmore** . . . . John Bowden vice Thomas Gome.
 
 ---
 
+## MICHAELMAS SESSION, 1685
+
+p. 447. Fines, issues, and recognizances forfeited.
+
+Thomas Walter of **Ilmore**, gentleman, William Corby of Adstock, Newman Williett, junior, of Bidelsdon, John Desborrough of Chesham, Thomas Carter of Denham, gentleman, Luke Smith of Whitchurch, gentleman, Daniel Lucas of Wingrave, Roger Fuller of Bradwell, gentleman, Robert Stevengton of Newton Blossomville, gentleman, and Thomas Hooten of Stoke Goldington, fined £1. 6s. 8d. each, for being absent when summoned as jurors.
+
+---
+
+## EASTER SESSION, 1688.
+
+pp. 81.-84. Petty constables and tithingmen sworn.
+
+**Ilmor** . . . . Francis Neele vice John Bowden.
+
+---
+
 ## MIDSUMMER SESSION, 1689.
+
+pp. 173-175. Names of persons who produced Sacrament Certificates, took the oaths provided in the act of 1 William and Mary, c. 1, and subscribed the declaration against transubstantiation.
 
 Rev. Marcus Parker, vicar of **Ilmer**,
 
@@ -53,7 +81,15 @@ Ashendon . . Richard Betham of North Marston and John Bowden of **Ilmer** vice J
 
 ---
 
+## EPIPHANY SESSION, 1691-92.
+
+p. 102. Order allowing the appeal of **Ilmore** against a warrant removing Thomas Dancer, with his wife and son, from Stone.
+
+---
+
 ## EASTER SESSION, 1692.
+
+pp. 125-126. Petty constables and tithingmen sworn.
 
 **Ilmer** . . . . William Bowden vice Francis Neale.
 
@@ -72,6 +108,14 @@ William, son of Thomas Walter of **Ilmer**, gentleman, in £40 with Thomas Walte
 p. 364. Recognizances discharged.
 
 Richard Corbey of Great Marlow, farmer, John Eason, senior, of Wing, grazier, William Russell of Chepping Wycombe, paper maker, Richard Nailer of Colebrooke, gentleman, William Amond and Job Blake, both of Chesham, clothiers, John Law of Great Marlow, mercer, Richard Lansdall, farmer, and Edward Spicer, paper maker, both of Chepping Wycombe, Edward Ayris of Abbington, co Berks, bargemaster, Jonathan Jones, miller, and William Lawrence, bargeman, both of Great Marlow, James Gold and James Loveday, both of Braddenham, gentlemen, Edward Leerhead, cheese monger, and Timothy Harding, yeoman, both of Amersham, William Stopp of Great Marlow, labourer, Joseph Emberton, servant, Mary Billingdon, widow, William Hebbs, labourer, and Anthony Norman, butcher, all of Bletchley, James Wild, victualler, Thomas Beckett, labourer, Daniel Browne, bricklayer, and Elizabeth Browne, widow, all of Iver, Thomas Walter, gentleman, and William, his son, and Francis Neale, farmer, all of **Ilmer**, William Mason, farmer, and Joseph Peart, labourer, both of Biggstho in Haddenham, Edward Nash and John Darvill, millers, and Samuel Slater and John Browne, yeoman, all of Little Missenden, William Kemp of Great Missenden, Benjamin Barton, cordwainer, and William Horwood and Silvester Dancer, yeoman, all of Aston Clynton, Richard Stevens, constable of Chesham, Benjamin Salt, victualler, Christopher Carter, mercer, John Gilpin, baker, and Thomas Lane, labourer, all of Newport Pagnell, Peregrine Ford of Cudding- ton, yeoman, Alexander Duncombe and John Money, yeoman, Charles Howard, baker, Henry Mills, yeoman, and Henry Clarke, cordwainer, all of Aylesbury, John Godman, miller, and John Buckmaster, labourer, both of Pightlesto, Elizabeth Cox, spinster, and William Cox, yeoman, both of Middle Cleydon, Henry Wooton of Steeple Cleydon, yeoman, Roger Fleming, labourer, William Darvill, and Isaac Dedford, all of Colebrooke, and Thomas Lane, innholder, Richard Munday, carpenter, and Robert Beeston, bricklayer, all of Wendover.
+
+p. 342. Presentments of the grand jury.
+
+The inhabitants of Ilmore, for not repairing part of the highway from Bisceter, co. Oxford, to Chepping Wycombe, near the land of William Young.
+
+p. 344. Chief constables sworn.
+
+Ilmore . . . . Edward Gomme vice William Bowden.
 
 ---
 
@@ -199,6 +243,14 @@ p.17. Confirmation of a warrant removing Ann Collins from **Ilmer** to Syddenham
 
 ---
 
+## MIDSUMMER SESSION 16 July, 1713 [12 Anne]
+
+Jurors for the body of the county.
+
+p.29. John Barnaby of Great Missenden, William Boveington of Pen, John Buckmaster and Thomas Chappell, both of Slapton, Samuel Cooper of Bradwell Abbey, Joseph Corbet of Adstock, Daniel Elliott of Tingewick, William Gomm of **Ilmore**, Joseph Sirett of Marsh Gibbon, Samuel Smith of Great Marlow, Ralph Swinbourne of Great Missenden, William West of Towersey, Henry Whitchurch of Stoke Mandevile, Richard Whitehead of Stone and John Woodward of Little Horwood.
+
+---
+
 ## Easter Session, 8th April 1714 [13 Anne]
 
 Chief constables sworn.
@@ -321,6 +373,12 @@ Presentments of the constables.
 Thomas Cripps of Kingsley, William Gomm of **Ilmer** and Thomas Markham of Quarringdon, surveyors of highways for not making their presentments. (Sess.R.86/102)
 
 p.14. The indictments against the inhabitants of **Ilmer** for not repairing the highway, were discharged.
+
+---
+
+## Michaelmas Session, 8th October, 1724 [11 George I]
+
+p.30. The removal order of John Edwards, Jane his wife, and Jane their daughter, from Kingsey to Ilmore, was quashed. (Sess.R.88/42)
 
 ---
 
