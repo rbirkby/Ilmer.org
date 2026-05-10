@@ -85,11 +85,22 @@
     "labels": ["church", "economy", "person"]
   },
   {
-    "date": "1255-1278",
+    "date": "1255",
     "title": "Land Held by Royal Service",
-    "description": "Ilmer is mentioned in the Hundred Rolls (Rotuli Hundredorum) as being held by John son of Bernard by serjeanty, a form of land tenure requiring personal service to the king, which in this case was the keeping of his goshawks. \n > Iṫ Eston & Hylmere Joħ fił Bernarđ tenet illas de d̄no Rege ꝑ serganciā ad custodiend' osturcos suos nicħ aliud facit d̄no Reg' & d̄ns Rex ħt custodiā de ħedibʒ suis.\n\n In English, this reads \n > Likewise, Aston and Ilmere: John son of Bernard holds them from the lord King by serjeanty to keep his goshawks; he does nothing else for the lord King, and the lord King has the wardship of his heirs.",
-    "references": ["Rotuli Hundredorum (Hundred Rolls), 1255-1278"],
+    "description": "Ilmer is mentioned in the Bucks Hundred Rolls (Rotuli Hundredorum), within the Ixhill (Hickeshulle) Hundred (later combined into the Ashendon Hundred), as being held by John son of Bernard by serjeanty, a form of land tenure requiring personal service to the king, which in this case was the keeping of his goshawks. \n > Iṫ Eston & Hylmere Joħ fił Bernarđ tenet illas de d̄no Rege ꝑ serganciā ad custodiend' osturcos suos nicħ aliud facit d̄no Reg' & d̄ns Rex ħt custodiā de ħedibʒ suis.\n\n> D' sergancijs. Dicūt q' Joħs fił Bernard' tenet per serganciā ESTON & HILMERE Et Albreda de Jarpenwile amita sua dedit in villa de HILMERE j virgatam t̃re in puram elemosinā priorisse de Stodleya Et Roƀ Picoth tenet dim' hidā t̃re de dono ante-cessor' Joħis fił Bernardi & Walť le Orpede tenet j virgatā t̃re de dono Rađ fił Bernard & Wiłłs Spareue tenet dim' virgatā t̃re de eadē sergantia Et heres Nicħ de la Rose tenet qªrtam ptem uniꝰ virgate t̃re de eadem Hug' Niger tenet iiij acªs & dim' de eađ.\n\n In English, this reads \n > Likewise, Aston and Ilmere: John son of Bernard holds them from the lord King by serjeanty to keep his goshawks; he does nothing else for the lord King, and the lord King has the wardship of his heirs.\n\n> Concerning serjeanties. They say that John son of Bernard holds by serjeanty ASTON and ILMER. And Albreda de Jarpenville, his aunt, gave in the vill of ILMER 1 virgate of land in pure alms to the prioress of Studley. And Robert Picoth holds half a hide of land of the gift of the ancestor of John son of Bernard. And Walter le Orpede holds 1 virgate of land of the gift of Ralph son of Bernard. And William Spareue holds half a virgate of land of the same serjeanty. And the heir of Nicholas de la Rose holds a fourth part [a quarter] of one virgate of land of the same. Hugh Niger holds 4 acres and a half of the same.",
+    "image": "/images/WalterOrpedeSealMatrix.avif",
+    "references": [
+      "[Rotuli Hundredorum](https://archive.org/details/rotuli-hundredorum-volume-1/Rotuli+Hundredorum,+Volume+1,+p.+47) (Hundred Rolls), 1255",
+      "Seal Matrix of Walter Orpede, held in private collection"
+    ],
     "labels": ["land", "person"]
+  },
+  {
+    "date": "1255",
+    "title": "Ixhill Hundred combined with Ashendon Hundred under a single baliff",
+    "description": "The Ixhill (Hickeshulle) Hundred, which included Ilmer, was combined with the Ashendon (Essedene) Hundred under a single baliff. Thus Ilmer became part of the detatched portion of the Ashendon Hundred.",
+    "references": ["The English Hundred-Names: The South-Eastern Counties, Olof Sigfrid Anderson, 1939"],
+    "labels": ["land", "administration"]
   },
   {
     "date": "1259",
