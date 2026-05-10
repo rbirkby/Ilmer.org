@@ -157,3 +157,17 @@ Trippe was also mentioned in [Part I](http://www.bucksas.org.uk/rob/rob_11_1_27.
 | Name   | Location |
 | ------ | -------- |
 | Bowden | Ilmer    |
+
+### Additional Wills
+
+Wills [transcribed by Rex Kidd](https://e-voice.org.uk/prahs/society-collection-of-historic/) which reference property or people in Ilmer.
+
+| Name                | Burial date | Occupation | Bequeath                                        | Archive Ref                      |
+| ------------------- | ----------- | ---------- | ----------------------------------------------- | -------------------------------- |
+| John Myes           | ABT 1510    |            | 4 measures barley to the church of Ilmer        | PROB/11/16 reg. Bennett Quire 37 |
+| Richard Greyt       | 19 Sep 1517 |            | Half a quarter of malt to the church of Ilomare | PROB/11/18                       |
+| John Tempull        | ABT 1539    |            | Witness Wylliam Trype of Ylmer                  | D/A/We/3/329                     |
+| Sir Edward Dune, Kt | 1551        | Knight     | Give £6.13s.4d to the poor of Ilmer             | PROB/11/35                       |
+| Charles Bowler      | 29 Jul 1629 | Yeoman     | 2 acres land in Ilmer                           | D/A/Wf/27/56                     |
+| Thomas Bowler       | ABT 1679    |            | 1 acre called Mugg Pitts in Ilmer               |                                  |
+| John Kingham        | 10 Jul 1825 | Farmer     |                                                 | D/A/We/135/39 D/A/Wf/115/94      |
