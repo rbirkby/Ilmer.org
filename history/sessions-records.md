@@ -29,6 +29,8 @@ Similar order for the house where Thomas Kinge dwells.
 
 ## MICHAELMAS SESSION, 1681.
 
+p. 182. Presentments of the petty constables.
+
 [Blank] Mead of Mentmore, Benjamin Wray and Thomas Browne, both of Drayton B[eauchamp], and George Honnor of Little Marlow, all constables, and the constables of Studley, Aston Mullins, Waldridge, **Illmore**, and Hillesdon, for not making their presentments or paying their quarteridge money.
 
 ---
@@ -140,6 +142,8 @@ William Deane of Chepping Wycombe, farmer, Thomas Walter, gentleman, and Francis
 ---
 
 ## MICHAELMAS SESSION, 1694
+
+Orders.
 
 The inhabitants of **Ilmer** are discharged from the indictment against them for not repairing part of the highway from Bisciter, co. Oxford, to Chepping Wycombe, through the land of William Young, as they have produced a justices’ certificate that the work has now been done.
 
@@ -302,6 +306,8 @@ The following ware not sworn: Joseph Box of Marsh Gibbon, William Clarke of Stee
 
 ## Easter Session, 9th April, 1719 [5 George I]
 
+Petty constables sworn.
+
 **Ilmer**
 
 John Grime vice William Woolvin. William Bowden not sworn. (Sess.R.68/27)
@@ -348,6 +354,8 @@ Produced by Henry Stourbridge [Standbridge] of **Ilmer**, clerk; certified by Be
 
 ## Michaelmas Session, 10th October, 1723 [10 George I]
 
+p.457. Jurors for the body of the county.
+
 John Hughes of Quainton, Thomas Kimpton of Cheddington, Andrew Medwyn of Little Marlow, Robert Moores of Cheddington, John Neighbour of West Wycombe, Henry [James] Newell of Saunderton, Robert Seabrooke of Cheddington, Robert Taylor of Thornborough, Richard Titt of Ickford, Henry Whitchurch of Stoke Mandeville, Charles Whitehall of Padbury, Thomas Williamson of Newport Pagnell, Joseph Woolhead of Thornborough and John Woolvyn of **Ilmer**. (Sess.R.84/2)
 
 ---
@@ -384,13 +392,13 @@ p.30. The removal order of John Edwards, Jane his wife, and Jane their daughter,
 
 ## Michaelmas Session, 7th October, 1731 [5 George II]
 
-pp.146-147. The appeal of William Bowden of **Ilmer**, from an order of the justices dated 15 September, 1731, whereby the said William Bowden was ordered to pay £1.ls.0d. to John Grace of Princes Risborough, gentleman, for two years' small tithes of wool and lamb, was respited until the next sessions. (See p.129. Sess.R.116/23. Sess.Min.I, p.156)
+pp.146-147. The appeal of William Bowden of **Ilmer**, from an order of the justices dated 15 September, 1731, whereby the said William Bowden was ordered to pay £1.1s.0d. to John Grace of Princes Risborough, gentleman, for two years' small tithes of wool and lamb, was respited until the next sessions. (See p.129. Sess.R.116/23. Sess.Min.I, p.156)
 
 ---
 
 ## Epiphany Session, 13th January, 1731-2 [5 George II].
 
-pp.169-171. An order of the justices, dated 15th September, 1731, whereby William Bowden of **Ilmer** was ordered to pay £1.ls.0d. to John Grace of Princes Risborough, gentleman, for two years' small tithes of wool and lamb, was confirmed. William Bowden thereupon presented a writ of certiorari, to remove the case to the Court of the King's Bench at Westminster. (See p.146. Sess.Min.I, p.164)
+pp.169-171. An order of the justices, dated 15th September, 1731, whereby William Bowden of **Ilmer** was ordered to pay £1.1s.0d. to John Grace of Princes Risborough, gentleman, for two years' small tithes of wool and lamb, was confirmed. William Bowden thereupon presented a writ of certiorari, to remove the case to the Court of the King's Bench at Westminster. (See p.146. Sess.Min.I, p.164)
 
 ---
 

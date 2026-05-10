@@ -1309,7 +1309,7 @@
   {
     "date": "16 Nov. 1831",
     "title": "Cottages and Land at Lockington for Sale",
-    "description": "Cottages and Land at Lockington, currently occupied by John Allen, were to be sold. By the turn of the century, all residents would have abandoned the hamlet of Lockington. For half of the 20th century, Lockington would become the residence of the hermit Charles Belgrove.",
+    "description": "Cottages and Land at [Lockington](/history/lockington), currently occupied by John Allen, were to be sold. By the turn of the century, all residents would have abandoned the hamlet of Lockington. For half of the 20th century, Lockington would become the residence of the hermit Charles Belgrove.",
     "references": ["Bucks Gazette, 5 Nov 1831"],
     "labels": ["auction", "land", "sale"]
   },
@@ -1323,7 +1323,7 @@
   {
     "date": "1831",
     "title": "Birth of David Goodchild",
-    "description": "David Goodchild was born in Risborough. David was the father of Albert who would build Ilmer House.",
+    "description": "David Goodchild was born in Risborough. David was the father of Albert who would build [Ilmer House](/history/ilmer-house).",
     "references": ["1871 census"],
     "labels": ["birth", "person"]
   },
@@ -1542,7 +1542,7 @@
   {
     "date": "29 Sep. 1873",
     "title": "Birth of Albert Goodchild",
-    "description": "Albert Goodchild was born in Ilmer to David and Elizabeth. Albert would later build Ilmer House.",
+    "description": "Albert Goodchild was born in Ilmer to David and Elizabeth. Albert would later build [Ilmer House](/history/ilmer-house).",
     "references": ["HM GRO birth registration", "ancestry.com"],
     "image": "/images/albert-goodchild.jpg",
     "labels": ["birth", "person"]
@@ -1671,7 +1671,7 @@
   {
     "date": "5 Jul. 1886",
     "title": "Lockington Freehold for Sale",
-    "description": "Lockington freehold property was to be sold. Lockington is the nearby abandoned hamlet and home for many years of the Ilmer Hermit. It is now known as Hermit's Wood.",
+    "description": "Lockington freehold property was to be sold. [Lockington](/history/lockington) is the nearby abandoned hamlet and home for many years of the Ilmer Hermit. It is now known as Hermit's Wood.",
     "references": ["Bucks Herald, 26 Jun 1886"],
     "labels": ["auction", "property", "sale"]
   },
@@ -1931,7 +1931,7 @@
   {
     "date": "16 Jul. 1909",
     "title": "Ilmer Farm Auction Date",
-    "description": "The auction date for 'Ilmer Farm' was set. This farm was to become the site of Ilmer House, also known as Upper Farm.",
+    "description": "The auction date for 'Ilmer Farm' was set. This farm was to become the site of [Ilmer House](/history/ilmer-house), also known as Upper Farm.",
     "references": ["West Herts and Watford Observer, 26 Jun 1909"],
     "labels": ["auction", "farm", "property", "sale"]
   },
@@ -1954,7 +1954,7 @@
   {
     "date": "1909-1913",
     "title": "Ilmer House Built",
-    "description": "Ilmer house was built by Albert Goodchild. Albert had acquired the Manor of Ilmer and built the house on the site of Upper Farm.",
+    "description": "[Ilmer House](/history/ilmer-house) was built by Albert Goodchild. Albert had acquired the Manor of Ilmer and built the house on the site of Upper Farm.",
     "references": ["Bucks Herald, 20 May 1932", "Lloyd George Survey, 11 Dec 1913"],
     "labels": ["building", "farm", "housing", "manor", "property"]
   },
@@ -2084,7 +2084,7 @@
   {
     "date": "27 Oct. 1911",
     "title": "Lockington Meadow Unsold",
-    "description": "Lockington meadow remained unsold at auction. Lockington is the nearby abandoned hamlet and home for many years of the Ilmer Hermit. It is now known as Hermit's Wood.",
+    "description": "Lockington meadow remained unsold at auction. [Lockington](/history/lockington) is the nearby abandoned hamlet and home for many years of the Ilmer Hermit. It is now known as Hermit's Wood.",
     "references": ["Bucks Herald, 4 Nov 1911"],
     "labels": ["auction", "sale"]
   },
@@ -2229,7 +2229,7 @@
   {
     "date": "26 Jul. 1918",
     "title": "Thomas Goodchild Buys Land",
-    "description": "Freehold land at Lockington was bought by tenant T Goodchild for £60. Thomas was the elder brother of Albert Goodchild and had looked after Albert when their parents died. \n\n\n Lockington is the nearby abandoned hamlet and home for many years of the Ilmer Hermit. It is now known as Hermit's Wood.",
+    "description": "Freehold land at [Lockington](/history/lockington) was bought by tenant T Goodchild for £60. Thomas was the elder brother of Albert Goodchild and had looked after Albert when their parents died. \n\n\n [Lockington](/history/lockington) is the nearby abandoned hamlet and home for many years of the Ilmer Hermit. It is now known as Hermit's Wood.",
     "image": "/images/lockington-map.jpg",
     "references": ["Bucks Herald, 3 Aug 1918"],
     "labels": ["death", "inheritance", "land", "person"]
@@ -3173,7 +3173,7 @@
   {
     "date": "c. Dec. 1968",
     "title": "Death of Charles Belgrove",
-    "description": "Charles Belgrove, the Ilmer Hermit, dies aged 84 in Lockington. His body was found by Manor Farm employee Les Bailey of Lodge Cottage and with the help of a tractor driven by John E Shurrock was brought back to Ilmer.",
+    "description": "Charles Belgrove, the Ilmer Hermit, dies aged 84 in [Lockington](/history/lockington). His body was found by Manor Farm employee Les Bailey of Lodge Cottage and with the help of a tractor driven by John E Shurrock was brought back to Ilmer.",
     "references": ["Former resident (Shurrock) recollections"],
     "labels": ["death", "person"]
   },
@@ -3188,7 +3188,7 @@
     "date": "11 Feb. 1969",
     "title": "Burial of Charles Belgrove",
     "image": "/images/charles-belgrove-sketch.png",
-    "description": "Charles Belgrove, the Ilmer Hermit, was buried.",
+    "description": "Charles Belgrove, the [Ilmer Hermit](/images/ilmer-hermit.avif), was buried.",
     "references": ["Parish Records, Burials"],
     "labels": ["death"]
   },
@@ -3303,7 +3303,7 @@
   {
     "date": "1 Sep. 1972",
     "title": "Death of Alan Philip Lloyd Cogswell",
-    "description": "Alan Philip Lloyd Cogswell of Ilmer House died.",
+    "description": "Alan Philip Lloyd Cogswell of [Ilmer House](/history/ilmer-house) died.",
     "references": ["Daily Telegraph Obituary 2 Sep 1972"],
     "labels": ["death", "housing", "person"]
   },
@@ -3388,7 +3388,7 @@
   {
     "date": "7 Oct. 1978",
     "title": "Plant Sale at Ilmer House",
-    "description": "A plant sale was held at Ilmer House, organised by Mrs Cogswell.",
+    "description": "A plant sale was held at [Ilmer House](/history/ilmer-house), organised by Mrs Cogswell.",
     "references": ["Letter from Rector, Ilmer church"],
     "labels": ["auction", "housing", "sale"]
   },
@@ -3519,14 +3519,14 @@
   {
     "date": "Mar. 1985",
     "title": "Ilmer House for Sale",
-    "description": "Ilmer House was put up for sale.",
+    "description": "[Ilmer House](/history/ilmer-house) was put up for sale.",
     "references": ["Bucks Examiner, 1 Mar 1985", "Brown & Murray estate agents"],
     "labels": ["auction", "housing", "sale"]
   },
   {
     "date": "1986",
     "title": "Book records survey of life in Aylesbury Vale villages",
-    "description": "This Doomsday survey recorded a population of 64, with a Fete on late-May bank holiday and a Barbeque in August, both at Severalles Farm (Lower Farm). It also recorded a village Cricket team. The compilation for Ilmer was provided by Susan Underwood of Ilmer House.",
+    "description": "This Doomsday survey recorded a population of 64, with a Fete on late-May bank holiday and a Barbeque in August, both at Severalles Farm (Lower Farm). It also recorded a village Cricket team. The compilation for Ilmer was provided by Susan Underwood of [Ilmer House](/history/ilmer-house).",
     "references": ["Chronicle of the Vale, The Friends of the Vale of Aylesbury, 1986"],
     "labels": ["infrastructure", "housing"]
   },
@@ -3627,7 +3627,7 @@
   {
     "date": "1991",
     "title": "Folly Cottage Erection Approved",
-    "description": "Planning approval was granted for the demolition of the semi-detached cottages known as Lodge Cottages and erection of Folly Cottage.",
+    "description": "Planning approval was granted for the demolition of the semi-detached cottages known as Lodge Cottages and erection of Folly Cottage on the same footprint.",
     "references": ["Wycombe district planning decisions"],
     "labels": ["legal"]
   },
@@ -3799,7 +3799,7 @@
   {
     "date": "14 Mar. 2023",
     "title": "Death of William Greaves Underwood",
-    "description": "William Greaves Underwood, late of Ilmer House, died in Brill.",
+    "description": "William Greaves Underwood, late of [Ilmer House](/history/ilmer-house), died in Brill.",
     "references": ["The Telegraph announcements"],
     "labels": ["death", "document", "housing", "person"]
   }
