@@ -2,8 +2,8 @@
 layout: post
 title: Quarter Sessions Records
 description: Calendared Quarter Sessions for Ilmer, 1680-1731
-category: history
-tags: [crime, post]
+category: courts-and-crimes
+tags: [courts-and-crimes]
 image: images/quarter-sessions.avif
 ---
 
