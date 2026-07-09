@@ -33,4 +33,22 @@ Adam S Wallace briefly took the role of farm manager, followed by the suitably n
 
 The aerial photo from Land magazine was taken in 1965 by Aerofilms and shows the double-tracked railway line. The Halt was decommissioned in 1963 and the line single-tracked in Autumn 1968.
 
+## Field plan, 1980
+
+Shell Chemicals published "A Guide to Lower Farm, Ilmer" in 1980[^3] giving a background to the farm, it's activities, policy, training centre and crop management. At this time, the pamphlet listed the following members of staff:
+
+[^3]: A copy is held at [MERL](https://merl.reading.ac.uk/), ref 3360, BOX 3/28
+
+| Role                   | Incumbent                                    |
+| ---------------------- | -------------------------------------------- |
+| Farm Manager           | P. D. Alsford, BSc. (Agric.)                 |
+| Assistant Farm Manager | G. W. E. Harper                              |
+| Secretary              | Miss J. M. Deacon                            |
+| Farm Staff             | L. G. Harper, J. H. Shurrock, P. R. Spittles |
+
+In addition to a cropping plan for 1980, it included a stylised field map with field names, redrawn and reinterpreted below to better represent actual topography. Some of the field names hark back centuries - for example the fields known as **Lakes 1** and **Lakes 2** in 1980 were known as **The Lake** on the 1778 [Plan of the Parish of Illmer](/images/1778PlanOfTheParishOfIlmer.avif).
+
+<div id="ilmer-field-map" style="height: 560px"></div>
+<script type="module" src="/assets/js/ilmer-fields-embed.js"></script>
+
 \* Top image shows the inside of the Lower Farm training centre. Angood & Pugh Photographers.
