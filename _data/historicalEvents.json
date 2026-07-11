@@ -3357,6 +3357,20 @@
     "labels": ["church"]
   },
   {
+    "date": "29 May 1978",
+    "title": "First Ilmer Grand Fete",
+    "description": "The first Ilmer Grand Fete was held.",
+    "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
+    "labels": ["document"]
+  },
+  {
+    "date": "Jun. 1978",
+    "title": "Church Fundraising Whist Drive",
+    "description": "Mollie Shurrock held a whist drive in aid of the church restoration fund. The Shurrocks lived at Manor Farm.",
+    "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
+    "labels": ["church"]
+  },
+  {
     "date": "15 & 16 Jul. 1978",
     "title": "Ilmer Flower Festival",
     "description": "The Ilmer flower festival raised £250 for the Church Restoration Fund.",
@@ -3379,13 +3393,6 @@
     "labels": ["housing"]
   },
   {
-    "date": "29 May 1978",
-    "title": "First Ilmer Grand Fete",
-    "description": "The first Ilmer Grand Fete was held.",
-    "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
-    "labels": ["document"]
-  },
-  {
     "date": "7 Oct. 1978",
     "title": "Plant Sale at Ilmer House",
     "description": "A plant sale was held at [Ilmer House](/history/ilmer-house), organised by Mrs Cogswell.",
@@ -3393,11 +3400,11 @@
     "labels": ["auction", "housing", "sale"]
   },
   {
-    "date": "Jun. 1978",
-    "title": "Church Fundraising Whist Drive",
-    "description": "Mollie Shurrock held a whist drive in aid of the church restoration fund. The Shurrocks lived at Manor Farm.",
-    "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
-    "labels": ["church"]
+    "date": "2 Oct. 1978",
+    "title": "Serious fire at Shell's Lower Farm",
+    "description": "A fire at 11:35pm resulted in significant damage to a cattle yard. 90 tonnes of hay and straw, a dutch barn and a Clayson combine were destroyed resulting in £18,000 damage. Foul play was suspected due to a spate of farm fires over 1978 in the Risborough area. An NFU meeting at the Shell Farm was held on 1st November 1978 to discuss the situation.",
+    "references": ["A guide to Lower Farm, Shell Chemicals, 1980", "Bucks Free Press, 6 Oct 1978"],
+    "labels": ["farm", "fire", "property"]
   },
   {
     "date": "Nov. 1978",
