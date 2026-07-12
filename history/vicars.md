@@ -7,6 +7,8 @@ tags: [vicar, history, post]
 image: images/church-drawing-unknown-1978.avif
 ---
 
+The benefices of Horsenden and Ilmer were united in 1865 and dissolved in 1933. Ilmer was united with Princes Risborough in 1970.
+
 {% assign filteredEvents = historicalEvents | where_exp: "event", "event.labels contains 'vicar'" %}
 {% assign allReferences = '' | split: '' %}
 
