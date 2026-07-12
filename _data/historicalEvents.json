@@ -1100,10 +1100,11 @@
     "labels": ["repair"]
   },
   {
-    "date": "27 Sept. 1722",
+    "date": "21 Jul. 1722",
     "title": "Henry Stanbridge appointed vicar",
-    "description": "[Henry (Henricus) Stanbridge](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=76866) became vicar of Ilmer, appointed by William Stanhope, Esq",
+    "description": "[Henry (Henricus) Stanbridge](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=76866) became vicar of Ilmer, appointed by William Stanhope, Esq. Lipscomb states the date as 27 Sep. 1722, believed to be in error.",
     "references": [
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayAppointment.jsp?CDBAppRedID=68243) for Henricus Stanbridge",
       "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
       "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
     ],
@@ -1145,19 +1146,21 @@
     "labels": ["death", "person"]
   },
   {
-    "date": "1746",
+    "date": "11 Aug. 1746",
     "title": "Death of Vicar Stanbridge",
     "description": "Henry Stanbridge, the Vicar of Ilmer, dies.",
     "references": [
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayVacancy.jsp?CDBAppRedID=37350) for Henricus Stanbridge",
       "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
     ],
     "labels": ["church", "death", "person", "vicar"]
   },
   {
-    "date": "13 Aug. 1746",
+    "date": "11 Aug. 1746",
     "title": "James Andrew appointed vicar",
     "description": "[James Andrew](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=1451) formally takes up his position as the new vicar.",
     "references": [
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayAppointment.jsp?CDBAppRedID=37350) for James Andrew",
       "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847",
       "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"
     ],
@@ -1204,10 +1207,22 @@
     "labels": ["church", "economy"]
   },
   {
-    "date": "1791",
+    "date": "23 Jun. 1791",
+    "title": "Death of vicar James Andrew",
+    "description": "[James Andrew](https://theclergydatabase.org.uk/jsp/persons/CreatePersonFrames.jsp?PersonID=1451) died as vicar of Ilmer.",
+    "references": [
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayVacancy.jsp?CDBAppRedID=38412) for James Andrew"
+    ],
+    "labels": ["church", "person", "vicar"]
+  },
+  {
+    "date": "23 Jun. 1791",
     "title": "Thomas Jones appointed vicar",
     "description": "[Thomas Jones](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=67728) became vicar of Ilmer.",
-    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "references": [
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayAppointment.jsp?CDBAppRedID=38412) for Thomas Jones",
+      "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"
+    ],
     "labels": ["church", "person", "vicar"]
   },
   {
@@ -1381,10 +1396,20 @@
     "labels": ["birth", "person"]
   },
   {
-    "date": "1833-1834",
+    "date": "22 Sep. 1833",
+    "title": "Death of vicar Thomas Jones",
+    "description": "[Thomas Jones](https://theclergydatabase.org.uk/jsp/persons/CreatePersonFrames.jsp?PersonID=67728) died as vicar of Ilmer.",
+    "references": [
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayVacancy.jsp?CDBAppRedID=17777) for Thomas Jones"
+    ],
+    "labels": ["church", "person", "vicar"]
+  },
+  {
+    "date": "22 Sep. 1833",
     "title": "William Edwards Partridge appointed vicar",
     "description": "[William Edwards Partridge](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=72112) became vicar of Ilmer, appointed by the 6th Earl of Chesterfield.",
     "references": [
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayAppointment.jsp?CDBAppRedID=17777) for William Edwards Partridge",
       "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
       "History and Topography of Buckinghamshire, J J Sheahan, 1861"
     ],
