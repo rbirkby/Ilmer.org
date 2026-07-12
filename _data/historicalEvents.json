@@ -132,7 +132,7 @@
     "labels": ["death", "inheritance", "manor", "person", "property"]
   },
   {
-    "date": "d. 1267",
+    "date": "1267",
     "title": "Death of Vicar Walter",
     "description": "Walter, the Vicar of Ilmer who had been appointed by the Prioress of Stodeley (Studley), dies.",
     "references": [
@@ -467,7 +467,7 @@
     "labels": ["church", "person", "vicar"]
   },
   {
-    "date": "d. 1452",
+    "date": "1452",
     "title": "Death of Vicar Howes",
     "description": "Thomas (or John) Howes, who had been vicar since at least 1447, dies.",
     "references": ["[Willis's Manuscripts](https://marco.ox.ac.uk/ark:29072/x0r781wf11q7), Bodleian Library"],
@@ -620,6 +620,13 @@
     "labels": ["manor", "person"]
   },
   {
+    "date": "1516",
+    "title": "Death of Vicar Taylor",
+    "description": "John Taylor, the Vicar of Ilmer, dies.",
+    "references": ["[Willis's Manuscripts](https://marco.ox.ac.uk/ark:29072/x0r781wf11q7), Bodleian Library"],
+    "labels": ["church", "death", "person", "vicar"]
+  },
+  {
     "date": "15 Mar. 1516",
     "title": "James Withington appointed vicar",
     "description": "James (Jacobus) Withington is appointed as vicar by the Prioress of Studley.",
@@ -629,13 +636,6 @@
       "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=153939) for James Withington"
     ],
     "labels": ["church", "person", "vicar"]
-  },
-  {
-    "date": "d. 1516",
-    "title": "Death of Vicar Taylor",
-    "description": "John Taylor, the Vicar of Ilmer, dies.",
-    "references": ["[Willis's Manuscripts](https://marco.ox.ac.uk/ark:29072/x0r781wf11q7), Bodleian Library"],
-    "labels": ["church", "death", "person", "vicar"]
   },
   {
     "date": "1522",
@@ -729,17 +729,59 @@
     "labels": ["church", "document", "person"]
   },
   {
-    "date": "d. 1558",
-    "title": "Death of Vicar Palmer",
-    "description": "[John Palmer](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=149707), the Vicar of Ilmer, dies.",
-    "references": ["[Willis's Manuscripts](https://marco.ox.ac.uk/ark:29072/x0r781wf11q7), Bodleian Library"],
+    "date": "11 Jul. 1556",
+    "title": "Death of Vicar James Withingtonne",
+    "description": "[James Withingtonne](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=153939), the Vicar of Ilmer, dies.",
+    "references": [
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayVacancy.jsp?CDBAppRedID=321488) for James Withingtonne"
+    ],
     "labels": ["church", "death", "person", "vicar"]
   },
   {
-    "date": "11 Jan. 1558",
-    "title": "John Swainson appointed vicar",
-    "description": "John Swainson is appointed as vicar by the lord of the manor, Sir Robert Dormer.",
-    "references": ["[Willis's Manuscripts](https://marco.ox.ac.uk/ark:29072/x0r781wf11q7), Bodleian Library"],
+    "date": "11 Jul. 1556",
+    "title": "Thomas Titinge appointed vicar after death of Withingtonne",
+    "description": "[Thomas Titinge](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=152863), the new Vicar of Ilmer, is appointed.",
+    "references": [
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayAppointment.jsp?CDBAppRedID=321488) for Thomas Titinge"
+    ],
+    "labels": ["church", "person", "vicar"]
+  },
+  {
+    "date": "9 Dec. 1557",
+    "title": "John Palmer appointed vicar",
+    "description": "[John Palmer](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=149707), the new Vicar of Ilmer, is appointed as the patron of Sir William Dormer.",
+    "references": [
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayAppointment.jsp?CDBAppRedID=321306) for John Palmer"
+    ],
+    "labels": ["church", "person", "vicar"]
+  },
+  {
+    "date": "18 Jan. 1558",
+    "title": "Death of Vicar Palmer",
+    "description": "[John Palmer](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=149707), the Vicar of Ilmer, dies.",
+    "references": [
+      "[Willis's Manuscripts](https://marco.ox.ac.uk/ark:29072/x0r781wf11q7), Bodleian Library",
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=149707) for John Palmer"
+    ],
+    "labels": ["church", "death", "person", "vicar"]
+  },
+  {
+    "date": "18 Jan. 1558",
+    "title": "Richard or John Swainson appointed vicar",
+    "description": "Richard or John Swainson (sometimes Swaynson) is appointed as vicar by the lord of the manor, Sir William Dormer.",
+    "references": [
+      "[Willis's Manuscripts](https://marco.ox.ac.uk/ark:29072/x0r781wf11q7), Bodleian Library",
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayAppointment.jsp?CDBAppRedID=321420) for Richard Swaynson"
+    ],
+    "labels": ["church", "person", "property", "vicar"]
+  },
+  {
+    "date": "5 Apr. 1558",
+    "title": "Martin Wright appointed vicar",
+    "description": "[Martin Wright](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=154384) is appointed as vicar by the lord of the manor, Sir William Dormer.",
+    "references": [
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayAppointment.jsp?CDBAppRedID=321009) for Martin Wright"
+    ],
     "labels": ["church", "person", "property", "vicar"]
   },
   {
@@ -808,8 +850,11 @@
   {
     "date": "3 Oct. 1612",
     "title": "Thomas Vandrey appointed vicar",
-    "description": "Thomas Vandrey is appointed as the new vicar by Sir Robert Dormer.",
-    "references": ["[Willis's Manuscripts](https://marco.ox.ac.uk/ark:29072/x0r781wf11q7), Bodleian Library"],
+    "description": "[Thomas Vandrey (or Vawdry)](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=140873) is appointed as the new vicar by Sir Robert Dormer.",
+    "references": [
+      "[Willis's Manuscripts](https://marco.ox.ac.uk/ark:29072/x0r781wf11q7), Bodleian Library",
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayAppointment.jsp?CDBAppRedID=116625) for Thomas Vawdry"
+    ],
     "labels": ["church", "person", "vicar"]
   },
   {
@@ -930,7 +975,7 @@
   {
     "date": "1677",
     "title": "William Lillingston appointed vicar",
-    "description": "[William Lillingston](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=99037) became vicar of Ilmer.",
+    "description": "[William (Gulielmus) Lillingston](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=99037) became vicar of Ilmer.",
     "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["church", "document", "person", "vicar"]
   },
@@ -945,7 +990,10 @@
     "date": "8 Jun. 1677",
     "title": "John Lillingston appointed vicar",
     "description": "[John (Johannes) Lillingston](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=176711) is appointed as the new vicar by Charles Dormer, Earl of Carnarvon.",
-    "references": ["Subscription Book at Aylesbury"],
+    "references": [
+      "Subscription Book at Aylesbury",
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayAppointment.jsp?CDBAppRedID=249970) for Johannes Lillingston"
+    ],
     "labels": ["church", "person", "vicar"]
   },
   {
@@ -983,10 +1031,10 @@
   {
     "date": "28 Oct. 1687",
     "title": "Marcus Parker appointed vicar",
-    "description": "Marcus (Matthew) Parker became [vicar of Ilmer](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=86069).",
+    "description": "[Marcus (Matthew) Parker](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=86069) appointed vicar of Ilmer by Charles Dormer, Earl of Carnarvon.",
     "references": [
       "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
-      "theclergydatabase.org.uk",
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayAppointment.jsp?CDBAppRedID=152752) for Marcus Parker",
       "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
     ],
     "labels": ["church", "person", "vicar"]
@@ -999,21 +1047,26 @@
     "labels": ["repair"]
   },
   {
-    "date": "2 Jan. 1700",
-    "title": "Charles Cornish appointed vicar",
-    "description": "[Charles (Carolus) Cornish](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=12365) is appointed vicar. He later resigns after being offered a church position in Wales.",
+    "date": "2 Jan. 1701",
+    "title": "Death of Vicar Parker",
+    "description": "Marcus (Matthew) Parker, vicar of Ilmer, dies. Lipscomb states Vicar Palmer[sic] was buried at the nearby parish of Dinton on 26 Sep. 1700, believed to be in error.",
     "references": [
+      "Dinton Parish Register, according to Lipscomb.",
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847",
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/persons/DisplayPerson.jsp?PersonID=86069) for Marcus Parker"
+    ],
+    "labels": ["church", "death", "person", "vicar"]
+  },
+  {
+    "date": "2 Jan. 1701",
+    "title": "Charles Cornish appointed vicar",
+    "description": "[Charles (Carolus) Cornish](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=12365) is appointed vicar. He later resigns after being offered a church position in Wales. Lipscomb states the year as 1700, believed to be in error.",
+    "references": [
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayAppointment.jsp?CDBAppRedID=67006) for Carolus Cornish",
       "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
       "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847 (see Risborough & Pedigree of Carter, p. 135)"
     ],
     "labels": ["church", "person", "vicar"]
-  },
-  {
-    "date": "26 Sept. 1700",
-    "title": "Death of Former Vicar Palmer",
-    "description": "Marcus (Matthew) Palmer, a former vicar of Ilmer, is buried at the nearby parish of Dinton.",
-    "references": ["Dinton Parish Register"],
-    "labels": ["church", "death", "person"]
   },
   {
     "date": "1706",
@@ -1092,7 +1145,7 @@
     "labels": ["death", "person"]
   },
   {
-    "date": "d. 1746",
+    "date": "1746",
     "title": "Death of Vicar Stanbridge",
     "description": "Henry Stanbridge, the Vicar of Ilmer, dies.",
     "references": [
