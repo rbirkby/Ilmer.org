@@ -1,4 +1,5 @@
 import markdownItFootnote from 'markdown-it-footnote';
+import markdownItImageFigures from 'markdown-it-image-figures';
 import { RenderPlugin } from '@11ty/eleventy';
 import markdownIt from 'markdown-it';
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts';
@@ -29,5 +30,9 @@ export default function (eleventyConfig) {
       .sort((a, b) => a.label.localeCompare(b.label))
   );
 
-  eleventyConfig.amendLibrary('md', (mdLib) => mdLib.use(MarkdownItGitHubAlerts));
+  eleventyConfig.amendLibrary(
+    'md',
+    (mdLib) => mdLib.use(MarkdownItGitHubAlerts)
+    //.use(markdownItImageFigures, { figcaption: 'alt', lazy: true, async: true })
+  );
 }
