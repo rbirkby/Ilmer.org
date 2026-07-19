@@ -45,7 +45,7 @@ jobs:
           echo "Build successful. Generated $(find _site -type f | wc -l) files"
 
       - name: Check for broken links
-        run: npx linkinator _site --recurse || true
+        run: npm run link-check
 
       - name: Run Lighthouse audit
         run: npm run lighthouse
