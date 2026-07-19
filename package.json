@@ -10,7 +10,7 @@
     "format-check": "oxfmt --check .",
     "lint": "oxlint && markdownlint --ignore node_modules '**/*.md' --config .markdownlintrc.json --fix",
     "lint-check": "oxlint && markdownlint --ignore node_modules '**/*.md' --config .markdownlintrc.json",
-    "link-check": "npm run build && linkinator _site --recurse --verbosity error --status-code '401:warn' --status-code '403:warn' ",
+    "link-check": "npm run build && linkinator _site --recurse --verbosity error --status-code '401:warn' --status-code '403:warn' --status-code '429:warn' ",
     "lighthouse": "npm run build && lhci autorun",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint:events": "node scripts/check-events.mjs"
