@@ -11,6 +11,7 @@
     "lint": "oxlint && markdownlint --ignore node_modules '**/*.md' --config .markdownlintrc.json --fix",
     "lint-check": "oxlint && markdownlint --ignore node_modules '**/*.md' --config .markdownlintrc.json",
     "link-check": "linkinator _site --recurse",
+    "lighthouse": "npm run build && lhci autorun",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint:events": "node scripts/check-events.mjs"
   },
