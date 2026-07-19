@@ -15,7 +15,6 @@ import url from 'node:url';
 const root = path.dirname(url.fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(root, '..');
 const dataPath = path.join(projectRoot, '_data', 'historicalEvents.json');
-const imagesDir = path.join(projectRoot, 'images');
 
 function readJson(file) {
   try {

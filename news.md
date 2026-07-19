@@ -1,7 +1,7 @@
 ---
 layout: post
 permalink: /newsroom/index.html
-title: "Newsroom"
+title: 'Newsroom'
 tags: []
-cat: "news"
+cat: 'news'
 ---

@@ -1,7 +1,7 @@
 ---
 layout: post
 permalink: /map/index.html
-title: "Find Us"
+title: 'Find Us'
 tags: []
 ---
 
@@ -9,11 +9,11 @@ tags: []
 
 Ilmer is a small village with just 27 houses. For such a small place, it has a surprising number of postcodes!
 
-* [HP27 9QZ](https://www.google.co.uk/maps?q=HP27+9QZ)
-* [HP27 9RA](https://www.google.co.uk/maps?q=HP27+9RA)
-* [HP27 9RB](https://www.google.co.uk/maps?q=HP27+9RB)
-* [HP27 9RD](https://www.google.co.uk/maps?q=HP27+9RD)
-* [HP27 9RE](https://www.google.co.uk/maps?q=HP27+9RE)
+- [HP27 9QZ](https://www.google.co.uk/maps?q=HP27+9QZ)
+- [HP27 9RA](https://www.google.co.uk/maps?q=HP27+9RA)
+- [HP27 9RB](https://www.google.co.uk/maps?q=HP27+9RB)
+- [HP27 9RD](https://www.google.co.uk/maps?q=HP27+9RD)
+- [HP27 9RE](https://www.google.co.uk/maps?q=HP27+9RE)
 
 ### Location
 

@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Bits of Bucks"
-description: "In 1909, the Bucks Herald took a walk down Ilmer lane and this is what they found"
+title: 'Bits of Bucks'
+description: 'In 1909, the Bucks Herald took a walk down Ilmer lane and this is what they found'
 category: history
 tags: [walking, post]
 image: images/ilmer-church.jpg
@@ -43,10 +43,10 @@ This is the most interesting part of the church, and retains some of its ancient
 When the late vicar, the Rev. W. E. Partridge, was presented to the living, in 1834, he found the church in a dilapidated condition. In 1858 he purchased the advowson, and thus became patron of the benefice. Soon after this he commenced the very needful work of restoration which was carried out under the direction of our Bucks architect, George Edmund Street. The Church was re-opened on August 30th 1860, when the sermon was preached by the Bishop of Oxford. It appears that Mr. Partidge intended to restore the belfry, but from some cause he did not carry out his design. That portion of the work is, however, now being done by the present vicar, who is also rector of Horsenden, where he resides. The stonework of the tower had been taken down when I saw it on Saturday; but, as I have seen it described as ugly, unsightly, and dilapidated, there can be no doubt that its restoration was absolutely necessary. When it is completed Ilmer folks will possess one of the nicest little churches in the county.
 
 ### The Manor.
+
 The manor-house stands back from the road a little distance eastward from the church, and is a large edifice constructed of brick and timber. The manor was formerly held by one of those curious tenures we occasionally meet with during the middle ages; the service in this instance was being Marshall of the King's hawks and falcons. In the 17th century Lord Dormer, of Wing, because he held this manor was Master Falconer to the King.
 
 SIGMA.
-
 
 ## TO THE EDITOR OF THE BUCKS HERALD.
 

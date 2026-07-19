@@ -9,18 +9,21 @@ lightbox: true
 ---
 
 _Title image: A view of Ilmer Church on a postcard_
+
 [^title-image]: Postcard of Ilmer Church with a drawing by Trevor Best
 
 ## Church History
 
 ![Ilmer Church without spire](/images/church-no-spire.jpg#right,bwphoto)
 _Ilmer Church without spire_[^1]
+
 [^1]: Ilmer Church, pre-1909, without spire. Copyright Sydney Newton until 2031.
 
 For many years, St. Peter's in Ilmer lacked a spire, featuring instead a simple wooden belfry that housed three bells, cast around 1500, 1586, and 1618. The oldest bell bears the Latin inscription "Sancta Margareta ora pro nobis," which translates to "St. Margaret, pray for us." It was likely produced by William Hasylwood at his foundry in Reading. Hasylwood was active in bell casting for a period of 15 years, starting in 1494 and culminating in 1509 with his final known work—the oldest bell hanging in St. Nicholas, Chearsley. The three bells in St. Peter's have diameters of approximately 36 inches, 33 inches, and 31 inches, respectively, corresponding to the chronological order of their casting.
 
 ![The church bells of Buckinghamshire, Cocks, 1897](/images/cocks-churchbells-of-bucks.jpg)
 _Church bell inscriptions_[^2]
+
 [^2]: Church bell inscriptions. Source: [The church bells of Buckinghamshire](https://archive.org/details/cu31924011346453), Cocks, 1897
 
 During the reformation, the Edwardian Inventory of 23rd July 1552 included two further bells - a handbell and a Saunse bell, which would have been located outside the church on the Western gable.
@@ -53,6 +56,7 @@ Following his work for the diocese, George Edmund Street went on to design The L
 
 ![Sister Elizabeth Moreton](/images/SisterMoreton.jpg#right,bwphoto)
 _Sister Elizabeth Moreton_[^4]
+
 [^4]: Sr Elizabeth CSJB and an unknown companion. Source: [A Place in Life](https://www.amazon.co.uk/PLACE-LIFE-CLEWER-HOUSE-MERCY/dp/0950871028), Valerie Bonham, 1992
 
 ## Sister Elizabeth Moreton's contributions
@@ -65,12 +69,14 @@ In 1907, Miss Moreton once again supported the community by donating a new Paris
 
 ![St Peter's without spire](/images/church-no-spire2.jpg#right,bwphoto)
 _St Peter's, pre-1909, without spire_[^5]
+
 [^5]: St Peter's without spire. Source: Unknown
 
 During the tenure of Reverend Varley, it became known that the church once boasted a spire which had since deteriorated and was either collapsed or removed. The wooden belfry was deemed unsightly not only by the vicar but also in Kelly's Directory of 1899, the forerunner of yellow pages.
 
 ![John Oldrid Scott](/images/john-oldrid-scott.jpg#left)
 _John Oldrid Scott_[^6]
+
 [^6]: John Oldrid Scott. Source: [gilbertscott.org](https://gilbertscott.org/john-oldrid-scott/)
 
 In February 1909, Architects John Oldrid Scott and Son (Charles Marriott Oldrid Scott) of Dean’s Yard, Westminster were given faculty to design the replacement spire and remove the half-hip roof to complete the west gable. John Oldrid Scott was the grandson of [Sir Gilbert Scott](https://gilbertscott.org/sir-george-gilbert-scott/), architect of the [Albert Memorial](https://en.wikipedia.org/wiki/Albert_Memorial). He had completed the stone steeple of St Mary’s, Risborough the previous year, which had replaced an older zinc-covered wooden structure.[^7]
@@ -108,12 +114,14 @@ A Union Jack and other flags were displayed outside the Parish Room where parish
 
 ![Photograph of a postcard](/images/church-carvings-postcard.jpg)
 _Old postcard showing chancel carvings. Photos are pre-1910_[^8]
+
 [^8]: Henry W Taunt postcard. Original photos also found in [A pretty corner of leafy Bucks. Princes Risborough, and round it](https://hdl.handle.net/2027/yale.39002015689814) by Henry Taunt, 1910.
 
 ## Heating and lighting
 
 ![Colourised photo of the church interior, showing the church stove](/images/church-interior-vch.jpg#left)
 _Colourised ~1915 photo of the church interior, showing the stove and flue_[^10]
+
 [^10]: Colourised photo of the church interior, showing the stove and flue. Source: [VCH Bucks, vol 4](https://www.british-history.ac.uk/vch/bucks/vol4)
 
 A photograph of the period shows a small stove installed in the nave with flue exiting the building approximately where the war memorial plaque was later installed. Aerial photographs from 1948 show a chimney exiting the tiled roof in alignment with a butress. A prominent stone, previously painted, can be found in the exterior south wall possibly indicating other work connected with the flue. Curiously, a second small chimney is also visible on the 1948 photo on the south of the chancel adjacent to the rood screen. Work to repair these chimneys was undertaken in 1939[^vestryminutes1939]
@@ -122,6 +130,7 @@ A photograph of the period shows a small stove installed in the nave with flue e
 
 ![Advert for a stove similar to that photographed in Ilmer church](/images/tortoise-stove-ad.jpg)
 _Advert for a stove similar to that photographed in Ilmer church_[^9]
+
 [^9]: Advert for a stove similar to that photographed in Ilmer church. Source: East Kent Gazette, 4 Jan 1890.
 
 At the time, lighting was provided by pendant oil lamps. When electrification came, the oil lamp saddle was inverted and instead of the ceiling chains being attached to the fleur de lys, now an electric light dangles from each of the three fleur de lys and the ceiling chains were re-attached to the central ring of the saddle.
