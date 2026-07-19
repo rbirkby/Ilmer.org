@@ -5,6 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "npx @11ty/eleventy --serve",
+    "build": "npx @11ty/eleventy",
+    "format": "oxfmt --write .",
+    "format-check": "oxfmt --check .",
+    "lint": "oxlint && markdownlint --ignore node_modules '**/*.md' --config .markdownlintrc.json --fix",
+    "lint-check": "oxlint && markdownlint --ignore node_modules '**/*.md' --config .markdownlintrc.json",
+    "link-check": "blc http://localhost:8000 -r -e --exclude node_modules",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint:events": "node scripts/check-events.mjs"
   },
@@ -13,11 +19,17 @@
   "author": "Richard Birkby <rbirkby@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.2"
+    "@11ty/eleventy": "^3.1.2",
+    "@lhci/cli": "^0.12.0",
+    "broken-link-checker-local": "^0.2.1",
+    "http-server": "^14.1.1",
+    "lighthouse": "^12.8.2",
+    "markdownlint-cli": "^0.49.1",
+    "oxfmt": "^0.59.0",
+    "oxlint": "^1.74.0"
   },
   "dependencies": {
     "markdown-it-footnote": "^4.0.0",
-    "markdown-it-github-alerts": "^1.0.1",
-    "prettier": "^3.6.2"
+    "markdown-it-github-alerts": "^1.0.1"
   }
 }

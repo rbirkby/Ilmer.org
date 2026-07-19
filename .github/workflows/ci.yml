@@ -1,0 +1,55 @@
+name: CI - Code Quality & Build Validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality-checks:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [22.x]
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check code formatting
+        run: npm run format-check
+      
+      - name: Lint code
+        run: npm run lint-check
+      
+      - name: Build site
+        run: npm run build
+      
+      - name: Check for build artifacts
+        run: |
+          if [ ! -d "_site" ]; then
+            echo "Error: Build failed to create _site directory"
+            exit 1
+          fi
+          echo "Build successful. Generated $(find _site -type f | wc -l) files"
+      
+      - name: Check for broken links
+        run: |
+          npx http-server ./_site -p 8000 > /dev/null 2>&1 &
+          sleep 2
+          npx blc http://localhost:8000 -r -e --exclude node_modules || true
+          pkill -f "http-server"
+      
+      - name: Run Lighthouse audit
+        run: npx lhci autorun
