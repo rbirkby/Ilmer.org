@@ -23,7 +23,7 @@ In the name of God, Amen. On the 15th day of February in the year of our Lord 15
 
 - **To Richard Freye:** Two quarters of barley, three pairs of sheets, a mattress, a coverlet, and two blankets. Also 12 pence in cash.
 - **To James Hale (the elder) and James Hale (the younger):** Half a quarter of wheat each.
-- **To William Dowell of Longwick:** One quarter of wheat, one quarter of barley, and three acres of wheat growing in "Lake Furlong" next to the Long Pike Way.
+- **To William Dowell of Longwick:** One quarter of wheat, one quarter of barley, and three acres of wheat growing in "Lake Furlong" next to the Long Wike Way.
 - **To Edmund Maide of Culverton:** One quarter of wheat, one quarter of barley, and one mark \[13 shillings and 4 pence\].
 - **To Robert Gobbe:** One quarter and four bushels of wheat and one quarter of barley.
 - **To Thomas Withington of Padvane:** Two bushels of wheat and two bushels of malt.
