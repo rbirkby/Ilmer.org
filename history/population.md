@@ -7,6 +7,14 @@ tags: [post]
 image: images/punch-almanac.avif
 ---
 
+### A village that 'marks time' - The Daily Sketch
+
+The Daily Sketch was a British tabloid newspaper published from 1909 to 1971. It was known for its extensive use of photographs and illustrations. In 1935, they ran a feature on the village of Ilmer.
+
+[![The Daily Sketch, 25 Mar. 1935](/images/the-daily-sketch-25-mar-1935.avif)](/images/the-daily-sketch-25-mar-1935.avif)
+
+The vehicle pictured is likely a Morris Eight saloon produced between 1935 and 1948. The same, or another similar vehicle can be seen in a 1948 [aerial photo from Historic England](https://historicengland.org.uk/images-books/archive/collections/aerial-photos/record/EAW017636).
+
 ## Overseers of the poor
 
 Before the modern welfare system, each parish was responsible for helping local people who were poor, elderly, ill, disabled or unable to work. This work was carried out by officials known as Overseers of the Poor.

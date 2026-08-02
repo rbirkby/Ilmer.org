@@ -74,6 +74,22 @@ Bob Uglow, farmer of A J Walker's Sandpit farm in Bledlow/Holly Green remembered
 >
 > November 20??
 
+---
+
+> #### The man who lived alone dies alone, The Daily Sketch, 7 Feb. 1969
+>
+> Old Charlie Belgrove had a family tiff 66 years ago.
+> So he walked out and pledged to shut himself of from the outside world.
+> He lived in a home-made shack at the foot of the Chiltern Hills, grew his own food and made his own wine.
+> Yesterday police revealed that 84-year-old Charlie kept his pledge to the end. He was even alone at the ame of his death.
+> They found his body in the shack at limer, near Princes Risborough. Bucks. He had been dead for about six weeks.
+>
+> VIOLINIST
+> Police found him after checking reports that Charlie had not been seen taking his usual walks in the couniry.
+> Villagers said they often heard the strains of his violin coming from the shack. But for weeks there was silence.
+> Last night Charlie's 60-year-old nephew, Mr. Christopher Belgrove, of Longwick-road, Princes Risborough said: He couldn't bear taking orders and chose to lead a life of loneliness.
+> "But although he lived in isolation the church at Ilmer will be filled with relatives and villagers at his funeral"
+
 #### Census Transcripts
 
 [Census records](/assets/pdfs/lockington-all-years.pdf), transcribed by Deborah Dobbs.
