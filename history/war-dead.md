@@ -29,4 +29,11 @@ tags: [military]
 
 **Frank Kingham**, born on 25 July 1896, was the son of Fritz and Sarah Kingham who lived at Lower Farm Cottage in 1911 and at the [Old Vicarage](/history/vicarage) at the time of his death. Frank served with the Gloucestershire Regiment and [died of his wounds](https://livesofthefirstworldwar.iwm.org.uk/lifestory/2257577) on 27 August 1917, at the age of 21 years; he is buried in the New Irish Farm Cemetery at Ypres.
 
+The following paragraph under the Horsenden-with-Ilmer parish in the **AYLESBURY DEANERY MAGAZINE** of unknown date says:
+
+> Mr. and Mrs. Fritz Kingham, Ilmer, on the 27th of June received the following letter: "I am directed to inform you that in accordance with the agreement with the French and Belgian Governments to remove all scattered graves and small Cemeteries containing less than 40 graves and certain other Cemeteries which were situated in places unsuitable for permanent retention, it has been found necessary to exhume the bodies buried in certain areas. In the process of exhumation, the grave of Private F. Kingham was located at a point South East of Julien, and his remains have been re-interred in Plot 16, Row A, Grave 19, New Irish Farm, St. Jean, North of Ypres. The new grave has been registered in this office, (52 Baker Street, London). The re-burial has been reverently and carefully carried out."
+> The following day a cigarette case and other relics of their deceased son were forwarded to Mr. and Mrs. Kingham.
+
+Mr Fritz Kingham was described as the churchwarden.
+
 **Albert Richardson** was born in 1895, the son of Alfred and Alice Richardson. Both father and son worked as farm labourers at Manor Farm, Ilmer, for Alfred Hill. Albert served as a Corporal in the 13th Kings Royal Rifles Corps and [died of his wounds](https://buckinghamshireremembers.org.uk/php_scripts/Cas_Print.php?id=3955) in 11 September 1918 at the age of 23 years. Albert Richardson was a bell ringer and active church worker and a special memorial service was held for him at Ilmer Church. He is buried at Ruyaulcourt Military Cemetery, Pas de Calais.
