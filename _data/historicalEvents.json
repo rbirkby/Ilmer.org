@@ -900,10 +900,10 @@
     "labels": ["church", "repair"]
   },
   {
-    "date": "1643",
+    "date": "20 Sep. 1643",
     "title": "Death of Robert Dormer, 1st Earl of Carnarvon",
-    "description": "Robert Dormer, 1st Earl of Carnarvon, died in Ascott House, Wing.",
-    "references": ["wikipedia"],
+    "description": "Robert Dormer, 1st Earl of Carnarvon, died at the [Battle of Newbury](https://en.wikipedia.org/wiki/First_Battle_of_Newbury).",
+    "references": ["[wikipedia](https://en.wikipedia.org/wiki/Robert_Dormer,_1st_Earl_of_Carnarvon)"],
     "image": "/images/1stEarlOfCarnarvon.avif",
     "labels": ["death", "housing", "person"]
   },

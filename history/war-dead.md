@@ -6,22 +6,25 @@ category: history
 tags: [military]
 ---
 
-| Name                                            | Conflict               | Location              | Date              | Casualty Record       | Age |
-| ----------------------------------------------- | ---------------------- | --------------------- | ----------------- | --------------------- | --: |
-| Sir William de Moleyns                          | Hundred Years War      | [Siege of Orleans][1] | 1429              |                       |     |
-| [Robert 3rd Baron Hungerford (Lord Moleyns)][2] | [Wars of the Roses][3] | [Battle of Hexam][4]  | May 18 1464       | Beheaded at Newcastle | ~35 |
-| [Sir Thomas Hungerford][5]                      | [Wars of the Roses][3] | Salisbury             | January 17 1469   | Beheaded              | ~29 |
-| Aubrey S Gomme                                  | Great War              | France                | April 9 1917      | Killed in action      |  24 |
-| William J Claydon                               | Great War              |                       | April 28 1917     | Wounded and Missing   |  20 |
-| Frank P Kingham                                 | Great War              |                       | August 27 1917    | Wounded and Missing   |  21 |
-| Albert Richardson                               | Great War              | France                | September 11 1918 | Died of Wounds        |  23 |
-| (William) Herbert Smith                         | Great War              | France                | March 21 1918     | Killed in action      |  33 |
+| Name                                            | Conflict                | Location               | Date              | Casualty Record       | Age |
+| ----------------------------------------------- | ----------------------- | ---------------------- | ----------------- | --------------------- | --: |
+| Sir William de Moleyns                          | Hundred Years War       | [Siege of Orleans][1]  | 1429              |                       |     |
+| [Robert 3rd Baron Hungerford (Lord Moleyns)][2] | [Wars of the Roses][3]  | [Battle of Hexam][4]   | May 18 1464       | Beheaded at Newcastle | ~35 |
+| [Sir Thomas Hungerford][5]                      | [Wars of the Roses][3]  | Salisbury              | January 17 1469   | Beheaded              | ~29 |
+| [Robert Dormer, 1st Earl of Carnarvon][6]       | First English Civil War | [Battle of Newbury][7] | September 20 1643 |                       | ~33 |
+| Aubrey S Gomme                                  | Great War               | France                 | April 9 1917      | Killed in action      |  24 |
+| William J Claydon                               | Great War               |                        | April 28 1917     | Wounded and Missing   |  20 |
+| Frank P Kingham                                 | Great War               |                        | August 27 1917    | Killed in action      |  21 |
+| Albert Richardson                               | Great War               | France                 | September 11 1918 | Died of Wounds        |  23 |
+| (William) Herbert Smith                         | Great War               | France                 | March 21 1918     | Killed in action      |  33 |
 
 [1]: https://en.wikipedia.org/wiki/Siege_of_Orl%C3%A9ans_(1428%E2%80%931429)
 [2]: https://en.wikipedia.org/wiki/Robert_Hungerford,_3rd_Baron_Hungerford
 [3]: https://en.wikipedia.org/wiki/Wars_of_the_Roses
 [4]: https://en.wikipedia.org/wiki/Battle_of_Hexham
 [5]: https://en.wikipedia.org/wiki/Thomas_Hungerford_of_Rowden
+[6]: https://en.wikipedia.org/wiki/Robert_Dormer,_1st_Earl_of_Carnarvon
+[7]: https://en.wikipedia.org/wiki/First_Battle_of_Newbury
 
 **Aubrey Gomme** was born at [Coldharbour Farm](/history/coldharbour), Ilmer, on 20 August 1892, the son of George and Hannah Gomme. Aubrey was a farmer who had emigrated to Canada early in 1911. He joined the Canadian Infantry, serving as a private in the [21st Battalion of the East Ontario Regiment](https://www.veterans.gc.ca/en/remembrance/memorials/books-remembrance/page/5422); the Battalion arrived in England in May 1916. Aubrey was [killed in action](https://buckinghamshireremembers.org.uk/php_scripts/bksidget.php?id=3953) on 9 April 1917 during the attack at Vimy Ridge. He was 24 years old and is buried at Ecoivres Military Cemetery, Pas de Calais.
 
