@@ -20,6 +20,13 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter('renderMarkdownInline', inline);
 
   eleventyConfig.addFilter('jsonStringify', JSON.stringify);
+  /** Root-relative site path: strips leading slashes; leaves absolute http(s) URLs unchanged. */
+  eleventyConfig.addFilter('sitePath', (value) => {
+    if (value == null || value === '') return '';
+    const path = String(value);
+    if (/^https?:\/\//i.test(path)) return path;
+    return `/${path.replace(/^\/+/, '')}`;
+  });
   eleventyConfig.addFilter('uniqueLabels', (events) =>
     [...new Set(events.flatMap(({ labels }) => labels))]
       .map((label) => ({

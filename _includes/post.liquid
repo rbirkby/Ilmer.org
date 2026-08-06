@@ -1,21 +1,10 @@
 {% include "head" %}
 
-<header>
-  <div class="container">
-    <div class="mast">
-      <a href="/">Ilmer Past</a>
-    </div>
-    <nav>
-      <a href="/map">Location</a>
-      <a href="/newsroom">News</a>
-      <a href="/about">About</a>
-    </nav>
-  </div>
-</header>
+{% include "site-header" %}
 <main>
   {% if image %}
     <figure>
-      <img src="/{{image}}">
+      <img src="{{ image | sitePath }}" alt="{{ title }}">
     </figure>
   {% endif %}
   <section class="article" data-lightbox-all="{{ lightbox | default: false }}">
@@ -36,8 +25,4 @@
     <p id="lightbox-caption"></p>
   </div>
 </main>
-<footer>
-  <div class="container">
-    An Ilmer community project
-  </div>
-</footer>
+{% include "footer" %}

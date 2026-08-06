@@ -5,18 +5,7 @@
   href="/assets/css/timeline.css"
   media="all">
 
-<header>
-  <div class="container">
-    <div class="mast">
-      <a href="/">Ilmer Past</a>
-    </div>
-    <nav>
-      <a href="/map">Location</a>
-      <a href="/newsroom">News</a>
-      <a href="/about">About</a>
-    </nav>
-  </div>
-</header>
+{% include "site-header" %}
 <main>
   <section>
     <h1>{{ title }}</h1>
@@ -26,8 +15,4 @@
     {{ content }}
   </section>
 </main>
-<footer>
-  <div class="container">
-    An Ilmer community project
-  </div>
-</footer>
+{% include "footer" %}

@@ -72,14 +72,14 @@ The surveyor inspected roads, bridges and ditches, arranged repairs and made sur
 
 ### Sarah Wooster
 
-![](/images/punch-thumbnail.avif#right)
+![Portrait thumbnail of Sarah Wooster](/images/punch-thumbnail.avif#right)
 
 Widowed in 1863, Sarah was appointed Surveyor of Highways in 1864[^2] and in March 1868 appointed as Overseer of the poor and Surveyor of the highways.
 Having a woman in such a role was so unusual, the story was picked up by newspapers both nationally and internationally reaching as far as the Trinidad Chronicle[^3]
 
 On May 16 1868, [Punch magazine](<https://en.wikipedia.org/wiki/Punch_(magazine)>) covered the story[^4], relating the role of Sarah Wooster to the women’s suffrage movement and the equality of sexes as campaigned for by [John Stuart Mill MP](https://en.wikipedia.org/wiki/John_Stuart_Mill) - famous for his 1869 essay [The Subjection of Women](https://en.wikipedia.org/wiki/The_Subjection_of_Women).
 
-![](/images/sarah-wooster-punch.jpg)
+![Punch magazine cartoon about Sarah Wooster as Surveyor of Highways](/images/sarah-wooster-punch.jpg)
 
 Later on the same year Sarah requested her four youngest sons be prosecuted for fighting each other. [^5]
 

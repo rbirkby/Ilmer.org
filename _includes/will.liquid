@@ -110,18 +110,7 @@
   }
 </style>
 
-<header>
-  <div class="container">
-    <div class="mast">
-      <a href="/">Ilmer Past</a>
-    </div>
-    <nav>
-      <a href="/map">Location</a>
-      <a href="/newsroom">News</a>
-      <a href="/about">About</a>
-    </nav>
-  </div>
-</header>
+{% include "site-header" %}
 <main>
   <section class="article">
     <p class="breadcrumb">
@@ -164,11 +153,6 @@
 
   </section>
 </main>
-<footer>
-  <div class="container">
-    An Ilmer community project
-  </div>
-</footer>
 
 <script>
   function toggleFont(checkbox) {
@@ -180,3 +164,4 @@
     }, 100);
   }
 </script>
+{% include "footer" %}

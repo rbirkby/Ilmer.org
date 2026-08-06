@@ -2,7 +2,7 @@
   "name": "ilmer-org",
   "version": "1.0.0",
   "description": "Ilmer Past - local history website",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "npx @11ty/eleventy --serve",
     "build": "npx @11ty/eleventy",
@@ -16,6 +16,9 @@
     "lint:events": "node scripts/check-events.mjs"
   },
   "type": "module",
+  "engines": {
+    "node": ">=25"
+  },
   "keywords": [],
   "author": "Richard Birkby <rbirkby@gmail.com>",
   "license": "MIT",

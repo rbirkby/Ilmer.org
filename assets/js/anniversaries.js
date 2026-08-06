@@ -37,6 +37,14 @@ class DateUtils {
     };
   }
 
+  isLeapYear(year) {
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+  }
+
+  daysInYear(year) {
+    return this.isLeapYear(year) ? 366 : 365;
+  }
+
   getDayOfYear(day, month, year) {
     const date = new Date(year, month - 1, day);
     const start = new Date(year, 0, 0);
@@ -211,9 +219,9 @@ class TimelineAnniversaries extends LitElement {
       const eventDayOfYear = this.dateUtils.getDayOfYear(parsedDate.day, parsedDate.month, this.currentYear);
       let daysDiff = eventDayOfYear - todayDayOfYear;
 
-      // Handle year wrap around
+      // Handle year wrap around (use days in the current year, including leap days)
       if (daysDiff < 0) {
-        daysDiff += 365;
+        daysDiff += this.dateUtils.daysInYear(this.currentYear);
       }
 
       // Include if it's within the look-ahead period

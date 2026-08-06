@@ -1,4 +1,3 @@
-import '/assets/js/ai-colorize-toggle.js';
 import { initImageLightbox } from '/assets/js/image-lightbox.js';
 
 const COLORIZE_WORKER_URL = '/assets/js/colorize-worker.js';
@@ -8,6 +7,8 @@ let colorizeWorker;
 const workerRequests = new Map();
 const imageState = new WeakMap();
 const progressAnimations = new WeakMap();
+/** @type {Set<string>} */
+const colorizedObjectUrls = new Set();
 
 function parseImageTags(img) {
   const src = img.getAttribute('src') ?? '';
@@ -33,6 +34,13 @@ function stripHashFromImageSrc(src) {
   }
 
   return value.slice(0, hashIndex);
+}
+
+function revokeColorizedObjectUrls() {
+  for (const url of colorizedObjectUrls) {
+    URL.revokeObjectURL(url);
+  }
+  colorizedObjectUrls.clear();
 }
 
 function setButtonProgress(button, progress) {
@@ -100,7 +108,7 @@ async function ensureImageReady(img) {
     };
     const onError = () => {
       cleanup();
-      reject(new Error('The image could not be loaded for colorisation.'));
+      reject(new Error('The image could not be loaded for colourisation.'));
     };
     const cleanup = () => {
       img.removeEventListener('load', onLoad);
@@ -174,7 +182,7 @@ async function colorizeImage(img, onProgress = () => {}) {
 
   const sourceUrl = img.currentSrc || img.src || img.getAttribute('src');
   if (!sourceUrl) {
-    throw new Error('The image could not be loaded for colorisation.');
+    throw new Error('The image could not be loaded for colourisation.');
   }
 
   const { blob } = await requestWorkerColorization(sourceUrl, onProgress);
@@ -222,6 +230,7 @@ async function toggleColorization(img, button, container) {
     reportProgress(100, 'Colour image ready');
 
     state.colorizedSrc = colorizedUrl;
+    colorizedObjectUrls.add(colorizedUrl);
     state.colorized = true;
     img.src = colorizedUrl;
     container.classList.add('is-colorized');
@@ -241,7 +250,9 @@ async function toggleColorization(img, button, container) {
   }
 }
 
-function registerColorizeButton(img, container) {
+async function registerColorizeButton(img, container) {
+  await import('/assets/js/ai-colorize-toggle.js');
+
   const button = document.createElement('ai-colorize-toggle');
   button.setAttribute('aria-pressed', 'false');
   button.setAttribute('aria-label', `Toggle AI colourisation for ${img.alt || 'this image'}`);
@@ -255,7 +266,7 @@ function enhanceArticleImages() {
   const articleSection = document.querySelector('section.article');
   const articleImages = document.querySelectorAll('section.article img');
   const lightboxAllEnabled = articleSection?.dataset.lightboxAll === 'true';
-  let hasColorizableImages = false;
+  const colorizeRegistrations = [];
 
   articleImages.forEach((img) => {
     const tags = parseImageTags(img);
@@ -321,7 +332,6 @@ function enhanceArticleImages() {
       return;
     }
 
-    hasColorizableImages = true;
     container.classList.add('image-frame--bwphoto');
 
     imageState.set(img, {
@@ -331,15 +341,21 @@ function enhanceArticleImages() {
       loading: false
     });
 
-    registerColorizeButton(img, container);
+    colorizeRegistrations.push(registerColorizeButton(img, container));
   });
 
   initImageLightbox({ triggerSelector: '.article-image-link' });
 
-  if (hasColorizableImages && 'serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/assets/js/colorize-sw.js').catch(() => {});
+  if (colorizeRegistrations.length > 0) {
+    Promise.all(colorizeRegistrations).catch(() => {});
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/assets/js/colorize-sw.js').catch(() => {});
+    }
   }
 }
+
+window.addEventListener('pagehide', revokeColorizedObjectUrls);
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', enhanceArticleImages, { once: true });

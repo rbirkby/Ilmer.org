@@ -87,46 +87,36 @@
   }
 </style>
 
-<body>
-  <header>
-    <div class="container">
-      <div class="mast">
-        <a href="/">Ilmer Past</a>
-      </div>
-      <div class="banner">
-        <h1>Ilmer Past</h1>
-        <p>One historic village through time</p>
-      </div>
-      <nav>
-        <a href="/map">Location</a>
-        <a href="/newsroom">News</a>
-        <a href="/about">About</a>
-      </nav>
+<header>
+  <div class="container">
+    <div class="mast">
+      <a href="/">Ilmer Past</a>
     </div>
-  </header>
-  <main>
-    <section>
-      {% for post in collections.post %}
-        <article>
-          <a href="{{ post.url }}">
-            <header>
-              <img src="{{ post.data.image }}" alt="{{ post.data.title }}">
-              <h2>{{ post.data.title }}</h2>
-            </header>
-            <p>{{ post.data.description }}</p>
-            <footer>
-
-            </footer>
-          </a>
-        </article>
-      {% endfor %}
-    </section>
-  </main>
-  <footer>
-    <div class="container">
-      An Ilmer community project
+    <div class="banner">
+      <h1>Ilmer Past</h1>
+      <p>One historic village through time</p>
     </div>
-  </footer>
-</body>
+    {% include "site-nav" %}
+  </div>
+</header>
+<main>
+  <section>
+    {% for post in collections.post %}
+      <article>
+        <a href="{{ post.url }}">
+          <header>
+            {% if post.data.image %}
+              <img src="{{ post.data.image | sitePath }}" alt="{{ post.data.title }}">
+            {% endif %}
+            <h2>{{ post.data.title }}</h2>
+          </header>
+          <p>{{ post.data.description }}</p>
+          <footer>
 
-
+          </footer>
+        </a>
+      </article>
+    {% endfor %}
+  </section>
+</main>
+{% include "footer" %}

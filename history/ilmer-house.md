@@ -32,7 +32,7 @@ Despite having property on Ravenscroft Road in Beckenham London, Albert also had
 
 Albert sold his nursery business in Beckenham in 1916 and purchased the Old Vicarage in 1927. He re-routed the public footpath that originally ran between the Old Vicarage and the eastern chancel of the church, leading past Ilmer House. From 1925, the footpath was diverted the other side of the farm barns. In 1928, he offered to supply electricity to Ilmer Church from the Ilmer House generator. But in 1931, Albert died aged 57 leaving widow Elizabeth and children including his youngest child (Robert) Douglas. It was Douglas who would go on to start building the nursery and glasshouses in the centre of the village on what is now Ilmer Meadows. Douglas lived at the Old Vicarage.
 
-![](/images/ilmer-house-unknown.avif#bwphoto)
+![Springtime at Ilmer House, unknown date](/images/ilmer-house-unknown.avif#bwphoto)
 Springtime at Ilmer House. Unknown Date. Source: Flickr - ewart white, john field
 
 Elizabeth married their long-standing solicitor Charles Keene in 1933 and moved to live with him at 67 Devon Road, Cheam, London. In 1932, Ilmer House was put up for auction (see photo at top of page) and by 1935, **William White** was living there.

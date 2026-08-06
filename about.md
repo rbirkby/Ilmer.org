@@ -2,8 +2,7 @@
 layout: post
 permalink: /about/index.html
 title: About Ilmer
-description:
-foo: bar
+description: About Ilmer
 tags: [about, ilmer, buckinghamshire]
 image: images/soft-trees.jpg
 ---
@@ -36,7 +35,7 @@ And sometimes, they used both spellings:
 
 And even in 2016, Bucks CC mis-spelled Ilmer on the re-surfacing website:
 
-![](/images/spelling.png)
+![Bucks County Council road resurfacing page misspelling Ilmer as Ilmire](/images/spelling.png)
 
 ### Contact Us
 

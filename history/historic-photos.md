@@ -130,7 +130,7 @@ Construction, along with a similar cowshed at Manor Farm and a farm house at [Co
 
 Ilmer Halt was an on-request station which opened 1st April 1929 serving the London and North-Eastern Railway Company. A passenger census in the week to 20th January 1962 showed on average five people joined or left the trains each day at the halt[^2]. Passenger services from the halt were withdrawn from January 7th 1963 after almost 34 years of operation.
 
-![](/images/ilmer-halt-viewingplatform.avif#bwphoto)
+![Men using Ilmer Halt platform to watch over an adjacent field, one with a megaphone](/images/ilmer-halt-viewingplatform.avif#bwphoto)
 A group of men using the Halt platform to watch over the adjacent field. One man is using a megaphone.
 
 [^2]: Bucks Free Press, 13 Apr. 1962
