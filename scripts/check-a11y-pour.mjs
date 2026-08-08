@@ -6,12 +6,18 @@
  * Usage:
  *   node scripts/check-a11y-pour.mjs [siteDir]
  *   POUR_BASE_URL=http://127.0.0.1:4173 node scripts/check-a11y-pour.mjs   # use existing server
+ *
+ * CI note: pour-cli does not expose Chrome launch flags. On GitHub Actions /
+ * Ubuntu runners Chrome needs --no-sandbox. Set POUR_CHROME_NO_SANDBOX=1
+ * (or rely on CI=true) when PUPPETEER_EXECUTABLE_PATH is set.
  */
 import { spawn } from 'node:child_process';
 import { createServer } from 'node:http';
-import { createReadStream, existsSync, statSync } from 'node:fs';
+import { createReadStream, existsSync, statSync, writeFileSync, unlinkSync } from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const siteDir = path.resolve(process.argv[2] || path.join(root, '_site'));
 const pourBin = path.join(root, 'node_modules', 'pour-cli', 'pour.mjs');
@@ -26,6 +32,49 @@ const FAIL_ON = process.env.POUR_FAIL_ON || 'violations';
 const VIEWPORT = process.env.POUR_VIEWPORT || '1440x900';
 const EXTRA_ARGS = process.env.POUR_ARGS ? process.env.POUR_ARGS.split(/\s+/).filter(Boolean) : [];
 
+/** @type {string | null} */
+let chromeWrapperPath = null;
+
+/**
+ * pour-cli hardcodes puppeteer launch args without --no-sandbox. Wrap the
+ * real Chrome binary so CI sandboxes that block userns still work.
+ */
+function ensureChromeNoSandboxWrapper() {
+  const chromePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+  const wantNoSandbox =
+    process.env.POUR_CHROME_NO_SANDBOX === '1' ||
+    process.env.POUR_CHROME_NO_SANDBOX === 'true' ||
+    process.env.CI === 'true';
+
+  if (!chromePath || !wantNoSandbox) {
+    return;
+  }
+  if (!existsSync(chromePath)) {
+    console.error(`PUPPETEER_EXECUTABLE_PATH not found: ${chromePath}`);
+    process.exit(2);
+  }
+
+  chromeWrapperPath = path.join(os.tmpdir(), `pour-chrome-${process.pid}.sh`);
+  // Quote path for POSIX shell; escape embedded single quotes.
+  const quotedChrome = `'${chromePath.replace(/'/g, `'\\''`)}'`;
+  const script = `#!/bin/sh
+exec ${quotedChrome} --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage "$@"
+`;
+  writeFileSync(chromeWrapperPath, script, { mode: 0o755 });
+  process.env.PUPPETEER_EXECUTABLE_PATH = chromeWrapperPath;
+}
+
+function cleanupChromeWrapper() {
+  if (!chromeWrapperPath) {
+    return;
+  }
+  try {
+    unlinkSync(chromeWrapperPath);
+  } catch {
+    // ignore
+  }
+  chromeWrapperPath = null;
+}
 const MIME = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -116,6 +165,8 @@ async function main() {
     process.exit(2);
   }
 
+  ensureChromeNoSandboxWrapper();
+
   let server;
   let baseUrl = process.env.POUR_BASE_URL;
 
@@ -138,6 +189,7 @@ async function main() {
     if (server) {
       await new Promise((resolve) => server.close(resolve));
     }
+    cleanupChromeWrapper();
   }
 
   if (worstExit === 0) {
@@ -150,5 +202,6 @@ async function main() {
 
 main().catch((err) => {
   console.error(err);
+  cleanupChromeWrapper();
   process.exit(2);
 });

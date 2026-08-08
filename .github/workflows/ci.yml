@@ -68,7 +68,10 @@ jobs:
 
       - name: Accessibility audit (pour)
         env:
+          # pour-cli has no flag for Chrome args; our a11y script wraps the
+          # binary with --no-sandbox when CI=true (required on Ubuntu runners).
           PUPPETEER_EXECUTABLE_PATH: ${{ steps.chrome.outputs.chrome-path }}
+          POUR_CHROME_NO_SANDBOX: '1'
         run: npm run a11y
 
       - name: Run Lighthouse audit
