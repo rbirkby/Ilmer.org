@@ -10,14 +10,15 @@
     "format-check": "oxfmt --check .",
     "lint": "oxlint && markdownlint --ignore node_modules '**/*.md' --config .markdownlintrc.json --fix",
     "lint-check": "oxlint && markdownlint --ignore node_modules '**/*.md' --config .markdownlintrc.json",
-    "link-check": "npm run build && linkinator _site --recurse --verbosity error --status-code '401:warn' --status-code '403:warn' --status-code '429:warn' ",
-    "lighthouse": "npm run build && lhci autorun",
-    "test": "node --run lint-check && node --run format-check && node --run build",
-    "lint:events": "node scripts/check-events.mjs"
+    "lint:events": "node scripts/check-events.mjs",
+    "link-check": "linkinator _site --recurse --verbosity error --status-code '401:warn' --status-code '403:warn' --status-code '429:warn'",
+    "link-check:internal": "node scripts/check-links-internal.mjs _site",
+    "lighthouse": "lhci autorun",
+    "test": "node --run format-check && node --run lint-check && node --run lint:events && node --run build"
   },
   "type": "module",
   "engines": {
-    "node": ">=25"
+    "node": ">=26"
   },
   "keywords": [],
   "author": "Richard Birkby <rbirkby@gmail.com>",

@@ -248,25 +248,27 @@ class TimelineAnniversaries extends LitElement {
           anniversaries:
         </p>
         <div class="anniversaries-list">
-          ${this.anniversaries.length === 0
-            ? html`<p class="no-anniversaries">
-                No historical anniversaries found for the next 2 weeks. Check back later!
-              </p>`
-            : html`
-                <div class="anniversary-grid">
-                  ${this.anniversaries.map(
-                    (anniversary) => html`
-                      <timeline-anniversary
-                        relative-date="${anniversary.relativeDateStr}"
-                        title="${anniversary.title}"
-                        years-ago="${anniversary.yearsAgo}"
-                        original-date="${anniversary.originalDate}"
-                      >
-                      </timeline-anniversary>
-                    `
-                  )}
-                </div>
-              `}
+          ${
+            this.anniversaries.length === 0
+              ? html`<p class="no-anniversaries">
+                  No historical anniversaries found for the next 2 weeks. Check back later!
+                </p>`
+              : html`
+                  <div class="anniversary-grid">
+                    ${this.anniversaries.map(
+                      (anniversary) => html`
+                        <timeline-anniversary
+                          relative-date="${anniversary.relativeDateStr}"
+                          title="${anniversary.title}"
+                          years-ago="${anniversary.yearsAgo}"
+                          original-date="${anniversary.originalDate}"
+                        >
+                        </timeline-anniversary>
+                      `
+                    )}
+                  </div>
+                `
+          }
         </div>
       </div>
       <slot></slot>
