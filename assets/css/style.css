@@ -94,11 +94,14 @@ section.article {
   }
 
   & a {
-    color: #26a8ed;
-    text-decoration: none;
+    /* ~5.1:1 on white — meets WCAG 2.2 AA (4.5:1) for body link text */
+    color: #0a6b99;
+    /* Underline keeps links distinguishable by more than colour alone (1.4.1) */
+    text-decoration: underline;
+    text-underline-offset: 0.12em;
 
     &:hover {
-      text-decoration: underline;
+      text-decoration-thickness: 0.12em;
     }
   }
 

@@ -6,8 +6,8 @@
   --timeline-title: #24292e;
   --timeline-date-bg: #0366d6;
   --timeline-date-color: #ffffff;
-  --timeline-text: #586069;
-  --timeline-reference: #6a737d;
+  --timeline-text: #4b5560;
+  --timeline-reference: #57606a;
 
   --timeline-distort: none;
   --timeline-background-shadow-color: none;
@@ -51,6 +51,14 @@ select {
   backdrop-filter: blur(4px);
   z-index: 1;
   top: 20px;
+}
+
+.timeline-filter-label {
+  display: block;
+  margin: 0 0 0.4rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--timeline-heading, #15171a);
 }
 
 option {
@@ -453,7 +461,8 @@ main + footer {
       font-size: 1.1em;
     }
     .anniversary-meta {
-      color: var(--timeline-reference, #6a737d);
+      /* Darker than #6a737d so body-sized text clears 4.5:1 on white cards */
+      color: var(--timeline-reference, #57606a);
       font-size: 0.85em;
       font-style: italic;
       margin-top: 8px;

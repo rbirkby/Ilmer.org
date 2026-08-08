@@ -10,7 +10,7 @@ image: images/timeline.png
 <script type="module">
   import { initImageLightbox } from '/assets/js/image-lightbox.js';
 
-  document.getElementsByTagName('select')[0].addEventListener('change', function() {
+  document.getElementById('timeline-filter').addEventListener('change', function() {
     const category = this.value;
     document.querySelectorAll('.timeline-item').forEach(item => {
       const categories = JSON.parse(item.getAttribute('data-categories'));
@@ -42,7 +42,8 @@ image: images/timeline.png
 </timeline-anniversaries>
 
 {% assign labels = historicalEvents | uniqueLabels %}
-<select name="filter">
+<label class="timeline-filter-label" for="timeline-filter">Filter events by category</label>
+<select id="timeline-filter" name="filter">
   <option value="">
     <span class="label-name">All Events</span>
     <span class="label-count">{{ historicalEvents | size }}</span>

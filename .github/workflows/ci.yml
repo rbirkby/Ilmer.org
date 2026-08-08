@@ -41,7 +41,7 @@ jobs:
 
   site:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     needs: quality
     steps:
       - name: Checkout repository
@@ -53,6 +53,10 @@ jobs:
           node-version-file: '.node-version'
           cache: npm
 
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@v2
+        id: chrome
+
       - name: Install dependencies
         run: npm ci
 
@@ -61,6 +65,11 @@ jobs:
 
       - name: Check internal links
         run: npm run link-check:internal
+
+      - name: Accessibility audit (pour)
+        env:
+          PUPPETEER_EXECUTABLE_PATH: ${{ steps.chrome.outputs.chrome-path }}
+        run: npm run a11y
 
       - name: Run Lighthouse audit
         run: npm run lighthouse

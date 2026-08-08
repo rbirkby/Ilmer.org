@@ -13,6 +13,7 @@
     "lint:events": "node scripts/check-events.mjs",
     "link-check": "linkinator _site --recurse --verbosity error --status-code '401:warn' --status-code '403:warn' --status-code '429:warn'",
     "link-check:internal": "node scripts/check-links-internal.mjs _site",
+    "a11y": "node scripts/check-a11y-pour.mjs _site",
     "lighthouse": "lhci autorun",
     "test": "node --run format-check && node --run lint-check && node --run lint:events && node --run build"
   },
@@ -30,7 +31,8 @@
     "linkinator": "^8.0.2",
     "markdownlint-cli": "^0.49.1",
     "oxfmt": "^0.62.0",
-    "oxlint": "^1.74.0"
+    "oxlint": "^1.74.0",
+    "pour-cli": "^0.1.0"
   },
   "dependencies": {
     "markdown-it-footnote": "^4.0.0",
