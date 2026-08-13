@@ -3703,6 +3703,13 @@
     "labels": ["building"]
   },
   {
+    "date": "23 Jun. 1990",
+    "title": "Parish Day at Ilmer",
+    "description": "40 parishoners attended the Church Parish Day from 9:45 until 6pm when fish and chips arrived. The cost was £1 for 5-10yr olds and £2.50 for older children and adults.",
+    "references": ["Viewpoint Parish Magazine, Aug. 1990, Bucks Archives, D/337/159"],
+    "labels": ["church"]
+  },
+  {
     "date": "1991",
     "title": "New Altar Frontal",
     "description": "A new purple church altar frontal cloth was purchased.",
@@ -3778,6 +3785,13 @@
     "references": ["www.thegazette.co.uk"],
     "hidden": true,
     "labels": ["document"]
+  },
+  {
+    "date": "1 May 1994",
+    "title": "Cheese and Wine on The Green",
+    "description": "Cheese and Wine on The Green to commemorate 100 years of Parish Councils.",
+    "references": ["Bucks Archive, AR_83/2009 Minutes of the Parish Council Meeting, 19 Apr. 1994"],
+    "labels": ["celebration"]
   },
   {
     "date": "Jun - Jul 1996",
