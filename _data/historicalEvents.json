@@ -3015,6 +3015,15 @@
     "labels": ["fire", "farm"]
   },
   {
+    "date": "29 Jan. 1953",
+    "title": "Request to lay mains water",
+    "description": "Agreement that the clerk should write to the R.D.C regarding the laying of mains water to Ilmer.",
+    "references": [
+      "[Parish Minutes, 29 Jan 1953, Bucks Archive](https://archives.buckinghamshire.gov.uk/records/PR_136/UNCAT/AR_83-2009)"
+    ],
+    "labels": ["council"]
+  },
+  {
     "date": "24 Apr. 1953",
     "title": "Eviction of Tenants",
     "description": "(Robert) Merrick Attenborough successfully applied for the eviction of the tenants of Lodge Cottage and Ilmer Cottage. The site of Lodge Cottage is now Folly Cottage, while Ilmer Cottage became the pair of cottages known as September and October cottages.",
@@ -3112,6 +3121,15 @@
     "description": "Elizabeth Keene, widow of Albert Goodchild of Ilmer House died.",
     "references": ["Daily Telegraph, 6 Jun 1962", "BMD records for Hitchin, Apr-Jun 1962"],
     "labels": ["death", "housing", "person"]
+  },
+  {
+    "date": "30 Oct. 1962",
+    "title": "Sign directing people to Ilmer Church",
+    "description": "The Parish Council agreed the need for a sign to Ilmer Church, although a letter of refusal from 1961 was mentioned. A councillor noted such a sign would be useful for tourists.",
+    "references": [
+      "[Parish Minutes, 30 Oct. 1962, Bucks Archive](https://archives.buckinghamshire.gov.uk/records/PR_136/UNCAT/AR_83-2009)"
+    ],
+    "labels": ["council"]
   },
   {
     "date": "c. 1962",
@@ -3790,7 +3808,9 @@
     "date": "1 May 1994",
     "title": "Cheese and Wine on The Green",
     "description": "Cheese and Wine on The Green to commemorate 100 years of Parish Councils.",
-    "references": ["Bucks Archive, AR_83/2009 Minutes of the Parish Council Meeting, 19 Apr. 1994"],
+    "references": [
+      "[Minutes of the Parish Council Meeting, 19 Apr. 1994, Bucks Archives](https://archives.buckinghamshire.gov.uk/records/PR_136/UNCAT/AR_83-2009)"
+    ],
     "labels": ["celebration"]
   },
   {
