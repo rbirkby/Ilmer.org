@@ -3,7 +3,7 @@ layout: post
 title: 'Railway'
 description: 'Opened in 1906, .'
 category: history
-tags: [railway, bridge, halt]
+tags: [railway, bridge, halt, post]
 image: images/ilmer-halt-ticket.jpg
 ---
 
