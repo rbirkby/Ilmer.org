@@ -21,10 +21,10 @@ Adjacent to the bridge was Ilmer Halt, an on-request station where a telephone w
 
 The station was evidently rarely used, as shown in the Parish Council minutes of 1934:
 
-#### Meeting of the Longwick-cum-Ilmer Parish Council held in the Village Hall, Longwick on Monday April 16th 1934 at 7.30 pm.
-
-The Clerk was asked to place on the agenda for next meeting, the provision of a Shelter at Ilmer Railway Halt
-
-#### Meeting of the Longwick-cum-Ilmer Parish Council held in the Schoolroom, Longwick on Monday July 9th 1934 at 8 pm.
-
-As it was reported that the Passengers travelling from Ilmer Halt only averaged two a week, the Council were of an opinion no good purpose would be served at present by making application to the Railway Co for the provision of a Shelter at the Halt.
+> #### Meeting of the Longwick-cum-Ilmer Parish Council held in the Village Hall, Longwick on Monday April 16th 1934 at 7.30 pm.
+>
+> The Clerk was asked to place on the agenda for next meeting, the provision of a Shelter at Ilmer Railway Halt
+>
+> #### Meeting of the Longwick-cum-Ilmer Parish Council held in the Schoolroom, Longwick on Monday July 9th 1934 at 8 pm.
+>
+> As it was reported that the Passengers travelling from Ilmer Halt only averaged two a week, the Council were of an opinion no good purpose would be served at present by making application to the Railway Co > for the provision of a Shelter at the Halt.
