@@ -9,6 +9,12 @@
   {% endif %}
   <section class="article" data-lightbox-all="{{ lightbox | default: false }}">
 
+    {% if breadcrumb %}
+      <p class="breadcrumb">
+        <a href="{{ breadcrumbUrl }}">← {{ breadcrumb }}</a>
+      </p>
+    {% endif %}
+
     <h1>{{ title }}</h1>
 
     <p>{{ description }}</p>

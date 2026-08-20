@@ -28,6 +28,13 @@ main {
     color: #15171a;
   }
 
+  & h2 {
+    margin: 1em 0 0.4em;
+    font-size: 3.6rem;
+    font-weight: 700;
+    color: #15171a;
+  }
+
   & h3 {
     margin: 0.8em 0 0.4em 0;
     font-size: 3.2rem;
@@ -123,6 +130,52 @@ section.article {
   & .pdf-embed embed {
     width: 100%;
     height: 100%;
+  }
+
+  /* Left-gutter labels for `[Margin: …]` markers in minute books. */
+  --margin-note-width: 14rem;
+  --margin-note-gap: 1.6rem;
+}
+
+section.article:has(.margin-note) {
+  max-width: calc(720px + var(--margin-note-width) + var(--margin-note-gap));
+  padding-left: calc(var(--margin-note-width) + var(--margin-note-gap));
+}
+
+.margin-note {
+  display: inline;
+}
+
+.margin-note__text {
+  float: left;
+  clear: left;
+  box-sizing: border-box;
+  width: var(--margin-note-width);
+  margin: 0.15em 0 0.4em calc(-1 * (var(--margin-note-width) + var(--margin-note-gap)));
+  padding-right: 0.2rem;
+  font-size: 0.68em;
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1.35;
+  color: #45545c;
+  text-align: right;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+@media (max-width: 960px) {
+  section.article:has(.margin-note) {
+    max-width: 720px;
+    padding-left: 0;
+  }
+
+  .margin-note__text {
+    float: none;
+    display: block;
+    width: auto;
+    margin: 0 0 0.35em;
+    padding: 0;
+    text-align: left;
   }
 }
 

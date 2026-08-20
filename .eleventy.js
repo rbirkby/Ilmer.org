@@ -2,6 +2,7 @@ import markdownItFootnote from 'markdown-it-footnote';
 import { RenderPlugin } from '@11ty/eleventy';
 import markdownIt from 'markdown-it';
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts';
+import markdownItMarginNotes from './plugins/markdown-it-margin-notes.js';
 
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('images');
@@ -13,6 +14,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('robots.txt');
 
   eleventyConfig.amendLibrary('md', (mdLib) => mdLib.use(markdownItFootnote));
+  eleventyConfig.amendLibrary('md', (mdLib) => mdLib.use(markdownItMarginNotes));
   eleventyConfig.addPlugin(RenderPlugin);
 
   const mdIt = markdownIt({ html: true, linkify: true }).disable('code');
