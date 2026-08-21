@@ -3,9 +3,9 @@ layout: post
 title: 'Parish Council Minutes'
 description: 'Historic minutes of the Longwick-cum-Ilmer Parish Council.'
 category: history
-tags: [post]
-breadcrumb: false
-image: images/parishcouncil.avif
+tags: [parish-minutes]
+breadcrumb: 'Parish Minutes'
+breadcrumbUrl: '/parish/'
 ---
 
 {%- assign current_year = "" -%}
