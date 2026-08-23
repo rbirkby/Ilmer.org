@@ -1,0 +1,18 @@
+<nav class="breadcrumb-trail" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    {%- if ancestorCrumb1 -%}
+      <li><a href="{{ ancestorCrumb1.url }}">{{ ancestorCrumb1.label }}</a></li>
+    {%- endif -%}
+    {%- if ancestorCrumb2 -%}
+      <li><a href="{{ ancestorCrumb2.url }}">{{ ancestorCrumb2.label }}</a></li>
+    {%- endif -%}
+    <li aria-current="page">
+      {%- if breadcrumbUseDate -%}
+        {{ page.date | date: "%-d %B %Y" }}
+      {%- else -%}
+        {{ title }}
+      {%- endif -%}
+    </li>
+  </ol>
+</nav>

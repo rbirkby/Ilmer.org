@@ -1,26 +1,15 @@
 ---
-layout: post
+layout: archive
 title: 'Parish Council Minutes'
-description: 'Historic minutes of the Longwick-cum-Ilmer Parish Council.'
+description: 'Explore the decisions, discussions and day-to-day life of the parish through the original minute books of Longwick-cum-Ilmer Parish Council.'
 category: history
 tags: [parish-minutes]
-breadcrumb: 'Parish Minutes'
-breadcrumbUrl: '/parish/'
----
-
-{%- assign current_year = "" -%}
-{%- for item in collections.minutes -%}
-{%- assign year = item.date | date: "%Y" -%}
-{%- if year != current_year -%}
-{%- unless forloop.first -%}
-</ul>
-    {%- endunless -%}
-<h2>{{ year }}</h2>
-<ul>
-    {%- assign current_year = year -%}
-  {%- endif -%}
-    <li><a href="{{ item.url }}">{{ item.data.title | replace_first: "Parish Council Minutes - ", "" }}</a></li>
-{%- endfor -%}
-</ul>
-
+hideAncestorCrumb2: true
+breadcrumbUseDate: false
+image: images/parishcouncil-hero.avif
+placeName: 'Longwick-cum-Ilmer'
+collectionName: 'minutes'
+subjectBasePath: '/parish/parishcouncil/subject/'
+featured: '1934-04-16'
+hideSearch: true
 ---

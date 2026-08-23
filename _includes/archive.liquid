@@ -1,0 +1,123 @@
+{% include "head" %}
+
+{% include "site-header" %}
+{%- assign coll = collections[collectionName] -%}
+{%- assign archiveData = coll | archiveByDecade -%}
+{%- assign subjectTags = coll | archiveSubjectTags: collectionName -%}
+{%- assign firstItem = coll | first -%}
+{%- assign lastItem = coll | last -%}
+{%- assign startYear = firstItem.date | date: "%Y" -%}
+{%- assign endYear = lastItem.date | date: "%Y" -%}
+
+{%- assign featuredItem = nil -%}
+{%- if featured -%}
+  {%- for item in coll -%}
+    {%- assign itemDate = item.date | date: "%Y-%m-%d" -%}
+    {%- if itemDate == featured -%}
+      {%- assign featuredItem = item -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{%- unless featuredItem -%}
+  {%- assign featuredItem = firstItem -%}
+{%- endunless -%}
+{%- assign featuredExcerpt = featuredItem.templateContent | strip_html | strip_newlines | truncate: 240 -%}
+{%- assign featuredHeadlineParts = featuredItem.templateContent | split: 'margin-note__text">' -%}
+{%- if featuredHeadlineParts.size > 1 -%}
+  {%- assign featuredHeadline = featuredHeadlineParts[1] | split: '</span>' | first -%}
+  {%- assign featuredExcerpt = featuredExcerpt | remove_first: featuredHeadline | strip -%}
+{%- endif -%}
+
+<main class="archive"{% if image %} style="--hero-image: url('{{ image | sitePath }}')"{% endif %}>
+  <section class="archive-hero">
+    <div class="archive-hero__text">
+      {% include "breadcrumb.liquid" %}
+      <h1>{{ title }}</h1>
+      <p class="archive-hero__meta">{{ placeName }} &middot; {{ startYear }}&ndash;{{ endYear }}</p>
+      {% include "archive-flourish.liquid" %}
+      <p class="archive-hero__description">{{ description }}</p>
+      {% unless hideSearch %}
+        <form class="archive-search" role="search" aria-label="Search the minutes">
+          <label for="archive-search-input" class="sr-only">Search the minutes</label>
+          <input id="archive-search-input" type="search" name="q" placeholder="Search the minutes">
+          <button type="submit">Search</button>
+        </form>
+      {% endunless %}
+    </div>
+  </section>
+
+  <div class="archive-panels">
+    <section class="archive-card archive-featured" aria-labelledby="from-the-minutes-heading">
+      <div class="archive-card__heading">
+        <h2 id="from-the-minutes-heading">from the minutes</h2>
+        {% include "archive-flourish.liquid", small: true %}
+      </div>
+      <p class="archive-featured__date">
+        <svg class="archive-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <rect x="3.5" y="5" width="17" height="16" rx="2"></rect>
+          <path d="M3.5 9.5h17M8 3v4M16 3v4"></path>
+        </svg>
+        {{ featuredItem.date | date: "%-d %B %Y" }}
+      </p>
+      {% if featuredHeadline %}<p class="archive-featured__title">{{ featuredHeadline }}</p>{% endif %}
+      <p class="archive-featured__quote">&ldquo;{{ featuredExcerpt }}&hellip;&rdquo;</p>
+      <a class="archive-featured__link" href="{{ featuredItem.url }}">Read the full minute <span aria-hidden="true">&rarr;</span></a>
+    </section>
+
+    <section class="archive-card archive-browse" aria-labelledby="browse-heading">
+      <div class="archive-card__heading">
+        <h2 id="browse-heading">Browse the archive</h2>
+      </div>
+      <div class="archive-decades">
+        {% for decadeGroup in archiveData %}
+          <div class="archive-decade">
+            <input type="checkbox" id="decade-{{ collectionName }}-{{ decadeGroup.decade }}" class="archive-decade__toggle" hidden>
+            <label class="archive-decade__summary" for="decade-{{ collectionName }}-{{ decadeGroup.decade }}">
+              <span class="archive-decade__label">
+                <svg class="archive-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                  <rect x="3.5" y="5" width="17" height="16" rx="2"></rect>
+                  <path d="M3.5 9.5h17M8 3v4M16 3v4"></path>
+                </svg>
+                {{ decadeGroup.decade }}s
+              </span>
+              <span class="archive-decade__count">{{ decadeGroup.totalCount }} minute{% if decadeGroup.totalCount != 1 %}s{% endif %}</span>
+              <svg class="archive-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+            </label>
+            <div class="archive-years">
+              {% for y in decadeGroup.years %}
+                <details class="archive-year">
+                  <summary>
+                    <span>{{ y.year }}</span>
+                    <span class="archive-year__count">{{ y.count }} meeting{% if y.count != 1 %}s{% endif %}</span>
+                  </summary>
+                  <ul class="archive-year__list">
+                    {% for it in y.items %}
+                      <li><a href="{{ it.url }}">{{ it.date | date: "%-d %b" }}</a></li>
+                    {% endfor %}
+                  </ul>
+                </details>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+
+  {% if subjectTags.size > 0 %}
+    <section class="archive-card archive-subjects" aria-labelledby="subjects-heading">
+      <div class="archive-card__heading">
+        <h2 id="subjects-heading">Explore by subject</h2>
+      </div>
+      <div class="archive-subjects__list">
+        {% for s in subjectTags %}
+          <a class="subject-pill" href="{{ subjectBasePath }}{{ s.tag }}/">
+            <span class="subject-pill__icon">{{ s.tag | subjectIcon }}</span>
+            {{ s.tag | subjectLabel }}
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+</main>
+{% include "footer" %}

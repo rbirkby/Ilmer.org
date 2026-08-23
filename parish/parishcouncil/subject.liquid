@@ -1,0 +1,23 @@
+---
+pagination:
+  data: collections.parishCouncilSubjects
+  size: 1
+  alias: subject
+permalink: "/parish/parishcouncil/subject/{{ subject.tag }}/"
+layout: post
+category: history
+tags: []
+breadcrumbUseDate: false
+headerUseDate: false
+eleventyComputed:
+  title: "Parish Council Minutes: {{ subject.tag | subjectLabel | capitalize }}"
+  description: "Parish Council minutes concerning {{ subject.tag | subjectLabel }}."
+---
+
+<ul>
+  {%- for item in subject.items -%}
+    <li>
+      <a href="{{ item.url }}">{{ item.data.title | replace_first: "Parish Council Minutes - ", "" }}</a>
+    </li>
+  {%- endfor -%}
+</ul>

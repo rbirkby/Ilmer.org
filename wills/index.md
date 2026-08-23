@@ -4,6 +4,7 @@ title: 'Wills'
 description: 'Historic wills and codicils connected to Ilmer.'
 permalink: /wills/
 tags: ['post']
+hideAncestorCrumb1: true
 image: images/wills.avif
 ---
 

@@ -1,7 +1,7 @@
 {% include "head" %}
 
 {% include "site-header" %}
-<main>
+<main{% if useArchiveCss %} class="archive"{% endif %}>
   {% if image %}
     <figure>
       <img src="{{ image | sitePath }}" alt="{{ title }}">
@@ -9,17 +9,34 @@
   {% endif %}
   <section class="article" data-lightbox-all="{{ lightbox | default: false }}">
 
-    {% if breadcrumb %}
-      <p class="breadcrumb">
-        <a href="{{ breadcrumbUrl }}">← {{ breadcrumb }}</a>
-      </p>
+    {% include "breadcrumb.liquid" %}
+
+    {% if headerUseDate %}
+      <h1 class="minute-heading">{{ ancestorCrumb2.label }}</h1>
+      <p class="minute-date">{{ page.date | date: "%-d %B %Y" }}</p>
+    {% else %}
+      <h1>{{ title }}</h1>
+
+      <p>{{ description }}</p>
     {% endif %}
 
-    <h1>{{ title }}</h1>
-
-    <p>{{ description }}</p>
-
     {{ content }}
+
+    {% if headerUseDate %}
+      {%- assign adjacent = collections[collectionName] | adjacentItem: page.url -%}
+      <nav class="minute-pager" aria-label="Minute navigation">
+        {% if adjacent.previous %}
+          <a class="minute-pager__link minute-pager__link--prev" href="{{ adjacent.previous.url }}">
+            <span aria-hidden="true">&larr;</span> Previous Minute
+          </a>
+        {% endif %}
+        {% if adjacent.next %}
+          <a class="minute-pager__link minute-pager__link--next" href="{{ adjacent.next.url }}">
+            Next Minute <span aria-hidden="true">&rarr;</span>
+          </a>
+        {% endif %}
+      </nav>
+    {% endif %}
   </section>
 
   <div id="image-lightbox" popover>

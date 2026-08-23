@@ -113,9 +113,8 @@
 {% include "site-header" %}
 <main>
   <section class="article">
-    <p class="breadcrumb">
-      <a href="/wills/">← Wills</a>
-    </p>
+    {% include "breadcrumb.liquid" %}
+
     <h1>{{ title }}</h1>
     <p class="will-meta">{{ description }}</p>
 

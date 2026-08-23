@@ -1,0 +1,741 @@
+main.archive,
+main.archive *,
+main.archive *::before,
+main.archive *::after {
+  box-sizing: border-box;
+}
+
+main.archive {
+  --archive-cream: #f6f1e6;
+  --archive-card: #fbf8f1;
+  --archive-border: #e2d8c1;
+  --archive-ink: #1d1d1a;
+  --archive-green: #2f4b30;
+  --archive-green-dark: #1a2f22;
+  --archive-muted: #766c5c;
+  --archive-max: 1200px;
+  --hero-band-height: 34rem;
+
+  position: relative;
+  isolation: isolate;
+
+  overflow-y: clip;
+  max-width: none;
+  margin: 0;
+  padding: 0 0 2vw;
+  background: var(--archive-cream);
+  color: var(--archive-ink);
+  font-family: 'Lora', Georgia, serif;
+
+  & h1,
+  & h2 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: var(--archive-ink);
+  }
+
+  & a {
+    color: var(--archive-green);
+  }
+
+  /* The hero photo and its legibility scrim live on main's own generated
+     content rather than on main's full height (main runs to 2000+px, and a
+     background sized "cover" against a box that tall would zoom the image
+     absurdly). Pinned to the top of main at z-index -1, so normal-flow
+     content (hero text, then the opaque panel cards further down) paints
+     over it automatically.
+
+     The scrim (cream-to-transparent, left to right, keeping hero text
+     readable over the photo) and the photo itself are two background layers
+     on this one box, masked together with a single vertical fade, so they
+     share one bottom edge and dissolve out in step, with no seam between
+     them. */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: min(calc(var(--hero-band-height) + 58rem), 100%);
+    z-index: -1;
+    background-image:
+      linear-gradient(
+        90deg,
+        var(--archive-cream) 0%,
+        var(--archive-cream) var(--hero-scrim-solid, 32%),
+        rgb(246 241 230 / 0.6) var(--hero-scrim-mid, 52%),
+        rgb(246 241 230 / 0) var(--hero-scrim-clear, 78%)
+      ),
+      var(--hero-image, none);
+    background-repeat: no-repeat, no-repeat;
+    background-position:
+      top left,
+      top right;
+    background-size:
+      100% 100%,
+      cover;
+    mask-image: linear-gradient(to bottom, #000 0%, #000 68%, transparent 100%);
+  }
+
+  @media (max-width: 860px) {
+    --hero-band-height: 34rem;
+    /* Text has less clear width here than on desktop before it reaches the
+       scrim's fade zone, so pull the solid/fade stops in a bit. */
+    --hero-scrim-solid: 46%;
+    --hero-scrim-mid: 64%;
+    --hero-scrim-clear: 88%;
+  }
+
+  @media (max-width: 640px) {
+    /* --hero-band-height is intentionally NOT overridden here — it stays at
+       the 860px breakpoint's 34rem so the photo renders at the same size on
+       phone as on tablet, rather than shrinking further. Text is capped to
+       the left 60vw (see .archive-hero__text below), so the solid zone only
+       needs to cover that plus a small buffer — the remaining ~40% is free
+       to reveal the photo (top right-aligned; see &::before above). */
+    --hero-scrim-solid: 58%;
+    --hero-scrim-mid: 78%;
+    --hero-scrim-clear: 96%;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Hero ---------- */
+
+.archive-hero {
+  min-height: var(--hero-band-height);
+
+  & .archive-hero__text {
+    /* Proportional, not a fixed cap: the text column should keep growing
+       with the viewport (to ~60% of it) rather than freezing at a fixed
+       width and leaving the widest screens mostly empty. */
+    max-width: 60vw;
+    /* Padding is clamped on both sides: since the box above is now
+       proportional rather than fixed-width, an uncapped `vw` padding here
+       would just be "eating a constant proportion" of an ever-growing box,
+       which is fine — but capping it keeps the inset from ballooning to an
+       ungainly size on very wide screens, while the text column itself still
+       keeps pace with max-width above. */
+    padding: 5rem clamp(2rem, 6vw, 6rem) 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    @media (max-width: 860px) {
+      padding: 4rem 4vw 3rem;
+    }
+  }
+
+  & h1 {
+    margin: 0;
+    font-size: clamp(3.4rem, 5vw, 5.4rem);
+    font-weight: 600;
+    line-height: 1.05;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+
+  & .archive-hero__meta {
+    margin: 1.2rem 0 0;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2.1rem;
+    font-weight: 500;
+    color: var(--archive-green);
+  }
+
+  & .archive-hero__description {
+    margin: 0;
+    max-width: 44em;
+    font-size: 1.9rem;
+    line-height: 1.6;
+    color: #3a362e;
+  }
+}
+
+/* A stretchy rule, a fixed-size knot ornament, a stretchy rule. The knot never
+   distorts (it isn't stretched to fill available space, only the two line
+   segments are), and the whole row's width tracks its container naturally. */
+.archive-flourish {
+  display: flex;
+  align-items: center;
+  width: 20rem;
+  max-width: 100%;
+  margin: 1.4rem 0 1.8rem;
+  color: var(--archive-green);
+
+  & .archive-flourish__line {
+    flex: 1 1 auto;
+    height: 1px;
+    background: currentColor;
+  }
+
+  & .archive-flourish__knot {
+    flex: none;
+    width: 4.4rem;
+    height: 1.78rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &.archive-flourish--small {
+    width: 9rem;
+    margin: 0.6rem 0 1.8rem;
+
+    & .archive-flourish__knot {
+      width: 3rem;
+      height: 1.21rem;
+      stroke-width: 3;
+    }
+  }
+}
+
+/* Card headings: wrap the heading and its flourish together so the flourish
+   can be sized to exactly the heading's own rendered text width (fit-content
+   shrinks to the widest child's intrinsic size; the flourish's own width is a
+   percentage, so it doesn't feed back into that calculation). */
+.archive-card__heading {
+  width: fit-content;
+  max-width: 100%;
+
+  & .archive-flourish {
+    width: 100%;
+  }
+}
+
+.archive-search {
+  display: flex;
+  max-width: 46rem;
+  border: 1px solid var(--archive-border);
+  border-radius: 0.6rem;
+  background: #fff;
+  overflow: hidden;
+
+  & input {
+    flex: 1;
+    border: 0;
+    padding: 1.3rem 1.6rem;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 1.6rem;
+    background: transparent;
+    color: var(--archive-ink);
+
+    &:focus {
+      outline: 2px solid var(--archive-green);
+      outline-offset: -2px;
+    }
+  }
+
+  & button {
+    border: 0;
+    padding: 0 2.4rem;
+    background: var(--archive-green);
+    color: #fff;
+    font-family: 'Lora', Georgia, serif;
+    font-weight: 600;
+    font-size: 1.4rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--archive-green-dark);
+    }
+  }
+}
+
+/* ---------- Panels: From the Minutes / Browse the Archive ---------- */
+
+.archive-panels,
+.archive-subjects {
+  max-width: var(--archive-max);
+  margin: 0 auto;
+  background: var(--archive-card);
+  border: 1px solid var(--archive-border);
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.04);
+}
+
+.archive-panels {
+  display: grid;
+  grid-template-columns: 30rem minmax(0, 1fr);
+
+  & .archive-browse {
+    border-left: 1px solid var(--archive-border);
+
+    @media (max-width: 860px) {
+      border-left: 0;
+      border-top: 1px solid var(--archive-border);
+    }
+  }
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+    margin-left: 4vw;
+    margin-right: 4vw;
+    width: auto;
+  }
+}
+
+main.archive .archive-card {
+  padding: 3.2rem clamp(2rem, 3vw, 3.6rem);
+
+  & h2 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--archive-green);
+    font-variant: small-caps;
+  }
+}
+
+.archive-featured {
+  & .archive-featured__date {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 0 0 0.6rem;
+    font-weight: 700;
+    font-size: 1.8rem;
+  }
+
+  & .archive-featured__title {
+    margin: 0 0 1rem;
+    font-style: italic;
+    color: var(--archive-muted);
+    font-size: 1.6rem;
+  }
+
+  & .archive-featured__quote {
+    margin: 0 0 1.6rem;
+    font-size: 1.7rem;
+    line-height: 1.6;
+  }
+
+  & .archive-featured__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 1.4rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* Shared between the "From the Minutes" date and each decade's calendar icon. */
+.archive-icon {
+  flex: none;
+  width: 1.9rem;
+  height: 1.9rem;
+  color: var(--archive-green);
+}
+
+/* ---------- Browse the archive: decades / years ---------- */
+
+.archive-decades {
+  margin-top: 1.6rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0 2.4rem;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.archive-decade {
+  border-top: 1px solid var(--archive-border);
+  padding: 1.2rem 0;
+
+  & .archive-decade__toggle {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  & .archive-decade__summary {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: default;
+    font-weight: 700;
+    color: var(--archive-green);
+  }
+
+  & .archive-decade__label {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 1.7rem;
+    text-transform: none;
+  }
+
+  & .archive-decade__count {
+    margin-left: auto;
+    font-family: 'Lora', Georgia, serif;
+    font-weight: 500;
+    font-size: 1.3rem;
+    color: var(--archive-muted);
+  }
+
+  & .archive-years {
+    display: none;
+    margin-top: 1.2rem;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  & .archive-chevron {
+    display: none;
+    width: 1.6rem;
+    height: 1.6rem;
+    transition: transform 0.2s ease;
+  }
+
+  /* Above the mobile breakpoint, decades are always expanded (the checkbox
+     toggle is inert) via a pure-CSS sibling selector; below it, clicking the
+     label toggles the hidden checkbox and reveals .archive-years — no JS
+     either way. */
+  @media (min-width: 641px) {
+    & .archive-years {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 640px) {
+    & .archive-decade__summary {
+      cursor: pointer;
+    }
+
+    & .archive-chevron {
+      display: block;
+    }
+
+    & .archive-decade__toggle:checked ~ .archive-decade__summary .archive-chevron {
+      transform: rotate(180deg);
+    }
+
+    & .archive-decade__toggle:checked ~ .archive-years {
+      display: flex;
+    }
+  }
+}
+
+details.archive-year {
+  border: 1px solid var(--archive-border);
+  border-radius: 0.5rem;
+  background: #fff;
+
+  & > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style: none;
+    cursor: pointer;
+    padding: 0.9rem 1.2rem;
+    font-weight: 600;
+    font-size: 1.5rem;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      content: '';
+      width: 0.9rem;
+      height: 0.9rem;
+      margin-left: 0.8rem;
+      border-right: 2px solid var(--archive-muted);
+      border-bottom: 2px solid var(--archive-muted);
+      transform: rotate(45deg);
+      transition: transform 0.15s ease;
+    }
+  }
+
+  &[open] > summary::after {
+    transform: rotate(-135deg);
+  }
+
+  /* Animate the year's content open/close using ::details-content instead of
+     JS: calc-size(auto, size) lets `height` transition to the content's
+     natural height (calc-size implicitly enables interpolate-size for this),
+     and allow-discrete lets content-visibility flip at the start of the
+     transition when opening, or the end when closing, so the content isn't
+     visible/focusable while collapsed.
+
+     Feature-gated behind @supports: without it, a browser that doesn't
+     understand calc-size() still applies the plain `height: 0` base rule but
+     silently drops the invalid calc-size() override, leaving the content
+     permanently collapsed even once [open] is set — worse than doing
+     nothing. Gating on the exact property/value we depend on means
+     unsupported browsers get the untouched native instant open/close
+     instead. */
+  @supports (height: calc-size(auto, size)) {
+    &::details-content {
+      height: 0;
+      overflow: clip;
+      content-visibility: hidden;
+      transition:
+        height 150ms ease,
+        content-visibility 150ms ease allow-discrete;
+    }
+
+    &[open]::details-content {
+      height: calc-size(auto, size);
+      content-visibility: visible;
+    }
+  }
+
+  & .archive-year__count {
+    color: var(--archive-muted);
+    font-weight: 400;
+    font-size: 1.3rem;
+    margin-right: 1rem;
+    white-space: nowrap;
+  }
+
+  & .archive-year__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1rem;
+    margin: 0;
+    padding: 0 1.2rem 1.2rem;
+    list-style: none;
+
+    & a {
+      text-decoration: none;
+      font-size: 1.4rem;
+      border-bottom: 1px dotted var(--archive-green);
+
+      &:hover {
+        border-bottom-style: solid;
+      }
+    }
+  }
+}
+
+/* ---------- Explore by subject ---------- */
+
+.archive-subjects {
+  margin-top: 3rem;
+  margin-bottom: 5rem;
+
+  @media (max-width: 860px) {
+    margin-left: 4vw;
+    margin-right: 4vw;
+    width: auto;
+  }
+
+  & .archive-subjects__list {
+    margin-top: 1.6rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+
+.subject-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.9rem 1.6rem;
+  border: 1px solid var(--archive-green);
+  border-radius: 999px;
+  color: var(--archive-green);
+  font-weight: 600;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  background: #fff;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    background: var(--archive-green);
+    color: #fff;
+  }
+
+  & .subject-pill__icon {
+    display: flex;
+    width: 1.8rem;
+    height: 1.8rem;
+
+    & svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  @media (max-width: 640px) {
+    font-size: 1.3rem;
+    padding: 0.8rem 1.3rem;
+  }
+}
+
+/* ---------- Parish hub: Council / Meeting link cards ---------- */
+
+.archive-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+  max-width: var(--archive-max);
+  margin: 2.4rem auto 0;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+    margin-left: 4vw;
+    margin-right: 4vw;
+    width: auto;
+  }
+}
+
+.archive-link-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: var(--archive-card);
+  border: 1px solid var(--archive-border);
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.04);
+
+  & .archive-link-card__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 5.6rem;
+    height: 5.6rem;
+    margin-bottom: 1.6rem;
+    border-radius: 50%;
+    background: var(--archive-green);
+    color: #fff;
+
+    & svg {
+      width: 2.6rem;
+      height: 2.6rem;
+    }
+  }
+
+  &.archive-link-card--meeting .archive-link-card__icon {
+    background: var(--archive-muted);
+  }
+
+  & .archive-link-card__description {
+    margin: 0 0 1.6rem;
+    font-size: 1.7rem;
+    line-height: 1.6;
+    color: #3a362e;
+  }
+
+  & .archive-link-card__dates {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 0 0 2rem;
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: var(--archive-muted);
+  }
+
+  & .archive-link-card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: auto;
+    padding: 1.1rem 2rem;
+    border: 0;
+    border-radius: 0.4rem;
+    background: var(--archive-green);
+    color: #fff;
+    font-family: 'Lora', Georgia, serif;
+    font-weight: 600;
+    font-size: 1.4rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: var(--archive-green-dark);
+    }
+  }
+}
+
+/* ---------- Individual minute record header (post.liquid, headerUseDate) ---------- */
+
+.minute-heading {
+  margin: 0;
+  font-size: 4.4rem;
+  font-weight: 600;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.minute-date {
+  margin: 0.6rem 0 0;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2.4rem;
+  font-weight: 500;
+  color: var(--archive-green);
+}
+
+.minute-pager {
+  display: flex;
+  gap: 1.6rem;
+  padding-bottom: 2.4rem;
+
+  & .minute-pager__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1.1rem 2rem;
+    border: 1px solid var(--archive-green);
+    border-radius: 0.4rem;
+    color: var(--archive-green);
+    font-family: 'Lora', Georgia, serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+
+    &:hover {
+      background: var(--archive-green);
+      color: #fff;
+    }
+  }
+
+  & .minute-pager__link--next {
+    margin-left: auto;
+  }
+}
