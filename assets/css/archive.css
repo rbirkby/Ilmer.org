@@ -113,8 +113,9 @@ main.archive {
 
 @media (max-width: 860px) {
   main.archive section.article {
-    margin-left: 4vw;
-    margin-right: 4vw;
+    max-width: none;
+    margin-left: max(1.6rem, 4vw);
+    margin-right: max(1.6rem, 4vw);
   }
 }
 
