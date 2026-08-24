@@ -30,7 +30,7 @@ main {
   flex: 1 0 auto;
   max-width: 1120px;
   margin: 0 auto 0 auto;
-  padding: 5rem 4vw 2vw 4vw;
+  padding: 5rem calc(4vw + env(safe-area-inset-right, 0px)) 2vw calc(4vw + env(safe-area-inset-left, 0px));
 
   & h1 {
     margin: 0 0 0.8em;
@@ -238,7 +238,12 @@ body > header {
   background-position: center;
   background-size: cover;
   margin: 0;
-  padding: 20px 4vw 20px 4vw;
+  /* viewport-fit=cover lets the page (and this dark background) run under a
+     notch/Dynamic Island in landscape instead of Safari letterboxing the
+     page to avoid it — env() then pads the actual content back in from
+     wherever that cutout is, so it's never covered by it. Falls back to 0 on
+     browsers/devices without a safe area. */
+  padding: 20px calc(4vw + env(safe-area-inset-right, 0px)) 20px calc(4vw + env(safe-area-inset-left, 0px));
 
   .container {
     max-width: 1120px;
@@ -285,7 +290,7 @@ body > footer {
   background-color: #15171a;
   color: rgba(255, 255, 255, 0.7);
   font-size: 1.3rem;
-  padding: 20px 4vw 40px 4vw;
+  padding: 20px calc(4vw + env(safe-area-inset-right, 0px)) 40px calc(4vw + env(safe-area-inset-left, 0px));
 
   .container {
     max-width: 1120px;
