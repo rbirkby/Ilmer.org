@@ -111,6 +111,13 @@ main.archive {
   border: 0;
 }
 
+@media (max-width: 860px) {
+  main.archive section.article {
+    margin-left: 4vw;
+    margin-right: 4vw;
+  }
+}
+
 /* ---------- Hero ---------- */
 
 .archive-hero {
@@ -698,7 +705,7 @@ details.archive-year {
   letter-spacing: 0.01em;
 }
 
-.minute-date {
+.archive-subheading {
   margin: 0.6rem 0 0;
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 2.4rem;
@@ -737,5 +744,89 @@ details.archive-year {
 
   & .minute-pager__link--next {
     margin-left: auto;
+  }
+}
+
+.subject-list {
+  margin: 3rem 0 5rem;
+  padding: 0;
+  list-style: none;
+  background: var(--archive-card);
+  border: 1px solid var(--archive-border);
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.04);
+  overflow: hidden;
+
+  & li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.6rem;
+    padding: 1.4rem 2.4rem;
+    border-bottom: 1px solid var(--archive-border);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  & .subject-list__date {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 1rem;
+    width: 14rem;
+    font-size: 1.7rem;
+    color: var(--archive-green);
+  }
+
+  & .subject-list__summary {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--archive-muted);
+  }
+
+  & .subject-list__link {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.8rem;
+    border: 1px solid var(--archive-green);
+    border-radius: 0.4rem;
+    color: var(--archive-green);
+    font-family: 'Lora', Georgia, serif;
+    font-size: 1.4rem;
+    text-decoration: none;
+    transition:
+      background 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease;
+
+    &:hover {
+      background: var(--archive-green);
+      border-color: var(--archive-green);
+      color: #fff;
+    }
+  }
+
+  @media (max-width: 640px) {
+    & li {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.8rem;
+      padding: 1.4rem 1.6rem;
+    }
+
+    & .subject-list__date {
+      width: auto;
+      font-size: 1.5rem;
+    }
+
+    & .subject-list__link {
+      align-self: flex-end;
+    }
   }
 }

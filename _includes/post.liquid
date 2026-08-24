@@ -13,9 +13,13 @@
 
     {% if headerUseDate %}
       <h1 class="minute-heading">{{ ancestorCrumb2.label }}</h1>
-      <p class="minute-date">{{ page.date | date: "%-d %B %Y" }}</p>
+      <p class="archive-subheading">{{ page.date | date: "%-d %B %Y" }}</p>
+    {% elsif headerUseSubject %}
+      <h1 class="minute-heading">{{ subjectHeading }}</h1>
+      <p class="archive-subheading">{{ ancestorCrumb2.label }} &middot; Subject archive</p>
+      {% include "archive-flourish.liquid" %}
     {% else %}
-      <h1>{{ title }}</h1>
+      <h1{% if useArchiveCss %} class="minute-heading"{% endif %}>{{ title }}</h1>
 
       <p>{{ description }}</p>
     {% endif %}
