@@ -2,4 +2,18 @@
   <a href="/map">Location</a>
   <a href="/newsroom">News</a>
   <a href="/about">About</a>
+  <button type="button" id="open-search" class="search-link">
+    Search
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"></circle>
+      <path d="m20 20-4.3-4.3"></path>
+    </svg>
+  </button>
 </nav>
+
+<search-modal-snippet api-url="https://search.ilmer.org/" placeholder="Search Ilmer Past…" hide-branding="true"></search-modal-snippet>
+
+<script>
+  const searchModal = document.querySelector('search-modal-snippet');
+  document.querySelector('#open-search')?.addEventListener('click', () => searchModal?.open());
+</script>
