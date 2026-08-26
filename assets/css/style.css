@@ -158,14 +158,24 @@ section.article {
     height: 100%;
   }
 
-  /* Left-gutter labels for `[Margin: …]` markers in minute books. */
   --margin-note-width: 14rem;
   --margin-note-gap: 1.6rem;
+  --margin-note-left-extra: 0px;
+  --margin-note-right-extra: 0px;
 }
 
-section.article:has(.margin-note) {
-  max-width: calc(clamp(720px, 60vw, 840px) + var(--margin-note-width) + var(--margin-note-gap));
-  padding-left: calc(var(--margin-note-width) + var(--margin-note-gap));
+section.article {
+  max-width: calc(clamp(720px, 60vw, 840px) + var(--margin-note-left-extra) + var(--margin-note-right-extra));
+  padding-left: var(--margin-note-left-extra);
+  padding-right: var(--margin-note-right-extra);
+}
+
+section.article:has(.margin-note:not(.margin-note--right)) {
+  --margin-note-left-extra: calc(var(--margin-note-width) + var(--margin-note-gap));
+}
+
+section.article:has(.margin-note--right) {
+  --margin-note-right-extra: calc(var(--margin-note-width) + var(--margin-note-gap));
 }
 
 .margin-note {
@@ -173,29 +183,43 @@ section.article:has(.margin-note) {
 }
 
 .margin-note__text {
-  float: left;
-  clear: left;
   box-sizing: border-box;
   width: var(--margin-note-width);
-  margin: 0.15em 0 0.4em calc(-1 * (var(--margin-note-width) + var(--margin-note-gap)));
-  padding-right: 0.2rem;
   font-size: 0.68em;
   font-weight: 600;
   font-style: italic;
   line-height: 1.35;
   color: #45545c;
-  text-align: right;
   overflow-wrap: break-word;
   hyphens: auto;
 }
 
+.margin-note:not(.margin-note--right) .margin-note__text {
+  float: left;
+  clear: left;
+  margin: 0.15em 0 0.4em calc(-1 * (var(--margin-note-width) + var(--margin-note-gap)));
+  padding-right: 0.2rem;
+  text-align: right;
+}
+
+.margin-note--right .margin-note__text {
+  float: right;
+  clear: right;
+  margin: 0.15em calc(-1 * (var(--margin-note-width) + var(--margin-note-gap))) 0.4em 0;
+  padding-left: 0.2rem;
+  text-align: left;
+}
+
 @media (max-width: 860px) {
-  section.article:has(.margin-note) {
+  section.article:has(.margin-note:not(.margin-note--right)),
+  section.article:has(.margin-note--right) {
+    --margin-note-left-extra: 0px;
+    --margin-note-right-extra: 0px;
     max-width: 720px;
-    padding-left: 0;
   }
 
-  .margin-note__text {
+  .margin-note:not(.margin-note--right) .margin-note__text,
+  .margin-note--right .margin-note__text {
     float: none;
     display: block;
     width: auto;

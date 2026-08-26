@@ -51,3 +51,40 @@ test('does not consume an unclosed marker', () => {
   assert.doesNotMatch(html, /class="margin-note"/);
   assert.match(html, /\[Margin: Minutes/);
 });
+
+test('replaces a margin-right marker with a right-gutter span', () => {
+  const html = render('[Margin-right: Apology for absence] Apology for absence received.');
+  assert.match(html, /<span class="margin-note margin-note--right">/);
+  assert.match(html, /<span class="margin-note__text">Apology for absence<\/span>/);
+  assert.doesNotMatch(html, /\[Margin-right:/);
+});
+
+test('is case-insensitive on the Margin-right keyword', () => {
+  const html = render('[margin-right: Minutes] Minutes of last meeting.');
+  assert.match(html, /class="margin-note margin-note--right">/);
+});
+
+test('supports a left and a right marker in the same paragraph', () => {
+  const html = render('[Margin: Present.] Councillors Harper. [Margin-right: Mins.] Minutes were read.');
+  assert.match(html, /<span class="margin-note">/);
+  assert.match(html, /<span class="margin-note margin-note--right">/);
+  const notes = [...html.matchAll(/class="margin-note__text">([^<]+)</g)].map((match) => match[1]);
+  assert.deepEqual(notes, ['Present.', 'Mins.']);
+});
+
+test('escapes HTML in a margin-right label', () => {
+  const html = render('[Margin-right: P.R. & Longwick C. of E.] Body');
+  assert.match(html, /P\.R\. &amp; Longwick C\. of E\./);
+});
+
+test('does not consume an unclosed margin-right marker', () => {
+  const html = render('[Margin-right: Minutes Minutes of last meeting.');
+  assert.doesNotMatch(html, /class="margin-note/);
+  assert.match(html, /\[Margin-right: Minutes/);
+});
+
+test('keeps a bracketed aside inside a margin label intact', () => {
+  const html = render('therefore they are in mercy [Margin-right: [mercy] 3d.]');
+  assert.match(html, /<span class="margin-note__text">\[mercy\] 3d\.<\/span>/);
+  assert.doesNotMatch(html, /3d\.\]/);
+});
