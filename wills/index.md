@@ -74,10 +74,10 @@ The following wills proved at the Archdeacon’s Court are available in the [Buc
 
 #### Buckinghamshire Probate Index
 
-| Date | Name                                                       | Occupation         | Value    | References                   |
-| ---- | ---------------------------------------------------------- | ------------------ | -------- | ---------------------------- |
+| Date | Name                                                       | Occupation         |    Value | References                   |
+| ---- | ---------------------------------------------------------- | ------------------ | -------: | ---------------------------- |
 | 1492 | Trippe, William                                            |                    |          | D/A/V/1 fo.5                 |
-| 1551 | Goodwyne, John                                             |                    | £41-6-8  | D/A/We/154/73                |
+| 1551 | Goodwyne, John                                             |                    |  £41-6-8 | D/A/We/154/73                |
 | 1551 | Godwyn, John                                               |                    |          | ORO 185/117                  |
 | 1555 | DORRELL, Dorell, Edmund                                    |                    |          | D/A/We/8/97                  |
 | 1555 | ROSELL, William                                            |                    |          | D/A/Wf/2/250                 |
