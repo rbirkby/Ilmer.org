@@ -13,7 +13,12 @@
 
     {% if headerUseDate %}
       <h1 class="minute-heading">{{ ancestorCrumb2.label }}</h1>
-      <p class="archive-subheading">{{ page.date | date: "%A, %-d %B %Y" }}</p>
+      {%- if datetime -%}
+        {%- assign minuteDatetime = datetime -%}
+      {%- else -%}
+        {%- assign minuteDatetime = page.date | date: "%Y-%m-%d" -%}
+      {%- endif %}
+      <time class="archive-subheading" datetime="{{ minuteDatetime }}">{{ page.date | date: "%A, %-d %B %Y" }}</time>
     {% elsif headerUseSubject %}
       <h1 class="minute-heading">{{ subjectHeading }}</h1>
       <p class="archive-subheading">{{ ancestorCrumb2.label }} &middot; Subject archive</p>

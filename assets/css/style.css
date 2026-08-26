@@ -348,6 +348,15 @@ hr {
   border-top: 2px solid #2f4b30;
 }
 
+h4 {
+  margin: 0.6rem 0 0;
+  padding: 0;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2.4rem;
+  font-weight: 500;
+  color: #2f4b30;
+}
+
 sup.footnote-ref a {
   font-size: 1.2rem;
   font-weight: bold;

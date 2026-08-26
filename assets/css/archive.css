@@ -707,6 +707,7 @@ details.archive-year {
 }
 
 .archive-subheading {
+  display: block;
   margin: 0.6rem 0 0;
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 2.4rem;

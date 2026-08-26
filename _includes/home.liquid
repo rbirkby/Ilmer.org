@@ -2,12 +2,12 @@
 
 <style>
   p {
-    margin: 0 0 1.5em 0;
+    margin: 0 0 1.5em;
   }
 
   main {
     & section {
-      display:grid;
+      display: grid;
       justify-content: space-between;
       gap: 30px;
       grid-template-columns: 1fr 1fr 1fr;
@@ -34,7 +34,7 @@
     color: #fff;
 
     & p {
-      margin: 5px 0 0 0;
+      margin: 5px 0 0;
       /* padding: 0; */
       font-size: 2.4rem;
       /* line-height: 1.3em; */
@@ -50,39 +50,70 @@
   }
 
   article {
+    display: grid;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid #e8e4d9;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.06);
+    transition: box-shadow 0.15s ease
+    , transform 0.15s ease;
+
+     &:hover {
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+      transform: translateY(-2px);
+    }
+
     & a {
-        text-decoration: none;
-        color: inherit;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto 1fr;
+      grid-template-areas: 'image image' 'text arrow';
+      text-decoration: none;
+      color: inherit;
     }
 
     & header {
-      display: flex;
-      flex-direction: column;
+      grid-area: image;
+    }
 
-      & img {
-        margin: 0 0 10px 0;
-        max-width: 100%;
-        width: auto;
-        height: 200px;
-        background: #5b7a81 no-repeat center center;
-        background-size: cover;
-        object-fit: cover;
-      }
+    & header img {
+      margin: 0;
+      display: block;
+      max-width: 100%;
+      width: 100%;
+      height: 200px;
+      background: #5b7a81 no-repeat center center;
+      background-size: cover;
+      object-fit: cover;
+    }
 
-      & h2 {
-        color: #15171a;
-        margin: 0 0 10px 0;
-        padding: 0;
-        font-size: 2rem;
-      }
+    & .card-text {
+      grid-area: text;
+      padding: 18px 0 18px 20px;
+    }
 
-      & footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin: 10px 0 0 0;
-        color: #5b7a81;
-      }
+    & h2 {
+      color: #15171a;
+      margin: 0 0 8px;
+      padding: 0;
+      font-size: 1.9rem;
+    }
+
+    & p {
+      margin: 0;
+      color: #55606b;
+      font-size: 1.5rem;
+      line-height: 1.5;
+    }
+
+    & .card-arrow {
+      grid-area: arrow;
+      align-self: end;
+      padding: 0 20px 18px 12px;
+      color: #2f4b30;
+      font-size: 1.7rem;
+      line-height: 1;
     }
   }
 </style>
@@ -108,12 +139,12 @@
             {% if post.data.image %}
               <img src="{{ post.data.image | sitePath }}" alt="{{ post.data.title }}">
             {% endif %}
-            <h2>{{ post.data.title }}</h2>
           </header>
-          <p>{{ post.data.description }}</p>
-          <footer>
-
-          </footer>
+          <div class="card-text">
+            <h2>{{ post.data.title }}</h2>
+            <p>{{ post.data.description }}</p>
+          </div>
+          <span class="card-arrow" aria-hidden="true">→</span>
         </a>
       </article>
     {% endfor %}
