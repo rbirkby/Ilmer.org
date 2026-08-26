@@ -3,9 +3,10 @@ layout: post
 title: Demonstration Farm
 description: From 1960 until 1982, Lower Farm and Bumpers were a demonstration farm owned by oil company Shell
 category: history
-tags: [history, farm, post]
+tags: [history, farm]
 image: images/shellstar-training-centre.avif
 useArchiveCss: true
+ancestorCrumb1Source: { label: 'Fields and Farming', url: '/history/fields-farming/' }
 ---
 
 Purchased in October 1960 by the Shell Chemical Company, Lower Farm was a location for evaluating modern farming techniques, demonstrating fertilisers and pesticides, training distributors and carrying out field demonstrations. The facility covered 360 acres included a dairy unit, pig unit, beef and cereals. At Lower Farm, a demonstration and training centre was built (the 'T' shaped building in the aerial photo), since demolished.

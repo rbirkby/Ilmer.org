@@ -3,9 +3,10 @@ layout: post
 title: 'Glebe Land'
 description: 'The history of the Church Close'
 category: history
-tags: [church, history, post]
+tags: [church, history]
 image: images/church-drawing2-unknown-1978.avif
 useArchiveCss: true
+ancestorCrumb1Source: { label: St Peter's Church, url: '/history/st-peters/' }
 ---
 
 Shown as plot 67 on the 1839 Tithe Map of Illmire (Ilmer), Church Close was 1 acre, 3 roods and 34 perches in size. A rood is ¼ of an acre and there are 40 perches to a rood, so Church Close is 1.96 acres.

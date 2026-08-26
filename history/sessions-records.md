@@ -6,6 +6,7 @@ category: courts-and-crimes
 tags: [courts-and-crimes]
 image: images/quarter-sessions.avif
 useArchiveCss: true
+ancestorCrumb1Source: { label: 'Courts and Crime', url: '/history/courts-and-crime/' }
 ---
 
 The Quarter Sessions of Buckinghamshire were the historic county court meetings of the Justices of the Peace for Buckinghamshire. They were called “quarter” sessions because they met four times a year, traditionally around Epiphany, Easter, Midsummer, and Michaelmas. For Buckinghamshire, they were both a court of law and, for much of their history, a form of county government. They dealt with matters such as minor and middling crime, indictments, recognisances, alehouse licensing, highways, bridges, poor-law settlement disputes, prisons, county officers, local administration, and deposited public records. The most serious criminal cases, especially capital offences, normally went to the Assizes rather than Quarter Sessions.

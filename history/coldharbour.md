@@ -3,10 +3,11 @@ layout: post
 title: Coldharbour
 description: Along the bridleway to Towersey is a copse which hides an historic settlement with a sad story.
 category: history
-tags: [farm, fatality, death, post]
+tags: [farm, fatality, death]
 image: images/coldharbour-barn.jpg
 lightbox: true
 useArchiveCss: true
+ancestorCrumb1Source: { label: 'Fields and Farming', url: '/history/fields-farming/' }
 ---
 
 Coldharbour was a small hamlet centered around a single farm situated along what is now the bridleway between Ilmer and Towersey. The name itself reflects the settlement's historical significance—places called Coldharbour were typically abandoned refuges established along ancient Roman roads, and this farm was likely created at such a location. The Gomme family (also spelled Gomm) farmed at Coldharbour for over 400 years, establishing deep roots in the area. Today, little remains of this once-thriving homestead except for a weathered wooden barn and an old well hidden among the undergrowth.

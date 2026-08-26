@@ -5,6 +5,7 @@ description: The Certificate of Musters in Buckinghamshire for 1522, A C Chibnal
 category: history
 tags: [military]
 useArchiveCss: true
+ancestorCrumb1Source: { label: 'Military', url: '/history/military/' }
 ---
 
 | Name                                                         | Valor terr' et tent'<br> £ s. d. | Valor bonorum<br> £ s. d. |

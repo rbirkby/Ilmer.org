@@ -3,10 +3,11 @@ layout: post
 title: "St Peter's"
 description: '12th century church in Ilmer, Buckinghamshire, England'
 category: history
-tags: [church, history, post]
+tags: [church, history]
 image: images/church-linedrawing-postcard.avif
 lightbox: true
 useArchiveCss: true
+ancestorCrumb1Source: { label: St Peter's Church, url: '/history/st-peters/' }
 ---
 
 _Title image: A view of Ilmer Church on a postcard_
