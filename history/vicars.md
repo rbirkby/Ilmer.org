@@ -5,6 +5,7 @@ description: "Vicars of St Peter's Ilmer"
 category: history
 tags: [vicar, history, post]
 image: images/church-drawing-unknown-1978.avif
+useArchiveCss: true
 ---
 
 The benefices of Horsenden and Ilmer were united in 1865 and dissolved in 1933. Ilmer was united with Princes Risborough in 1970.

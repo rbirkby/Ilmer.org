@@ -5,6 +5,7 @@ description: 'A “Doomsday” survey of life in the villages of the Vale of Ayl
 category: history
 tags: [history, post]
 image: images/chronicle-of-the-vale.jpg
+useArchiveCss: true
 ---
 
 Ilmer village was recorded in this work by Susan Underwood of Ilmer House. Susan passed away on 1st July 2025 aged 89.

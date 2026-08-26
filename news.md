@@ -3,5 +3,7 @@ layout: post
 permalink: /newsroom/index.html
 title: 'Newsroom'
 tags: []
-cat: 'news'
+useArchiveCss: true
 ---
+
+No news today

@@ -5,6 +5,7 @@ description: 'Opened in 1906, the railway features prominently in the village.'
 category: history
 tags: [railway, bridge, halt, post]
 image: images/ilmer-halt-ticket.jpg
+useArchiveCss: true
 ---
 
 ### Railway

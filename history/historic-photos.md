@@ -5,6 +5,7 @@ description: 'Old and historic Photos of Ilmer'
 category: history
 tags: [history, post]
 image: images/FlowerFestivalVillageGreen.avif
+useArchiveCss: true
 ---
 
 ### The Green

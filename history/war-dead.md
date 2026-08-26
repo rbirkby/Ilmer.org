@@ -4,6 +4,7 @@ title: War Dead
 description: A record of those who lost their lives during times of conflict
 category: history
 tags: [military]
+useArchiveCss: true
 ---
 
 | Name                                            | Conflict                | Location               | Date              | Casualty Record       | Age |

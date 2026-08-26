@@ -5,6 +5,7 @@ description: 'Conflicts, war-dead, and muster lists.'
 category: history
 tags: [post]
 image: images/IlmerWarPlaque.avif
+useArchiveCss: true
 ---
 
 <ul>

@@ -81,7 +81,7 @@ main > figure {
 }
 
 section.article {
-  max-width: 720px;
+  max-width: clamp(720px, 60vw, 840px);
   margin: 0 auto;
   font-size: 2rem;
   line-height: 1.7em;
@@ -164,7 +164,7 @@ section.article {
 }
 
 section.article:has(.margin-note) {
-  max-width: calc(720px + var(--margin-note-width) + var(--margin-note-gap));
+  max-width: calc(clamp(720px, 60vw, 840px) + var(--margin-note-width) + var(--margin-note-gap));
   padding-left: calc(var(--margin-note-width) + var(--margin-note-gap));
 }
 
@@ -189,7 +189,7 @@ section.article:has(.margin-note) {
   hyphens: auto;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 860px) {
   section.article:has(.margin-note) {
     max-width: 720px;
     padding-left: 0;
@@ -342,6 +342,12 @@ blockquote {
   font-style: italic;
 }
 
+hr {
+  margin: 2.4em 0;
+  border: 0;
+  border-top: 2px solid #2f4b30;
+}
+
 sup.footnote-ref a {
   font-size: 1.2rem;
   font-weight: bold;
@@ -392,9 +398,11 @@ table:not(.preformatted) {
     border-bottom: 1px solid #e5e5e5;
     padding: 0 12px 0 12px;
 
-    &[data-type='number'] {
+    &[data-type='number'],
+    &[style*='text-align:right'] {
       text-align: right;
       font-variant-numeric: tabular-nums;
+      font-feature-settings: 'tnum';
     }
   }
 

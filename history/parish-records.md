@@ -5,6 +5,7 @@ description: "Registers and records of St Peter's Ilmer"
 category: history
 tags: [church, history, post]
 image: images/IlmerChurch-RoyManser-1984.avif
+useArchiveCss: true
 ---
 
 The [document below](/assets/pdfs/RegistersAndRecordsOfStPetersIlmer-Digitised.pdf) is a faithful transcription of the original parish records, preserving inconsistencies including variant name spellings (Keen/Kearn) and historical dating errors such as "Nov 31".

@@ -4,6 +4,7 @@ title: Posse Comitatus 1798
 description: A record of the able-bodied men available for military service
 category: history
 tags: [military]
+useArchiveCss: true
 ---
 
 ### Farmers

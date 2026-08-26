@@ -4,6 +4,7 @@ title: Ilmer and Aston Mullins, Certificate of Musters, 1522
 description: The Certificate of Musters in Buckinghamshire for 1522, A C Chibnall, 1973
 category: history
 tags: [military]
+useArchiveCss: true
 ---
 
 | Name                                                         | Valor terr' et tent'<br> £ s. d. | Valor bonorum<br> £ s. d. |

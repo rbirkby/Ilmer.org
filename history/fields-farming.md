@@ -5,6 +5,7 @@ description: 'The fields and farms of Ilmer'
 category: history
 tags: [history, post]
 image: images/1778PlanOfTheParishOfIlmer.avif
+useArchiveCss: true
 ---
 
 According to [Lipscomb](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), Ilmer manor had been enclosed into private fields by 1657. The enclosure process began much earlier (over a century before) when [Walter Curson](https://archive.org/details/bwb_KV-352-031_1/page/n5/mode/2up) enclosed sixty acres he leased from Lady Mary Hungerford.
@@ -91,7 +92,7 @@ In the tables below, A. R. P. are Acres, Roods and Perches. A rood is ¼ of an a
 | 63  | Frizze's piece                  |         Arable          |       9 |     1 |    17 |
 |     | **Total**                       |                         | **119** | **1** | **2** |
 
-##### Hannah Gomme , Tenant
+##### Hannah Gomme, Tenant
 
 | No  | Name                          | Description of Premises |       A |     R |      P |
 | :-: | :---------------------------- | :---------------------: | ------: | ----: | -----: |
@@ -111,7 +112,7 @@ In the tables below, A. R. P. are Acres, Roods and Perches. A rood is ¼ of an a
 
 #### ADMIRAL HENRY RAPER
 
-##### John Tapping , Tenant
+##### John Tapping, Tenant
 
 |  No  | Name                           | Description of Premises |       A |     R |     P |
 | :--: | :----------------------------- | :---------------------: | ------: | ----: | ----: |
@@ -135,7 +136,7 @@ In the tables below, A. R. P. are Acres, Roods and Perches. A rood is ¼ of an a
 
 #### TRUSTEES OF CHURCH LAND, viz THE VICAR AND CHURCHWARDENS OF ILLMIRE
 
-##### John Tapping , Tenant
+##### John Tapping, Tenant
 
 | No  | Name         | Description of Premises |   A |   R |   P |
 | :-: | :----------- | :---------------------: | --: | --: | --: |

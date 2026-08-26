@@ -5,6 +5,7 @@ description: 'The population of Ilmer'
 category: history
 tags: [post]
 image: images/punch-almanac.avif
+useArchiveCss: true
 ---
 
 ### A village that 'marks time' - The Daily Sketch

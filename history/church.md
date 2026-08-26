@@ -6,6 +6,7 @@ category: history
 tags: [church, history, post]
 image: images/church-linedrawing-postcard.avif
 lightbox: true
+useArchiveCss: true
 ---
 
 _Title image: A view of Ilmer Church on a postcard_

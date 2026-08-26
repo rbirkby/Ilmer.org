@@ -5,6 +5,7 @@ description: 'The railway bridge was the perfect location for shooting a scene i
 category: history
 tags: [filming, railway, bridge, halt, post]
 image: images/chitty-frame3.avif
+useArchiveCss: true
 ---
 
 ### Chitty Chitty Bang Bang

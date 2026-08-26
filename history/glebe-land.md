@@ -5,6 +5,7 @@ description: 'The history of the Church Close'
 category: history
 tags: [church, history, post]
 image: images/church-drawing2-unknown-1978.avif
+useArchiveCss: true
 ---
 
 Shown as plot 67 on the 1839 Tithe Map of Illmire (Ilmer), Church Close was 1 acre, 3 roods and 34 perches in size. A rood is ¼ of an acre and there are 40 perches to a rood, so Church Close is 1.96 acres.
@@ -29,7 +30,7 @@ In the 1853 Printed Parliamentary Reports of the Former Commissioners for Inquir
 > **_Church Close_**\
 > There is a piece of arable land, containing 1a. 1r. 20p. in this parish, so called, let to John Topping[sic] as yearly tenant, at a rent of £3 p.a., which is carried to the Church-wardens general account. At one time the rent of this close, or at least a portion of it, was distributed by the Vicar to the poor; but it having been ascertained that the close had been given by Earl Stanhope for the repair of the church, it has for the last five years been carried by the churchwardens to their account
 
-The Lloyd George Domesday survey, conducted 1912, recorded an area of 1·3·27 (1.92 acres) and described as a “Small field of allotments worth £25 per acre”. The survey records the occupier as Thomas Goodchild, but doesn’t record an owner, other than suggesting these are parish allotments. Thomas being the elder brother of Albert, the owner of Ilmer House. Between 1907-1915, Thomas was described in Kelly’s directory as a Poultry Farmer.
+The Lloyd George "Domesday" Valuation Office survey, conducted 1912, recorded an area of 1·3·27 (1.92 acres) and described as a “Small field of allotments worth £25 per acre”. The survey records the occupier as Thomas Goodchild, but doesn’t record an owner, other than suggesting these are parish allotments. Thomas being the elder brother of Albert, the owner of Ilmer House. Between 1907-1915, Thomas was described in Kelly’s directory as a Poultry Farmer.
 
 The vestry minutes of 29th March 1921 describe the sums attributable to the Ilmer Close Fund, for church repairs. The fund was again mentioned in the minutes of 12th July 1923 and 2nd July 1929.
 

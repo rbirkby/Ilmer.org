@@ -5,6 +5,7 @@ description: 'An abandoned hamlet, once home to 33 people, lies secluded in unde
 category: history
 tags: [farming, post]
 image: images/lockington-photo.jpg
+useArchiveCss: true
 ---
 
 Lockington, or sometimes Lookington, was situated south-east of Ilmer in what is now a copse by the side of a footpath.

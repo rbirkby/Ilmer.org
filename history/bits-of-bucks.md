@@ -5,6 +5,7 @@ description: 'In 1909, the Bucks Herald took a walk down Ilmer lane and this is 
 category: history
 tags: [walking, post]
 image: images/ilmer-church.jpg
+useArchiveCss: true
 ---
 
 ## BITS OF BUCKS. - ILMER.

@@ -5,6 +5,7 @@ description: Court Rolls for Ilmer, 1680-1731
 category: courts-and-crimes
 tags: [courts-and-crimes]
 image: images/quarter-sessions.avif
+useArchiveCss: true
 ---
 
 Court Rolls of the Manor of Ilmere cum Aston, Co Bucks, for the years <abbr title="1392/93">16</abbr>, <abbr title="1397/98">21</abbr>, <abbr title="1398/99">22</abbr> Richard II, <abbr title="1441/42">20</abbr>, <abbr title="1445/46">24</abbr>, <abbr title="1447/48">26</abbr>, <abbr title="1449/50">28</abbr> Henry VI, <abbr title="1472/73">12 Edward IV</abbr>, <abbr title="1538/39">30 Henry VIII</abbr>, <abbr title="1548/49">2 Edward VI</abbr> and <abbr title="1554/55">1 Philip and Mary</abbr>.

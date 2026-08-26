@@ -3,6 +3,7 @@ layout: post
 title: Modern-English summary of the will of Vicar James Withington
 description: The last will and testament of James Withington, vicar of Ilmer, 1556. Held at Bucks Archives ref DA/WE/8/197 and DA/WF/2/367.
 category: will-explanation
+useArchiveCss: true
 ---
 
 ### **The Will of James Withington, Vicar of Ilmer**

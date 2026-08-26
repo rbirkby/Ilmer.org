@@ -5,6 +5,7 @@ description: 'Monumental Inscriptions of St Peters, Ilmer'
 category: history
 tags: [church, history, post]
 image: images/church-watercolour.jpg
+useArchiveCss: true
 ---
 
 The original survey of the Churchyard was undertaken by Rex KIDD in 1985 and updated and retyped by Jenny PEEL in 2007. [This version](/assets/pdfs/ilmer-church-monumental-inscriptions.pdf) is a digitised copy of that survey.

@@ -746,6 +746,18 @@ details.archive-year {
   & .minute-pager__link--next {
     margin-left: auto;
   }
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+
+    & .minute-pager__link {
+      justify-content: center;
+    }
+
+    & .minute-pager__link--next {
+      margin-left: 0;
+    }
+  }
 }
 
 .subject-list {
@@ -829,5 +841,24 @@ details.archive-year {
     & .subject-list__link {
       align-self: flex-end;
     }
+  }
+}
+
+main.archive blockquote {
+  border-left-color: var(--archive-green);
+}
+
+main.archive table:not(.preformatted) {
+  border-radius: 0.6rem;
+  overflow: hidden;
+
+  & th,
+  & td {
+    border: 1px solid var(--archive-border);
+  }
+
+  & th {
+    background-color: var(--archive-green);
+    padding: 4px 12px;
   }
 }

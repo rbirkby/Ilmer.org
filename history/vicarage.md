@@ -5,6 +5,7 @@ description: 'Historical research from 1998.'
 category: history
 tags: [vicarage, post]
 image: images/church-and-vicarage-1967.avif
+useArchiveCss: true
 ---
 
 > **_Source:_** Date indicated as 1998 in the text. Supplied via Chris Kingham from Princes Risborough Area Heritage Society and Tristan Batory, partner at JNP estate agents. Rescued at the time of a vicarage probate. The text includes references to other pieces, the whereabouts of which are unknown.

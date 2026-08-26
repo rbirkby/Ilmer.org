@@ -6,6 +6,7 @@ permalink: /wills/
 tags: ['post']
 hideAncestorCrumb1: true
 image: images/wills.avif
+useArchiveCss: true
 ---
 
 ## Transcriptions
