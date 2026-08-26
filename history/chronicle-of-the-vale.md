@@ -1,12 +1,14 @@
 ---
 layout: post
 title: 'Chronicle of the Vale'
-description: 'A “Doomsday” survey of life in the villages of the Vale of Aylesbury in the mid-1980’s. The Friends of the Vale of Aylesbury, 1986'
+description: 'A “Doomsday” survey of life in the villages of the Vale of Aylesbury in the mid-1980’s.'
 category: history
 tags: [history, post]
 image: images/chronicle-of-the-vale.jpg
 useArchiveCss: true
 ---
+
+The Friends of the Vale of Aylesbury, 1986.
 
 Ilmer village was recorded in this work by Susan Underwood of Ilmer House. Susan passed away on 1st July 2025 aged 89.
 
