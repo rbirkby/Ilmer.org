@@ -14,7 +14,9 @@ Taken from the Bucks Archaeological Society [transcription](https://www.bucksrec
 
 ---
 
-## EASTER SESSION, l680.
+## Easter Session
+
+#### 1680
 
 pp. 98-99. Petty constables sworn.
 
@@ -28,7 +30,9 @@ Similar order for the house where Thomas Kinge dwells.
 
 ---
 
-## MICHAELMAS SESSION, 1681.
+## Michaelmas Session
+
+#### 1681
 
 p. 182. Presentments of the petty constables.
 
@@ -36,7 +40,9 @@ p. 182. Presentments of the petty constables.
 
 ---
 
-## EASTER SESSION, 1682.
+## Easter Session
+
+#### 1682
 
 p. 210. Orders.
 
@@ -44,7 +50,9 @@ Order referring to certain justices the appeal of Thomas Walter of **lllmore** a
 
 ---
 
-## EASTER SESSION, 1683.
+## Easter Session
+
+#### 1683
 
 pp. 287-288. Petty constables sworn.
 
@@ -52,7 +60,9 @@ pp. 287-288. Petty constables sworn.
 
 ---
 
-## MICHAELMAS SESSION, 1685
+## Michaelmas Session
+
+#### 1685
 
 p. 447. Fines, issues, and recognizances forfeited.
 
@@ -60,7 +70,9 @@ Thomas Walter of **Ilmore**, gentleman, William Corby of Adstock, Newman Williet
 
 ---
 
-## EASTER SESSION, 1688.
+## Easter Session
+
+#### 1688
 
 pp. 81.-84. Petty constables and tithingmen sworn.
 
@@ -68,7 +80,9 @@ pp. 81.-84. Petty constables and tithingmen sworn.
 
 ---
 
-## MIDSUMMER SESSION, 1689.
+## Midsummer Session
+
+#### 1689
 
 pp. 173-175. Names of persons who produced Sacrament Certificates, took the oaths provided in the act of 1 William and Mary, c. 1, and subscribed the declaration against transubstantiation.
 
@@ -76,7 +90,9 @@ Rev. Marcus Parker, vicar of **Ilmer**,
 
 ---
 
-## EASTER SESSION, 1690.
+## Easter Session
+
+#### 1690
 
 p. 259. Chief constables sworn.
 
@@ -84,13 +100,17 @@ Ashendon . . Richard Betham of North Marston and John Bowden of **Ilmer** vice J
 
 ---
 
-## EPIPHANY SESSION, 1691-92.
+## Epiphany Session
+
+#### 1691-92
 
 p. 102. Order allowing the appeal of **Ilmore** against a warrant removing Thomas Dancer, with his wife and son, from Stone.
 
 ---
 
-## EASTER SESSION, 1692.
+## Easter Session
+
+#### 1692
 
 pp. 125-126. Petty constables and tithingmen sworn.
 
@@ -98,7 +118,9 @@ pp. 125-126. Petty constables and tithingmen sworn.
 
 ---
 
-## EASTER SESSION, 1694.
+## Easter Session
+
+#### 1694
 
 p. 349. The overseers of **Ilmer** are ordered to place Thomas Martin to dwell in part of the house now occupied by Thomas King.
 
@@ -122,7 +144,9 @@ p. 344. Chief constables sworn.
 
 ---
 
-## MIDSUMMER SESSION, 1694
+## Midsummer Session
+
+#### 1694
 
 Orders.
 
@@ -142,7 +166,9 @@ William Deane of Chepping Wycombe, farmer, Thomas Walter, gentleman, and Francis
 
 ---
 
-## MICHAELMAS SESSION, 1694
+## Michaelmas Session
+
+#### 1694
 
 Orders.
 
@@ -154,7 +180,9 @@ William Walter, Thomas Walter, and Francis Neal, all of **Ilmer**, yeomen, Willi
 
 ---
 
-## EPIPHANY SESSION 16th January, 1700-01 [12 William III]
+## Epiphany Session, 12 William III
+
+#### 16th January 1700-01
 
 p. 427. Indictments.
 
@@ -164,7 +192,9 @@ Writ of capias ad respondendum addressed to the sheriff in respect of the follow
 
 ---
 
-## MICHAELMAS SESSION, 1700
+## Michaelmas Session
+
+#### 1700
 
 p. 399. Presentments of the constables.
 
@@ -172,7 +202,9 @@ Robert Cubbidge, constable of Brill, and Edward Gomm, constable of **Ilmer**, fo
 
 ---
 
-## EASTER SESSION, 1703
+## Easter Session
+
+#### 1703
 
 Chief constables sworn. (Sess. R. 8/93.)
 
@@ -180,7 +212,9 @@ Ashendon . .. .Zachariah Dean of Towersey, gentleman, and John Ives of Grendon U
 
 ---
 
-## EASTER SESSION, 1704
+## Easter Session
+
+#### 1704
 
 Chief Constables.
 
@@ -190,7 +224,9 @@ Ashendon: William Tame of Botele Clayden, yeoman, and Thomas Howlett of Long Cre
 
 ---
 
-## EASTER SESSION, 1705
+## Easter Session
+
+#### 1705
 
 Chief constables sworn.
 
@@ -200,7 +236,9 @@ William Gomm of **Ilmer** and William Ward of Grendon Underwood, gentle- men, vi
 
 ---
 
-## EASTER SESSION, 1708
+## Easter Session
+
+#### 1708
 
 Indictments.
 
@@ -208,25 +246,33 @@ The inhabitants of **Ilmer** for not repairing the highway between Turlong Botto
 
 ---
 
-## MIDSUMMER SESSION, 1708
+## Midsummer Session
+
+#### 1708
 
 p. 269. The inhabitants of **Ilmer** for not repairing the high- way between Turlong Bottome and Horsenden, leading from Aston Sandford and Chepping Wiccombe.
 
 ---
 
-## EPIPHANY SESSION, 1708-09
+## Epiphany Session
+
+#### 1708-09
 
 p. 310. The indictment of the inhabitants of Horsenden and **Ilmer** for not repairing their highways was adjourned to the Midsummer Session, “in regard of the season of the yeare which is unfitt.”
 
 ---
 
-## MIDSUMMER SESSION, 1709
+## Midsummer Session
+
+#### 1709
 
 p. 344. The indictment against the inhabitants of **Ilmer** for not repairing the highway between Turlong Bottome and Horsendon, leading from Aston Sandford to Chepping Wiccombe, was stayed until the next session because the justices’ certificate then delivered into court did not “ describe the said highway to be repaired.”
 
 ---
 
-## MICHAELMAS SESSION, 1709
+## Michaelmas Session
+
+#### 1709
 
 Jurors for the body of the county.
 
@@ -234,13 +280,17 @@ p. 347. Daniel Anderson of Agmondesham, Richard Ash- burner of Olney, Richard As
 
 ---
 
-## Epiphany Session, 15th January 1712-3 [11 Anne]
+## Epiphany Session, 11 Anne
+
+#### 15th January 1712-3
 
 p.291. The appeal of **Ilmer** against a warrant removing Edward Oxley, his wife and child from Stone, was adjourned. (Sess.R. 43/41)
 
 ---
 
-## Easter Session, 16th April, 1713 [12 Anne]
+## Easter Session, 12 Anne
+
+#### 16th April 1713
 
 p.10. Confirmation of a warrant removing Edward Oxley from Stone to **Ilmer** was confirmed.
 
@@ -248,7 +298,9 @@ p.17. Confirmation of a warrant removing Ann Collins from **Ilmer** to Syddenham
 
 ---
 
-## MIDSUMMER SESSION 16 July, 1713 [12 Anne]
+## Midsummer Session, 12 Anne
+
+#### 16 July 1713
 
 Jurors for the body of the county.
 
@@ -256,7 +308,9 @@ p.29. John Barnaby of Great Missenden, William Boveington of Pen, John Buckmaste
 
 ---
 
-## Easter Session, 8th April 1714 [13 Anne]
+## Easter Session, 13 Anne
+
+#### 8th April 1714
 
 Chief constables sworn.
 
@@ -265,7 +319,9 @@ John Hughes of Quainton and Edward Randall of Long Crendon vice John Perkins and
 
 ---
 
-## Easter Session, 28th April 1715 [1 George I]
+## Easter Session, 1 George I
+
+#### 28th April 1715
 
 Chief constables sworn.
 
@@ -274,7 +330,9 @@ John Montague of Waddesdon and William Young of **Ilmer** vice John Hughes and E
 
 ---
 
-## Easter Session, 28th April 1715 [1 George I]
+## Easter Session, 1 George I
+
+#### 28th April 1715
 
 Chief constables sworn.
 
@@ -283,13 +341,17 @@ John Montague of Waddesdon and William Young of **Ilmer** vice John Hughes and E
 
 ---
 
-## Easter Session, 20th April, 1716 [2 George I]
+## Easter Session, 2 George I
+
+#### 20th April 1716
 
 p.286. Like orders were made for the payment of 14s.6d. to each of the constables of Fenny Stratford, Bletchley, Leckhamsted and Foscott, £1.4s.6d. to Waddesdon £2.0s.6d. to Aston Clynton, 12s.6d. to Halton, Newport Pagnell, Chicherly and Haversham, 16s.6d. to Little Woollston and £2.10s.6d. to **Ilmer** and Monks Risborough.
 
 ---
 
-## MIDSUMMER SESSION 12th July, 1716 [2 George I]
+## Midsummer Session, 2 George I
+
+#### 12th July 1716
 
 p.301. Jurors for the body of the county.
 
@@ -297,7 +359,9 @@ William Allen of Ellesborough, William Bovingdon and John Browne of Penn, John B
 
 ---
 
-## MICHAELMAS SESSION 10th October, 1717 [4 George I]
+## Michaelmas Session, 4 George I
+
+#### 10th October 1717
 
 Jury for the case against the inhabitants of Middleton Keynes.
 
@@ -305,7 +369,9 @@ The following ware not sworn: Joseph Box of Marsh Gibbon, William Clarke of Stee
 
 ---
 
-## Easter Session, 9th April, 1719 [5 George I]
+## Easter Session, 5 George I
+
+#### 9th April 1719
 
 Petty constables sworn.
 
@@ -315,7 +381,9 @@ John Grime vice William Woolvin. William Bowden not sworn. (Sess.R.68/27)
 
 ---
 
-## Easter Session, 28th April, 1720 [6 George I]
+## Easter Session, 6 George I
+
+#### 28th April 1720
 
 p.130. Chief constables sworn.
 
@@ -323,7 +391,9 @@ Ashendon John Reeve of Greatmore in the parish of Grendon Underwood and John Woo
 
 ---
 
-## Midsummer Session, 12th July, 1722\_[8 George I]
+## Midsummer Session, 8 George I
+
+#### 12th July 1722
 
 Presentments of the constables.
 
@@ -337,7 +407,9 @@ Robert Ingram and Robert Ingram senior of Newport Pagnell, Richard Gurney, yeoma
 
 ---
 
-## MICHAELMAS SESSION 4th October, 1722 [9 George I]
+## Michaelmas Session, 9 George I
+
+#### 4th October 1722
 
 p.326. Indictments.
 
@@ -345,7 +417,9 @@ The inhabitants of **Ilmer** for not repairing the highways.
 
 ---
 
-## EPIPHANY SESSION 17th January, 1722-23 [9 George I]
+## Epiphany Session, 9 George I
+
+#### 17th January 1722-23
 
 Sacrament certificates.
 
@@ -353,7 +427,9 @@ Produced by Henry Stourbridge [Standbridge] of **Ilmer**, clerk; certified by Be
 
 ---
 
-## Michaelmas Session, 10th October, 1723 [10 George I]
+## Michaelmas Session, 10 George I
+
+#### 10th October 1723
 
 p.457. Jurors for the body of the county.
 
@@ -361,7 +437,9 @@ John Hughes of Quainton, Thomas Kimpton of Cheddington, Andrew Medwyn of Little 
 
 ---
 
-## Epiphany Session, 16th January, 1723-24 [10 George I]
+## Epiphany Session, 10 George I
+
+#### 16th January 1723-24
 
 p. 516. Fines and issues.
 
@@ -369,13 +447,17 @@ It is ordered that £5 issues apiece be set on the inhabitants of Chepping Wycco
 
 ---
 
-## Easter Session, 16th April, 1724 [10 George I]
+## Easter Session, 10 George I
+
+#### 16th April 1724
 
 p. 535. The issues set upon the inhabitants of Chepping Wiccombe, Hughendon, Chalfont St. Peter, **Ilmer** and Amersham at the last session, respited [see p. 518].
 
 ---
 
-## Midsummer Session, 16th July, 1724 [10 George I]
+## Midsummer Session, 10 George I
+
+#### 16th July 1724
 
 Presentments of the constables.
 
@@ -385,25 +467,33 @@ p.14. The indictments against the inhabitants of **Ilmer** for not repairing the
 
 ---
 
-## Michaelmas Session, 8th October, 1724 [11 George I]
+## Michaelmas Session, 11 George I
+
+#### 8th October 1724
 
 p.30. The removal order of John Edwards, Jane his wife, and Jane their daughter, from Kingsey to **Ilmore**, was quashed. (Sess.R.88/42)
 
 ---
 
-## Michaelmas Session, 7th October, 1731 [5 George II]
+## Michaelmas Session, 5 George II
+
+#### 7th October 1731
 
 pp.146-147. The appeal of William Bowden of **Ilmer**, from an order of the justices dated 15 September, 1731, whereby the said William Bowden was ordered to pay £1.1s.0d. to John Grace of Princes Risborough, gentleman, for two years' small tithes of wool and lamb, was respited until the next sessions. (See p.129. Sess.R.116/23. Sess.Min.I, p.156)
 
 ---
 
-## Epiphany Session, 13th January, 1731-2 [5 George II].
+## Epiphany Session, 5 George II
+
+#### 13th January 1731-2
 
 pp.169-171. An order of the justices, dated 15th September, 1731, whereby William Bowden of **Ilmer** was ordered to pay £1.1s.0d. to John Grace of Princes Risborough, gentleman, for two years' small tithes of wool and lamb, was confirmed. William Bowden thereupon presented a writ of certiorari, to remove the case to the Court of the King's Bench at Westminster. (See p.146. Sess.Min.I, p.164)
 
 ---
 
-## Midsummer Session, 15th July, 1731 [5 George II]
+## Midsummer Session, 5 George II
+
+#### 15th July 1731
 
 > [!IMPORTANT]
 > Transcribed in the Bucks Archaeological Society in error as 1751
