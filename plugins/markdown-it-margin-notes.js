@@ -5,6 +5,10 @@
  * The marker is replaced with a phrasing-content span at the same point in the
  * body text. CSS positions the label in the left (default) or right gutter so
  * it stays on the same line as the insertion point.
+ *
+ * The surrounding body text either side of a marker is also wrapped in a
+ * plain (unclassed) span, so a paragraph containing a margin note never
+ * mixes bare text nodes with element children directly under the `<p>`.
  */
 const MARKERS = [
   { prefix: 'margin-right:', side: 'right' },
@@ -68,4 +72,43 @@ export default function markdownItMarginNotes(md) {
     const cls = tokens[idx].attrGet('class');
     return `<span class="${cls}">` + `<span class="margin-note__text">${label}</span>` + `</span>`;
   };
+
+  // Wrap the runs of content between margin-note tokens in their own spans,
+  // so a paragraph with a margin note is either all elements or all text,
+  // never a mix of the two directly under the <p>. Only splits at the top
+  // nesting level of the paragraph, so a marker that (unusually) ends up
+  // nested inside another inline container, e.g. `**bold [Margin: x] text**`,
+  // is left alone rather than risk unbalancing that container's tags.
+  md.core.ruler.push('margin_note_wrap', (state) => {
+    for (const blockToken of state.tokens) {
+      if (blockToken.type !== 'inline' || !blockToken.children) continue;
+      if (!blockToken.children.some((token) => token.type === 'margin_note')) continue;
+
+      const wrapped = [];
+      let run = [];
+      let depth = 0;
+
+      const flushRun = () => {
+        if (run.length === 0) return;
+        const open = new state.Token('margin_note_content_open', 'span', 1);
+        const close = new state.Token('margin_note_content_close', 'span', -1);
+        wrapped.push(open, ...run, close);
+        run = [];
+      };
+
+      for (const token of blockToken.children) {
+        if (token.type === 'margin_note' && depth === 0) {
+          flushRun();
+          wrapped.push(token);
+          continue;
+        }
+        if (token.nesting === 1) depth += 1;
+        else if (token.nesting === -1) depth -= 1;
+        run.push(token);
+      }
+      flushRun();
+
+      blockToken.children = wrapped;
+    }
+  });
 }
