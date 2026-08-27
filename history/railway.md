@@ -8,8 +8,6 @@ image: images/ilmer-halt-ticket.jpg
 useArchiveCss: true
 ---
 
-### Railway
-
 The bridge was constructed in 1904 and the line opened on 2nd April 1906. This [photo](https://www.railwayarchive.org.uk/Lpages/html/L3327.html) shows the newly constructed bridge:
 
 ![1904 Ilmer Bridge](https://www.railwayarchive.org.uk/custom/assets/aimages/L3327.jpg)
@@ -22,10 +20,12 @@ Adjacent to the bridge was Ilmer Halt, an on-request station where a telephone w
 
 The station was evidently rarely used, as shown in the Parish Council minutes of 1934:
 
-> #### Meeting of the Longwick-cum-Ilmer Parish Council held in the Village Hall, Longwick on Monday April 16th 1934 at 7.30 pm.
->
 > The Clerk was asked to place on the agenda for next meeting, the provision of a Shelter at Ilmer Railway Halt
->
-> #### Meeting of the Longwick-cum-Ilmer Parish Council held in the Schoolroom, Longwick on Monday July 9th 1934 at 8 pm.
->
+> <sub>Longwick-cum-Ilmer Parish Council, [Monday April 16th 1934](/parish/parishcouncil/1934-04-16/)</sub>
+
 > As it was reported that the Passengers travelling from Ilmer Halt only averaged two a week, the Council were of an opinion no good purpose would be served at present by making application to the Railway Co > for the provision of a Shelter at the Halt.
+> <sub>Longwick-cum-Ilmer Parish Council, [Monday July 9th 1934](/parish/parishcouncil/1934-07-09/)</sub>
+
+```
+
+```

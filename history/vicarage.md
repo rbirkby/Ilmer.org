@@ -12,9 +12,8 @@ useArchiveCss: true
 >
 > Author unknown, but possibly John Elliott, 1932-2015.
 
-#### Ilmer
+#### ILMER AND ITS OLD VICARAGE
 
-ILMER AND ITS OLD VICARAGE
 Ilmer is a hamlet with a population of about 72 people situated at the end of a no-through lane to the south of the Thame-Princes Risborough road near the boundary between Buckinghamshire and Oxfordshire (see map at Enclosure 1 (E1)). It lies on a rise in flat countryside in the Vale of Aylesbury a few miles from the Chiltern escarpment, and its main feature is the 12th. century church of St. Peter with its unusual needle spire.
 
 Evidence of early population of the site is thin. Iron age and Romano-British sherds have been found in the vicinity, but in this, of course, Ilmer is not unique. The relevant Domesday Book entry depicts a thriving community, and a church of such ancient foundation in so small a hamlet might suggest that Ilmer was more populous in the past than it is now. Evidence on the point, however, is lacking. The statement in some topographical works on Bucks that the population was wiped out by the Black Death in 1349 is not supported by any entry in the records of the Bucks Archaeological Society. However, there may be evidence of former house platforms in the hummocky surface of the field to the S.W. of the church and Upper Farm, and there are signs of former occupation in a wood at a place formerly known as Loxton (a name that has now disappeared) about half a mile to the south. There was a manor at Ilmer before the Norman invasion ; at the time of the Domesday Book it belonged to Odo, Bishop of Bayeux. Its site appears to have been roughly where Ilmer House now stands. A moat - formerly used for enclosing cattle, rather than for defensive purposes - still exists in the grounds (see E2). A royal licence to enclose the woods of Ilmer and to make a park was granted to John de Moleyns, Lord of the Manor, in 1336. It was one of more than 50 such in the County (see E3).

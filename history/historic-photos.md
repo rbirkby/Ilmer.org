@@ -39,7 +39,7 @@ Ilmer House. A passenger train is on the railway line.
 
 <script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="EAW017640" style="width: 100%; display: inline-flex; aspect-ratio: 4600/4106; max-width: 4600px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
 
-Ilmer in the middle, North Mill in the foreground, and Lockington (Hermit's Wood or Hermit's Copse), the home of Charles Belgrove, in-between.
+Ilmer in the middle, North Mill in the foreground, and [Lockington](/history/lockington/) (Hermit's Wood or Hermit's Copse), the home of Charles Belgrove, in-between.
 
 ---
 
