@@ -8,6 +8,14 @@ image: images/chitty-frame3.avif
 useArchiveCss: true
 ---
 
+### Photographing Faries
+
+![Photographing Faries](/images/photographing-faries.jpg#right)
+
+The Church was used for the opening scene of the 1996 film [Photographing Faries](https://en.wikipedia.org/wiki/Photographing_Fairies) and received £500[^wilson]. St Peter's doubled as a Swiss alpine church surrounded by snow. Since filming took place in July, this necessitated white sheeting and theatrical spray snow to accomplish the shot.
+
+[^wilson]: Source: St Peter’s Church, Ilmer, History and Events, Janet Wilson, 1999
+
 ### Chitty Chitty Bang Bang
 
 The 1968 film starring Dick Van Dyke had a memorable scene filmed at the railway bridge. Watch it again to see how little has changed!
