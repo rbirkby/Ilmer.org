@@ -75,7 +75,8 @@ The surveyor inspected roads, bridges and ditches, arranged repairs and made sur
 
 ![Portrait thumbnail of Sarah Wooster](/images/punch-thumbnail.avif#right)
 
-Widowed in 1863, Sarah was appointed Surveyor of Highways in 1864[^2] and in March 1868 appointed as Overseer of the poor and Surveyor of the highways.
+Widowed in 1863, Sarah was appointed Surveyor of Highways in 1864[^2] and in March 1868 appointed as Overseer of the poor and Surveyor of the highways. This was usually a male role, but the [1871 census](/census/1871) suggests a possible reason - by that year, the head of many households in Ilmer were women who were widowed.
+
 Having a woman in such a role was so unusual, the story was picked up by newspapers both nationally and internationally reaching as far as the Trinidad Chronicle[^3]
 
 On May 16 1868, [Punch magazine](<https://en.wikipedia.org/wiki/Punch_(magazine)>) covered the story[^4], relating the role of Sarah Wooster to the women’s suffrage movement and the equality of sexes as campaigned for by [John Stuart Mill MP](https://en.wikipedia.org/wiki/John_Stuart_Mill) - famous for his 1869 essay [The Subjection of Women](https://en.wikipedia.org/wiki/The_Subjection_of_Women).
@@ -87,6 +88,8 @@ Later on the same year Sarah requested her four youngest sons be prosecuted for 
 > **ILLMIRE**
 >
 > UNNATURAL SONS. — On Wednesday, at the Risborough petty session, (before the Rev. W. E. Partridge,) Daniel, Joseph, Frank, and George Wooster were brought up at the instance of their mother, Mrs. Sarah Wooster, who asked that they might be bound over to keep the peace. Mr. John Eggleton, parish constable, stated that on Sunday morning, the 26th ult., the defendants were quarrelling in their mother’s house, and there was blood on them as if they had been fighting. They were each ordered to enter into their own recognisances in £10 to keep the peace for twelve months.
+
+Two of these sons later emigrated to the USA becoming wealthy landowners, giving the name Wooster to a small town.
 
 [^2]: Bucks Chronicle and Gazette, 2 Apr 1864
 
