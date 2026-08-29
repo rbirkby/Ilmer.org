@@ -6,15 +6,20 @@ category: history
 tags: [vicarage, post]
 image: images/church-and-vicarage-1967.avif
 useArchiveCss: true
+lightbox: true
 ---
 
 > **_Source:_** Date indicated as 1998 in the text. Supplied via Chris Kingham from Princes Risborough Area Heritage Society and Tristan Batory, partner at JNP estate agents. Rescued at the time of a vicarage probate. The text includes references to other pieces, the whereabouts of which are unknown.
 >
 > Author unknown, but possibly John Elliott, 1932-2015.
+>
+> Additional interior photographs courtesy of the present owner.
 
 #### ILMER AND ITS OLD VICARAGE
 
-Ilmer is a hamlet with a population of about 72 people situated at the end of a no-through lane to the south of the Thame-Princes Risborough road near the boundary between Buckinghamshire and Oxfordshire (see map at Enclosure 1 (E1)). It lies on a rise in flat countryside in the Vale of Aylesbury a few miles from the Chiltern escarpment, and its main feature is the 12th. century church of St. Peter with its unusual needle spire.
+Ilmer is a hamlet[^1] with a population of about 72 people situated at the end of a no-through lane to the south of the Thame-Princes Risborough road near the boundary between Buckinghamshire and Oxfordshire (see map at Enclosure 1 (E1)). It lies on a rise in flat countryside in the Vale of Aylesbury a few miles from the Chiltern escarpment, and its main feature is the 12th. century church of St. Peter with its unusual needle spire.
+
+[^1]: Ilmer is not a hamlet, but a village as it has a church.
 
 Evidence of early population of the site is thin. Iron age and Romano-British sherds have been found in the vicinity, but in this, of course, Ilmer is not unique. The relevant Domesday Book entry depicts a thriving community, and a church of such ancient foundation in so small a hamlet might suggest that Ilmer was more populous in the past than it is now. Evidence on the point, however, is lacking. The statement in some topographical works on Bucks that the population was wiped out by the Black Death in 1349 is not supported by any entry in the records of the Bucks Archaeological Society. However, there may be evidence of former house platforms in the hummocky surface of the field to the S.W. of the church and Upper Farm, and there are signs of former occupation in a wood at a place formerly known as Loxton (a name that has now disappeared) about half a mile to the south. There was a manor at Ilmer before the Norman invasion ; at the time of the Domesday Book it belonged to Odo, Bishop of Bayeux. Its site appears to have been roughly where Ilmer House now stands. A moat - formerly used for enclosing cattle, rather than for defensive purposes - still exists in the grounds (see E2). A royal licence to enclose the woods of Ilmer and to make a park was granted to John de Moleyns, Lord of the Manor, in 1336. It was one of more than 50 such in the County (see E3).
 
@@ -35,9 +40,11 @@ The population of Ilmer in the mid and late 19th. Century, according to the ten-
 | 1871 | 70        |
 | 1881 | 63        |
 | 1891 | 48        |
-| 1901 | 51        |
+| 1901 | 51 [^2]   |
 | 1911 | 58        |
 | 1921 | 64        |
+
+[^2]: The 1901 census count excludes Coldharbour residents as unexpectedly it was enumerated in Oxfordshire, not Buckinghamshire
 
 The occupations of the inhabitants listed in the census returns vary little throughout this period. The men, with very few exceptions, are farmers, agricultural labourers, or servants. The women are lacemakers, servants, or are vaguely described as farmers' workers. A bootmaker makes a solitary entry in one census return. The pattern of agriculture, cottage industry, and domestic service remains strikingly unbroken. Rather pathetically, later surveys begin to record some inhabitants as "pauper, formerly lace-maker". These are all old women, for whom perhaps failing eyesight or other infirmities had brought hard times. A striking feature of the returns is how immobile the population was. Almost without exception, everyone had been born in Ilmer or in neighbouring villages such as Saunderton, Kingsey, Towersey, Longwick or Horsenden. A resident who had been born as far afield as Wendover stands out almost as a foreigner.
 
@@ -54,8 +61,14 @@ Ilmer's place in Buckinghamshire folk lore has been secured by its hermit - one 
 
 The hamlet's social life centres around the church and annual events such as barbecues, pig roasts and barn dances. In 1995 the 50th. anniversary of VE Day was celebrated by a barbecue party on the village green, and a display of wartime memorabilia in the church (E 11). In October 1996 the church and churchyard were converted by means of fleece and artificial snow into the backdrop for a Swiss marriage scene for the film ["Photographing Fairies"](/history/filming) (E11). One wonders what future such excitements lie in store.
 
-The Old Vicarage
-A vicarage appears to have been on the present site to the east of the church for probably at least 400 years. A survey of all the possessions belonging to the vicarage of Ilmer, dated 1607, refers to "The Homestall or scite of the Vicarage situate on the East part of the Church consisting of 4 Bayes, built all with wood and covered with Tyles. Two Bayes thereof being chambered and boarded, disposed into four Rooms (viz) A Hall, a Kitchin, a Parlour & a low Chamber. A Little Close next the street. The Close called the Vicars Wood-yard. One stable. A little Close with an apple tree in it, joyning ot the Vicaridge House. All these containing by Estimation One half Acre." A photocopy and transcription of this survey are at E 17.
+#### The Old Vicarage
+
+![](/images/OldVicarage1.avif#right)
+A bedroom at the Old Vicarage
+![7 December 1941. Person unknown ](/images/OldVicarage2.avif#right)
+Old Vicarage interior - December 1941
+
+A vicarage appears to have been on the present site to the east of the church for probably at least 400 years. A survey of all the possessions belonging to the vicarage of Ilmer, dated 1607, refers to "The Homestall or scite of the Vicarage situate on the East part of the Church consisting of 4 Bayes, built all with wood and covered with Tyles. Two Bayes thereof being chambered and boarded, disposed into four Rooms (viz) A Hall, a Kitchin, a Parlour & a low Chamber. A Little Close next the street. The Close called the Vicars Wood-yard. One stable. A little Close with an apple tree in it, joyning to the Vicaridge House. All these containing by Estimation One half Acre." A photocopy and transcription of this survey are at E 17.
 
 The 1607 description does not fit the old part of the building, however, and it seems likely that the vicarage was rebuilt some time in the 17th. century, (a conjecture supported by a church inspection report of 1637, "The Vicarage house in decay") and substantially altered in the 18th. The section on Ilmer in the 1912 report by the Royal Commission on Historical Monuments (E18) refers to a "Cottage, said to have been formerly the vicarage, on the E. side of the churchyard, is of two storeys, built of brick and timber in the 17th. century, now much restored. The roof is tiled. One room has a wide fireplace and old beams in the ceiling. Condition - fairly good." One expert on vernacular architecture who has visited the building has dated it to the early 17th. century, another to the early 18th. century, though with the possibility that some 17th. century features may have remained incorporated. The old window furniture and door hinges still remaining correspond to 18th. century patterns.
 
