@@ -23,6 +23,8 @@
       <h1 class="minute-heading">{{ subjectHeading }}</h1>
       <p class="archive-subheading">{{ ancestorCrumb2.label }} &middot; Subject archive</p>
       {% include "archive-flourish.liquid" %}
+    {% elsif headerUseCensus %}
+      {% comment %}Header is rendered by the page's own content, below.{% endcomment %}
     {% else %}
       <h1{% if useArchiveCss %} class="minute-heading"{% endif %}>{{ title }}</h1>
 

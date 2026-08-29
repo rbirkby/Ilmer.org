@@ -439,7 +439,7 @@ table:not(.preformatted) {
     }
   }
 
-  tr:nth-child(even) {
+  :nth-child(even of tr:has(td:not(:empty))) {
     background-color: #f9f9f9;
   }
 }

@@ -29,6 +29,65 @@ export default function (eleventyConfig) {
     if (/^https?:\/\//i.test(path)) return path;
     return `/${path.replace(/^\/+/, '')}`;
   });
+  const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  /**
+   * Formats a `YYYY-MM-DD` string as "D Mon YYYY" by parsing the digits
+   * directly, without ever constructing a JS Date. Dates before 1847 pick up
+   * a historical Local Mean Time offset from the host's tz database when
+   * formatted via Date getters, which can shift them onto the wrong day.
+   */
+  eleventyConfig.addFilter('isoDateLabel', (iso) => {
+    const [, y, m, d] = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso) ?? [];
+    if (!y) return iso;
+    return `${Number(d)} ${MONTH_LABELS[Number(m) - 1]} ${y}`;
+  });
+
+  eleventyConfig.addFilter('isoDateYear', (iso) => /^(\d{4})-/.exec(iso)?.[1] ?? iso);
+
+  /** Sparkline geometry for a collection of items with `data.date` (ISO string) and `data.population`. */
+  eleventyConfig.addFilter('censusChart', (collection) => {
+    const items = [...collection].sort((a, b) => a.data.date.localeCompare(b.data.date));
+    const populations = items.map((item) => item.data.population);
+    const minPop = Math.min(...populations);
+    const maxPop = Math.max(...populations);
+    const popRange = maxPop - minPop || 1;
+
+    const width = 300;
+    const plotLeft = 14;
+    const plotRight = width - 14;
+    const plotTop = 22;
+    const plotBottom = 62;
+    const tickTop = plotBottom + 10;
+    const tickBottom = tickTop + 8;
+    const labelY = tickBottom + 12;
+    const height = labelY + 6;
+
+    const step = items.length > 1 ? (plotRight - plotLeft) / (items.length - 1) : 0;
+    const points = items.map((item, index) => {
+      const x = plotLeft + step * index;
+      const y = plotBottom - ((item.data.population - minPop) / popRange) * (plotBottom - plotTop);
+      return {
+        x: Math.round(x * 10) / 10,
+        y: Math.round(y * 10) / 10,
+        population: item.data.population,
+        year: item.data.date.slice(0, 4)
+      };
+    });
+
+    return {
+      points,
+      linePoints: points.map((p) => `${p.x},${p.y}`).join(' '),
+      tickTop,
+      tickBottom,
+      labelY,
+      width,
+      height,
+      count: items.length,
+      firstYear: points[0]?.year,
+      lastYear: points[points.length - 1]?.year
+    };
+  });
+
   eleventyConfig.addFilter('uniqueLabels', (events) =>
     [...new Set(events.flatMap(({ labels }) => labels))]
       .map((label) => ({

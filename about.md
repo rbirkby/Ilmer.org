@@ -8,7 +8,7 @@ image: images/soft-trees.jpg
 useArchiveCss: true
 ---
 
-Ilmer is a small village of 27 houses, 4 farms and church situated 1 mile south of the Thame to Princes Risborough road between Kingsey and Longwick.
+Ilmer is a small village of 31 houses, 3 farms and church situated ½ mile south of the Thame to Princes Risborough road between Kingsey and Longwick.
 
 ![Ilmer church, 1979](/images/church-watercolour.jpg)
 
