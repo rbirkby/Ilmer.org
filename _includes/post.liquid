@@ -1,7 +1,7 @@
 {% include "head" %}
 
 {% include "site-header" %}
-<main{% if useArchiveCss %} class="archive"{% endif %}>
+<main{% if useArchiveCss %} class="archive{% if tags contains "census" %} census{% endif %}"{% endif %}>
   {% if image %}
     <figure>
       <img src="{{ image | sitePath }}" alt="{{ title }}">

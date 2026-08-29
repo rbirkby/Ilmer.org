@@ -1095,3 +1095,20 @@ main.archive table:not(.preformatted) {
     padding: 4px 12px;
   }
 }
+
+/* Census record tables have many narrow columns (place, names, age, sex,
+   occupation, birthplace) that don't have room to wrap on a phone screen.
+   Rather than let cell content squeeze and wrap into an unreadable mess, keep
+   rows on one line and let the table itself scroll horizontally. */
+@media (max-width: 640px) {
+  main.archive.census table:not(.preformatted) {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+
+    & th,
+    & td {
+      white-space: nowrap;
+    }
+  }
+}
