@@ -4,7 +4,7 @@ title: St Peter's Church
 description: '12th century church in Ilmer, Buckinghamshire, England.'
 category: history
 tags: [post]
-image: images/church-linedrawing-postcard.avif
+image: images/VicarageChurch.avif
 useArchiveCss: true
 ---
 
@@ -13,3 +13,5 @@ useArchiveCss: true
     <li><a href="{{ item.url }}">{{ item.data.title }}</a></li>
 {%- endfor -%}
 </ul>
+
+\* Top image titled _'Spring' St Peter's Church, Ilmer, Bucks._ 1977. Artist Unknown

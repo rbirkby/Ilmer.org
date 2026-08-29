@@ -8,7 +8,7 @@ useArchiveCss: true
 
 ### Sat Nav
 
-Ilmer is a small village with just 27 houses. For such a small place, it has a surprising number of postcodes!
+Ilmer is a small village with just 31 houses. For such a small place, it has a surprising number of postcodes!
 
 - [HP27 9QZ](https://www.google.co.uk/maps?q=HP27+9QZ)
 - [HP27 9RA](https://www.google.co.uk/maps?q=HP27+9RA)
