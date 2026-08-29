@@ -20,7 +20,9 @@ The Church was used for the opening scene of the 1996 film [Photographing Faries
 
 The 1968 film starring Dick Van Dyke had a memorable scene filmed at the railway bridge. Watch it again to see how little has changed!
 
-<iframe width="620" height="350" src="https://www.youtube.com/embed/109uKA3nWog" frameborder="0" allowfullscreen></iframe>
+<div class="video-embed">
+  <iframe src="https://www.youtube.com/embed/109uKA3nWog" title="Chitty Chitty Bang Bang railway bridge scene" frameborder="0" allowfullscreen></iframe>
+</div>
 
 #### Now (Jan 2026) and then
 
