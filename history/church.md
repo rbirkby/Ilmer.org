@@ -48,7 +48,7 @@ The commemoration stone on the North wall (replaced 1983), has an inscription wr
 
 In 1983 during replacement of the inscribed stone, erosion of the final sentence required research into the probable final words. Local historian Rex Kidd approached the Bodleian Library for advice. Molly Barratt from the Department of Western Manuscripts responded[^bodleian] that it likely ended `HONOR ET GLORIA`. The new tablet cost £386+VAT.
 
-[^bodleian]: Source: Oxford History Centre, DIOC/1/C/5/1587.
+[^bodleian]: Source: Oxford History Centre, [DIOC/1/C/5/1587](<https://heritagesearch.oxfordshire.gov.uk/records/DIOC/1/C/5/1587(2)>).
 
 Rev Partridge had purchased Horsenden House in 1848 and purchased the Ilmer benefice from George Stanhope, 6th Earl of Chesterfield in 1858 which enabled him to fund its repair in 1860. Five years later in November 1865, the Church Living was united with Horsenden.
 
@@ -178,7 +178,7 @@ In the late 1960s, redecoration and reconstruction work of the church, amounting
 
 By 1978, the spire required new shingle tiles, and the tower and bells were in need of restoration. Consequently, a fundraising campaign was initiated in January of that year, and within two years, £8,000 had been raised. The bells were restored by Whites of Appleton during 1981[^wilson] and at this time they were converted to swing chiming. The cost was £1,790+VAT [^bellsfaculty]
 
-[^bellsfaculty]: Letter from Whites dated 7 Aug 1980. Source: Oxford History Centre, DIOC/1/C/5/1587.
+[^bellsfaculty]: Letter from Whites dated 7 Aug 1980. Source: Oxford History Centre, [DIOC/1/C/5/1587](<https://heritagesearch.oxfordshire.gov.uk/records/DIOC/1/C/5/1587(2)>).
 
 In 1993, the base of the octagonal font cover was replaced with 19th century oak[^wilson].
 

@@ -19,7 +19,7 @@
       <h1>{{ title }}</h1>
       <p class="archive-hero__meta">{{ placeName }} &middot; {{ subtitle }}</p>
       {% include "archive-flourish.liquid" %}
-      <p class="archive-hero__description">{{ description }}</p>
+      <p class="archive-hero__description">{{ description }}{{ content | renderMarkdownInline }}</p>
     </div>
   </section>
 
