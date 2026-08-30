@@ -654,6 +654,14 @@ details.archive-year {
     background: var(--archive-muted);
   }
 
+  &.archive-link-card--overseers .archive-link-card__icon {
+    background: var(--archive-green-dark);
+  }
+
+  &.archive-link-card--councillors .archive-link-card__icon {
+    background: var(--archive-muted);
+  }
+
   & .archive-link-card__description {
     margin: 0 0 1.6rem;
     font-size: 1.7rem;
