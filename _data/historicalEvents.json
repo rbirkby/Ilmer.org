@@ -1396,11 +1396,12 @@
     "labels": ["birth", "person"]
   },
   {
-    "date": "22 Sep. 1833",
+    "date": "26 Feb. 1833",
     "title": "Death of vicar Thomas Jones",
-    "description": "[Thomas Jones](https://theclergydatabase.org.uk/jsp/persons/CreatePersonFrames.jsp?PersonID=67728) died as vicar of Ilmer.",
+    "description": "[Thomas Jones](https://theclergydatabase.org.uk/jsp/persons/CreatePersonFrames.jsp?PersonID=67728) died as vicar of Ilmer aged 83.",
     "references": [
-      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayVacancy.jsp?CDBAppRedID=17777) for Thomas Jones"
+      "[Clergy Database entry](https://theclergydatabase.org.uk/jsp/DisplayVacancy.jsp?CDBAppRedID=17777) for Thomas Jones",
+      "Berkshire Chronicle, 2 Mar 1833"
     ],
     "labels": ["church", "person", "vicar"]
   },
@@ -1445,10 +1446,10 @@
     "labels": ["manor", "property"]
   },
   {
-    "date": "1842",
+    "date": "15 Sep. 1842",
     "title": "Marriage of Vicar W. E. Partridge",
     "description": "At Swallowfield, Berkshire, the Rev. W. E. Partridge, Vicar of Ilmer, marries Lucy-Olivia-Hobart Anderdon, only surviving child of Oliver Anderdon, esq. Q.C. Any connection to Anderdons farm in Longwick is unknown.",
-    "references": ["Gentleman's Magazine, Nov 1842, Vol 18"],
+    "references": ["Gentleman's Magazine, Nov 1842, Vol 18", "Berkshire Chronicle, 24 Sep 1842"],
     "labels": ["church", "marriage", "person"]
   },
   {
@@ -2007,6 +2008,14 @@
     "labels": ["business", "sale"]
   },
   {
+    "date": "5 Feb. 1909",
+    "title": "Spire Faculty Granted",
+    "image": "/images/john-oldrid-scott.jpg",
+    "description": "Faculty (permission) for the new church spire was granted. Architects John Oldrid Scott and Son (Charles Marriott Oldrid Scott) of Dean's Yard, Westminster were given faculty to design the replacement spire and remove the half-hip roof to complete the west gable. John Oldrid Scott was the grandson of Sir Gilbert Scott, architect of the Albert Memorial. He had completed the stone steeple of St Mary's, Risborough the previous year, which had replaced an older zinc-covered wooden structure.",
+    "references": ["Faculty, in Bucks Archive", "gilbertscott.org"],
+    "labels": ["church"]
+  },
+  {
     "date": "12 Apr. 1909",
     "title": "Children's Union stall at bazaar on Easter Monday",
     "description": "A stall run by Mrs Matthews of Ilmer was held at Horsenden Rectory in aid of the Church of England Waifs' and Strays' Society. Mrs Matthews was also secretary.",
@@ -2016,8 +2025,8 @@
   {
     "date": "16 Jul. 1909",
     "title": "Ilmer Farm Auction Date",
-    "description": "The auction date for 'Ilmer Farm' was set. This farm was to become the site of [Ilmer House](/history/ilmer-house), also known as Upper Farm.",
-    "references": ["West Herts and Watford Observer, 26 Jun 1909"],
+    "description": "The auction date for 'Ilmer Farm' was set. This farm was to become the site of [Ilmer House](/history/ilmer-house), also known as Upper Farm. The 267 acre farm was sold for £5,200.",
+    "references": ["West Herts and Watford Observer, 26 Jun 1909", "Berkshire Chronicle, 17 Jul 1909"],
     "labels": ["auction", "farm", "property", "sale"]
   },
   {
@@ -2027,14 +2036,6 @@
     "image": "/images/georgewooster.jpg",
     "references": ["Meriwether Vindicator, 1909"],
     "labels": ["birth"]
-  },
-  {
-    "date": "5 Feb. 1909",
-    "title": "Spire Faculty Granted",
-    "image": "/images/john-oldrid-scott.jpg",
-    "description": "Faculty (permission) for the new church spire was granted. Architects John Oldrid Scott and Son (Charles Marriott Oldrid Scott) of Dean's Yard, Westminster were given faculty to design the replacement spire and remove the half-hip roof to complete the west gable. John Oldrid Scott was the grandson of Sir Gilbert Scott, architect of the Albert Memorial. He had completed the stone steeple of St Mary's, Risborough the previous year, which had replaced an older zinc-covered wooden structure.",
-    "references": ["Faculty, in Bucks Archive", "gilbertscott.org"],
-    "labels": ["church"]
   },
   {
     "date": "1909-1913",
