@@ -156,4 +156,6 @@ The full DVD[^3] is 1 hour 32 minutes long, of which 5 minutes cover Ilmer.
 
 Do you remember this project? Do you recognise anyone, or perhaps even a younger version of yourself? Share your memories and stories!
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/l5HFBkExQu0?si=mcrPahq1kkYlirun" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div class="video-embed">
+  <iframe src="https://www.youtube.com/embed/l5HFBkExQu0?si=mcrPahq1kkYlirun" title="Towards 2000" frameborder="0" allowfullscreen></iframe>
+</div>
