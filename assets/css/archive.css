@@ -241,6 +241,13 @@ main.archive {
   white-space: nowrap;
 }
 
+.archive-browse__empty {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.6;
+  color: var(--archive-muted);
+}
+
 .archive-search {
   display: flex;
   max-width: 46rem;
@@ -298,8 +305,16 @@ main.archive {
   display: grid;
   grid-template-columns: 30rem minmax(0, 1fr);
 
+  &:has(> :only-child) {
+    grid-template-columns: 1fr;
+  }
+
   & .archive-browse {
     border-left: 1px solid var(--archive-border);
+
+    &:only-child {
+      border-left: 0;
+    }
 
     @media (max-width: 860px) {
       border-left: 0;

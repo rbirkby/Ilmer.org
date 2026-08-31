@@ -6,8 +6,10 @@
 {%- assign subjectTags = coll | archiveSubjectTags: collectionName -%}
 {%- assign firstItem = coll | first -%}
 {%- assign lastItem = coll | last -%}
-{%- assign startYear = firstItem.date | date: "%Y" -%}
-{%- assign endYear = lastItem.date | date: "%Y" -%}
+{%- if firstItem -%}
+  {%- assign startYear = firstItem.date | date: "%Y" -%}
+  {%- assign endYear = lastItem.date | date: "%Y" -%}
+{%- endif -%}
 
 {%- assign featuredItem = nil -%}
 {%- if featured -%}
@@ -21,11 +23,13 @@
 {%- unless featuredItem -%}
   {%- assign featuredItem = firstItem -%}
 {%- endunless -%}
-{%- assign featuredExcerpt = featuredItem.templateContent | strip_html | strip_newlines | truncate: 240 -%}
-{%- assign featuredHeadlineParts = featuredItem.templateContent | split: 'margin-note__text">' -%}
-{%- if featuredHeadlineParts.size > 1 -%}
-  {%- assign featuredHeadline = featuredHeadlineParts[1] | split: '</span>' | first -%}
-  {%- assign featuredExcerpt = featuredExcerpt | remove_first: featuredHeadline | strip -%}
+{%- if featuredItem -%}
+  {%- assign featuredExcerpt = featuredItem.templateContent | strip_html | strip_newlines | truncate: 240 -%}
+  {%- assign featuredHeadlineParts = featuredItem.templateContent | split: 'margin-note__text">' -%}
+  {%- if featuredHeadlineParts.size > 1 -%}
+    {%- assign featuredHeadline = featuredHeadlineParts[1] | split: '</span>' | first -%}
+    {%- assign featuredExcerpt = featuredExcerpt | remove_first: featuredHeadline | strip -%}
+  {%- endif -%}
 {%- endif -%}
 
 <main class="archive"{% if image %} style="--hero-image: url('{{ image | sitePath }}')"{% endif %}>
@@ -33,7 +37,7 @@
     <div class="archive-hero__text">
       {% include "breadcrumb.liquid" %}
       <h1>{{ title }}</h1>
-      <p class="archive-hero__meta">{{ placeName }} &middot; {{ startYear }}&ndash;{{ endYear }}</p>
+      <p class="archive-hero__meta">{{ placeName }}{% if startYear %} &middot; {{ startYear }}&ndash;{{ endYear }}{% endif %}</p>
       {% include "archive-flourish.liquid" %}
       <p class="archive-hero__description">{{ description }}</p>
       {% unless hideSearch %}
@@ -47,6 +51,7 @@
   </section>
 
   <div class="archive-panels">
+    {% if featuredItem %}
     <section class="archive-card archive-featured" aria-labelledby="from-the-minutes-heading">
       <div class="archive-card__heading">
         <h2 id="from-the-minutes-heading">from the minutes</h2>
@@ -63,6 +68,7 @@
       <p class="archive-featured__quote">&ldquo;{{ featuredExcerpt }}&hellip;&rdquo;</p>
       <a class="archive-featured__link" href="{{ featuredItem.url }}">Read the full minute <span aria-hidden="true">&rarr;</span></a>
     </section>
+    {% endif %}
 
     <section class="archive-card archive-browse" aria-labelledby="browse-heading">
       <div class="archive-card__heading">
@@ -100,6 +106,8 @@
               {% endfor %}
             </div>
           </div>
+        {% else %}
+          <p class="archive-browse__empty">Minutes will appear here as they are added to the archive.</p>
         {% endfor %}
       </div>
     </section>

@@ -1,0 +1,8 @@
+{
+  "ancestorCrumb1Source": { "label": "Parish Archive", "url": "/parish/" },
+  "ancestorCrumb2Source": { "label": "Ilmer Parish Meeting Minutes", "url": "/parish/ilmerparishmeeting/" },
+  "breadcrumbUseDate": true,
+  "headerUseDate": true,
+  "useArchiveCss": true,
+  "collectionName": "ilmerparishmeetings"
+}

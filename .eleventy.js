@@ -127,7 +127,7 @@ export default function (eleventyConfig) {
   /** Groups a date-sorted collection into decades of years, each with its dated items and counts. */
   eleventyConfig.addFilter('archiveByDecade', (collection) => {
     const byYear = new Map();
-    for (const item of collection) {
+    for (const item of collection || []) {
       const year = item.date.getFullYear();
       if (!byYear.has(year)) byYear.set(year, []);
       byYear.get(year).push(item);
@@ -154,7 +154,7 @@ export default function (eleventyConfig) {
   /** Subject tags used across a collection (excluding the base collection tag), most-used first. */
   eleventyConfig.addFilter('archiveSubjectTags', (collection, baseTag) => {
     const counts = new Map();
-    for (const item of collection) {
+    for (const item of collection || []) {
       for (const t of item.data.tags || []) {
         if (t === baseTag) continue;
         counts.set(t, (counts.get(t) || 0) + 1);
@@ -226,6 +226,23 @@ export default function (eleventyConfig) {
     for (const item of items) {
       for (const t of item.data.tags || []) {
         if (t === 'parishmeetings') continue;
+        if (!byTag.has(t)) byTag.set(t, []);
+        byTag.get(t).push(item);
+      }
+    }
+    return [...byTag.entries()].map(([tag, tagItems]) => ({ tag, items: tagItems, count: tagItems.length }));
+  });
+
+  eleventyConfig.addCollection('ilmerparishmeetings', (collectionApi) =>
+    collectionApi.getFilteredByTag('ilmerparishmeetings')
+  );
+
+  eleventyConfig.addCollection('ilmerParishMeetingSubjects', (collectionApi) => {
+    const items = collectionApi.getFilteredByTag('ilmerparishmeetings');
+    const byTag = new Map();
+    for (const item of items) {
+      for (const t of item.data.tags || []) {
+        if (t === 'ilmerparishmeetings') continue;
         if (!byTag.has(t)) byTag.set(t, []);
         byTag.get(t).push(item);
       }
