@@ -148,11 +148,11 @@ A group of men using the Halt platform to watch over the adjacent field. One man
 
 ### Towards 2000
 
-This fascinating documentary was commissioned and sponsored by the Longwick-cum-Ilmer Parish Council to create a time capsule of our community in the year leading up to 2000. Originally distributed on DVD to every household in the village, this film captures the unique spirit and daily life of Longwick and its surrounding hamlets.
+This fascinating documentary was [commissioned](/parish/parishmeeting/1999-04-20) and sponsored by the Longwick-cum-Ilmer Parish Council to create a time capsule of our community in the year leading up to 2000. The idea was [suggested](/parish/parishmeeting/1998-04-21) by Councillor Dorothy Brock of Meadle. Originally sold to villagers on DVD, [the video made a loss of £320](/parish/parishmeeting/2001-04-17) in the year to 31st March 2001. This film captures the unique spirit and daily life of Longwick and its surrounding hamlets.
 
 The full DVD[^3] is 1 hour 32 minutes long, of which 5 minutes cover Ilmer.
 
-[^3]: Additionally, deposited in the Bucks Archives, reference [AR_83-2009](https://archives.buckinghamshire.gov.uk/records/PR_136/UNCAT/AR_83-2009)
+[^3]: Additionally, deposited in the Bucks Archives, reference [AR_83-2009](https://archives.buckinghamshire.gov.uk/records/PR_136/UNCAT/AR_83-2009) and [PR_136/28/1](https://archives.buckinghamshire.gov.uk/records/PR_136/28/1) on a variety of digital media.
 
 Do you remember this project? Do you recognise anyone, or perhaps even a younger version of yourself? Share your memories and stories!
 
