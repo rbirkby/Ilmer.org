@@ -26,7 +26,19 @@ const PAGES = process.env.POUR_PAGES
   ? process.env.POUR_PAGES.split(',')
       .map((p) => p.trim())
       .filter(Boolean)
-  : ['/', '/about/', '/history/church/', '/wills/', '/map/', '/history/timeline/'];
+  : [
+      '/',
+      '/about/',
+      '/history/church/',
+      '/wills/',
+      '/map/',
+      '/history/timeline/',
+      '/parish/',
+      '/parish/parishcouncil/',
+      '/parish/parishmeeting/',
+      '/census/',
+      '/census/1921/'
+    ];
 
 const FAIL_ON = process.env.POUR_FAIL_ON || 'violations';
 const VIEWPORT = process.env.POUR_VIEWPORT || '1440x900';
