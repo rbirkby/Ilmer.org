@@ -31,6 +31,23 @@
       <p>{{ description }}</p>
     {% endif %}
 
+    {% if tags contains 'census' %}
+      {%- assign occupations = content | censusOccupations -%}
+      {% if occupations.size > 0 %}
+        <section class="census-occupations" aria-labelledby="census-occupations-heading">
+          <h2 id="census-occupations-heading">Occupations</h2>
+          <ul>
+            {% for o in occupations %}
+              <li>
+                <span class="census-occupations__label">{{ o.occupation }}</span>
+                <span class="census-occupations__count">{{ o.count }} <span class="sr-only">{% if o.count == 1 %}person{% else %}people{% endif %}</span></span>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
+    {% endif %}
+
     {{ content }}
 
     {% if headerUseDate %}
