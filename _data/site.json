@@ -1,4 +1,5 @@
 {
   "title": "Ilmer Past",
-  "url": "https://ilmer.org"
+  "url": "https://ilmer.org",
+  "homePostOrder": ["/census/", "/history/st-peters/", "/history/timeline/", "/parish/", "/history/domesday/"]
 }

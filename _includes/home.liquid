@@ -132,7 +132,8 @@
 </header>
 <main>
   <section>
-    {% for post in collections.post %}
+    {% assign homePosts = collections.post | sortByUrlOrder: site.homePostOrder %}
+    {% for post in homePosts %}
       <article>
         <a href="{{ post.url }}">
           <header>

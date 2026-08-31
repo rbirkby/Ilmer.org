@@ -29,6 +29,19 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter('renderMarkdownInline', inline);
 
   eleventyConfig.addFilter('jsonStringify', JSON.stringify);
+  /**
+   * Sorts a collection so items whose `url` appears in `urls` come first,
+   * in that list's order. Remaining items keep their date order.
+   */
+  eleventyConfig.addFilter('sortByUrlOrder', (collection, urls) => {
+    const order = new Map((urls || []).map((url, i) => [url, i]));
+    return [...(collection || [])].sort((a, b) => {
+      const rank = (item) => (order.has(item.url) ? order.get(item.url) : Number.POSITIVE_INFINITY);
+      const diff = rank(a) - rank(b);
+      if (diff !== 0) return diff;
+      return a.date - b.date;
+    });
+  });
   /** Content-hash query string for local CSS/JS so browsers fetch a new copy when the file changes. */
   const cacheBust = createCacheBustFilter(ROOT);
   eleventyConfig.addFilter('cacheBust', cacheBust);
