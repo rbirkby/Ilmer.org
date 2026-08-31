@@ -5,16 +5,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-  <link rel="stylesheet" href="/assets/css/style.css" media="all">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | cacheBust }}" media="all">
   <script type="module" src="https://search.ilmer.org/assets/v0.0.40/search-snippet.es.js"></script>
   {% if content contains 'bwphoto' or content contains '#lightbox' or lightbox %}
-    <script type="module" src="/assets/js/colorize-images.js"></script>
+    <script type="module" src="{{ '/assets/js/colorize-images.js' | cacheBust }}"></script>
   {% endif %}
   {% if layout == 'archive' or layout == 'parish-hub' or useArchiveCss %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/archive.css" media="all">
+    <link rel="stylesheet" href="{{ '/assets/css/archive.css' | cacheBust }}" media="all">
   {% endif %}
 
   <link rel="shortcut icon" href="/favicon.ico">

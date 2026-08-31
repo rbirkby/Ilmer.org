@@ -8,7 +8,7 @@ image: images/timeline.png
 ---
 
 <script type="module">
-  import { initImageLightbox } from '/assets/js/image-lightbox.js';
+  import { initImageLightbox } from '{{ "/assets/js/image-lightbox.js" | cacheBust }}';
 
   document.getElementById('timeline-filter').addEventListener('change', function() {
     const category = this.value;
@@ -33,7 +33,7 @@ image: images/timeline.png
 </button>
 
 
-<script type="module" src="/assets/js/anniversaries.js"></script>
+<script type="module" src="{{ '/assets/js/anniversaries.js' | cacheBust }}"></script>
 <timeline-anniversaries>
   {% assign filteredEvents = historicalEvents | where_exp: "event", "event.hidden != true" %}
   <script type="application/json" data-events>

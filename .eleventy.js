@@ -1,8 +1,13 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import markdownItFootnote from 'markdown-it-footnote';
 import { RenderPlugin } from '@11ty/eleventy';
 import markdownIt from 'markdown-it';
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts';
 import markdownItMarginNotes from './plugins/markdown-it-margin-notes.js';
+import { createCacheBustFilter } from './plugins/cache-bust.js';
+
+const ROOT = path.dirname(fileURLToPath(import.meta.url));
 
 export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('images');
@@ -12,6 +17,8 @@ export default function (eleventyConfig) {
     'node_modules/markdown-it-github-alerts/styles/*.css': 'assets/css'
   });
   eleventyConfig.addPassthroughCopy('robots.txt');
+  eleventyConfig.addWatchTarget('assets/css/');
+  eleventyConfig.addWatchTarget('assets/js/');
 
   eleventyConfig.amendLibrary('md', (mdLib) => mdLib.use(markdownItFootnote));
   eleventyConfig.amendLibrary('md', (mdLib) => mdLib.use(markdownItMarginNotes));
@@ -22,6 +29,10 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter('renderMarkdownInline', inline);
 
   eleventyConfig.addFilter('jsonStringify', JSON.stringify);
+  /** Content-hash query string for local CSS/JS so browsers fetch a new copy when the file changes. */
+  const cacheBust = createCacheBustFilter(ROOT);
+  eleventyConfig.addFilter('cacheBust', cacheBust);
+  eleventyConfig.on('eleventy.before', () => cacheBust.clearCache());
   /** Root-relative site path: strips leading slashes; leaves absolute http(s) URLs unchanged. */
   eleventyConfig.addFilter('sitePath', (value) => {
     if (value == null || value === '') return '';

@@ -51,6 +51,6 @@ Shell Chemicals published "A Guide to Lower Farm, Ilmer" in 1980[^3] giving a ba
 In addition to a cropping plan for 1980, it included a stylised field map with field names, redrawn and reinterpreted below to better represent actual topography. Some of the field names hark back centuries - for example the fields known as **Lakes 1** and **Lakes 2** in 1980 were known as **The Lake** on the 1778 [Plan of the Parish of Illmer](/images/1778PlanOfTheParishOfIlmer.avif).
 
 <div id="ilmer-field-map" style="height: 560px"></div>
-<script type="module" src="/assets/js/ilmer-fields-embed.js"></script>
+<script type="module" src="{{ '/assets/js/ilmer-fields-embed.js' | cacheBust }}"></script>
 
 \* Top image shows the inside of the Lower Farm training centre. Angood & Pugh Photographers.
