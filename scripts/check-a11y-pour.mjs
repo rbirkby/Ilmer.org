@@ -156,14 +156,30 @@ function runPour(url) {
   return new Promise((resolve) => {
     const args = [pourBin, url, '--fail-on', FAIL_ON, '--viewport', VIEWPORT, ...EXTRA_ARGS];
     const child = spawn(process.execPath, args, {
-      stdio: 'inherit',
+      stdio: ['ignore', 'pipe', 'pipe'],
       env: process.env
     });
-    child.on('error', (err) => {
-      console.error(`Failed to run pour for ${url}:`, err.message);
-      resolve(2);
+    const out = [];
+    const err = [];
+    child.stdout.on('data', (chunk) => out.push(chunk));
+    child.stderr.on('data', (chunk) => err.push(chunk));
+    child.on('error', (spawnErr) => {
+      resolve({
+        url,
+        code: 2,
+        stdout: Buffer.concat(out),
+        stderr: Buffer.concat(err),
+        spawnError: spawnErr
+      });
     });
-    child.on('close', (code) => resolve(code ?? 2));
+    child.on('close', (code) => {
+      resolve({
+        url,
+        code: code ?? 2,
+        stdout: Buffer.concat(out),
+        stderr: Buffer.concat(err)
+      });
+    });
   });
 }
 
@@ -191,11 +207,18 @@ async function main() {
 
   let worstExit = 0;
   try {
-    for (const page of PAGES) {
-      const url = new URL(page, baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`).href;
-      console.log(`\n── pour ${url} ──`);
-      const code = await runPour(url);
-      if (code > worstExit) worstExit = code;
+    const urls = PAGES.map((page) => new URL(page, baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`).href);
+    console.log(`Running pour on ${urls.length} pages in parallel…`);
+    const results = await Promise.all(urls.map((url) => runPour(url)));
+
+    for (const result of results) {
+      console.log(`\n── pour ${result.url} ──`);
+      if (result.spawnError) {
+        console.error(`Failed to run pour for ${result.url}:`, result.spawnError.message);
+      }
+      if (result.stdout.length) process.stdout.write(result.stdout);
+      if (result.stderr.length) process.stderr.write(result.stderr);
+      if (result.code > worstExit) worstExit = result.code;
     }
   } finally {
     if (server) {
