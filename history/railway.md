@@ -23,9 +23,7 @@ The station was evidently rarely used, as shown in the Parish Council minutes of
 > The Clerk was asked to place on the agenda for next meeting, the provision of a Shelter at Ilmer Railway Halt
 > <sub>Longwick-cum-Ilmer Parish Council, [Monday April 16th 1934](/parish/parishcouncil/1934-04-16/)</sub>
 
+subsequently:
+
 > As it was reported that the Passengers travelling from Ilmer Halt only averaged two a week, the Council were of an opinion no good purpose would be served at present by making application to the Railway Co for the provision of a Shelter at the Halt.
 > <sub>Longwick-cum-Ilmer Parish Council, [Monday July 9th 1934](/parish/parishcouncil/1934-07-09/)</sub>
-
-```
-
-```
