@@ -224,6 +224,23 @@ main.archive {
   }
 }
 
+.archive-browse .archive-card__heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.archive-browse__total {
+  margin-left: auto;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-weight: 400;
+  font-size: 1.3rem;
+  color: var(--archive-muted);
+  white-space: nowrap;
+}
+
 .archive-search {
   display: flex;
   max-width: 46rem;

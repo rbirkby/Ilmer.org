@@ -67,6 +67,7 @@
     <section class="archive-card archive-browse" aria-labelledby="browse-heading">
       <div class="archive-card__heading">
         <h2 id="browse-heading">Browse the archive</h2>
+        <span class="archive-browse__total">{{ coll.size }} minute{% if coll.size != 1 %}s{% endif %}</span>
       </div>
       <div class="archive-decades">
         {% for decadeGroup in archiveData %}
