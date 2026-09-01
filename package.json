@@ -15,7 +15,7 @@
     "link-check:internal": "node scripts/check-links-internal.mjs _site",
     "a11y": "node scripts/check-a11y-pour.mjs _site",
     "lighthouse": "lhci autorun",
-    "test": "node --test 'plugins/**/*.test.js' && node --run format-check && node --run lint-check && node --run lint:events && node --run build"
+    "test": "node --test 'plugins/**/*.test.js' && node --run format-check && node --run lint-check && node --run lint:events && node --run link-check:internal && node --run build"
   },
   "type": "module",
   "engines": {
