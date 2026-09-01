@@ -126,9 +126,9 @@ _Colourised ~1915 photo of the church interior, showing the stove and flue_[^10]
 
 [^10]: Colourised photo of the church interior, showing the stove and flue. Source: [VCH Bucks, vol 4](https://www.british-history.ac.uk/vch/bucks/vol4)
 
-A photograph of the period shows a small stove installed in the nave with flue exiting the building approximately where the war memorial plaque was later installed. Aerial photographs from 1948 show a chimney exiting the tiled roof in alignment with a butress. A prominent stone, previously painted, can be found in the exterior south wall possibly indicating other work connected with the flue. Curiously, a second small chimney is also visible on the 1948 photo on the south of the chancel adjacent to the rood screen. Work to repair these chimneys was undertaken in 1939[^vestryminutes1939]
+A photograph of the period shows a small stove installed in the nave with flue exiting the building approximately where the war memorial plaque was later installed. Aerial photographs from 1948 show a chimney exiting the tiled roof in alignment with a butress. A prominent stone, previously painted, can be found in the exterior south wall possibly indicating other work connected with the flue. Curiously, a second small chimney is also visible on the 1948 photo on the south of the chancel adjacent to the rood screen. The stove was repaired between [1926](/parish/vestrymeeting/1926-04-08/) and [1927](/parish/vestrymeeting/1927-07-02/). Work to repair these chimneys was undertaken in 1939[^vestryminutes1939]
 
-[^vestryminutes1939]: Approval to repair the church's chimney. Source: Vestry Minutes, 12 April 1939
+[^vestryminutes1939]: Approval to repair the church's chimney. Source: [Vestry Minutes, 12 April 1939](/parish/vestrymeeting/1939-04-12/)
 
 ![Advert for a stove similar to that photographed in Ilmer church](/images/tortoise-stove-ad.jpg)
 _Advert for a stove similar to that photographed in Ilmer church_[^9]
@@ -150,7 +150,7 @@ In 1924, a proposal was made to lay electricity lines to Ilmer[^electricity] and
 
 ## Church accompaniment
 
-The church was described in 1860 by Shehan as having a harmonium. A pre-1912 photograph shows an organ resembling a harmonium or reed organ. In 1959, a newspaper advertisement[^pedalorgan] offered a walnut pedal organ for sale from the church. The manufacturer was said to be the [Chicago Cottage Organ Co](https://en.wikipedia.org/wiki/The_Cable_Company), which produced organs with a [significant resemblance](https://www.reedsoc.org/index.php/rosdb/vieworgan?ID=11609) to the pre-1912 photograph. Martha Belgrove played the organ for many years until her death in 1909. A window in the church was later dedicated to her memory.
+The church was described in 1860 by Shehan as having a harmonium. A pre-1912 photograph shows an organ resembling a harmonium or reed organ. The [vestry minutes of 1925](/parish/vestrymeeting/1925-05-10/) mentioned the harmonium. In 1959, a newspaper advertisement[^pedalorgan] offered a walnut pedal organ for sale from the church. The manufacturer was said to be the [Chicago Cottage Organ Co](https://en.wikipedia.org/wiki/The_Cable_Company), which produced organs with a [significant resemblance](https://www.reedsoc.org/index.php/rosdb/vieworgan?ID=11609) to the pre-1912 photograph. Martha Belgrove played the organ for many years until her death in 1909. A window in the church was later dedicated to her memory.
 
 [^pedalorgan]: Source: Bucks Free Press, 17 Apr 1959
 
@@ -172,7 +172,7 @@ In 1940, the Parish Room needed redecorating which was undertaken by Frank Roger
 
 The wartime activities didn't escape Ilmer, as in 1942, 7 soldiers slept overnight in the parish hall and plans were made for the event of an invasion whereby the parish room would be used as a mortuary[^vestryminutes1942].
 
-[^vestryminutes1942]: Use of Parish Room for overnight refuge and use during invasion. Source Vestry Minutes 8 April 1942 and 28 April 1942.
+[^vestryminutes1942]: Use of Parish Room for overnight refuge and use during invasion. Source Vestry Minutes [8 April 1942](parish/vestrymeeting/1942-04-08/) and [28 April 1942](/parish/vestrymeeting/1943-04-28/).
 
 In the late 1960s, redecoration and reconstruction work of the church, amounting to £1,000, was carried out, funded by the parishioners. In particular, the 1964 installation of an oak communion rail made by Ivor Newton of Haddenham[^wilson].
 

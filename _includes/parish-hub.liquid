@@ -4,12 +4,15 @@
 {%- assign councilColl = collections.minutes -%}
 {%- assign meetingColl = collections.parishmeetings -%}
 {%- assign ilmerMeetingColl = collections.ilmerparishmeetings -%}
+{%- assign vestryMeetingColl = collections.vestrymeetings -%}
 {%- assign councilFirst = councilColl | first -%}
 {%- assign councilLast = councilColl | last -%}
 {%- assign meetingFirst = meetingColl | first -%}
 {%- assign meetingLast = meetingColl | last -%}
 {%- assign ilmerMeetingFirst = ilmerMeetingColl | first -%}
 {%- assign ilmerMeetingLast = ilmerMeetingColl | last -%}
+{%- assign vestryMeetingFirst = vestryMeetingColl | first -%}
+{%- assign vestryMeetingLast = vestryMeetingColl | last -%}
 
 <main
   class="archive"
@@ -141,25 +144,69 @@
       </div>
       <p class="archive-link-card__description">Historic minutes of Ilmer's own parish meetings, before the parish merged with Longwick.</p>
       {%- if ilmerMeetingFirst %}
-      <p class="archive-link-card__dates">
+        <p class="archive-link-card__dates">
+          <svg
+            class="archive-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            aria-hidden="true">
+            <rect
+              x="3.5"
+              y="5"
+              width="17"
+              height="16"
+              rx="2"></rect>
+            <path d="M3.5 9.5h17M8 3v4M16 3v4"></path>
+          </svg>
+          {{ ilmerMeetingFirst.date | date: "%Y" }}&ndash;{{ ilmerMeetingLast.date | date: "%Y" }}</p>
+      {%- endif %}
+      <a class="archive-link-card__cta" href="/parish/ilmerparishmeeting/">Explore archive
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    </article>
+
+    <article class="archive-card archive-link-card archive-link-card--vestry-meeting">
+      <span class="archive-link-card__icon">
         <svg
-          class="archive-icon"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
           stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
           aria-hidden="true">
-          <rect
-            x="3.5"
-            y="5"
-            width="17"
-            height="16"
-            rx="2"></rect>
-          <path d="M3.5 9.5h17M8 3v4M16 3v4"></path>
+          <path d="M12 3v3M12 6 4 11v10h16V11z"></path>
+          <path d="M9 21v-6h6v6"></path>
         </svg>
-        {{ ilmerMeetingFirst.date | date: "%Y" }}&ndash;{{ ilmerMeetingLast.date | date: "%Y" }}</p>
+      </span>
+      <div class="archive-card__heading">
+        <h2>Vestry Meeting Minutes</h2>
+        {% include "archive-flourish.liquid"
+          , small: true %}
+      </div>
+      <p class="archive-link-card__description">Minutes of the parish vestry.</p>
+      {%- if vestryMeetingFirst %}
+        <p class="archive-link-card__dates">
+          <svg
+            class="archive-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            aria-hidden="true">
+            <rect
+              x="3.5"
+              y="5"
+              width="17"
+              height="16"
+              rx="2"></rect>
+            <path d="M3.5 9.5h17M8 3v4M16 3v4"></path>
+          </svg>
+          {{ vestryMeetingFirst.date | date: "%Y" }}&ndash;{{ vestryMeetingLast.date | date: "%Y" }}</p>
       {%- endif %}
-      <a class="archive-link-card__cta" href="/parish/ilmerparishmeeting/">Explore archive
+      <a class="archive-link-card__cta" href="/parish/vestrymeeting/">Explore archive
         <span aria-hidden="true">&rarr;</span>
       </a>
     </article>

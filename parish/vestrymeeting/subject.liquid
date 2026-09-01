@@ -1,0 +1,33 @@
+---
+pagination:
+  data: collections.vestryMeetingSubjects
+  size: 1
+  alias: subject
+permalink: "/parish/vestrymeeting/subject/{{ subject.tag }}/"
+layout: post
+category: history
+tags: []
+breadcrumbUseDate: false
+headerUseDate: false
+headerUseSubject: true
+eleventyComputed:
+  title: "Vestry Meeting Minutes: {{ subject.tag | subjectLabel | capitalize }}"
+  subjectHeading: "{{ subject.tag | subjectLabel }}"
+  description: "Vestry Meeting minutes concerning {{ subject.tag | subjectLabel }}."
+---
+
+<ul class="subject-list">
+  {%- for item in subject.items -%}
+    <li>
+      <span class="subject-list__date">
+        <svg class="archive-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <rect x="3.5" y="5" width="17" height="16" rx="2"></rect>
+          <path d="M3.5 9.5h17M8 3v4M16 3v4"></path>
+        </svg>
+        {{ item.date | date: "%-d %b %Y" }}
+      </span>
+      <span class="subject-list__summary">{{ item.data.summary }}</span>
+      <a class="subject-list__link" href="{{ item.url }}">Read minutes <span aria-hidden="true">&rarr;</span></a>
+    </li>
+  {%- endfor -%}
+</ul>

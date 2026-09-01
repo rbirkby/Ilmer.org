@@ -250,6 +250,21 @@ export default function (eleventyConfig) {
     return [...byTag.entries()].map(([tag, tagItems]) => ({ tag, items: tagItems, count: tagItems.length }));
   });
 
+  eleventyConfig.addCollection('vestrymeetings', (collectionApi) => collectionApi.getFilteredByTag('vestrymeetings'));
+
+  eleventyConfig.addCollection('vestryMeetingSubjects', (collectionApi) => {
+    const items = collectionApi.getFilteredByTag('vestrymeetings');
+    const byTag = new Map();
+    for (const item of items) {
+      for (const t of item.data.tags || []) {
+        if (t === 'vestrymeetings') continue;
+        if (!byTag.has(t)) byTag.set(t, []);
+        byTag.get(t).push(item);
+      }
+    }
+    return [...byTag.entries()].map(([tag, tagItems]) => ({ tag, items: tagItems, count: tagItems.length }));
+  });
+
   /** The chronologically previous/next item in a date-sorted collection, relative to `url`. */
   eleventyConfig.addFilter('adjacentItem', (collection, url) => {
     const index = collection.findIndex((item) => item.url === url);

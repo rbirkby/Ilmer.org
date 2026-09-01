@@ -39,7 +39,7 @@
       <h1>{{ title }}</h1>
       <p class="archive-hero__meta">{{ placeName }}{% if startYear %} &middot; {{ startYear }}&ndash;{{ endYear }}{% endif %}</p>
       {% include "archive-flourish.liquid" %}
-      <p class="archive-hero__description">{{ description }}</p>
+      <p class="archive-hero__description">{{ description | renderMarkdownInline }}</p>
       {% unless hideSearch %}
         <form class="archive-search" role="search" aria-label="Search the minutes">
           <label for="archive-search-input" class="sr-only">Search the minutes</label>
