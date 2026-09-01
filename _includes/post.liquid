@@ -64,6 +64,20 @@
           </a>
         {% endif %}
       </nav>
+    {% elsif tags contains 'census' %}
+      {%- assign adjacent = collections.census | adjacentItem: page.url -%}
+      <nav class="minute-pager" aria-label="Census navigation">
+        {% if adjacent.previous %}
+          <a class="minute-pager__link minute-pager__link--prev" href="{{ adjacent.previous.url }}">
+            <span aria-hidden="true">&larr;</span> Previous Census
+          </a>
+        {% endif %}
+        {% if adjacent.next %}
+          <a class="minute-pager__link minute-pager__link--next" href="{{ adjacent.next.url }}">
+            Next Census <span aria-hidden="true">&rarr;</span>
+          </a>
+        {% endif %}
+      </nav>
     {% endif %}
   </section>
 
