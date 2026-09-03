@@ -3473,7 +3473,7 @@
     "title": "First Ilmer Grand Fete",
     "description": "The first Ilmer Grand Fete was held.",
     "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
-    "labels": ["document"]
+    "labels": ["fete", "fundraising"]
   },
   {
     "date": "Jun. 1978",
@@ -3587,6 +3587,13 @@
     "labels": ["church"]
   },
   {
+    "date": "31 May 1982",
+    "title": "Village Fete at Shell Chemicals Farm",
+    "description": "1,000 people attended the last village fete held in the grounds of Shell Chemicals experimental farm on Spring Bank Holiday, raising over £1,200. Sheep shearing and donkey rides were part of the entertainment.",
+    "references": ["Thame Gazette, 4 Jun 1982"],
+    "labels": ["farm", "property", "fete", "fundraising"]
+  },
+  {
     "date": "Jul. 1982",
     "title": "Church Stonework Repaired",
     "description": "The church stonework was repaired.",
@@ -3608,11 +3615,11 @@
     "labels": ["church"]
   },
   {
-    "date": "1983",
+    "date": "30 May 1983",
     "title": "First Village Fete at Skipworths Farm",
-    "description": "The first village fete was held in the grounds of Skipworths farm.",
+    "description": "1,600 people attended the first village fete held in the grounds of Skipworths farm on Spring Bank Holiday, raising £1,600. Cars were parked over 5 acres of land.",
     "references": ["Thame Gazette, 3 Jun 1983"],
-    "labels": ["farm", "property"]
+    "labels": ["farm", "property", "fete", "fundraising"]
   },
   {
     "date": "1984",
@@ -3664,11 +3671,11 @@
     "labels": ["church"]
   },
   {
-    "date": "1988",
+    "date": "23 May 1988",
     "title": "Last Ilmer Fete",
-    "description": "The last Ilmer fete was held.",
-    "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
-    "labels": ["document"]
+    "description": "The last Ilmer fete was held raising £1,100. Only 800 people attended likely due to the wet weather.",
+    "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999", "Bucks Herald, 2 Jun 1988"],
+    "labels": ["fete", "fundraising"]
   },
   {
     "date": "1988",
