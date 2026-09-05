@@ -78,7 +78,6 @@ main.archive {
   }
 
   @media (max-width: 860px) {
-    --hero-band-height: 34rem;
     /* Text has less clear width here than on desktop before it reaches the
        scrim's fade zone, so pull the solid/fade stops in a bit. */
     --hero-scrim-solid: 46%;
@@ -88,7 +87,7 @@ main.archive {
 
   @media (max-width: 640px) {
     /* --hero-band-height is intentionally NOT overridden here — it stays at
-       the 860px breakpoint's 34rem so the photo renders at the same size on
+       the base 34rem so the photo renders at the same size on
        phone as on tablet, rather than shrinking further. Text is capped to
        the left 60vw (see .archive-hero__text below), so the solid zone only
        needs to cover that plus a small buffer — the remaining ~40% is free

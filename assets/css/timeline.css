@@ -1,16 +1,11 @@
 :root {
   --timeline-icon-bg: #f6f8fa;
-  --timeline-card-bg: #ffffff;
-  --timeline-card-shadow: rgba(27, 31, 35, 0.05);
 
   --timeline-title: #24292e;
   --timeline-date-bg: #0366d6;
   --timeline-date-color: #ffffff;
   --timeline-text: #4b5560;
   --timeline-reference: #57606a;
-
-  --timeline-distort: none;
-  --timeline-background-shadow-color: none;
 
   /* Archival theme colors. Parchment style */
   --archive-background: #ecd8b3;
