@@ -4,6 +4,9 @@
       "url": [
         "http://localhost:8000/",
         "http://localhost:8000/about/",
+        "http://localhost:8000/census/",
+        "http://localhost:8000/parish/",
+        "http://localhost:8000/parish/parishcouncil",
         "http://localhost:8000/history/church/",
         "http://localhost:8000/wills/"
       ],
