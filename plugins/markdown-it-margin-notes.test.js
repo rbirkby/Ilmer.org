@@ -22,12 +22,6 @@ test('keeps several markers in one paragraph at their original positions', () =>
   assert.match(html, /Present\.<\/span><\/span><span> Councillors Harper\. <\/span><span class="margin-note">/);
 });
 
-test('handles a marker in the middle of a paragraph', () => {
-  const html = render('Proposed Councillor Claydon [Margin: Re Telephone Pole] Seconded Councillor Williams');
-  assert.match(html, /Claydon <\/span><span class="margin-note">/);
-  assert.match(html, /Re Telephone Pole<\/span><\/span><span> Seconded/);
-});
-
 test('leaves other bracket annotations alone', () => {
   const html = render('[inserted: H. W Lewis] and [Stamp: DISTRICT AUDIT] and [Cover]');
   assert.doesNotMatch(html, /class="margin-note"/);

@@ -25,19 +25,6 @@ test('appends a content hash as the v query parameter', async (t) => {
   assert.equal(filter('/assets/css/style.css'), `/assets/css/style.css?v=${expectedHash(css)}`);
 });
 
-test('changes the hash when file contents change', async (t) => {
-  const dir = await withAssetRoot(t);
-  const file = path.join(dir, 'assets/css/style.css');
-  await writeFile(file, 'body{color:red}');
-  const filter = createCacheBustFilter(dir);
-  const first = filter('/assets/css/style.css');
-  filter.clearCache();
-  await writeFile(file, 'body{color:blue}');
-  const second = filter('/assets/css/style.css');
-  assert.notEqual(first, second);
-  assert.match(second, /\?v=[0-9a-f]{8}$/);
-});
-
 test('clears the per-build cache so the next read sees new bytes', async (t) => {
   const dir = await withAssetRoot(t);
   const file = path.join(dir, 'assets/css/style.css');
@@ -47,7 +34,9 @@ test('clears the per-build cache so the next read sees new bytes', async (t) => 
   await writeFile(file, 'b');
   assert.equal(filter('/assets/css/style.css'), first);
   filter.clearCache();
-  assert.notEqual(filter('/assets/css/style.css'), first);
+  const second = filter('/assets/css/style.css');
+  assert.notEqual(second, first);
+  assert.match(second, /\?v=[0-9a-f]{8}$/);
 });
 
 test('leaves empty values, http(s) URLs, and data URIs unchanged', async (t) => {
