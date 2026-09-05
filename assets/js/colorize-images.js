@@ -277,7 +277,6 @@ function enhanceArticleImages() {
     }
 
     container.classList.add('image-frame');
-    img.classList.add('article-image');
 
     if (tags.includes('left')) {
       container.classList.add('image-frame--left');
@@ -285,10 +284,6 @@ function enhanceArticleImages() {
 
     if (tags.includes('right')) {
       container.classList.add('image-frame--right');
-    }
-
-    if (!tags.includes('left') && !tags.includes('right')) {
-      container.classList.add('image-frame--full');
     }
 
     const lightboxEnabledForImage = lightboxAllEnabled || tags.includes('lightbox');
