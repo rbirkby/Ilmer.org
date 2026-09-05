@@ -20,7 +20,6 @@ class DateUtils {
       'November',
       'December'
     ];
-    this.monthAbbrs = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     this.monthMap = {
       Jan: 1,
       Feb: 2,
@@ -140,24 +139,6 @@ class TimelineAnniversary extends LitElement {
       }, 1700);
     }
   }
-
-  // Static method to register the component
-  static register() {
-    if (!customElements.get('timeline-anniversary')) {
-      customElements.define('timeline-anniversary', TimelineAnniversary);
-    }
-  }
-}
-
-// Anniversary data model (for calculation logic)
-class Anniversary {
-  constructor(event, daysDiff, relativeDateStr, yearsAgo) {
-    this.daysDiff = daysDiff;
-    this.relativeDateStr = relativeDateStr;
-    this.yearsAgo = yearsAgo;
-    this.originalDate = event.date;
-    this.title = event.title;
-  }
 }
 
 // Timeline Anniversaries Web Component using LitElement
@@ -229,7 +210,13 @@ class TimelineAnniversaries extends LitElement {
         const yearsAgo = this.currentYear - parsedDate.year;
         const relativeDateStr = this.dateUtils.getRelativeDateString(daysDiff, this.now);
 
-        anniversaries.push(new Anniversary(event, daysDiff, relativeDateStr, yearsAgo));
+        anniversaries.push({
+          daysDiff,
+          relativeDateStr,
+          yearsAgo,
+          originalDate: event.date,
+          title: event.title
+        });
       }
     });
 
@@ -274,15 +261,8 @@ class TimelineAnniversaries extends LitElement {
       <slot></slot>
     `;
   }
-
-  // Static method to register the component
-  static register() {
-    if (!customElements.get('timeline-anniversaries')) {
-      customElements.define('timeline-anniversaries', TimelineAnniversaries);
-    }
-  }
 }
 
 // Register the web components
-TimelineAnniversary.register();
-TimelineAnniversaries.register();
+customElements.define('timeline-anniversary', TimelineAnniversary);
+customElements.define('timeline-anniversaries', TimelineAnniversaries);
