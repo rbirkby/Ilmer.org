@@ -207,63 +207,31 @@ export default function (eleventyConfig) {
     ancestorCrumb2: (data) => (data.hideAncestorCrumb2 ? undefined : data.ancestorCrumb2Source)
   });
 
-  eleventyConfig.addCollection('parishCouncilSubjects', (collectionApi) => {
-    const items = collectionApi.getFilteredByTag('minutes');
+  function subjectsForCollection(collectionApi, baseTag) {
     const byTag = new Map();
-    for (const item of items) {
-      for (const t of item.data.tags || []) {
-        if (t === 'minutes') continue;
-        if (!byTag.has(t)) byTag.set(t, []);
-        byTag.get(t).push(item);
+    for (const item of collectionApi.getFilteredByTag(baseTag)) {
+      for (const tag of item.data.tags || []) {
+        if (tag === baseTag) continue;
+        if (!byTag.has(tag)) byTag.set(tag, []);
+        byTag.get(tag).push(item);
       }
     }
-    return [...byTag.entries()].map(([tag, tagItems]) => ({ tag, items: tagItems, count: tagItems.length }));
-  });
+    return [...byTag.entries()].map(([tag, items]) => ({ tag, items, count: items.length }));
+  }
 
-  eleventyConfig.addCollection('parishMeetingSubjects', (collectionApi) => {
-    const items = collectionApi.getFilteredByTag('parishmeetings');
-    const byTag = new Map();
-    for (const item of items) {
-      for (const t of item.data.tags || []) {
-        if (t === 'parishmeetings') continue;
-        if (!byTag.has(t)) byTag.set(t, []);
-        byTag.get(t).push(item);
-      }
-    }
-    return [...byTag.entries()].map(([tag, tagItems]) => ({ tag, items: tagItems, count: tagItems.length }));
-  });
+  for (const [name, baseTag] of [
+    ['parishCouncilSubjects', 'minutes'],
+    ['parishMeetingSubjects', 'parishmeetings'],
+    ['ilmerParishMeetingSubjects', 'ilmerparishmeetings'],
+    ['vestryMeetingSubjects', 'vestrymeetings']
+  ]) {
+    eleventyConfig.addCollection(name, (collectionApi) => subjectsForCollection(collectionApi, baseTag));
+  }
 
   eleventyConfig.addCollection('ilmerparishmeetings', (collectionApi) =>
     collectionApi.getFilteredByTag('ilmerparishmeetings')
   );
-
-  eleventyConfig.addCollection('ilmerParishMeetingSubjects', (collectionApi) => {
-    const items = collectionApi.getFilteredByTag('ilmerparishmeetings');
-    const byTag = new Map();
-    for (const item of items) {
-      for (const t of item.data.tags || []) {
-        if (t === 'ilmerparishmeetings') continue;
-        if (!byTag.has(t)) byTag.set(t, []);
-        byTag.get(t).push(item);
-      }
-    }
-    return [...byTag.entries()].map(([tag, tagItems]) => ({ tag, items: tagItems, count: tagItems.length }));
-  });
-
   eleventyConfig.addCollection('vestrymeetings', (collectionApi) => collectionApi.getFilteredByTag('vestrymeetings'));
-
-  eleventyConfig.addCollection('vestryMeetingSubjects', (collectionApi) => {
-    const items = collectionApi.getFilteredByTag('vestrymeetings');
-    const byTag = new Map();
-    for (const item of items) {
-      for (const t of item.data.tags || []) {
-        if (t === 'vestrymeetings') continue;
-        if (!byTag.has(t)) byTag.set(t, []);
-        byTag.get(t).push(item);
-      }
-    }
-    return [...byTag.entries()].map(([tag, tagItems]) => ({ tag, items: tagItems, count: tagItems.length }));
-  });
 
   /** The chronologically previous/next item in a date-sorted collection, relative to `url`. */
   eleventyConfig.addFilter('adjacentItem', (collection, url) => {
