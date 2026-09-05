@@ -413,18 +413,7 @@ section.footnotes {
   }
 }
 
-table.preformatted {
-  margin-left: -130px;
-  tr {
-    background-color: inherit;
-    td {
-      white-space: nowrap;
-      border-width: 0px;
-    }
-  }
-}
-
-table:not(.preformatted) {
+table {
   width: 100%;
   border-collapse: collapse;
   font-size: 70%;

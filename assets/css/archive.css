@@ -1110,7 +1110,7 @@ main.archive blockquote {
   border-left-color: var(--archive-green);
 }
 
-main.archive table:not(.preformatted) {
+main.archive table {
   border-radius: 0.6rem;
   overflow: hidden;
 
@@ -1147,7 +1147,7 @@ main.archive table:not(.preformatted) {
    page. Applied unconditionally (no viewport breakpoint): whether that point
    is reached depends on how many columns a given year's table has, not on a
    fixed screen width. */
-main.archive.census table:not(.preformatted) {
+main.archive.census table {
   display: block;
   max-width: 100%;
   overflow-x: auto;
