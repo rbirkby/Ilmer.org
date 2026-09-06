@@ -45,3 +45,27 @@ Mr Fritz Kingham was described as the churchwarden. The note was written by Rev 
 Avenue, High Wycombe.
 
 **Albert Richardson** was born in 1895, the son of Alfred and Alice Richardson. Both father and son worked as farm labourers at Manor Farm, Ilmer, for Alfred Hill. Albert served as a Corporal in the 13th Kings Royal Rifles Corps and [died of his wounds](https://buckinghamshireremembers.org.uk/php_scripts/Cas_Print.php?id=3955) in 11 September 1918 at the age of 23 years. Albert Richardson was a bell ringer and active church worker and a special memorial service was held for him at Ilmer Church. He is buried at Ruyaulcourt Military Cemetery, Pas de Calais.
+
+## Great War Memorial Tablet
+
+The [Ilmer Great War memorial tablet](https://memorials.iwm.org.uk/memorial/8294) on the south wall inside St Peter's was approved in the vestry minutes of [November 1919](/parish/vestrymeeting/1919-11-15/). It is made of Grey Hopton wood stone[^1] and erected after a 30th Jan. 1920 faculty was granted[^2]. It was made to a design of [Miss E.M. Rope](https://en.wikipedia.org/wiki/Ellen_Mary_Rope) of 404 Fulham Road, London.
+
+> Agreed to by the Oxford Diocesan\
+> War Memorials Committee subject\
+> to the slight alteration in the design.\
+> viz: that the top line of the\
+> tablet be made straight. - the\
+> curved line being done away with.\
+> and the little cross omitted *\
+> -Lettering much commended.\
+> C.O. Skilbeck\
+> Member of Oxford Diocesan\
+> War Memorials Committee.\
+> 22 Jan 1920
+>
+> \* These alterations
+> are being carried out.
+
+[^1]: [NADFAS report, 1987/1989](<https://heritagesearch.oxfordshire.gov.uk/records/DIOC/1/C/5/1587(2)>)
+
+[^2]: [Faculties, Oxfordshire History Centre](https://heritagesearch.oxfordshire.gov.uk/records/DIOC/1/C/5/1484)
