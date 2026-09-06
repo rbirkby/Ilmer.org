@@ -1,8 +1,13 @@
 {
-  "ancestorCrumb1Source": { "label": "Parish Archive", "url": "/parish/" },
-  "ancestorCrumb2Source": { "label": "Parish Council Minutes", "url": "/parish/parishcouncil/" },
+  "ancestorCrumb1Source": {
+    "label": "Parish Archive",
+    "url": "/parish/"
+  },
+  "ancestorCrumb2Source": {
+    "label": "Parish Council Minutes",
+    "url": "/parish/parishcouncil/"
+  },
   "breadcrumbUseDate": true,
   "headerUseDate": true,
-  "useArchiveCss": true,
   "collectionName": "minutes"
 }

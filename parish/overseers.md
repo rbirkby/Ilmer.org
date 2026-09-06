@@ -5,7 +5,6 @@ description: 'The overseers of Ilmer'
 category: history
 tags: []
 image: images/parishcouncil-hero.avif
-useArchiveCss: true
 ancestorCrumb1Source: { 'label': 'Parish Archive', 'url': '/parish/' }
 ---
 

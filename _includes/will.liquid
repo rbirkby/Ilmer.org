@@ -1,115 +1,5 @@
 {% include "head" %}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link
-  rel="preconnect"
-  href="https://fonts.gstatic.com"
-  crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
-
-<style>
-  @font-face {
-    font-family: 'Joscelyn';
-    src: url("/assets/fonts/Joscelyn.woff2");
-  }
-
-  h2 {
-    text-align: right;
-  }
-
-  main {
-    background-color: #fbf2e1;
-  }
-
-  .will-body {
-    {% if script == "secretary-hand" %}
-      font-family: "Joscelyn";
-    {% endif %}
-    {% if script == "round-hand" %}
-      font-family: "Pinyon Script";
-      font-size: 1.5em;
-    {% endif %}
-
-    line-height: 2em;
-    transition: opacity 0.1s ease;
-    white-space: nowrap;
-    /* overflow: hidden; */
-  }
-
-  .will-body.modern {
-    font-family: inherit;
-    letter-spacing: 2px;
-    font-size: inherit;
-  }
-
-  .font-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-    margin: 0 0 1.5rem;
-    font-size: 1.4rem;
-    color: #5a4020;
-    cursor: pointer;
-    user-select: none;
-
-    & input[type="checkbox"] {
-      position: absolute;
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    & .toggle-label {
-      transition: opacity 0.2s;
-    }
-
-    & .toggle-label--secretary {
-      opacity: 1;
-    }
-    & .toggle-label--modern {
-      opacity: 0.45;
-    }
-
-     &:has(input:checked) .toggle-label--secretary {
-      opacity: 0.45;
-    }
-     &:has(input:checked) .toggle-label--modern {
-      opacity: 1;
-    }
-  }
-
-  .toggle-pill {
-    position: relative;
-    width: 4.4rem;
-    height: 2.4rem;
-    background: #c9a05a;
-    border-radius: 9999px;
-    transition: background 0.1s;
-    flex-shrink: 0;
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0.3rem;
-      left: 0.3rem;
-      width: 1.8rem;
-      height: 1.8rem;
-      background: #fff;
-      border-radius: 50%;
-      transition: transform 0.1s ease;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-    }
-
-    .font-toggle:has(input:checked) & {
-      background: #7a9e7e;
-
-      &::after {
-        transform: translateX(2rem);
-      }
-    }
-  }
-</style>
-
 {% include "site-header" %}
 <main>
   <section class="article">
@@ -139,7 +29,7 @@
       </label>
     {% endif %}
 
-    <div class="will-body">
+    <div class="will-body" data-script="{{ script | escape }}">
       {{ content }}
     </div>
 

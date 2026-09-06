@@ -7,7 +7,6 @@ script: secretary-hand
 transcriber: Gemini 3 Flash Preview
 explanation: /wills/james-withington-explanation
 tags: [vicar, will]
-useArchiveCss: true
 ---
 
 Dns Jacobus Withington v

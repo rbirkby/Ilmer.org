@@ -5,7 +5,6 @@ description: 'An abandoned hamlet, once home to 33 people, lies secluded in unde
 category: history
 tags: [farming, post]
 image: images/lockington-photo.jpg
-useArchiveCss: true
 ---
 
 Lockington, or sometimes Lookington, was situated south-east of Ilmer in what is now a copse by the side of a footpath.
@@ -47,7 +46,7 @@ wrote about it being 50 foot deep in the following magazine article:
 
 1948 Aerofilms photograph showing Lockington when Charles was resident.
 
-<script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="EAW017640" style="width: 100%; display: inline-flex; aspect-ratio: 4600/4106; max-width: 4600px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
+<script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="EAW017640" style="aspect-ratio: 4600/4106; max-width: 4600px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
 
 #### Memories of Charles Belgrove
 
@@ -98,7 +97,7 @@ Bob Uglow, farmer of A J Walker's Sandpit farm in Bledlow/Holly Green remembered
 Note: The original 1861 census records Mary Allen being 99 years old, but based on prior census transcripts this is incorrect and Mary would have been 90 years old.
 
 <table>
-  <thead style="position:sticky; top:0;">
+  <thead class="table-header--sticky">
     <tr>
       <th>Year</th>
       <th>Dwelling number</th>

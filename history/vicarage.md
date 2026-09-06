@@ -5,7 +5,6 @@ description: 'Historical research from 1998.'
 category: history
 tags: [vicarage, post]
 image: images/church-and-vicarage-1967.avif
-useArchiveCss: true
 lightbox: true
 ---
 

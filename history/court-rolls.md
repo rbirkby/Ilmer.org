@@ -5,7 +5,7 @@ description: Court Rolls for Ilmer, 1392-1554
 category: courts-and-crimes
 tags: [courts-and-crimes]
 image: images/quarter-sessions.avif
-useArchiveCss: true
+articleClass: article--fitted-transcript
 ancestorCrumb1Source: { label: 'Courts and Crime', url: '/history/courts-and-crime/' }
 ---
 
@@ -16,19 +16,6 @@ Court Rolls are official records of manor court proceedings. They document decis
 The Court Rolls document itself was owned by Thomas Peterson Junior. Subsequently, it was owned by William Fleetwood (1535-1594), recorder of London. They were auctioned in 1904 and again in 1912 by Sotherby's. Finally, they were donated to the [Free Library of Philadelphia](https://discovery.nationalarchives.gov.uk/details/r/N14247035) by [Hampton L Carson](<https://en.wikipedia.org/wiki/Hampton_L._Carson_(lawyer)>).
 
 Translated from latin below.
-
-<style>
-  section.article hr~p, section.article hr~p > span:not(.margin-note) {
-    text-fit: grow per-line-all 500%;
-    font-size: 8px;
-    margin: 2px 0 2px 0;
-    display:block;
-  }
-  section.article hr~p > span.margin-note {
-    text-fit: none;
-    font-size: 20px;
-  }
-</style>
 
 ---
 

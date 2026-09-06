@@ -10,12 +10,26 @@
   {% if content contains 'bwphoto' or content contains '#lightbox' or lightbox %}
     <script type="module" src="{{ '/assets/js/colorize-images.js' | cacheBust }}"></script>
   {% endif %}
-  {% if layout == 'archive' or layout == 'parish-hub' or useArchiveCss %}
+  {% if layout == 'archive' or layout == 'parish-hub' or layout == 'post' %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ '/assets/css/archive.css' | cacheBust }}" media="all">
   {% endif %}
+
+  {% case layout %}
+    {% when 'home' %}
+      <link rel="stylesheet" href="{{ '/assets/css/home.css' | cacheBust }}" media="all">
+    {% when 'will' %}
+      {% if script == 'round-hand' %}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
+      {% endif %}
+      <link rel="stylesheet" href="{{ '/assets/css/will.css' | cacheBust }}" media="all">
+    {% when 'timeline' %}
+      <link rel="stylesheet" href="{{ '/assets/css/timeline.css' | cacheBust }}" media="all">
+  {% endcase %}
 
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="canonical" href="{{ site.url }}{{ url }}">
@@ -59,4 +73,4 @@
   }
   </script>
 </head>
-<body>
+<body class="layout-{{ layout | escape }}">

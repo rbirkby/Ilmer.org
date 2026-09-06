@@ -5,7 +5,6 @@ description: 'Monumental Inscriptions of St Peters, Ilmer'
 category: history
 tags: [church, history]
 image: images/church-watercolour.jpg
-useArchiveCss: true
 ancestorCrumb1Source: { label: St Peter's Church, url: '/history/st-peters/' }
 ---
 

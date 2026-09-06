@@ -1,13 +1,13 @@
 {% include "head" %}
 
 {% include "site-header" %}
-<main{% if useArchiveCss %} class="archive{% if tags contains "census" %} census{% endif %}"{% endif %}>
+<main class="archive{% if tags contains "census" %} census{% endif %}">
   {% if image %}
     <figure>
       <img src="{{ image | sitePath }}" alt="{{ title }}">
     </figure>
   {% endif %}
-  <section class="article" data-lightbox-all="{{ lightbox | default: false }}">
+  <section class="article{% if articleClass %} {{ articleClass | escape }}{% endif %}" data-lightbox-all="{{ lightbox | default: false }}">
 
     {% include "breadcrumb.liquid" %}
 
@@ -23,10 +23,10 @@
       <h1 class="minute-heading">{{ subjectHeading }}</h1>
       <p class="archive-subheading">{{ ancestorCrumb2.label }} &middot; Subject archive</p>
       {% include "archive-flourish.liquid" %}
-    {% elsif headerUseCensus %}
-      {% comment %}Header is rendered by the page's own content, below.{% endcomment %}
+      {% elsif headerUseCensus %}
+    {% comment %}Header is rendered by the page's own content, below.{% endcomment %}
     {% else %}
-      <h1{% if useArchiveCss %} class="minute-heading"{% endif %}>{{ title }}</h1>
+      <h1 class="minute-heading">{{ title }}</h1>
 
       <p>{{ description }}</p>
     {% endif %}
@@ -40,7 +40,11 @@
             {% for o in occupations %}
               <li>
                 <span class="census-occupations__label">{{ o.occupation }}</span>
-                <span class="census-occupations__count">{{ o.count }} <span class="sr-only">{% if o.count == 1 %}person{% else %}people{% endif %}</span></span>
+                <span class="census-occupations__count">{{ o.count }}
+                  <span class="sr-only">
+                    {% if o.count == 1 %}person{% else %}people{% endif %}
+                  </span>
+                </span>
               </li>
             {% endfor %}
           </ul>
@@ -55,12 +59,14 @@
       <nav class="minute-pager" aria-label="Minute navigation">
         {% if adjacent.previous %}
           <a class="minute-pager__link minute-pager__link--prev" href="{{ adjacent.previous.url }}">
-            <span aria-hidden="true">&larr;</span> Previous Minute
+            <span aria-hidden="true">&larr;</span>
+            Previous Minute
           </a>
         {% endif %}
         {% if adjacent.next %}
           <a class="minute-pager__link minute-pager__link--next" href="{{ adjacent.next.url }}">
-            Next Minute <span aria-hidden="true">&rarr;</span>
+            Next Minute
+            <span aria-hidden="true">&rarr;</span>
           </a>
         {% endif %}
       </nav>
@@ -69,12 +75,14 @@
       <nav class="minute-pager" aria-label="Census navigation">
         {% if adjacent.previous %}
           <a class="minute-pager__link minute-pager__link--prev" href="{{ adjacent.previous.url }}">
-            <span aria-hidden="true">&larr;</span> Previous Census
+            <span aria-hidden="true">&larr;</span>
+            Previous Census
           </a>
         {% endif %}
         {% if adjacent.next %}
           <a class="minute-pager__link minute-pager__link--next" href="{{ adjacent.next.url }}">
-            Next Census <span aria-hidden="true">&rarr;</span>
+            Next Census
+            <span aria-hidden="true">&rarr;</span>
           </a>
         {% endif %}
       </nav>

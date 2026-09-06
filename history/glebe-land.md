@@ -5,7 +5,6 @@ description: 'The history of the Church Close'
 category: history
 tags: [church, history]
 image: images/church-drawing2-unknown-1978.avif
-useArchiveCss: true
 ancestorCrumb1Source: { label: St Peter's Church, url: '/history/st-peters/' }
 ---
 
@@ -55,14 +54,14 @@ In contemporary annual reports for the Princes Risborough with Ilmer PCC, Church
 
 #### 2024 - Google
 
-<img alt="Google satellite image 2024" style="height:400px; object-fit: contain;" src="/images/churchclose-2024.avif">
+<img alt="Google satellite image 2024" class="satellite-image" src="/images/churchclose-2024.avif">
 
 #### 2003 - Google
 
-<img alt="Google satellite image 2003" style="height:400px; object-fit: contain;"  src="/images/churchclose-2003.avif">
+<img alt="Google satellite image 2003" class="satellite-image" src="/images/churchclose-2003.avif">
 
 #### 1948 - Aerofilms
 
 ![Aerofilms 1948](/images/aerofilms-churchclose-1948.avif)
 
-<script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="EAW017638" style="width: 100%; display: inline-flex; aspect-ratio: 4780/3959; max-width: 4780px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
+<script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="EAW017638" style="aspect-ratio: 4780/3959; max-width: 4780px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->

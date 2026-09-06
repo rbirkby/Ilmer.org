@@ -6,7 +6,6 @@ description: 'Historic censuses of Ilmer.'
 category: history
 tags: [post]
 image: images/census.avif
-useArchiveCss: true
 headerUseCensus: true
 ---
 

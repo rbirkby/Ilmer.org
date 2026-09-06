@@ -6,7 +6,6 @@ category: history
 tags: [church, history]
 image: images/church-linedrawing-postcard.avif
 lightbox: true
-useArchiveCss: true
 ancestorCrumb1Source: { label: St Peter's Church, url: '/history/st-peters/' }
 ---
 
@@ -195,13 +194,13 @@ The North West corner of the church exterior has a carved [Ordnance Survey Bench
 
 ## From the Historic England Archive
 
-<script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="bb57_01337" theme="aco" style="width: 100%; display: inline-flex; aspect-ratio: 5035/3714; max-width: 5035px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
+<script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="bb57_01337" theme="aco" style="aspect-ratio: 5035/3714; max-width: 5035px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
 
 This historic photograph reveals details of the church's 19th-century interior arrangements. The nave contained a small stove for heating, alongside pendant oil lamps that provided lighting before electrification.
 
 ---
 
-<script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="bb98_10627" theme="aco" style="width: 100%; display: inline-flex; aspect-ratio: 5153/3677; max-width: 5153px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
+<script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="bb98_10627" theme="aco" style="aspect-ratio: 5153/3677; max-width: 5153px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
 
 ## St Peter's Church, Ilmer pamphlet
 

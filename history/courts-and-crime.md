@@ -5,7 +5,6 @@ description: 'Courts, crime and misdemeanours.'
 category: history
 tags: [post]
 image: images/quarter-sessions.avif
-useArchiveCss: true
 ---
 
 <ul>

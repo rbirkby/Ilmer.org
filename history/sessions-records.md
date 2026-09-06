@@ -5,7 +5,6 @@ description: Calendared Quarter Sessions for Ilmer, 1680-1731
 category: courts-and-crimes
 tags: [courts-and-crimes]
 image: images/quarter-sessions.avif
-useArchiveCss: true
 ancestorCrumb1Source: { label: 'Courts and Crime', url: '/history/courts-and-crime/' }
 ---
 

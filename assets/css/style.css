@@ -2,18 +2,26 @@
 @import url('/assets/css/github-colors-light.css');
 
 :root {
-  --search-snippet-primary-color: #2f4b30;
-  --search-snippet-primary-hover: #1a2f22;
-  --search-snippet-background: #fbf8f1;
-  --search-snippet-surface: #f6f1e6;
-  --search-snippet-hover-background: #f0e9d8;
-  --search-snippet-text-color: #1d1d1a;
-  --search-snippet-text-secondary: #766c5c;
-  --search-snippet-border-color: #e2d8c1;
-  --search-snippet-focus-ring: #2f4b3040;
-  --search-snippet-font-family:
+  --archive-cream: #f6f1e6;
+  --archive-card: #fbf8f1;
+  --archive-border: #e2d8c1;
+  --archive-ink: #1d1d1a;
+  --archive-green: #2f4b30;
+  --archive-green-dark: #1a2f22;
+  --archive-muted: #766c5c;
+  --font-body:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
     sans-serif;
+  --search-snippet-primary-color: var(--archive-green);
+  --search-snippet-primary-hover: var(--archive-green-dark);
+  --search-snippet-background: var(--archive-card);
+  --search-snippet-surface: var(--archive-cream);
+  --search-snippet-hover-background: #f0e9d8;
+  --search-snippet-text-color: var(--archive-ink);
+  --search-snippet-text-secondary: var(--archive-muted);
+  --search-snippet-border-color: var(--archive-border);
+  --search-snippet-focus-ring: #2f4b3040;
+  --search-snippet-font-family: var(--font-body);
   --search-snippet-border-radius: 0.6rem;
 }
 
@@ -27,9 +35,7 @@ body {
   flex-direction: column;
   min-height: 100%;
   margin: 0;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-body);
   font-size: 1.5rem;
   line-height: 1.6em;
   font-style: normal;
@@ -89,6 +95,20 @@ section.article {
     width: 100%;
   }
 
+  & .satellite-image {
+    height: 400px;
+    object-fit: contain;
+  }
+
+  & smartframe-embed {
+    width: 100%;
+    display: inline-flex;
+  }
+
+  & .map-embed {
+    border: 1px solid black;
+  }
+
   & p:has(img),
   & p.image-frame {
     position: relative;
@@ -98,6 +118,40 @@ section.article {
 
   & p.image-frame img {
     display: block;
+  }
+
+  & p:has(img[src*='domesday-buk-04']) {
+    --folio-w: 832;
+    --folio-h: 1123;
+    --hole-left: 100;
+    --hole-top: 710;
+    --hole-right: 452;
+    --hole-bottom: 808;
+    --hole-x: calc(var(--hole-left) / var(--folio-w) * 100%);
+    --hole-y: calc(var(--hole-top) / var(--folio-h) * 100%);
+    --hole-w: calc((var(--hole-right) - var(--hole-left)) / var(--folio-w) * 100%);
+    --hole-h: calc((var(--hole-bottom) - var(--hole-top)) / var(--folio-h) * 100%);
+
+    & img {
+      display: block;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgb(0 0 0 / 0.3);
+      pointer-events: none;
+      mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+      mask-size:
+        100% 100%,
+        var(--hole-w) var(--hole-h);
+      mask-position:
+        0 0,
+        var(--hole-x) var(--hole-y);
+      mask-repeat: no-repeat;
+      mask-composite: exclude;
+    }
   }
 
   & p:has(img[src*='#right']),
@@ -177,12 +231,45 @@ section.article {
   --margin-note-gap: 1.6rem;
   --margin-note-left-extra: 0px;
   --margin-note-right-extra: 0px;
-}
-
-section.article {
   max-width: calc(clamp(720px, 60vw, 840px) + var(--margin-note-left-extra) + var(--margin-note-right-extra));
   padding-left: var(--margin-note-left-extra);
   padding-right: var(--margin-note-right-extra);
+}
+
+section.article:where(.article--fitted-transcript) {
+  & hr ~ p,
+  & hr ~ p > span:not(.margin-note) {
+    text-fit: grow per-line-all 500%;
+    font-size: 8px;
+    margin: 2px 0;
+    display: block;
+  }
+
+  & hr ~ p > span.margin-note {
+    text-fit: none;
+    font-size: 20px;
+  }
+}
+
+#ilmer-field-map {
+  height: 560px;
+}
+
+.table-header--sticky {
+  position: sticky;
+  top: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 section.article:has(.margin-note:not(.margin-note--right)) {
@@ -247,9 +334,7 @@ section.article:has(.margin-note--right) {
 nav.breadcrumb-trail {
   margin: 0 0 1.6rem;
   overflow-x: auto;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-body);
   font-size: 1.4rem;
 
   & ol {
@@ -384,7 +469,7 @@ blockquote {
 hr {
   margin: 2.4em 0;
   border: 0;
-  border-top: 2px solid #2f4b30;
+  border-top: 2px solid var(--archive-green);
 }
 
 h4 {
@@ -393,7 +478,7 @@ h4 {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 2.4rem;
   font-weight: 500;
-  color: #2f4b30;
+  color: var(--archive-green);
 }
 
 sup.footnote-ref a {

@@ -5,7 +5,6 @@ description: 'A “Doomsday” survey of life in the villages of the Vale of Ayl
 category: history
 tags: [history, post]
 image: images/chronicle-of-the-vale.jpg
-useArchiveCss: true
 ---
 
 The Friends of the Vale of Aylesbury, 1986.

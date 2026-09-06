@@ -6,7 +6,6 @@ category: history
 tags: [history, post, property]
 image: images/ilmerhouse1932.jpg
 lightbox: true
-useArchiveCss: true
 ---
 
 Born in September 1873 to parents David and Elizabeth, **Albert Goodchild** was the 7th of 9 children. An elder brother had died in infancy. At the 1871 census, his parents were living in Longwick, but by the time of Albert's birth, they had moved to the Old Vicarage in Ilmer.
@@ -48,7 +47,7 @@ William White didn't stay long as by 1936 he sold his Ilmer estate. Ilmer House 
 
 Elizabeth Goodchild sold the Old Vicarage in 1946, after her son Douglas had been declared bankrupt due to his failed nursery enterprise.
 
-<script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="EAW017636" style="width: 100%; display: inline-flex; aspect-ratio: 4710/4004; max-width: 4710px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
+<script async src="https://static.smartframe.io/embed.js"></script><smartframe-embed customer-id="27025fea9afa38753501b02dbd8a40f2" image-id="EAW017636" style="aspect-ratio: 4710/4004; max-width: 4710px;"></smartframe-embed><!-- https://smartframe.io/embedding-support -->
 
 Even though Harold Attenborough had failing eyesight, he still helped out on his son's farm putting tops on the bottles of milk. He died in 1968 aged 88. Within 6 months, Ilmer House had been sold to **William Greaves Underwood** and his then-wife Susan. Susan's parents Alan Philip Lloyd Cogswell, known as Coggie and (Audrey) Sylvia Cogswell also lived at Ilmer House with their son-in-law and daughter. Alan was an anaesthetist and lawyer, whilst Sylvia was an expert and author in orthoptics under her maiden name of Jackson. During this time, Ilmer House also had a flat which for a period was the home of the Spittles family - Peter Spittles worked on the [Demonstration Farm](/history/demonstration-farm). In the 1970s, the Village Fete was held at Ilmer House with parking at the Shellstar offices. This stopped when the fete became too successful with around 1,500 visitors following a mention on a BBC Radio 2 show.
 

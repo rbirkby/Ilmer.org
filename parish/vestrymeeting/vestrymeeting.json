@@ -1,8 +1,13 @@
 {
-  "ancestorCrumb1Source": { "label": "Parish Archive", "url": "/parish/" },
-  "ancestorCrumb2Source": { "label": "Vestry Meeting Minutes", "url": "/parish/vestrymeeting/" },
+  "ancestorCrumb1Source": {
+    "label": "Parish Archive",
+    "url": "/parish/"
+  },
+  "ancestorCrumb2Source": {
+    "label": "Vestry Meeting Minutes",
+    "url": "/parish/vestrymeeting/"
+  },
   "breadcrumbUseDate": true,
   "headerUseDate": true,
-  "useArchiveCss": true,
   "collectionName": "vestrymeetings"
 }

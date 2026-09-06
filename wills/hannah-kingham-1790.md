@@ -6,7 +6,6 @@ category: wills
 script: round-hand
 transcriber: Gemini 3 Flash Preview
 tags: [person, will]
-useArchiveCss: true
 ---
 
 In the name of God amen I Hannah\

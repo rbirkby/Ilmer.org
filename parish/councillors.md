@@ -5,7 +5,6 @@ description: 'The parish councillors of Ilmer after the creation of modern paris
 category: history
 tags: []
 image: images/parishcouncil-hero.avif
-useArchiveCss: true
 ancestorCrumb1Source: { 'label': 'Parish Archive', 'url': '/parish/' }
 ---
 

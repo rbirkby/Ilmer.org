@@ -6,7 +6,6 @@ category: history
 tags: [farm, fatality, death]
 image: images/coldharbour-barn.jpg
 lightbox: true
-useArchiveCss: true
 ancestorCrumb1Source: { label: 'Fields and Farming', url: '/history/fields-farming/' }
 ---
 

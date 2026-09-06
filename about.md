@@ -5,7 +5,6 @@ title: About Ilmer
 description: About Ilmer
 tags: [about, ilmer, buckinghamshire]
 image: images/soft-trees.jpg
-useArchiveCss: true
 ---
 
 Ilmer is a small village of 31 houses, 3 farms and church situated ½ mile south of the Thame to Princes Risborough road between Kingsey and Longwick.

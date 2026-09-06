@@ -5,7 +5,6 @@ description: '12th century church in Ilmer, Buckinghamshire, England.'
 category: history
 tags: [post]
 image: images/VicarageChurch.avif
-useArchiveCss: true
 ---
 
 <ul>

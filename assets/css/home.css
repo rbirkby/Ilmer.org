@@ -1,0 +1,110 @@
+:where(.layout-home) {
+  & p {
+    margin: 0 0 1.5em;
+  }
+
+  & main section {
+    display: grid;
+    justify-content: space-between;
+    gap: 30px;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    @media (max-width: 980px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 680px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  & .banner {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 10vw 0;
+    text-align: center;
+    color: #fff;
+
+    & p {
+      margin: 5px 0 0;
+      font-size: 2.4rem;
+      opacity: 0.7;
+    }
+  }
+
+  & h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 4rem;
+    line-height: 1.3em;
+  }
+
+  & article {
+    display: grid;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid #e8e4d9;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.06);
+    transition:
+      box-shadow 0.15s ease,
+      transform 0.15s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+      transform: translateY(-2px);
+    }
+
+    & a {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto 1fr;
+      grid-template-areas: 'image image' 'text arrow';
+      text-decoration: none;
+      color: inherit;
+    }
+
+    & header {
+      grid-area: image;
+    }
+
+    & header img {
+      margin: 0;
+      display: block;
+      max-width: 100%;
+      width: 100%;
+      height: 200px;
+      background: #5b7a81 no-repeat center center;
+      background-size: cover;
+      object-fit: cover;
+    }
+
+    & .card-text {
+      grid-area: text;
+      padding: 18px 0 18px 20px;
+    }
+
+    & h2 {
+      color: #15171a;
+      margin: 0 0 8px;
+      padding: 0;
+      font-size: 1.9rem;
+    }
+
+    & p {
+      margin: 0;
+      color: #55606b;
+      font-size: 1.5rem;
+      line-height: 1.5;
+    }
+
+    & .card-arrow {
+      grid-area: arrow;
+      align-self: end;
+      padding: 0 20px 18px 12px;
+      color: var(--archive-green);
+      font-size: 1.7rem;
+      line-height: 1;
+    }
+  }
+}

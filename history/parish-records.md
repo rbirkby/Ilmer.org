@@ -5,7 +5,6 @@ description: "Registers and records of St Peter's Ilmer"
 category: history
 tags: [church, history]
 image: images/IlmerChurch-RoyManser-1984.avif
-useArchiveCss: true
 ancestorCrumb1Source: { label: St Peter's Church, url: '/history/st-peters/' }
 ---
 

@@ -5,7 +5,6 @@ description: 'Opened in 1906, the railway features prominently in the village.'
 category: history
 tags: [railway, bridge, halt, post]
 image: images/ilmer-halt-ticket.jpg
-useArchiveCss: true
 ---
 
 The bridge was constructed in 1904 and the line opened on 2nd April 1906. This [photo](https://www.railwayarchive.org.uk/Lpages/html/L3327.html) shows the newly constructed bridge:
