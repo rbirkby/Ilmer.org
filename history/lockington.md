@@ -96,7 +96,7 @@ Bob Uglow, farmer of A J Walker's Sandpit farm in Bledlow/Holly Green remembered
 
 Note: The original 1861 census records Mary Allen being 99 years old, but based on prior census transcripts this is incorrect and Mary would have been 90 years old.
 
-<table>
+<table class="census-table">
   <thead class="table-header--sticky">
     <tr>
       <th>Year</th>
