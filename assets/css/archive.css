@@ -1204,6 +1204,11 @@ main.archive .census-scroll table {
   margin: 0 0 2.4rem;
   padding: 1.8rem 2rem 1.4rem;
 
+  &:focus-visible {
+    outline: 2px solid var(--archive-green);
+    outline-offset: 2px;
+  }
+
   & h2 {
     margin: 0 0 1.2rem;
     font-size: 2rem;

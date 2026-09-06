@@ -543,7 +543,7 @@ table {
   max-height: min(85vh, 600px);
   background: rgb(0 0 0 / 0.95);
   backdrop-filter: blur(5px);
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -565,6 +565,7 @@ table {
 }
 
 #image-lightbox:popover-open {
+  display: flex;
   pointer-events: auto;
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
