@@ -10,7 +10,7 @@
   {% if content contains 'bwphoto' or content contains '#lightbox' or lightbox %}
     <script type="module" src="{{ '/assets/js/colorize-images.js' | cacheBust }}"></script>
   {% endif %}
-  {% if layout == 'archive' or layout == 'parish-hub' or layout == 'post' %}
+  {% if layout == 'archive' or layout == 'parish-hub' or layout == 'post' or layout == '404' %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">

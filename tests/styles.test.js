@@ -12,7 +12,11 @@ test('archive stylesheet loading is determined by layout without a page flag', a
   const head = readFileSync(new URL('_includes/head.liquid', root), 'utf8');
   for (const layout of ['post', 'archive', 'parish-hub', 'home', 'will', 'timeline', '404']) {
     const html = await liquid.parseAndRender(head, { layout, site: {}, tags: [] });
-    assert.equal(html.includes('/assets/css/archive.css'), ['post', 'archive', 'parish-hub'].includes(layout), layout);
+    assert.equal(
+      html.includes('/assets/css/archive.css'),
+      ['post', 'archive', 'parish-hub', '404'].includes(layout),
+      layout
+    );
   }
 });
 
