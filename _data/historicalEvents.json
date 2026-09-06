@@ -2257,8 +2257,10 @@
   {
     "date": "12 Dec. 1915",
     "title": "Death of Albert Lay in WWI",
-    "description": "Albert Lay, aged 20, of Ilmer died in Flanders while serving in the Oxford & Bucks Light Infantry.",
-    "references": ["Great War records"],
+    "description": "Albert Lay, aged 20, of Ilmer accidentally killed in Flanders while serving in the Oxford & Bucks Light Infantry.",
+    "references": [
+      "[Great War records](https://www.cwgc.org/find-records/find-war-dead/casualty-details/158905/albert-lay/)"
+    ],
     "labels": ["death", "land", "person"]
   },
   {

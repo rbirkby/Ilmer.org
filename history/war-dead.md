@@ -13,6 +13,7 @@ ancestorCrumb1Source: { label: 'Military', url: '/history/military/' }
 | [Robert 3rd Baron Hungerford (Lord Moleyns)][2] | [Wars of the Roses][3]  | [Battle of Hexam][4]   | May 18 1464       | Beheaded at Newcastle | ~35 |
 | [Sir Thomas Hungerford][5]                      | [Wars of the Roses][3]  | Salisbury              | January 17 1469   | Beheaded              | ~29 |
 | [Robert Dormer, 1st Earl of Carnarvon][6]       | First English Civil War | [Battle of Newbury][7] | September 20 1643 |                       | ~33 |
+| Albert Lay                                      | Great War               | Flanders               | December 12 1915  | Accidentally killed   |  20 |
 | Aubrey S Gomme                                  | Great War               | France                 | April 9 1917      | Killed in action      |  24 |
 | William J Claydon                               | Great War               |                        | April 28 1917     | Wounded and Missing   |  20 |
 | Frank P Kingham                                 | Great War               |                        | August 27 1917    | Killed in action      |  21 |
@@ -26,6 +27,8 @@ ancestorCrumb1Source: { label: 'Military', url: '/history/military/' }
 [5]: https://en.wikipedia.org/wiki/Thomas_Hungerford_of_Rowden
 [6]: https://en.wikipedia.org/wiki/Robert_Dormer,_1st_Earl_of_Carnarvon
 [7]: https://en.wikipedia.org/wiki/First_Battle_of_Newbury
+
+**Albert Lay** was born in Church Hanborough, North Leigh, Oxfordshire whilst his parents, Albert and Elizabeth, lived at 26 Harlesden Road, Willesden Green in London. Albert lived in Illmere and served as a private in the Oxford & Bucks Light Infantry 5th Battalion. He [was accidentally killed in Flanders aged 20](https://www.cwgc.org/find-records/find-war-dead/casualty-details/158905/albert-lay/) and is buried at [Potijze Château Wood Cemetery, Ieper (Ypres), Belgium](https://en.wikipedia.org/wiki/Potijze_Ch%C3%A2teau_Wood_Cemetery).
 
 **Aubrey Gomme** was born at [Coldharbour Farm](/history/coldharbour), Ilmer, on 20 August 1892, the son of George and Hannah Gomme. Aubrey was a farmer who had emigrated to Canada early in 1911. He joined the Canadian Infantry, serving as a private in the [21st Battalion of the East Ontario Regiment](https://www.veterans.gc.ca/en/remembrance/memorials/books-remembrance/page/5422); the Battalion arrived in England in May 1916. Aubrey was [killed in action](https://buckinghamshireremembers.org.uk/php_scripts/bksidget.php?id=3953) on 9 April 1917 during the attack at Vimy Ridge. He was 24 years old and is buried at Ecoivres Military Cemetery, Pas de Calais.
 
