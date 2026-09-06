@@ -228,11 +228,6 @@ export default function (eleventyConfig) {
     eleventyConfig.addCollection(name, (collectionApi) => subjectsForCollection(collectionApi, baseTag));
   }
 
-  eleventyConfig.addCollection('ilmerparishmeetings', (collectionApi) =>
-    collectionApi.getFilteredByTag('ilmerparishmeetings')
-  );
-  eleventyConfig.addCollection('vestrymeetings', (collectionApi) => collectionApi.getFilteredByTag('vestrymeetings'));
-
   /** The chronologically previous/next item in a date-sorted collection, relative to `url`. */
   eleventyConfig.addFilter('adjacentItem', (collection, url) => {
     const index = collection.findIndex((item) => item.url === url);
