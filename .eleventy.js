@@ -29,7 +29,6 @@ export default function (eleventyConfig) {
   const inline = (content) => mdIt.renderInline(content);
   eleventyConfig.addFilter('renderMarkdownInline', inline);
 
-  eleventyConfig.addFilter('jsonStringify', JSON.stringify);
   /** Counts people per occupation from a census HTML table. */
   eleventyConfig.addFilter('censusOccupations', censusOccupations);
   /**

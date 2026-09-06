@@ -69,7 +69,7 @@ image: images/timeline.png
 <div id="timeline-container">
   {% for event in historicalEvents %}
     {% unless event.hidden %}
-      <div class="timeline-item" data-categories='{{ event.labels | jsonStringify }}'>
+      <div class="timeline-item" data-categories='{{ event.labels | jsonify }}'>
         <div class="timeline-icon"></div>
         <div class="timeline-content">
           <h2>
