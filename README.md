@@ -18,4 +18,6 @@ Keep CSS rules out of Markdown and Liquid style blocks. Use a component class fo
 
 Inline styles remain appropriate for content-specific values: archive hero image URLs and SmartFrame image aspect ratios and maximum widths. The shared SmartFrame width and display rules belong to the base stylesheet. Runtime styles controlled by interactive widgets are separate from authored page CSS.
 
+Article images accept comma-separated URL fragment hints. Add `small` to reduce the usual displayed width and height without resizing the source file: `![Caption](/images/photo.avif#left,small)`. Combine it with `left` or `right` for a smaller float, or use `#small` alone for a reduced width image. Captions share the resized frame; lightbox images remain full-size.
+
 `npm test` includes stylesheet ownership checks, the site build and internal link checks. For visual CSS changes, also compare representative home, article, archive, census, will and timeline pages at desktop and phone widths, including expanded archive years and both will font-toggle states.

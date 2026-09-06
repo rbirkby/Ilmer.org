@@ -6,6 +6,17 @@ import { Liquid } from 'liquidjs';
 
 const root = new URL('../', import.meta.url);
 
+test('small article images halve their frame width without constraining height', () => {
+  const styles = readFileSync(new URL('assets/css/style.css', root), 'utf8');
+  for (const direction of ['left', 'right']) {
+    const rule = styles.match(new RegExp(`& p\\.image-frame--${direction} \\{([^}]+)\\}`))?.[1];
+    assert.ok(rule);
+    assert.match(rule, /--image-frame-width: 40%;/);
+    assert.doesNotMatch(rule, /(?:max-)?height:/);
+  }
+  assert.match(styles, /& p\.image-frame--small \{\s*max-width: calc\(var\(--image-frame-width\) \/ 3\);/);
+});
+
 test('archive stylesheet loading is determined by layout without a page flag', async () => {
   const liquid = new Liquid();
   liquid.registerFilter('cacheBust', (path) => path);

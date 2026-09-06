@@ -111,6 +111,7 @@ section.article {
 
   & p:has(img),
   & p.image-frame {
+    --image-frame-width: 100%;
     position: relative;
     font-size: 0.8em;
     line-height: 1.2em;
@@ -156,18 +157,26 @@ section.article {
 
   & p:has(img[src*='#right']),
   & p.image-frame--right {
+    --image-frame-width: 40%;
     float: right;
-    max-width: 40%;
+    max-width: var(--image-frame-width);
     margin: 0 0 0 10px;
     clear: right;
   }
 
   & p:has(img[src*='#left']),
   & p.image-frame--left {
+    --image-frame-width: 40%;
     float: left;
-    max-width: 40%;
+    max-width: var(--image-frame-width);
     margin: 0 10px 0 0;
     clear: left;
+  }
+
+  & p:has(img[src*='#small']),
+  & p:has(img[src*=',small']),
+  & p.image-frame--small {
+    max-width: calc(var(--image-frame-width) / 3);
   }
 
   & p.image-frame--bwphoto {

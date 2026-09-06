@@ -286,6 +286,10 @@ function enhanceArticleImages() {
       container.classList.add('image-frame--right');
     }
 
+    if (tags.includes('small')) {
+      container.classList.add('image-frame--small');
+    }
+
     const lightboxEnabledForImage = lightboxAllEnabled || tags.includes('lightbox');
     if (lightboxEnabledForImage) {
       const fullImageSrc = stripHashFromImageSrc(img.getAttribute('src') ?? img.src);
