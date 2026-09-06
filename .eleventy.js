@@ -6,6 +6,7 @@ import markdownIt from 'markdown-it';
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts';
 import markdownItMarginNotes from './plugins/markdown-it-margin-notes.js';
 import { createCacheBustFilter } from './plugins/cache-bust.js';
+import { censusScroll } from './plugins/census-scroll.js';
 import { censusOccupations } from './plugins/census-occupations.js';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
@@ -31,6 +32,7 @@ export default function (eleventyConfig) {
 
   /** Counts people per occupation from a census HTML table. */
   eleventyConfig.addFilter('censusOccupations', censusOccupations);
+  eleventyConfig.addFilter('censusScroll', censusScroll);
   /**
    * Sorts a collection so items whose `url` appears in `urls` come first,
    * in that list's order. Remaining items keep their date order.

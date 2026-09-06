@@ -1130,6 +1130,76 @@ main.archive table.census-table {
   -webkit-overflow-scrolling: touch;
 }
 
+.census-scroll {
+  container-type: scroll-state;
+  container-name: census-scroll;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  overflow-x: auto;
+
+  &:focus-visible {
+    outline: 2px solid var(--archive-green);
+    outline-offset: 2px;
+  }
+}
+
+main.archive .census-scroll table {
+  grid-area: 2 / 1;
+  display: table;
+  max-width: none;
+  overflow: visible;
+}
+
+.census-scroll-hint {
+  display: none;
+  grid-area: 1 / 1;
+  position: sticky;
+  left: 0;
+  margin: 0.8rem 0;
+  color: var(--archive-muted);
+  font-size: 1.3rem;
+  line-height: 1.5;
+}
+
+.census-scroll-shadow {
+  grid-area: 2 / 1;
+  position: sticky;
+  width: 1.2rem;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.census-scroll-shadow--left {
+  left: 0;
+  justify-self: start;
+  background: linear-gradient(to right, rgb(77 61 37 / 20%), transparent);
+}
+
+.census-scroll-shadow--right {
+  left: calc(100% - 1.2rem);
+  justify-self: end;
+  background: linear-gradient(to left, rgb(77 61 37 / 20%), transparent);
+}
+
+@container census-scroll scroll-state(scrollable: inline) {
+  .census-scroll-hint {
+    display: block;
+  }
+}
+
+@container census-scroll scroll-state(scrollable: left) {
+  .census-scroll-shadow--left {
+    opacity: 1;
+  }
+}
+
+@container census-scroll scroll-state(scrollable: right) {
+  .census-scroll-shadow--right {
+    opacity: 1;
+  }
+}
+
 .census-occupations {
   margin: 0 0 2.4rem;
   padding: 1.8rem 2rem 1.4rem;
