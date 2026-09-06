@@ -11,6 +11,10 @@
     {
       "fileMatch": ["_data/historicalEvents.json"],
       "url": "./_data/historicalEvents.schema.json"
+    },
+    {
+      "fileMatch": ["_data/lockington-census.json"],
+      "url": "./_data/lockington-census.schema.json"
     }
   ]
 }

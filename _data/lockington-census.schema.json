@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ilmer.org/schemas/lockington-census.schema.json",
+  "title": "Lockington Census Records",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "year",
+      "dwelling number",
+      "census place",
+      "place",
+      "surname",
+      "forename",
+      "relation to head",
+      "condition",
+      "age",
+      "occupation",
+      "born"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "year": {
+        "type": "integer",
+        "minimum": 1801,
+        "maximum": 2021,
+        "description": "UK census year"
+      },
+      "dwelling number": {
+        "type": ["integer", "null"],
+        "minimum": 1,
+        "description": "Dwelling/household number on the census schedule; null for uninhabited entries"
+      },
+      "census place": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Named location within the census sub-district"
+      },
+      "place": {
+        "type": "null",
+        "description": "Reserved for future finer-grained location detail; always null in current data"
+      },
+      "surname": { "type": "string", "description": "May be empty where illegible or not transcribed" },
+      "forename": { "type": "string", "description": "May be empty where illegible or not transcribed" },
+      "relation to head": {
+        "type": "string",
+        "description": "Relation to head of household (free text, e.g. 'head', 'wife', 'son')"
+      },
+      "condition": { "type": "string", "description": "Marital condition (free text, e.g. 'unm', 'mar', 'wid')" },
+      "age": {
+        "type": "string",
+        "pattern": "^$|^\\?$|^\\d+(/\\d+)?$",
+        "description": "Age at census; may be blank, '?' (illegible), a whole number, or 'months/years' for infants e.g. '6/12'"
+      },
+      "occupation": { "type": "string", "description": "May be empty" },
+      "born": { "type": "string", "description": "Place of birth; may be empty" }
+    }
+  }
+}

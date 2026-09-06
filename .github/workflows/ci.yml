@@ -39,6 +39,9 @@ jobs:
       - name: Lint code
         run: npm run lint-check
 
+      - name: Validate data against JSON schemas
+        run: npm run validate:schema
+
       - name: Validate historical events
         run: npm run lint:events
 
