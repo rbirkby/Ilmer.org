@@ -905,7 +905,6 @@ details.archive-year {
 }
 
 .census-header__chart {
-  flex: none;
   width: 30rem;
   max-width: 100%;
   padding-top: 0.6rem;

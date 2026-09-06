@@ -81,7 +81,6 @@ main > figure {
 }
 
 section.article {
-  max-width: clamp(720px, 60vw, 840px);
   margin: 0 auto;
   font-size: 2rem;
   line-height: 1.7em;
