@@ -78,9 +78,11 @@ The house has not been lived in by a resident vicar for over 250 years. The reco
 
 1. Jesse Gomme (42) Agricultural labourer
 2. Charlotte Gomme (34) Lacemaker
-3. Eli (16)
+3. Eli (16)[^4]
 4. Josse (10)
 5. John (7)
+
+[^4]: Whilst the 1841 census is difficult to disambiguate between '16' and '10', later censuses suggest Eli was older than 10, but younger than 16. It is likely the 1841 enumerator rounded Eli's age down to 10, in the mistaken belief that the rule that applied above aged 15 also applied here.
 
 Jesse Gomm was still in occupation when the [1851 census](/census/1851) was taken, together with Charlotte and two of the sons, now aged 17 and 19. Jesse and Charlotte, now 62 and 53 respectively, are listed in the [1861 census](/census/1861), but Jesse died on 18 December 1867 and in [1871](/census/1871) the Vicarage House was occupied by
 
