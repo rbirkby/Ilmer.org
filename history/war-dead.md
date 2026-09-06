@@ -5,6 +5,7 @@ description: A record of those who lost their lives during times of conflict
 category: history
 tags: [military]
 ancestorCrumb1Source: { label: 'Military', url: '/history/military/' }
+lightbox: true
 ---
 
 | Name                                            | Conflict                | Location               | Date              | Casualty Record       | Age |
@@ -47,6 +48,9 @@ Avenue, High Wycombe.
 **Albert Richardson** was born in 1895, the son of Alfred and Alice Richardson. Both father and son worked as farm labourers at Manor Farm, Ilmer, for Alfred Hill. Albert served as a Corporal in the 13th Kings Royal Rifles Corps and [died of his wounds](https://buckinghamshireremembers.org.uk/php_scripts/Cas_Print.php?id=3955) in 11 September 1918 at the age of 23 years. Albert Richardson was a bell ringer and active church worker and a special memorial service was held for him at Ilmer Church. He is buried at Ruyaulcourt Military Cemetery, Pas de Calais.
 
 ## Great War Memorial Tablet
+
+![Great War memorial tablet](/images/IlmerWarPlaque.avif#right)
+Memorial Tablet, erected 1920
 
 The [Ilmer Great War memorial tablet](https://memorials.iwm.org.uk/memorial/8294) on the south wall inside St Peter's was approved in the vestry minutes of [November 1919](/parish/vestrymeeting/1919-11-15/). It is made of Grey Hopton wood stone[^1] and erected after a 30th Jan. 1920 faculty was granted[^2]. It was made to a design of [Miss E.M. Rope](https://en.wikipedia.org/wiki/Ellen_Mary_Rope) of 404 Fulham Road, London.
 
