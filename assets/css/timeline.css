@@ -249,7 +249,7 @@ blockquote {
 
 /* Responsive design for smaller screens */
 @media screen and (max-width: 768px) {
-  h1 {
+  main h1 {
     font-size: 2em;
   }
 
