@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { censusScroll } from './census-scroll.js';
+import { censusScroll } from './census-scroll.ts';
 
 test('wraps all tables on census pages without altering their contents', () => {
   const tables = ['<table><tr><td>1841</td></tr></table>', '<table><tr><td>1851</td></tr></table>'];

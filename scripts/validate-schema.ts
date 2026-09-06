@@ -5,7 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
-import Ajv2020 from 'ajv/dist/2020.js';
+import { Ajv2020 } from 'ajv/dist/2020.js';
 
 const root = path.dirname(url.fileURLToPath(import.meta.url));
 const dataDir = path.join(root, '..', '_data');
@@ -40,7 +40,7 @@ for (const schemaFile of schemaFiles) {
   } else {
     hadError = true;
     console.error(`ERROR: ${dataFile} does not match ${schemaFile}:`);
-    for (const err of validate.errors) {
+    for (const err of validate.errors ?? []) {
       console.error(`  ${err.instancePath || '/'} ${err.message}`);
     }
   }

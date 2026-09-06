@@ -12,31 +12,41 @@ import fs from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
 
+interface HistoricalEvent {
+  date?: unknown;
+  title?: unknown;
+  description?: unknown;
+  labels?: unknown;
+  references?: unknown;
+  image?: unknown;
+  smallimage?: unknown;
+}
+
 const root = path.dirname(url.fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(root, '..');
 const dataPath = path.join(projectRoot, '_data', 'historicalEvents.json');
 
-function readJson(file) {
+function readJson(file: string): unknown {
   try {
     const raw = fs.readFileSync(file, 'utf8');
     return JSON.parse(raw);
   } catch (err) {
-    console.error(`ERROR: Failed to read ${file}:`, err.message);
+    console.error(`ERROR: Failed to read ${file}:`, (err as Error).message);
     process.exitCode = 1;
     return [];
   }
 }
 
-function isString(x) {
+function isString(x: unknown): x is string {
   return typeof x === 'string';
 }
-function toArray(x) {
+function toArray(x: unknown): string[] {
   if (Array.isArray(x)) return x.filter(Boolean);
   if (isString(x) && x.trim() !== '') return [x.trim()];
   return [];
 }
 
-function checkImageExists(p) {
+function checkImageExists(p: unknown): boolean {
   if (!isString(p)) return false;
   // Skip external URLs
   if (/^https?:\/\//i.test(p)) return true;
@@ -50,7 +60,7 @@ function checkImageExists(p) {
   }
 }
 
-function parseLooseDate(d) {
+function parseLooseDate(d: unknown): number | null {
   if (!isString(d)) return null;
   // Try extract a year (4 digits) for ordering checks
   const m = d.match(/(\d{3,4})/);
@@ -66,18 +76,19 @@ if (!Array.isArray(events)) {
 let warnCount = 0;
 let errorCount = 0;
 
-function warn(msg) {
+function warn(msg: string): void {
   warnCount++;
   console.warn('WARN:', msg);
 }
-function error(msg) {
+function error(msg: string): void {
   errorCount++;
   console.error('ERROR:', msg);
 }
 
-const seen = new Set();
+const seen = new Set<string>();
 
-events.forEach((ev, idx) => {
+events.forEach((raw, idx) => {
+  const ev = raw as HistoricalEvent;
   const where = `event #${idx + 1}`;
   // Requireds
   if (!isString(ev.date) || ev.date.trim() === '') error(`${where}: missing/invalid date`);

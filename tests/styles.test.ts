@@ -30,7 +30,7 @@ test('posts always have archive styling and retain the census modifier', async (
   assert.ok(post.includes('<h1 class="minute-heading">{{ title }}</h1>'));
 });
 
-function authoredFiles(directory = '') {
+function authoredFiles(directory: string = ''): string[] {
   return readdirSync(new URL(directory || '.', root), { withFileTypes: true }).flatMap((entry) => {
     if (entry.name.startsWith('.') || ['node_modules', '_site'].includes(entry.name)) return [];
     const path = join(directory, entry.name);

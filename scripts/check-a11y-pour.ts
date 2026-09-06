@@ -4,19 +4,20 @@
  * Exit 1 if any page has violations (default --fail-on violations).
  *
  * Usage:
- *   node scripts/check-a11y-pour.mjs [siteDir]
- *   POUR_BASE_URL=http://127.0.0.1:4173 node scripts/check-a11y-pour.mjs   # use existing server
+ *   node scripts/check-a11y-pour.ts [siteDir]
+ *   POUR_BASE_URL=http://127.0.0.1:4173 node scripts/check-a11y-pour.ts   # use existing server
  *
  * CI note: pour-cli does not expose Chrome launch flags. On GitHub Actions /
  * Ubuntu runners Chrome needs --no-sandbox. Set POUR_CHROME_NO_SANDBOX=1
  * (or rely on CI=true) when PUPPETEER_EXECUTABLE_PATH is set.
  */
 import { spawn } from 'node:child_process';
-import { createServer } from 'node:http';
+import { createServer, type Server } from 'node:http';
 import { createReadStream, existsSync, statSync, writeFileSync, unlinkSync } from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
+import type { AddressInfo } from 'node:net';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const siteDir = path.resolve(process.argv[2] || path.join(root, '_site'));
@@ -44,14 +45,13 @@ const FAIL_ON = process.env.POUR_FAIL_ON || 'violations';
 const VIEWPORT = process.env.POUR_VIEWPORT || '1440x900';
 const EXTRA_ARGS = process.env.POUR_ARGS ? process.env.POUR_ARGS.split(/\s+/).filter(Boolean) : [];
 
-/** @type {string | null} */
-let chromeWrapperPath = null;
+let chromeWrapperPath: string | null = null;
 
 /**
  * pour-cli hardcodes puppeteer launch args without --no-sandbox. Wrap the
  * real Chrome binary so CI sandboxes that block userns still work.
  */
-function ensureChromeNoSandboxWrapper() {
+function ensureChromeNoSandboxWrapper(): void {
   const chromePath = process.env.PUPPETEER_EXECUTABLE_PATH;
   const wantNoSandbox =
     process.env.POUR_CHROME_NO_SANDBOX === '1' ||
@@ -76,7 +76,7 @@ exec ${quotedChrome} --no-sandbox --disable-setuid-sandbox --disable-dev-shm-usa
   process.env.PUPPETEER_EXECUTABLE_PATH = chromeWrapperPath;
 }
 
-function cleanupChromeWrapper() {
+function cleanupChromeWrapper(): void {
   if (!chromeWrapperPath) {
     return;
   }
@@ -87,7 +87,7 @@ function cleanupChromeWrapper() {
   }
   chromeWrapperPath = null;
 }
-const MIME = {
+const MIME: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
@@ -108,11 +108,11 @@ const MIME = {
   '.txt': 'text/plain; charset=utf-8'
 };
 
-function contentType(filePath) {
+function contentType(filePath: string): string {
   return MIME[path.extname(filePath).toLowerCase()] || 'application/octet-stream';
 }
 
-function resolveFile(urlPath) {
+function resolveFile(urlPath: string): string | null {
   const decoded = decodeURIComponent(urlPath.split('?')[0]);
   let rel = decoded.replace(/^\/+/, '');
   if (rel === '') rel = 'index.html';
@@ -131,7 +131,12 @@ function resolveFile(urlPath) {
   return null;
 }
 
-function startStaticServer() {
+interface StaticServerHandle {
+  server: Server;
+  baseUrl: string;
+}
+
+function startStaticServer(): Promise<StaticServerHandle> {
   return new Promise((resolve, reject) => {
     const server = createServer((req, res) => {
       const filePath = resolveFile(req.url || '/');
@@ -145,24 +150,32 @@ function startStaticServer() {
     });
 
     server.listen(0, '127.0.0.1', () => {
-      const { port } = server.address();
+      const { port } = server.address() as AddressInfo;
       resolve({ server, baseUrl: `http://127.0.0.1:${port}` });
     });
     server.on('error', reject);
   });
 }
 
-function runPour(url) {
+interface PourResult {
+  url: string;
+  code: number;
+  stdout: Buffer;
+  stderr: Buffer;
+  spawnError?: Error;
+}
+
+function runPour(url: string): Promise<PourResult> {
   return new Promise((resolve) => {
     const args = [pourBin, url, '--fail-on', FAIL_ON, '--viewport', VIEWPORT, ...EXTRA_ARGS];
     const child = spawn(process.execPath, args, {
       stdio: ['ignore', 'pipe', 'pipe'],
       env: process.env
     });
-    const out = [];
-    const err = [];
-    child.stdout.on('data', (chunk) => out.push(chunk));
-    child.stderr.on('data', (chunk) => err.push(chunk));
+    const out: Buffer[] = [];
+    const err: Buffer[] = [];
+    child.stdout?.on('data', (chunk) => out.push(chunk));
+    child.stderr?.on('data', (chunk) => err.push(chunk));
     child.on('error', (spawnErr) => {
       resolve({
         url,
@@ -183,7 +196,7 @@ function runPour(url) {
   });
 }
 
-async function main() {
+async function main(): Promise<void> {
   if (!existsSync(siteDir)) {
     console.error(`Site directory not found: ${siteDir}\nRun npm run build first.`);
     process.exit(2);
@@ -195,7 +208,7 @@ async function main() {
 
   ensureChromeNoSandboxWrapper();
 
-  let server;
+  let server: Server | undefined;
   let baseUrl = process.env.POUR_BASE_URL;
 
   if (!baseUrl) {
@@ -207,7 +220,7 @@ async function main() {
 
   let worstExit = 0;
   try {
-    const urls = PAGES.map((page) => new URL(page, baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`).href);
+    const urls = PAGES.map((page) => new URL(page, baseUrl!.endsWith('/') ? baseUrl! : `${baseUrl}/`).href);
     console.log(`Running pour on ${urls.length} pages in parallel…`);
     const results = await Promise.all(urls.map((url) => runPour(url)));
 
@@ -222,7 +235,7 @@ async function main() {
     }
   } finally {
     if (server) {
-      await new Promise((resolve) => server.close(resolve));
+      await new Promise<void>((resolve) => server!.close(() => resolve()));
     }
     cleanupChromeWrapper();
   }

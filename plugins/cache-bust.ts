@@ -11,10 +11,15 @@ const HASH_LENGTH = 8;
  * External (`http(s):`, protocol-relative, `data:`) URLs are left unchanged.
  * Hashes are cached per build; call `clearCache()` from `eleventy.before`.
  */
-export function createCacheBustFilter(rootDir) {
-  const cache = new Map();
+export interface CacheBustFilter {
+  (url?: string | null): string | null | undefined;
+  clearCache: () => void;
+}
 
-  function cacheBust(url) {
+export function createCacheBustFilter(rootDir: string): CacheBustFilter {
+  const cache = new Map<string, string>();
+
+  const cacheBust = ((url?: string | null) => {
     if (url == null || url === '') return url;
     const raw = String(url);
     if (/^(https?:)?\/\//i.test(raw) || /^[a-z][a-z0-9+.-]*:/i.test(raw)) return raw;
@@ -33,7 +38,7 @@ export function createCacheBustFilter(rootDir) {
       try {
         bytes = readFileSync(filePath);
       } catch (err) {
-        if (err.code === 'ENOENT') {
+        if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
           throw new Error(`cacheBust: no file at ${filePath} (from ${raw})`);
         }
         throw err;
@@ -45,7 +50,7 @@ export function createCacheBustFilter(rootDir) {
     const params = new URLSearchParams(existingQuery);
     params.set('v', hash);
     return `${pathname}?${params.toString()}${fragment}`;
-  }
+  }) as CacheBustFilter;
 
   cacheBust.clearCache = () => cache.clear();
   return cacheBust;

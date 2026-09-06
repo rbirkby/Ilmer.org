@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { censusOccupations } from './census-occupations.js';
+import { censusOccupations } from './census-occupations.ts';
 
 const SAMPLE = `
 <p>Intro text.</p>

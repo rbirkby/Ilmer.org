@@ -3,17 +3,17 @@ import { createHash } from 'node:crypto';
 import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { test } from 'node:test';
-import { createCacheBustFilter } from './cache-bust.js';
+import { test, type TestContext } from 'node:test';
+import { createCacheBustFilter } from './cache-bust.ts';
 
-async function withAssetRoot(t) {
+async function withAssetRoot(t: TestContext): Promise<string> {
   const dir = await mkdtemp(path.join(os.tmpdir(), 'cache-bust-'));
   t.after(() => rm(dir, { recursive: true, force: true }));
   await mkdir(path.join(dir, 'assets/css'), { recursive: true });
   return dir;
 }
 
-function expectedHash(content) {
+function expectedHash(content: string): string {
   return createHash('sha256').update(content).digest('hex').slice(0, 8);
 }
 
@@ -30,11 +30,11 @@ test('clears the per-build cache so the next read sees new bytes', async (t) => 
   const file = path.join(dir, 'assets/css/style.css');
   await writeFile(file, 'a');
   const filter = createCacheBustFilter(dir);
-  const first = filter('/assets/css/style.css');
+  const first = filter('/assets/css/style.css') as string;
   await writeFile(file, 'b');
   assert.equal(filter('/assets/css/style.css'), first);
   filter.clearCache();
-  const second = filter('/assets/css/style.css');
+  const second = filter('/assets/css/style.css') as string;
   assert.notEqual(second, first);
   assert.match(second, /\?v=[0-9a-f]{8}$/);
 });

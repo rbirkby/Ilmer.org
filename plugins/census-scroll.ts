@@ -1,5 +1,5 @@
 /** Add scroll controls to the site's census tables while preserving their HTML. */
-export function censusScroll(html, tags = []) {
+export function censusScroll(html: string, tags: string[] = []): string {
   let index = 0;
   return html.replace(/<table\b([^>]*)>[\s\S]*?<\/table>/gi, (table, attributes) => {
     const classes = /\bclass\s*=\s*(["'])(.*?)\1/i.exec(attributes)?.[2].split(/\s+/) || [];

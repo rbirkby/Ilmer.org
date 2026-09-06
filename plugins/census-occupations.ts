@@ -3,7 +3,7 @@
  * Empty occupation cells (children, blank separator rows) are omitted.
  */
 
-const ENTITY_MAP = {
+const ENTITY_MAP: Record<string, string> = {
   '&amp;': '&',
   '&lt;': '<',
   '&gt;': '>',
@@ -15,22 +15,27 @@ const ENTITY_MAP = {
   '&lsquo;': '\u2018'
 };
 
-function decodeEntities(value) {
+function decodeEntities(value: string): string {
   return value.replace(/&(?:amp|lt|gt|quot|apos|nbsp|rsquo|lsquo|#39);/g, (entity) => ENTITY_MAP[entity] ?? entity);
 }
 
-function stripCell(html) {
+function stripCell(html: string): string {
   return decodeEntities(html.replace(/<[^>]+>/g, ' '))
     .replace(/\s+/g, ' ')
     .trim();
 }
 
-function occupationsFromTable(tableHtml) {
+interface OccupationCount {
+  occupation: string;
+  count: number;
+}
+
+function occupationsFromTable(tableHtml: string): OccupationCount[] {
   const headers = [...tableHtml.matchAll(/<th\b[^>]*>([\s\S]*?)<\/th>/gi)].map((match) => stripCell(match[1]));
   const occIndex = headers.findIndex((header) => /^occupation$/i.test(header));
   if (occIndex === -1) return [];
 
-  const counts = new Map();
+  const counts = new Map<string, number>();
   for (const row of tableHtml.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)) {
     if (/<th\b/i.test(row[1])) continue;
     const cells = [...row[1].matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/gi)].map((match) => stripCell(match[1]));
@@ -44,7 +49,7 @@ function occupationsFromTable(tableHtml) {
     .sort((a, b) => b.count - a.count || a.occupation.localeCompare(b.occupation));
 }
 
-export function censusOccupations(html) {
+export function censusOccupations(html: unknown): OccupationCount[] {
   if (!html) return [];
   const tables = String(html).match(/<table\b[\s\S]*?<\/table>/gi) || [];
   for (const table of tables) {

@@ -3,15 +3,29 @@ import { fileURLToPath } from 'node:url';
 import markdownItFootnote from 'markdown-it-footnote';
 import { RenderPlugin } from '@11ty/eleventy';
 import markdownIt from 'markdown-it';
+import type { MarkdownIt } from 'markdown-it';
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts';
-import markdownItMarginNotes from './plugins/markdown-it-margin-notes.js';
-import { createCacheBustFilter } from './plugins/cache-bust.js';
-import { censusScroll } from './plugins/census-scroll.js';
-import { censusOccupations } from './plugins/census-occupations.js';
+import markdownItMarginNotes from './plugins/markdown-it-margin-notes.ts';
+import { createCacheBustFilter } from './plugins/cache-bust.ts';
+import { censusScroll } from './plugins/census-scroll.ts';
+import { censusOccupations } from './plugins/census-occupations.ts';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 
-export default function (eleventyConfig) {
+/** The subset of an Eleventy `CollectionItem` this config relies on. */
+interface CollectionItem {
+  url: string;
+  date: Date;
+  /** Page front-matter data; shape varies per collection. */
+  data: Record<string, any>;
+}
+
+/** The subset of Eleventy's `CollectionApi` this config relies on. */
+interface CollectionApi {
+  getFilteredByTag(tag: string): CollectionItem[];
+}
+
+export default function (eleventyConfig: any) {
   eleventyConfig.addPassthroughCopy('images');
   eleventyConfig.addPassthroughCopy('assets');
   eleventyConfig.addPassthroughCopy('favicon.ico');
@@ -22,12 +36,12 @@ export default function (eleventyConfig) {
   eleventyConfig.addWatchTarget('assets/css/');
   eleventyConfig.addWatchTarget('assets/js/');
 
-  eleventyConfig.amendLibrary('md', (mdLib) => mdLib.use(markdownItFootnote));
-  eleventyConfig.amendLibrary('md', (mdLib) => mdLib.use(markdownItMarginNotes));
+  eleventyConfig.amendLibrary('md', (mdLib: MarkdownIt) => mdLib.use(markdownItFootnote));
+  eleventyConfig.amendLibrary('md', (mdLib: MarkdownIt) => mdLib.use(markdownItMarginNotes));
   eleventyConfig.addPlugin(RenderPlugin);
 
   const mdIt = markdownIt({ html: true, linkify: true }).disable('code');
-  const inline = (content) => mdIt.renderInline(content);
+  const inline = (content: string) => mdIt.renderInline(content);
   eleventyConfig.addFilter('renderMarkdownInline', inline);
 
   /** Counts people per occupation from a census HTML table. */
@@ -37,13 +51,13 @@ export default function (eleventyConfig) {
    * Sorts a collection so items whose `url` appears in `urls` come first,
    * in that list's order. Remaining items keep their date order.
    */
-  eleventyConfig.addFilter('sortByUrlOrder', (collection, urls) => {
-    const order = new Map((urls || []).map((url, i) => [url, i]));
+  eleventyConfig.addFilter('sortByUrlOrder', (collection: CollectionItem[] | undefined, urls: string[] | undefined) => {
+    const order = new Map((urls || []).map((url, i): [string, number] => [url, i]));
     return [...(collection || [])].sort((a, b) => {
-      const rank = (item) => (order.has(item.url) ? order.get(item.url) : Number.POSITIVE_INFINITY);
+      const rank = (item: CollectionItem) => order.get(item.url) ?? Number.POSITIVE_INFINITY;
       const diff = rank(a) - rank(b);
       if (diff !== 0) return diff;
-      return a.date - b.date;
+      return a.date.getTime() - b.date.getTime();
     });
   });
   /** Content-hash query string for local CSS/JS so browsers fetch a new copy when the file changes. */
@@ -51,7 +65,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter('cacheBust', cacheBust);
   eleventyConfig.on('eleventy.before', () => cacheBust.clearCache());
   /** Root-relative site path: strips leading slashes; leaves absolute http(s) URLs unchanged. */
-  eleventyConfig.addFilter('sitePath', (value) => {
+  eleventyConfig.addFilter('sitePath', (value: unknown) => {
     if (value == null || value === '') return '';
     const path = String(value);
     if (/^https?:\/\//i.test(path)) return path;
@@ -64,16 +78,16 @@ export default function (eleventyConfig) {
    * a historical Local Mean Time offset from the host's tz database when
    * formatted via Date getters, which can shift them onto the wrong day.
    */
-  eleventyConfig.addFilter('isoDateLabel', (iso) => {
+  eleventyConfig.addFilter('isoDateLabel', (iso: string) => {
     const [, y, m, d] = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso) ?? [];
     if (!y) return iso;
     return `${Number(d)} ${MONTH_LABELS[Number(m) - 1]} ${y}`;
   });
 
-  eleventyConfig.addFilter('isoDateYear', (iso) => /^(\d{4})-/.exec(iso)?.[1] ?? iso);
+  eleventyConfig.addFilter('isoDateYear', (iso: string) => /^(\d{4})-/.exec(iso)?.[1] ?? iso);
 
   /** Sparkline geometry for a collection of items with `data.date` (ISO string) and `data.population`. */
-  eleventyConfig.addFilter('censusChart', (collection) => {
+  eleventyConfig.addFilter('censusChart', (collection: CollectionItem[]) => {
     const items = [...collection].sort((a, b) => a.data.date.localeCompare(b.data.date));
     const populations = items.map((item) => item.data.population);
     const minPop = Math.min(...populations);
@@ -116,7 +130,7 @@ export default function (eleventyConfig) {
     };
   });
 
-  eleventyConfig.addFilter('uniqueLabels', (events) =>
+  eleventyConfig.addFilter('uniqueLabels', (events: Array<{ labels: string[] }>) =>
     [...new Set(events.flatMap(({ labels }) => labels))]
       .map((label) => ({
         label,
@@ -126,18 +140,18 @@ export default function (eleventyConfig) {
   );
 
   /** Groups a date-sorted collection into decades of years, each with its dated items and counts. */
-  eleventyConfig.addFilter('archiveByDecade', (collection) => {
-    const byYear = new Map();
+  eleventyConfig.addFilter('archiveByDecade', (collection: CollectionItem[] | undefined) => {
+    const byYear = new Map<number, CollectionItem[]>();
     for (const item of collection || []) {
       const year = item.date.getFullYear();
       if (!byYear.has(year)) byYear.set(year, []);
-      byYear.get(year).push(item);
+      byYear.get(year)!.push(item);
     }
-    const byDecade = new Map();
+    const byDecade = new Map<number, Array<{ year: number; count: number; items: unknown[] }>>();
     for (const [year, items] of [...byYear.entries()].sort((a, b) => a[0] - b[0])) {
       const decade = Math.floor(year / 10) * 10;
       if (!byDecade.has(decade)) byDecade.set(decade, []);
-      byDecade.get(decade).push({
+      byDecade.get(decade)!.push({
         year,
         count: items.length,
         items: items.map((i) => ({ url: i.url, date: i.date, title: i.data.title }))
@@ -153,8 +167,8 @@ export default function (eleventyConfig) {
   });
 
   /** Subject tags used across a collection (excluding the base collection tag), most-used first. */
-  eleventyConfig.addFilter('archiveSubjectTags', (collection, baseTag) => {
-    const counts = new Map();
+  eleventyConfig.addFilter('archiveSubjectTags', (collection: CollectionItem[] | undefined, baseTag: string) => {
+    const counts = new Map<string, number>();
     for (const item of collection || []) {
       for (const t of item.data.tags || []) {
         if (t === baseTag) continue;
@@ -166,7 +180,7 @@ export default function (eleventyConfig) {
       .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
   });
 
-  const SUBJECT_ICONS = {
+  const SUBJECT_ICONS: Record<string, string> = {
     railway:
       '<path d="M6 4h12a2 2 0 0 1 2 2v9a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V6a2 2 0 0 1 2-2Z"/><path d="M4 18l-2 3M20 18l2 3"/><path d="M6 10h12M9 15h.01M15 15h.01"/>',
     'roads-traffic': '<path d="M8 3 4 21M16 3l4 18M10 9h4M9 15h6"/>',
@@ -194,27 +208,27 @@ export default function (eleventyConfig) {
   };
   const DEFAULT_SUBJECT_ICON = '<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/>';
   /** Inline SVG for a subject tag, falling back to a generic marker for unmapped tags. */
-  eleventyConfig.addFilter('subjectIcon', (tag) => {
+  eleventyConfig.addFilter('subjectIcon', (tag: string) => {
     const paths = SUBJECT_ICONS[tag] || DEFAULT_SUBJECT_ICON;
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
   });
 
-  eleventyConfig.addFilter('subjectLabel', (tag) => (tag || '').replace(/-/g, ' '));
+  eleventyConfig.addFilter('subjectLabel', (tag: string) => (tag || '').replace(/-/g, ' '));
 
-  eleventyConfig.amendLibrary('md', (mdLib) => mdLib.use(MarkdownItGitHubAlerts));
+  eleventyConfig.amendLibrary('md', (mdLib: MarkdownIt) => mdLib.use(MarkdownItGitHubAlerts));
 
   eleventyConfig.addGlobalData('eleventyComputed', {
-    ancestorCrumb1: (data) => (data.hideAncestorCrumb1 ? undefined : data.ancestorCrumb1Source),
-    ancestorCrumb2: (data) => (data.hideAncestorCrumb2 ? undefined : data.ancestorCrumb2Source)
+    ancestorCrumb1: (data: Record<string, any>) => (data.hideAncestorCrumb1 ? undefined : data.ancestorCrumb1Source),
+    ancestorCrumb2: (data: Record<string, any>) => (data.hideAncestorCrumb2 ? undefined : data.ancestorCrumb2Source)
   });
 
-  function subjectsForCollection(collectionApi, baseTag) {
-    const byTag = new Map();
+  function subjectsForCollection(collectionApi: CollectionApi, baseTag: string) {
+    const byTag = new Map<string, CollectionItem[]>();
     for (const item of collectionApi.getFilteredByTag(baseTag)) {
       for (const tag of item.data.tags || []) {
         if (tag === baseTag) continue;
         if (!byTag.has(tag)) byTag.set(tag, []);
-        byTag.get(tag).push(item);
+        byTag.get(tag)!.push(item);
       }
     }
     return [...byTag.entries()].map(([tag, items]) => ({ tag, items, count: items.length }));
@@ -226,11 +240,11 @@ export default function (eleventyConfig) {
     ['ilmerParishMeetingSubjects', 'ilmerparishmeetings'],
     ['vestryMeetingSubjects', 'vestrymeetings']
   ]) {
-    eleventyConfig.addCollection(name, (collectionApi) => subjectsForCollection(collectionApi, baseTag));
+    eleventyConfig.addCollection(name, (collectionApi: CollectionApi) => subjectsForCollection(collectionApi, baseTag));
   }
 
   /** The chronologically previous/next item in a date-sorted collection, relative to `url`. */
-  eleventyConfig.addFilter('adjacentItem', (collection, url) => {
+  eleventyConfig.addFilter('adjacentItem', (collection: CollectionItem[], url: string) => {
     const index = collection.findIndex((item) => item.url === url);
     if (index === -1) return { previous: null, next: null };
     const previous = index > 0 ? collection[index - 1] : null;

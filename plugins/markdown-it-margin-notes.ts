@@ -10,12 +10,14 @@
  * plain (unclassed) span, so a paragraph containing a margin note never
  * mixes bare text nodes with element children directly under the `<p>`.
  */
+import type { MarkdownIt, Token } from 'markdown-it';
+
 const MARKERS = [
   { prefix: 'margin-right:', side: 'right' },
   { prefix: 'margin:', side: 'left' }
 ];
 
-export default function markdownItMarginNotes(md) {
+export default function markdownItMarginNotes(md: MarkdownIt): void {
   md.inline.ruler.before('link', 'margin_note', (state, silent) => {
     const { src, pos, posMax } = state;
     if (src.charCodeAt(pos) !== 0x5b /* [ */) return false;
@@ -84,8 +86,8 @@ export default function markdownItMarginNotes(md) {
       if (blockToken.type !== 'inline' || !blockToken.children) continue;
       if (!blockToken.children.some((token) => token.type === 'margin_note')) continue;
 
-      const wrapped = [];
-      let run = [];
+      const wrapped: Token[] = [];
+      let run: Token[] = [];
       let depth = 0;
 
       const flushRun = () => {

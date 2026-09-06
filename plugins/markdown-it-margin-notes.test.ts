@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import MarkdownIt from 'markdown-it';
-import markdownItMarginNotes from './markdown-it-margin-notes.js';
+import markdownItMarginNotes from './markdown-it-margin-notes.ts';
 
-function render(src) {
+function render(src: string): string {
   return new MarkdownIt({ html: true }).use(markdownItMarginNotes).render(src);
 }
 

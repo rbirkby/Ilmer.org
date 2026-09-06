@@ -7,7 +7,7 @@ import { check, LinkState } from 'linkinator';
 
 const path = process.argv[2] || '_site';
 
-function isExternalHttpUrl(url) {
+function isExternalHttpUrl(url: string): boolean {
   try {
     // Absolute URLs only; relative and file paths are treated as internal.
     if (!/^[a-z][a-z0-9+.-]*:/i.test(url)) {
