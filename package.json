@@ -15,6 +15,7 @@
     "link-check": "linkinator _site --recurse --verbosity error --status-code '401:warn' --status-code '403:warn' --status-code '429:warn'",
     "link-check:internal": "node scripts/check-links-internal.ts _site",
     "a11y": "node scripts/check-a11y-pour.ts _site",
+    "a11y:report": "pour report https://www.ilmer.org/ --max 700 --same-host --report reports/a11y-report.html",
     "lighthouse": "lhci autorun",
     "typecheck": "tsc --noEmit",
     "test:unit": "node --test 'plugins/**/*.test.ts' 'tests/**/*.test.ts'",
@@ -38,7 +39,7 @@
     "markdownlint-cli": "^0.49.1",
     "oxfmt": "^0.65.0",
     "oxlint": "^1.74.0",
-    "pour-cli": "^0.1.0",
+    "pour-cli": "^0.2.1",
     "typescript": "^7.0.2"
   },
   "dependencies": {
