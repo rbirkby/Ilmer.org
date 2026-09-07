@@ -112,19 +112,22 @@ function contentType(filePath: string): string {
   return MIME[path.extname(filePath).toLowerCase()] || 'application/octet-stream';
 }
 
+/** Resolves `path.join(siteDir, ...)`, rejecting results that escape siteDir via `..`. */
+function withinSiteDir(...segments: string[]): string | null {
+  const resolved = path.join(siteDir, ...segments);
+  if (resolved !== siteDir && !resolved.startsWith(siteDir + path.sep)) return null;
+  return resolved;
+}
+
 function resolveFile(urlPath: string): string | null {
   const decoded = decodeURIComponent(urlPath.split('?')[0]);
   let rel = decoded.replace(/^\/+/, '');
   if (rel === '') rel = 'index.html';
 
-  const candidates = [
-    path.join(siteDir, rel),
-    path.join(siteDir, rel, 'index.html'),
-    path.join(siteDir, `${rel}.html`)
-  ];
+  const candidates = [withinSiteDir(rel), withinSiteDir(rel, 'index.html'), withinSiteDir(`${rel}.html`)];
 
   for (const candidate of candidates) {
-    if (existsSync(candidate) && statSync(candidate).isFile()) {
+    if (candidate && existsSync(candidate) && statSync(candidate).isFile()) {
       return candidate;
     }
   }
