@@ -18,7 +18,7 @@
     "a11y:report": "pour report https://www.ilmer.org/ --max 700 --same-host --report reports/a11y-report.html",
     "lighthouse": "lhci autorun",
     "typecheck": "tsc --noEmit",
-    "test:unit": "node --test 'plugins/**/*.test.ts' 'tests/**/*.test.ts'",
+    "test:unit": "node --test --experimental-test-coverage 'plugins/**/*.test.ts' 'tests/**/*.test.ts'",
     "test": "node --run typecheck && node --run test:unit && node --run format-check && node --run lint-check && node --run validate:schema && node --run lint:events && node --run build && node --run link-check:internal"
   },
   "type": "module",

@@ -2,6 +2,69 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { DateUtils } from '../assets/js/anniversary-dates.js';
 
+test('parseEventDate accepts full and abbreviated month names', () => {
+  const dates = new DateUtils();
+  const months = [
+    ['January', 'Jan'],
+    ['February', 'Feb'],
+    ['March', 'Mar'],
+    ['April', 'Apr'],
+    ['May', 'May'],
+    ['June', 'Jun'],
+    ['July', 'Jul'],
+    ['August', 'Aug'],
+    ['September', 'Sep'],
+    ['October', 'Oct'],
+    ['November', 'Nov'],
+    ['December', 'Dec']
+  ];
+
+  for (const [monthIndex, names] of months.entries()) {
+    for (const name of names) {
+      const input = `15 ${name} 1900`;
+      assert.deepEqual(dates.parseEventDate(input), { day: 15, month: monthIndex + 1, year: 1900 }, input);
+    }
+  }
+});
+
+test('parseEventDate rejects incomplete dates', () => {
+  const dates = new DateUtils();
+  for (const input of ['', '1900', 'January 1900', '15 January']) {
+    assert.equal(dates.parseEventDate(input), null, input);
+  }
+});
+
+test('parseEventDate rejects unknown months and invalid years', () => {
+  const dates = new DateUtils();
+  for (const input of ['15 Unknown 1900', '15 January unknown', '15 January 0', '15 January -1']) {
+    assert.equal(dates.parseEventDate(input), null, input);
+  }
+});
+
+for (const input of [
+  'unknown January 1900',
+  '0 January 1900',
+  '-1 January 1900',
+  '32 January 1900',
+  '31 April 1900',
+  '30 February 2000',
+  '29 February 1900',
+  '29 February 2023'
+]) {
+  test(`parseEventDate rejects invalid day in ${input}`, () => {
+    assert.equal(new DateUtils().parseEventDate(input), null);
+  });
+}
+
+test('parseEventDate accepts valid month-end dates and leap days', () => {
+  const dates = new DateUtils();
+  assert.deepEqual(dates.parseEventDate('31 January 1900'), { day: 31, month: 1, year: 1900 });
+  assert.deepEqual(dates.parseEventDate('30 April 1900'), { day: 30, month: 4, year: 1900 });
+  assert.deepEqual(dates.parseEventDate('28 February 1900'), { day: 28, month: 2, year: 1900 });
+  assert.deepEqual(dates.parseEventDate('29 February 2000'), { day: 29, month: 2, year: 2000 });
+  assert.deepEqual(dates.parseEventDate('29 February 2024'), { day: 29, month: 2, year: 2024 });
+});
+
 for (const timezone of ['UTC', 'Europe/London']) {
   test(`anniversary calendar arithmetic in ${timezone}`, (context) => {
     const originalTimezone = process.env.TZ;

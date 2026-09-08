@@ -68,6 +68,11 @@ export class DateUtils {
     const monthAbbr = Object.keys(this.monthMap).find((abbr) => eventMonthStr.includes(abbr));
     const eventMonth = monthAbbr ? this.monthMap[monthAbbr] : 0;
 
-    return eventMonth > 0 && eventYear > 0 ? { day: eventDay, month: eventMonth, year: eventYear } : null;
+    if (!(eventMonth > 0 && eventYear > 0)) return null;
+
+    const monthLengths = [31, this.isLeapYear(eventYear) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    if (!(eventDay >= 1 && eventDay <= monthLengths[eventMonth - 1])) return null;
+
+    return { day: eventDay, month: eventMonth, year: eventYear };
   }
 }
