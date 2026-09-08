@@ -48,10 +48,40 @@ jobs:
       - name: Validate historical events
         run: npm run lint:events
 
-  site:
+  build:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
     needs: quality
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.node-version'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Check internal links
+        run: npm run link-check:internal
+
+      - name: Upload built site
+        uses: actions/upload-artifact@v7
+        with:
+          name: site
+          path: _site/
+          retention-days: 1
+
+  accessibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: build
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -69,11 +99,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build site
-        run: npm run build
-
-      - name: Check internal links
-        run: npm run link-check:internal
+      - name: Download built site
+        uses: actions/download-artifact@v7
+        with:
+          name: site
+          path: _site/
 
       - name: Accessibility audit (pour)
         env:
@@ -83,7 +113,36 @@ jobs:
           POUR_CHROME_NO_SANDBOX: '1'
         run: npm run a11y
 
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.node-version'
+          cache: npm
+
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@v2
+        id: chrome
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download built site
+        uses: actions/download-artifact@v7
+        with:
+          name: site
+          path: _site/
+
       - name: Run Lighthouse audit
+        env:
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
         run: npm run lighthouse
 
       - name: Upload Lighthouse reports
