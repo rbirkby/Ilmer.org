@@ -27,21 +27,24 @@ In 1741, there were a surprising number of burials consisting of:
 
 The records show that 1741 was a year of exceptionally high mortality for the parish, particularly in May and November. The Woolvin family was hit hardest, with six members (including four children and the mother, Margaret) buried within a single month between October 26th and November 23rd. Similarly, the Buckland family lost four members (William, Sarah, John, and another William) in late May of that same year.
 
-Overall, 268 burials are recorded at an average rate of 1.14 per year.
+{% assign burialsChart = st-peters-burials | yearBarChart: "year" %}
+Overall, {{ burialsChart.total }} burials are recorded at an average rate of {{ burialsChart.average }} per year. Browse the [full burial register](/history/st-peters-burials/).
 
-![Burial graph](/images/StPetersIlmerBurials.svg)
+{% render "year-bar-chart.liquid", records: st-peters-burials, yearKey: "year", label: "burials", href: "/history/st-peters-burials/" %}
 
 #### Marriages
 
-Overall, 369 marriages are recorded at an average rate of 1.55 per year.
+{% assign marriagesChart = st-peters-marriages | yearBarChart: "year" %}
+Overall, {{ marriagesChart.total }} marriages are recorded at an average rate of {{ marriagesChart.average }} per year. Browse the [full marriage register](/history/st-peters-marriages/).
 
-![Marriage graph](/images/StPetersIlmerMarriages.svg)
+{% render "year-bar-chart.liquid", records: st-peters-marriages, yearKey: "year", label: "marriages", href: "/history/st-peters-marriages/" %}
 
 #### Baptisms
 
-Overall, 450 baptisms are recorded at an average rate of 1.58 per year.
+{% assign baptismsChart = st-peters-baptisms | yearBarChart: "baptism_date" %}
+Overall, {{ baptismsChart.total }} baptisms are recorded at an average rate of {{ baptismsChart.average }} per year. Browse the [full baptism register](/history/st-peters-baptisms/).
 
-![Baptism graph](/images/StPetersIlmerBaptisms.svg)
+{% render "year-bar-chart.liquid", records: st-peters-baptisms, yearKey: "baptism_date", label: "baptisms", href: "/history/st-peters-baptisms/" %}
 
 #### Interesting discoveries
 

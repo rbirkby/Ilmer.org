@@ -9,6 +9,7 @@ import markdownItMarginNotes from './plugins/markdown-it-margin-notes.ts';
 import { createCacheBustFilter } from './plugins/cache-bust.ts';
 import { censusScroll } from './plugins/census-scroll.ts';
 import { censusOccupations } from './plugins/census-occupations.ts';
+import { yearBarChart } from './plugins/year-bar-chart.ts';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 
@@ -47,6 +48,8 @@ export default function (eleventyConfig: any) {
   /** Counts people per occupation from a census HTML table. */
   eleventyConfig.addFilter('censusOccupations', censusOccupations);
   eleventyConfig.addFilter('censusScroll', censusScroll);
+  /** Bar-chart geometry for event counts per year, zero-filled across the full year range. */
+  eleventyConfig.addFilter('yearBarChart', yearBarChart);
   /**
    * Sorts a collection so items whose `url` appears in `urls` come first,
    * in that list's order. Remaining items keep their date order.

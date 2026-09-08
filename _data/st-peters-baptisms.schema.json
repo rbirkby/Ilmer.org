@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ilmer.org/schemas/st-peters-baptisms.schema.json",
+  "title": "St Peter's Ilmer Baptism Register",
+  "description": "Baptisms transcribed from 'The Registers and Records of St Peter's Ilmer' (Rex A Kidd, 1982), covering 1575-1982. Extracted automatically from the digitised PDF; free-text fields preserve the original transcription including uncertain readings.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "baptism_date",
+      "birth_date",
+      "child_forename",
+      "child_surname",
+      "father_forename",
+      "father_occupation",
+      "mother_forename",
+      "notes"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "baptism_date": {
+        "type": "string",
+        "pattern": "^(?:(?:\\d{1,2} )?[A-Z][a-z]{2} )?\\d{4}$",
+        "description": "Day, month and year of baptism, e.g. '10 Apr 1600'; the day is missing for a small number of entries where the source is unclear, and both day and month are missing (year only) for a handful the register itself marks '(no date)' - kept as a note"
+      },
+      "birth_date": {
+        "type": "string",
+        "pattern": "^((\\d{1,2} )?[A-Z][a-z]{2} \\d{4})?$",
+        "description": "Day, month and year of birth, only recorded in registers from 1910 onwards; empty otherwise. The register only prints a birth year when it differs from the baptism year - when it doesn't, the baptism year is used here so the year is always present when the date is"
+      },
+      "child_forename": { "type": "string", "description": "May be empty where illegible or not transcribed" },
+      "child_surname": { "type": "string", "description": "May be empty where illegible or not transcribed" },
+      "father_forename": {
+        "type": "string",
+        "description": "Father's forename; for entries recorded as illegitimate this sometimes instead names the mother (the source preserves the ambiguity, e.g. 'd of William')"
+      },
+      "father_occupation": {
+        "type": "string",
+        "description": "Father's occupation (e.g. 'lab', 'farmer', 'carpenter'), only recorded 1813-1909 and again from 1910; empty otherwise. Where a residence precedes it in the source ('Longwick lab') only the occupation is kept here - the residence stays in notes"
+      },
+      "mother_forename": {
+        "type": "string",
+        "description": "May be empty where not recorded, illegible, or not transcribed"
+      },
+      "notes": {
+        "type": "string",
+        "description": "Remaining free text: residence, register annotations, or (from 1910) address and occupation"
+      }
+    }
+  }
+}

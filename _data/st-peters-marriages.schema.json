@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ilmer.org/schemas/st-peters-marriages.schema.json",
+  "title": "St Peter's Ilmer Marriage Register",
+  "description": "Marriages transcribed from 'The Registers and Records of St Peter's Ilmer' (Rex A Kidd, 1982), covering 1600-1969. Extracted automatically from the digitised PDF; free-text fields preserve the original transcription including uncertain readings.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "year",
+      "date",
+      "type",
+      "groom_forename",
+      "groom_surname",
+      "groom_age",
+      "groom_condition",
+      "groom_occupation",
+      "groom_residence",
+      "bride_forename",
+      "bride_surname",
+      "bride_age",
+      "bride_condition",
+      "bride_occupation",
+      "bride_residence",
+      "notes"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "year": {
+        "type": ["integer", "null"],
+        "minimum": 1600,
+        "maximum": 1969,
+        "description": "Year of the marriage; null only if illegible in the source"
+      },
+      "date": {
+        "type": "string",
+        "description": "Day and month, e.g. '10 Apr'; may be incomplete for a small number of entries"
+      },
+      "type": {
+        "type": "string",
+        "enum": ["", "Banns", "Licence"],
+        "description": "How the marriage was authorised, only recorded 1708-1837; empty for entries outside that range or where not stated"
+      },
+      "groom_forename": { "type": "string", "description": "May be empty where illegible or not transcribed" },
+      "groom_surname": { "type": "string", "description": "May be empty where illegible or not transcribed" },
+      "groom_age": {
+        "type": "string",
+        "description": "Age at marriage, e.g. '23' or 'full age' (meaning 21 or over without a stated number); only recorded from 1838, so empty for earlier entries"
+      },
+      "groom_condition": {
+        "type": "string",
+        "enum": ["", "bachelor", "spinster", "widower", "widow", "minor"],
+        "description": "Marital condition before this marriage; only recorded from 1822, so empty for earlier entries"
+      },
+      "groom_occupation": {
+        "type": "string",
+        "description": "Occupation, where recorded alongside an age or condition; rarely present"
+      },
+      "groom_residence": {
+        "type": "string",
+        "description": "'otp' (of this parish) or a place name (the register's own 'of <place>' with the 'of' dropped); empty where no residence was recorded for the groom"
+      },
+      "bride_forename": { "type": "string", "description": "May be empty where illegible or not transcribed" },
+      "bride_surname": { "type": "string", "description": "May be empty where illegible or not transcribed" },
+      "bride_age": {
+        "type": "string",
+        "description": "Age at marriage, e.g. '21' or 'full age' (meaning 21 or over without a stated number); only recorded from 1838, so empty for earlier entries"
+      },
+      "bride_condition": {
+        "type": "string",
+        "enum": ["", "bachelor", "spinster", "widower", "widow", "minor"],
+        "description": "Marital condition before this marriage; only recorded from 1822, so empty for earlier entries"
+      },
+      "bride_occupation": {
+        "type": "string",
+        "description": "Occupation, where recorded alongside an age or condition; rarely present"
+      },
+      "bride_residence": {
+        "type": "string",
+        "description": "'otp' (of this parish) or a place name (the register's own 'of <place>' with the 'of' dropped); empty where no residence was recorded for the bride"
+      },
+      "notes": {
+        "type": "string",
+        "description": "Remaining free text: signing marks, officiating minister, witnesses, or register annotations"
+      }
+    }
+  }
+}

@@ -962,6 +962,106 @@ details.archive-year {
   }
 }
 
+.year-bar-chart-figure {
+  margin: 1.6rem 0 2.4rem;
+  padding: 1.8rem 2rem 1.4rem;
+  background: var(--archive-card);
+  border: 1px solid var(--archive-border);
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.04);
+}
+
+.year-bar-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+
+  & .year-bar-chart__bar {
+    fill: var(--archive-green);
+    transition: fill 0.1s ease;
+  }
+
+  & .year-bar-chart__bar:hover {
+    fill: var(--archive-highlight);
+  }
+
+  & .year-bar-chart__axis,
+  & .year-bar-chart__gridline {
+    stroke: var(--archive-border);
+    stroke-width: 1;
+  }
+
+  & .year-bar-chart__gridline--minor {
+    stroke-dasharray: 3 3;
+  }
+
+  & .year-bar-chart__tick {
+    stroke: var(--archive-border);
+    stroke-width: 1;
+  }
+
+  & text {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    fill: var(--archive-muted);
+  }
+
+  & .year-bar-chart__x-label {
+    font-size: 13px;
+    text-anchor: middle;
+  }
+
+  & .year-bar-chart__y-label {
+    font-size: 13px;
+    text-anchor: end;
+  }
+}
+
+.year-bar-chart-figure figcaption {
+  margin-top: 0.6rem;
+  color: var(--archive-muted);
+  font-size: 1.3rem;
+}
+
+.register-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.6rem;
+  margin: 0 0 2rem;
+  padding: 1.6rem 0;
+  border-top: 1px solid var(--archive-border);
+  border-bottom: 1px solid var(--archive-border);
+
+  @media (max-width: 640px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 1.4rem;
+  }
+}
+
+.register-summary__stat {
+  & dt {
+    margin: 0 0 0.3rem;
+    color: var(--archive-muted);
+    font-size: 1.2rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  & dd {
+    margin: 0;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2.6rem;
+    font-weight: 600;
+    color: var(--archive-green);
+  }
+}
+
+.register-summary__substat {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--archive-muted);
+}
+
 .census-list {
   margin: 3rem 0 5rem;
   padding: 0;

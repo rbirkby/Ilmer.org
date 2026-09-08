@@ -83,7 +83,7 @@ test('CSS is static and the archive theme inherits the shared palette', () => {
   for (const source of sources) {
     assert.doesNotMatch(source, /\{%|\{\{/);
   }
-  for (const token of ['cream', 'card', 'border', 'ink', 'green', 'green-dark', 'muted']) {
+  for (const token of ['cream', 'card', 'border', 'ink', 'green', 'green-dark', 'highlight', 'muted']) {
     const declaration = new RegExp(`--archive-${token}:`, 'g');
     assert.equal(readFileSync(new URL('assets/css/style.css', root), 'utf8').match(declaration)?.length, 1, token);
     assert.doesNotMatch(readFileSync(new URL('assets/css/archive.css', root), 'utf8'), declaration);
