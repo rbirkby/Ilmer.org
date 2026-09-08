@@ -37,9 +37,9 @@
     "lighthouse": "^13.4.0",
     "linkinator": "^8.0.2",
     "markdownlint-cli": "^0.49.1",
-    "oxfmt": "^0.65.0",
+    "oxfmt": "^0.67.0",
     "oxlint": "^1.74.0",
-    "pour-cli": "^0.2.1",
+    "pour-cli": "^0.3.0",
     "typescript": "^7.0.2"
   },
   "dependencies": {
