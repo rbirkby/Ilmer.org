@@ -14,7 +14,7 @@ headerUseCensus: true
 <div class="census-header">
   <div class="census-header__intro">
     <h1 class="minute-heading">Censuses</h1>
-    {% include "archive-flourish.liquid" %}
+    {% render "archive-flourish.liquid" %}
     <p>Discover Ilmer through the people who lived here. Explore census returns from {{ chart.firstYear }} to {{ chart.lastYear }}.</p>
     <br>
     <p>The censuses of 1801, 1811, 1821 and 1831 were very different from the familiar censuses that followed. Their main purpose was to count the population rather than record details about individual people.</p>

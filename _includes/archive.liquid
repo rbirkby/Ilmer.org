@@ -1,6 +1,16 @@
-{% include "head" %}
+{% render "head"
+  , content: content
+  , lightbox: lightbox
+  , layout: layout
+  , script: script
+  , site: site
+  , url: url
+  , title: title
+  , description: description
+  , tags: tags
+  , image: image %}
 
-{% include "site-header" %}
+{% render "site-header" %}
 {%- assign coll = collections[collectionName] -%}
 {%- assign archiveData = coll | archiveByDecade -%}
 {%- assign subjectTags = coll | archiveSubjectTags: collectionName -%}
@@ -32,18 +42,36 @@
   {%- endif -%}
 {%- endif -%}
 
-<main class="archive"{% if image %} style="--hero-image: url('{{ image | sitePath }}')"{% endif %}>
+<main
+  class="archive"
+  {% if image %}
+  style="--hero-image: url('{{ image | sitePath }}')"
+  {% endif %}>
   <section class="archive-hero">
     <div class="archive-hero__text">
-      {% include "breadcrumb.liquid" %}
+      {% render "breadcrumb.liquid"
+        , ancestorCrumb1: ancestorCrumb1
+        , ancestorCrumb2: ancestorCrumb2
+        , breadcrumbUseDate: breadcrumbUseDate
+        , page: page
+        , title: title %}
       <h1>{{ title }}</h1>
-      <p class="archive-hero__meta">{{ placeName }}{% if startYear %} &middot; {{ startYear }}&ndash;{{ endYear }}{% endif %}</p>
-      {% include "archive-flourish.liquid" %}
+      <p class="archive-hero__meta">{{ placeName }}{% if startYear %}
+          &middot; {{ startYear }}&ndash;{{ endYear }}{% endif %}
+      </p>
+      {% render "archive-flourish.liquid" %}
       <p class="archive-hero__description">{{ description | renderMarkdownInline }}</p>
       {% unless hideSearch %}
-        <form class="archive-search" role="search" aria-label="Search the minutes">
+        <form
+          class="archive-search"
+          role="search"
+          aria-label="Search the minutes">
           <label for="archive-search-input" class="sr-only">Search the minutes</label>
-          <input id="archive-search-input" type="search" name="q" placeholder="Search the minutes">
+          <input
+            id="archive-search-input"
+            type="search"
+            name="q"
+            placeholder="Search the minutes">
           <button type="submit">Search</button>
         </form>
       {% endunless %}
@@ -52,54 +80,62 @@
 
   <div class="archive-panels">
     {% if featuredItem %}
-    <section class="archive-card archive-featured" aria-labelledby="from-the-minutes-heading">
-      <div class="archive-card__heading">
-        <h2 id="from-the-minutes-heading">from the minutes</h2>
-        {% include "archive-flourish.liquid", small: true %}
-      </div>
-      <p class="archive-featured__date">
-        <svg class="archive-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-          <rect x="3.5" y="5" width="17" height="16" rx="2"></rect>
-          <path d="M3.5 9.5h17M8 3v4M16 3v4"></path>
-        </svg>
-        {{ featuredItem.date | date: "%-d %B %Y" }}
-      </p>
-      {% if featuredHeadline %}<p class="archive-featured__title">{{ featuredHeadline }}</p>{% endif %}
-      <p class="archive-featured__quote">&ldquo;{{ featuredExcerpt }}&hellip;&rdquo;</p>
-      <a class="archive-featured__link" href="{{ featuredItem.url }}">Read the full minute <span aria-hidden="true">&rarr;</span></a>
-    </section>
+      <section class="archive-card archive-featured" aria-labelledby="from-the-minutes-heading">
+        <div class="archive-card__heading">
+          <h2 id="from-the-minutes-heading">from the minutes</h2>
+          {% render "archive-flourish.liquid"
+            , small: true %}
+        </div>
+        <p class="archive-featured__date">
+          {% render "icons/calendar.liquid" %}
+          {{ featuredItem.date | date: "%-d %B %Y" }}
+        </p>
+        {% if featuredHeadline %}
+          <p class="archive-featured__title">{{ featuredHeadline }}</p>
+        {% endif %}
+        <p class="archive-featured__quote">&ldquo;{{ featuredExcerpt }}&hellip;&rdquo;</p>
+        <a class="archive-featured__link" href="{{ featuredItem.url }}">Read the full minute
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </section>
     {% endif %}
 
     <section class="archive-card archive-browse" aria-labelledby="browse-heading">
       <div class="archive-card__heading">
         <h2 id="browse-heading">Browse the archive</h2>
-        <span class="archive-browse__total">{{ coll.size }} minute{% if coll.size != 1 %}s{% endif %}</span>
+        <span class="archive-browse__total">{{ coll.size }} minute{% if coll.size != 1 %}s{% endif %}
+        </span>
       </div>
       <div class="archive-decades">
         {% for decadeGroup in archiveData %}
           <div class="archive-decade">
-            <input type="checkbox" id="decade-{{ collectionName }}-{{ decadeGroup.decade }}" class="archive-decade__toggle" hidden>
+            <input
+              type="checkbox"
+              id="decade-{{ collectionName }}-{{ decadeGroup.decade }}"
+              class="archive-decade__toggle"
+              hidden>
             <label class="archive-decade__summary" for="decade-{{ collectionName }}-{{ decadeGroup.decade }}">
               <span class="archive-decade__label">
-                <svg class="archive-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                  <rect x="3.5" y="5" width="17" height="16" rx="2"></rect>
-                  <path d="M3.5 9.5h17M8 3v4M16 3v4"></path>
-                </svg>
+                {% render "icons/calendar.liquid" %}
                 {{ decadeGroup.decade }}s
               </span>
-              <span class="archive-decade__count">{{ decadeGroup.totalCount }} minute{% if decadeGroup.totalCount != 1 %}s{% endif %}</span>
-              <svg class="archive-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+              <span class="archive-decade__count">{{ decadeGroup.totalCount }} minute{% if decadeGroup.totalCount != 1 %}s{% endif %}
+              </span>
+              {% render "icons/chevron-down.liquid" %}
             </label>
             <div class="archive-years">
               {% for y in decadeGroup.years %}
                 <details class="archive-year">
                   <summary>
                     <span>{{ y.year }}</span>
-                    <span class="archive-year__count">{{ y.count }} meeting{% if y.count != 1 %}s{% endif %}</span>
+                    <span class="archive-year__count">{{ y.count }} meeting{% if y.count != 1 %}s{% endif %}
+                    </span>
                   </summary>
                   <ul class="archive-year__list">
                     {% for it in y.items %}
-                      <li><a href="{{ it.url }}">{{ it.date | date: "%-d %b" }}</a></li>
+                      <li>
+                        <a href="{{ it.url }}">{{ it.date | date: "%-d %b" }}</a>
+                      </li>
                     {% endfor %}
                   </ul>
                 </details>
@@ -129,4 +165,4 @@
     </section>
   {% endif %}
 </main>
-{% include "footer" %}
+{% render "footer" %}

@@ -1,0 +1,33 @@
+{%- assign cardDateRange = dateRange | default: "" -%}
+{%- if archiveCollection -%}
+  {%- assign cardDateRange = "" -%}
+  {%- assign firstEntry = archiveCollection | first -%}
+  {%- assign lastEntry = archiveCollection | last -%}
+  {%- if firstEntry -%}
+    {%- assign firstYear = firstEntry.date | date: "%Y" -%}
+    {%- assign lastYear = lastEntry.date | date: "%Y" -%}
+    {%- assign cardDateRange = firstYear | append: "&ndash;" | append: lastYear -%}
+  {%- endif -%}
+{%- endif -%}
+<article class="archive-card archive-link-card archive-link-card--{{ modifier }}">
+  <span class="archive-link-card__icon">
+    {% if icon %}
+      {% assign iconPath = "icons/" | append: icon | append: ".liquid" %}
+      {% render iconPath %}
+    {% endif %}
+  </span>
+  <div class="archive-card__heading">
+    <h2>{{ heading }}</h2>
+    {% render "archive-flourish.liquid"
+      , small: true %}
+  </div>
+  <p class="archive-link-card__description">{{ description }}</p>
+  {%- if cardDateRange != blank %}
+    <p class="archive-link-card__dates">
+      {% render "icons/calendar.liquid" %}
+      {{ cardDateRange }}</p>
+  {%- endif %}
+  <a class="archive-link-card__cta" href="{{ href }}">Explore archive
+    <span aria-hidden="true">&rarr;</span>
+  </a>
+</article>

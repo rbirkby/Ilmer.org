@@ -21,21 +21,7 @@ eleventyComputed:
   {%- for item in subject.items -%}
     <li>
       <span class="subject-list__date">
-        <svg
-          class="archive-icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          aria-hidden="true">
-          <rect
-            x="3.5"
-            y="5"
-            width="17"
-            height="16"
-            rx="2"></rect>
-          <path d="M3.5 9.5h17M8 3v4M16 3v4"></path>
-        </svg>
+        {% render "icons/calendar.liquid" %}
         {{ item.date | date: "%-d %b %Y" }}
       </span>
       <span class="subject-list__summary">{{ item.data.summary }}</span>

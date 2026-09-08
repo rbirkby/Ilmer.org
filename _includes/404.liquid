@@ -1,14 +1,34 @@
-{% include "head" %}
+{% render "head"
+  , content: content
+  , lightbox: lightbox
+  , layout: layout
+  , script: script
+  , site: site
+  , url: url
+  , title: title
+  , description: description
+  , tags: tags
+  , image: image %}
 
-{% include "site-header" %}
+{% render "site-header" %}
 <main class="archive">
   <section class="article">
-    {% include "breadcrumb.liquid" %}
+    {% render "breadcrumb.liquid"
+      , ancestorCrumb1: ancestorCrumb1
+      , ancestorCrumb2: ancestorCrumb2
+      , breadcrumbUseDate: breadcrumbUseDate
+      , page: page
+      , title: title %}
 
     <h1 class="minute-heading">{{ title }}</h1>
-    <p>{% if description %}{{ description }}{% else %}{{ tagline }}{% endif %}</p>
+    <p>
+      {% if description %}
+        {{ description }}
+      {% else %}
+        {{ tagline }}{% endif %}
+    </p>
 
     {{ content }}
   </section>
 </main>
-{% include "footer" %}
+{% render "footer" %}

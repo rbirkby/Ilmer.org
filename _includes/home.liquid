@@ -1,4 +1,14 @@
-{% include "head" %}
+{% render "head"
+  , content: content
+  , lightbox: lightbox
+  , layout: layout
+  , script: script
+  , site: site
+  , url: url
+  , title: title
+  , description: description
+  , tags: tags
+  , image: image %}
 
 <header>
   <div class="container">
@@ -9,7 +19,7 @@
       <h1>Ilmer Past</h1>
       <p>One historic village through time</p>
     </div>
-    {% include "site-nav" %}
+    {% render "site-nav" %}
   </div>
 </header>
 <main>
@@ -33,4 +43,4 @@
     {% endfor %}
   </section>
 </main>
-{% include "footer" %}
+{% render "footer" %}

@@ -1,9 +1,24 @@
-{% include "head" %}
+{% render "head"
+  , content: content
+  , lightbox: lightbox
+  , layout: layout
+  , script: script
+  , site: site
+  , url: url
+  , title: title
+  , description: description
+  , tags: tags
+  , image: image %}
 
-{% include "site-header" %}
+{% render "site-header" %}
 <main>
   <section class="article">
-    {% include "breadcrumb.liquid" %}
+    {% render "breadcrumb.liquid"
+      , ancestorCrumb1: ancestorCrumb1
+      , ancestorCrumb2: ancestorCrumb2
+      , breadcrumbUseDate: breadcrumbUseDate
+      , page: page
+      , title: title %}
 
     <h1>{{ title }}</h1>
     <p class="will-meta">{{ description }}</p>
@@ -53,4 +68,4 @@
     }, 100);
   }
 </script>
-{% include "footer" %}
+{% render "footer" %}

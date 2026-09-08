@@ -74,15 +74,10 @@ if (!Array.isArray(events)) {
 }
 
 let warnCount = 0;
-let errorCount = 0;
 
 function warn(msg: string): void {
   warnCount++;
   console.warn('WARN:', msg);
-}
-function error(msg: string): void {
-  errorCount++;
-  console.error('ERROR:', msg);
 }
 
 const seen = new Set<string>();
@@ -90,10 +85,9 @@ const seen = new Set<string>();
 events.forEach((raw, idx) => {
   const ev = raw as HistoricalEvent;
   const where = `event #${idx + 1}`;
-  // Requireds
-  if (!isString(ev.date) || ev.date.trim() === '') error(`${where}: missing/invalid date`);
-  if (!isString(ev.title) || ev.title.trim() === '') error(`${where}: missing/invalid title`);
-  if (!isString(ev.description) || ev.description.trim() === '') error(`${where}: missing/invalid description`);
+  // Required fields (date/title/description/labels) are enforced by
+  // historicalEvents.schema.json via `npm run validate:schema`; this script
+  // only checks what the schema can't express.
 
   // Duplicates by key
   const key = `${ev.date}::${ev.title}`;
@@ -120,5 +114,4 @@ events.forEach((raw, idx) => {
   if (y == null) warn(`${where}: date is not year-like; sorting may be unexpected`);
 });
 
-console.log(`\nValidation complete: ${events.length} events, ${warnCount} warnings, ${errorCount} errors.`);
-if (errorCount > 0) process.exit(1);
+console.log(`\nValidation complete: ${events.length} events, ${warnCount} warnings.`);

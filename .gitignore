@@ -4,3 +4,4 @@ node_modules
 .lighthouseci
 pour-reports
 reports
+.claude
