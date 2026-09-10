@@ -15,6 +15,18 @@
     {
       "fileMatch": ["_data/lockington-census.json"],
       "url": "./_data/lockington-census.schema.json"
+    },
+    {
+      "fileMatch": ["_data/st-peters-baptisms.json"],
+      "url": "./_data/st-peters-baptisms.schema.json"
+    },
+    {
+      "fileMatch": ["_data/st-peters-burials.json"],
+      "url": "./_data/st-peters-burials.schema.json"
+    },
+    {
+      "fileMatch": ["_data/st-peters-marriages.json"],
+      "url": "./_data/st-peters-marriages.schema.json"
     }
   ]
 }
