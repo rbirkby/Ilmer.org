@@ -20,13 +20,13 @@
     "properties": {
       "baptism_date": {
         "type": "string",
-        "pattern": "^(?:(?:\\d{1,2} )?[A-Z][a-z]{2} )?\\d{4}$",
-        "description": "Day, month and year of baptism, e.g. '10 Apr 1600'; the day is missing for a small number of entries where the source is unclear, and both day and month are missing (year only) for a handful the register itself marks '(no date)' - kept as a note"
+        "pattern": "^(?:(?:(?:\\d{1,2}|\\?) )?(?:[A-Z][a-z]{2,8}|\\?) \\d{4}|[A-Z][a-z]{2,8} \\d{1,2} \\d{4}|\\d{4}|\\(no date\\)|no date \\d{4})$",
+        "description": "Baptism date as transcribed: day-month-year or month-day-year, with abbreviated or full month names. Day and month may be omitted, or an unknown day or month marked '?'. Undated entries use '(no date)' or 'no date' followed by a year"
       },
       "birth_date": {
         "type": "string",
-        "pattern": "^((\\d{1,2} )?[A-Z][a-z]{2} \\d{4})?$",
-        "description": "Day, month and year of birth, only recorded in registers from 1910 onwards; empty otherwise. The register only prints a birth year when it differs from the baptism year - when it doesn't, the baptism year is used here so the year is always present when the date is"
+        "pattern": "^(?:\\d{1,2}(?:d|st|nd|rd|th)? [A-Z][a-z]{2,8}(?: \\d{4})?|[A-Z][a-z]{2,8} (?:\\d{1,2}(?: \\d{4})?|\\d{4})|\\d+ years?|\\?|Adult)?$",
+        "description": "Birth date or age as transcribed; empty when absent. Dates may use day-month or month-day order, abbreviated or full month names (including 'Mch'), ordinal days such as '22d', and an optional year. Also preserves ages such as '5 years', 'Adult', and '?' for an unknown date"
       },
       "child_forename": { "type": "string", "description": "May be empty where illegible or not transcribed" },
       "child_surname": { "type": "string", "description": "May be empty where illegible or not transcribed" },
