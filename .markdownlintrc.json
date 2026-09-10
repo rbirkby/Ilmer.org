@@ -1,4 +1,5 @@
 {
+  "$schema": "./node_modules/markdownlint/schema/markdownlint-config-schema.json",
   "default": true,
   "MD001": false,
   "MD013": false,
