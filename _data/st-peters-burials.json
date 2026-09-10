@@ -386,10 +386,10 @@
   {
     "year": 1675,
     "date": "5 Mar",
-    "forename": "",
+    "forename": "?Mary",
     "surname": "Wade",
     "age": "",
-    "notes": "?Mary"
+    "notes": ""
   },
   {
     "year": 1675,
@@ -397,7 +397,7 @@
     "forename": "Susannah",
     "surname": "Gom",
     "age": "",
-    "notes": "d of Thomas (From the Registers)"
+    "notes": "d of Thomas"
   },
   {
     "year": 1687,
@@ -989,7 +989,15 @@
     "forename": "Edward",
     "surname": "Oxley",
     "age": "",
-    "notes": "& Elizabeth his wife were both buried"
+    "notes": ""
+  },
+  {
+    "year": 1740,
+    "date": "14 May",
+    "forename": "Elizabeth",
+    "surname": "Oxley",
+    "age": "",
+    "notes": ""
   },
   {
     "year": 1741,
@@ -1154,10 +1162,10 @@
   {
     "year": 1746,
     "date": "28 Jun",
-    "forename": "The Revd Mr Henry",
+    "forename": "Henry",
     "surname": "Stanbridge",
     "age": "",
-    "notes": ""
+    "notes": "The Revd Mr Henry Stanbridge"
   },
   {
     "year": 1746,
@@ -2325,7 +2333,15 @@
     "forename": "Hannah",
     "surname": "Gomme",
     "age": "2 days",
-    "notes": "August KINGHAM Joshua 75"
+    "notes": ""
+  },
+  {
+    "year": 1859,
+    "date": "August",
+    "forename": "Kingham",
+    "surname": "Joshua",
+    "age": "75",
+    "notes": ""
   },
   {
     "year": 1865,
@@ -2675,9 +2691,9 @@
     "year": 1909,
     "date": "27 Feb",
     "forename": "William",
-    "surname": "Small",
+    "surname": "",
     "age": "",
-    "notes": "infant child of Lavinia Ann born Feb 3 unbaptized"
+    "notes": "infant child of Lavinia Ann Small born Feb 3 unbaptized"
   },
   {
     "year": 1909,

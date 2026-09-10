@@ -891,12 +891,12 @@
     "groom_condition": "",
     "groom_occupation": "",
     "groom_residence": "Monks Risborough",
-    "bride_forename": "Mary Princes",
+    "bride_forename": "Mary",
     "bride_surname": "Dosset",
     "bride_age": "",
     "bride_condition": "",
     "bride_occupation": "",
-    "bride_residence": "Risborough",
+    "bride_residence": "Princes Risborough",
     "notes": ""
   },
   {
@@ -981,12 +981,12 @@
     "groom_condition": "",
     "groom_occupation": "",
     "groom_residence": "Leighton, Beds.",
-    "bride_forename": "Ann Oxon",
+    "bride_forename": "Ann",
     "bride_surname": "Almond",
     "bride_age": "",
     "bride_condition": "",
     "bride_occupation": "",
-    "bride_residence": "Thame,",
+    "bride_residence": "Thame, Oxon",
     "notes": ""
   },
   {
@@ -999,13 +999,13 @@
     "groom_condition": "",
     "groom_occupation": "",
     "groom_residence": "Aston Sampford",
-    "bride_forename": "Hannah Stone",
+    "bride_forename": "Hannah",
     "bride_surname": "Taylor",
     "bride_age": "",
     "bride_condition": "",
     "bride_occupation": "",
-    "bride_residence": "",
-    "notes": "of"
+    "bride_residence": "Stone",
+    "notes": ""
   },
   {
     "year": 1707,
@@ -1017,13 +1017,13 @@
     "groom_condition": "",
     "groom_occupation": "",
     "groom_residence": "Thame, Oxon",
-    "bride_forename": "Crendon",
+    "bride_forename": "Mary",
     "bride_surname": "Bathurston",
     "bride_age": "",
     "bride_condition": "",
     "bride_occupation": "",
-    "bride_residence": "",
-    "notes": "Mary of"
+    "bride_residence": "Crendon",
+    "notes": ""
   },
   {
     "year": 1707,
@@ -1089,12 +1089,12 @@
     "groom_condition": "",
     "groom_occupation": "",
     "groom_residence": "Watford, Herts",
-    "bride_forename": "Elizabeth Princes",
+    "bride_forename": "Elizabeth",
     "bride_surname": "Coker",
     "bride_age": "",
     "bride_condition": "",
     "bride_occupation": "",
-    "bride_residence": "Risborough",
+    "bride_residence": "Princes Risborough",
     "notes": ""
   },
   {
@@ -1270,12 +1270,12 @@
     "groom_occupation": "",
     "groom_residence": "Towersie",
     "bride_forename": "Susanna",
-    "bride_surname": "Cousery",
+    "bride_surname": "Cousery**",
     "bride_age": "",
     "bride_condition": "",
     "bride_occupation": "",
     "bride_residence": "Kingsey",
-    "notes": ""
+    "notes": "** (BTs = COZENS)"
   },
   {
     "year": 1710,
@@ -1923,7 +1923,7 @@
     "bride_condition": "",
     "bride_occupation": "",
     "bride_residence": "",
-    "notes": "- ** (BTs = COZENS)"
+    "notes": ""
   },
   {
     "year": 1728,
@@ -1977,7 +1977,7 @@
     "bride_condition": "",
     "bride_occupation": "",
     "bride_residence": "PR",
-    "notes": "- (BTs ="
+    "notes": ""
   },
   {
     "year": 1729,
@@ -1995,7 +1995,7 @@
     "bride_condition": "",
     "bride_occupation": "",
     "bride_residence": "",
-    "notes": "or -"
+    "notes": "or 1730"
   },
   {
     "year": 1730,
@@ -2922,16 +2922,16 @@
     "groom_forename": "William",
     "groom_surname": "Woodbridge",
     "groom_age": "",
-    "groom_condition": "",
+    "groom_condition": "bachelor",
     "groom_occupation": "",
     "groom_residence": "Kingsey",
     "bride_forename": "Sarah",
     "bride_surname": "Kingham",
     "bride_age": "",
-    "bride_condition": "",
+    "bride_condition": "spinster",
     "bride_occupation": "",
     "bride_residence": "otp",
-    "notes": "bach spr Thos GURNEY, Josua KINGHAM, Elizabeth KINGHAM mother of the above Sarah KINGHAM"
+    "notes": "Thos GURNEY, Josua KINGHAM, Elizabeth KINGHAM mother of the above Sarah KINGHAM"
   },
   {
     "year": 1803,
@@ -2994,16 +2994,16 @@
     "groom_forename": "William",
     "groom_surname": "Obcraft",
     "groom_age": "",
-    "groom_condition": "",
+    "groom_condition": "bachelor",
     "groom_occupation": "",
     "groom_residence": "otp",
     "bride_forename": "Hanna",
     "bride_surname": "Kingham",
     "bride_age": "",
-    "bride_condition": "",
+    "bride_condition": "spinster",
     "bride_occupation": "",
     "bride_residence": "Bledlow",
-    "notes": "bach spr John WEST Sarah KINGHAM, Thos JONES Vicar"
+    "notes": "John WEST Sarah KINGHAM, Thos JONES Vicar"
   },
   {
     "year": 1815,
@@ -3048,16 +3048,16 @@
     "groom_forename": "Thomas",
     "groom_surname": "Stratford",
     "groom_age": "",
-    "groom_condition": "",
+    "groom_condition": "bachelor",
     "groom_occupation": "",
     "groom_residence": "otp",
     "bride_forename": "Sophia",
     "bride_surname": "Leech",
     "bride_age": "",
-    "bride_condition": "",
+    "bride_condition": "spinster",
     "bride_occupation": "",
     "bride_residence": "otp",
-    "notes": "bach spr Joseph GOMME, Hanah GOMME TJ Vicar"
+    "notes": "Joseph GOMME, Hanah GOMME TJ Vicar"
   },
   {
     "year": 1822,
@@ -3199,9 +3199,9 @@
     "bride_surname": "Kingham",
     "bride_age": "",
     "bride_condition": "spinster",
-    "bride_occupation": "(Banns = Hannah)",
+    "bride_occupation": "",
     "bride_residence": "otp",
-    "notes": "Anna ALLEN Joseph CLAYDON, W E PARTRIDGE Vicar"
+    "notes": "(Banns = Hannah). Anna ALLEN Joseph CLAYDON, W E PARTRIDGE Vicar"
   },
   {
     "year": 1835,
@@ -3258,28 +3258,10 @@
     "notes": "Benjamin EGGLETON, Joseph CLAYDON Clerk of the Parish W E P"
   },
   {
-    "year": 1865,
-    "date": "14 Mar",
-    "type": "",
-    "groom_forename": "Thomas",
-    "groom_surname": "Goodchild",
-    "groom_age": "",
-    "groom_condition": "",
-    "groom_occupation": "",
-    "groom_residence": "Longwick",
-    "bride_forename": "Fanny",
-    "bride_surname": "Wooster",
-    "bride_age": "",
-    "bride_condition": "",
-    "bride_occupation": "",
-    "bride_residence": "otp",
-    "notes": "'on the authority of the Registrar's certificate without Licence' WEST, Officiating Minister WOOSTER, ?? Wm SAUNDERS Sarah"
-  },
-  {
     "year": 1838,
-    "date": "17 Mar",
+    "date": "17 Oct",
     "type": "",
-    "groom_forename": "Oct Joseph",
+    "groom_forename": "Joseph",
     "groom_surname": "Burnham",
     "groom_age": "",
     "groom_condition": "",
@@ -3608,14 +3590,14 @@
     "groom_age": "21",
     "groom_condition": "bachelor",
     "groom_occupation": "",
-    "groom_residence": "",
+    "groom_residence": "Longwick",
     "bride_forename": "Fanny",
     "bride_surname": "Wooster",
     "bride_age": "21",
     "bride_condition": "spinster",
     "bride_occupation": "",
-    "bride_residence": "",
-    "notes": ""
+    "bride_residence": "otp",
+    "notes": "'on the authority of the Registrar's certificate without Licence', ?? West. Wm SAUNDERS Officiating Minister"
   },
   {
     "year": 1867,
@@ -4339,9 +4321,9 @@
   },
   {
     "year": 1947,
-    "date": "14 Apr",
+    "date": "14 Jun",
     "type": "",
-    "groom_forename": "Jun Herbert George Arthur",
+    "groom_forename": "Herbert George Arthur",
     "groom_surname": "Tapping",
     "groom_age": "full age",
     "groom_condition": "bachelor",
@@ -4451,11 +4433,11 @@
     "type": "",
     "groom_forename": "Bernard Walter Herbert",
     "groom_surname": "Cummings",
-    "groom_age": "",
+    "groom_age": "27",
     "groom_condition": "bachelor",
     "groom_occupation": "",
     "groom_residence": "",
-    "bride_forename": "27 Delia Kathleen",
+    "bride_forename": "Delia Kathleen",
     "bride_surname": "Green",
     "bride_age": "22",
     "bride_condition": "spinster",

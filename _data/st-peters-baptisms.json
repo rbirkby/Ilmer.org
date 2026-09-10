@@ -1277,7 +1277,7 @@
     "father_forename": "Thomas",
     "father_occupation": "",
     "mother_forename": "Joyce",
-    "notes": "(From the Register)"
+    "notes": ""
   },
   {
     "baptism_date": "26 Sep 1680",
@@ -1725,9 +1725,9 @@
     "child_forename": "Richard",
     "child_surname": "Edwards",
     "father_forename": "James",
-    "father_occupation": "living in the Parish of Saunderton",
+    "father_occupation": "",
     "mother_forename": "Mary",
-    "notes": ""
+    "notes": "living in the Parish of Saunderton"
   },
   {
     "baptism_date": "16 Oct 1718",
@@ -3036,8 +3036,8 @@
     "child_surname": "Kingham",
     "father_forename": "Thomas",
     "father_occupation": "",
-    "mother_forename": "",
-    "notes": "Elizabeth"
+    "mother_forename": "Elizabeth",
+    "notes": ""
   },
   {
     "baptism_date": "3 Jan 1777",
@@ -3046,8 +3046,8 @@
     "child_surname": "Nichols",
     "father_forename": "John",
     "father_occupation": "",
-    "mother_forename": "",
-    "notes": "Hana"
+    "mother_forename": "Hana",
+    "notes": ""
   },
   {
     "baptism_date": "23 Mar 1777",
@@ -3056,8 +3056,8 @@
     "child_surname": "Cox",
     "father_forename": "John",
     "father_occupation": "",
-    "mother_forename": "",
-    "notes": "Mary"
+    "mother_forename": "Mary",
+    "notes": ""
   },
   {
     "baptism_date": "11 May 1777",
@@ -3066,8 +3066,8 @@
     "child_surname": "Horten",
     "father_forename": "Thomas",
     "father_occupation": "",
-    "mother_forename": "",
-    "notes": "Sara"
+    "mother_forename": "Sara",
+    "notes": ""
   },
   {
     "baptism_date": "19 Apr 1778",
@@ -3076,8 +3076,8 @@
     "child_surname": "Kingham",
     "father_forename": "John",
     "father_occupation": "",
-    "mother_forename": "",
-    "notes": "Hana"
+    "mother_forename": "Hana",
+    "notes": ""
   },
   {
     "baptism_date": "26 May 1778",
@@ -3086,8 +3086,8 @@
     "child_surname": "Kingham",
     "father_forename": "Thomas",
     "father_occupation": "",
-    "mother_forename": "",
-    "notes": "Elizabeth"
+    "mother_forename": "Elizabeth",
+    "notes": ""
   },
   {
     "baptism_date": "27 Sep 1778",
@@ -3106,8 +3106,8 @@
     "child_surname": "Horten",
     "father_forename": "Thomas",
     "father_occupation": "",
-    "mother_forename": "",
-    "notes": "Sara"
+    "mother_forename": "Sara",
+    "notes": ""
   },
   {
     "baptism_date": "12 Dec 1779",
@@ -3116,8 +3116,8 @@
     "child_surname": "Kingham",
     "father_forename": "Thomas",
     "father_occupation": "",
-    "mother_forename": "",
-    "notes": "Elizabeth"
+    "mother_forename": "Elizabeth",
+    "notes": ""
   },
   {
     "baptism_date": "11 Jan 1780",
@@ -3126,8 +3126,8 @@
     "child_surname": "Kingham",
     "father_forename": "John",
     "father_occupation": "",
-    "mother_forename": "",
-    "notes": "Hana"
+    "mother_forename": "Hana",
+    "notes": ""
   },
   {
     "baptism_date": "31 Jan 1780",
@@ -3136,8 +3136,8 @@
     "child_surname": "Cox",
     "father_forename": "John",
     "father_occupation": "",
-    "mother_forename": "",
-    "notes": "Mary"
+    "mother_forename": "Mary",
+    "notes": ""
   },
   {
     "baptism_date": "3 May 1780",
@@ -3146,8 +3146,8 @@
     "child_surname": "Kingham",
     "father_forename": "John",
     "father_occupation": "",
-    "mother_forename": "",
-    "notes": "Mary"
+    "mother_forename": "Mary",
+    "notes": ""
   },
   {
     "baptism_date": "21 Feb 1781",
@@ -4351,36 +4351,6 @@
     "notes": "\""
   },
   {
-    "baptism_date": "11 Jun 1859",
-    "birth_date": "",
-    "child_forename": "Emily",
-    "child_surname": "Devining",
-    "father_forename": "Jane Joseph",
-    "father_occupation": "lab",
-    "mother_forename": "Mary",
-    "notes": "of Longwick ADULT"
-  },
-  {
-    "baptism_date": "11 Jun 1859",
-    "birth_date": "",
-    "child_forename": "Edith Emma Jane",
-    "child_surname": "Devining",
-    "father_forename": "Jane Joseph",
-    "father_occupation": "lab",
-    "mother_forename": "Mary",
-    "notes": "\""
-  },
-  {
-    "baptism_date": "11 Jun 1859",
-    "birth_date": "",
-    "child_forename": "Deborah",
-    "child_surname": "Claydon",
-    "father_forename": "Jane John",
-    "father_occupation": "Lab",
-    "mother_forename": "Jane",
-    "notes": "\" ADULT"
-  },
-  {
     "baptism_date": "5 Jan 1840",
     "birth_date": "",
     "child_forename": "Thomas",
@@ -4492,8 +4462,8 @@
   },
   {
     "baptism_date": "12 Jun 1842",
-    "birth_date": "",
-    "child_forename": "Jan 7 Sarah",
+    "birth_date": "Jan 7 1841",
+    "child_forename": "Sarah",
     "child_surname": "Claydon",
     "father_forename": "John",
     "father_occupation": "lab",
@@ -5043,12 +5013,12 @@
   {
     "baptism_date": "11 Jun 1859",
     "birth_date": "",
-    "child_forename": "Edith Emma",
+    "child_forename": "Edith Emma Jane",
     "child_surname": "Devening",
     "father_forename": "Joseph",
-    "father_occupation": "",
+    "father_occupation": "lab",
     "mother_forename": "Mary",
-    "notes": "Adult. \" \""
+    "notes": "Adult. Longwick"
   },
   {
     "baptism_date": "11 Jun 1859",
@@ -5205,9 +5175,9 @@
     "birth_date": "",
     "child_forename": "Isabella August",
     "child_surname": "Horton",
-    "father_forename": "John Richard",
-    "father_occupation": "lab farmer",
-    "mother_forename": "Emma Martha",
+    "father_forename": "John",
+    "father_occupation": "lab",
+    "mother_forename": "Emma",
     "notes": ""
   },
   {
@@ -5273,7 +5243,7 @@
   {
     "baptism_date": "13 Apr 1873",
     "birth_date": "",
-    "child_forename": "John",
+    "child_forename": "John James",
     "child_surname": "Horton",
     "father_forename": "John",
     "father_occupation": "lab",
@@ -5283,7 +5253,7 @@
   {
     "baptism_date": "6 Jul 1873",
     "birth_date": "",
-    "child_forename": "Thomas James",
+    "child_forename": "Thomas",
     "child_surname": "Belgrove",
     "father_forename": "Richard",
     "father_occupation": "farmer",
@@ -5314,10 +5284,10 @@
     "baptism_date": "Jul 1873",
     "birth_date": "",
     "child_forename": "Thomas",
-    "child_surname": "Rudd",
+    "child_surname": "Belgrove",
     "father_forename": "Richard",
     "father_occupation": "farmer",
-    "mother_forename": "Martha",
+    "mother_forename": "Martha Rudd",
     "notes": "Privately baptized - Received into Church Mch 28 1874 *daughter* of Richard & Martha Rudd"
   },
   {
@@ -5385,7 +5355,7 @@
     "birth_date": "",
     "child_forename": "William James",
     "child_surname": "Burnham",
-    "father_forename": "William James",
+    "father_forename": "William",
     "father_occupation": "gatekeeper",
     "mother_forename": "Mary Anne",
     "notes": "Grove Way, Bledlow"
@@ -5401,7 +5371,7 @@
     "notes": ""
   },
   {
-    "baptism_date": "no date 1975",
+    "baptism_date": "no date 1875",
     "birth_date": "",
     "child_forename": "Mary",
     "child_surname": "Belgrove",
@@ -6052,8 +6022,8 @@
   },
   {
     "baptism_date": "15 Aug 1900",
-    "birth_date": "",
-    "child_forename": "Adult Henrietta Margaret",
+    "birth_date": "Adult",
+    "child_forename": "Henrietta Margaret",
     "child_surname": "Kingham",
     "father_forename": "George",
     "father_occupation": "farmer",
@@ -6122,13 +6092,13 @@
   },
   {
     "baptism_date": "25 Jun 1903",
-    "birth_date": "27 Oct 1903",
+    "birth_date": "27 Oct 1901",
     "child_forename": "Gertrude Edith",
     "child_surname": "Kingham",
     "father_forename": "Fritz William",
-    "father_occupation": "",
+    "father_occupation": "lab",
     "mother_forename": "Sarah Ann",
-    "notes": "lab (died 26 1903)"
+    "notes": "died 26 Jun 1903"
   },
   {
     "baptism_date": "13 Sep 1903",
@@ -6136,9 +6106,9 @@
     "child_forename": "Frank Percy",
     "child_surname": "Kingham",
     "father_forename": "Fritz William",
-    "father_occupation": "",
+    "father_occupation": "lab",
     "mother_forename": "Sarah Ann",
-    "notes": "\""
+    "notes": ""
   },
   {
     "baptism_date": "25 Oct 1903",
@@ -6255,9 +6225,9 @@
     "birth_date": "",
     "child_forename": "George Philip",
     "child_surname": "Crook",
-    "father_forename": "James Lavinia",
+    "father_forename": "James",
     "father_occupation": "platelayer",
-    "mother_forename": "Ann (maiden name SMALL)",
+    "mother_forename": "Lavinia Ann (maiden name SMALL)",
     "notes": "Longwick"
   },
   {
@@ -6372,22 +6342,12 @@
   },
   {
     "baptism_date": "11 Jul 1920",
-    "birth_date": "May 1920",
+    "birth_date": "21 May 1920",
     "child_forename": "Victor Thomas",
     "child_surname": "Bradshaw",
     "father_forename": "Thomas",
     "father_occupation": "farmer",
-    "mother_forename": "Clara",
-    "notes": ""
-  },
-  {
-    "baptism_date": "21 Jul 1920",
-    "birth_date": "",
-    "child_forename": "",
-    "child_surname": "",
-    "father_forename": "",
-    "father_occupation": "",
-    "mother_forename": "Elizabeth",
+    "mother_forename": "Clara Elizabeth",
     "notes": ""
   },
   {
@@ -6642,23 +6602,13 @@
   },
   {
     "baptism_date": "26 Apr 1931",
-    "birth_date": "Mar 1931",
+    "birth_date": "4 Mar 1931",
     "child_forename": "Derek Stanley",
     "child_surname": "Deering",
-    "father_forename": "Stanley David",
+    "father_forename": "Stanley Eric",
     "father_occupation": "storekeeper",
-    "mother_forename": "Kathleen",
+    "mother_forename": "Kathleen Mary",
     "notes": "Longwick"
-  },
-  {
-    "baptism_date": "4 Apr 1931",
-    "birth_date": "",
-    "child_forename": "",
-    "child_surname": "",
-    "father_forename": "",
-    "father_occupation": "",
-    "mother_forename": "Mary",
-    "notes": ""
   },
   {
     "baptism_date": "27 Sep 1931",
@@ -7049,6 +6999,16 @@
     "father_occupation": "transport driver",
     "mother_forename": "Edith Lillie",
     "notes": "'Trenarren' Summerleys Rd PR"
+  },
+  {
+    "baptism_date": "6 Nov 1949",
+    "birth_date": "",
+    "child_forename": "Mervyn John",
+    "child_surname": "Jewell",
+    "father_forename": "William James",
+    "father_occupation": "civil servant",
+    "mother_forename": "Lilian Annie",
+    "notes": ""
   },
   {
     "baptism_date": "28 May 1950",
