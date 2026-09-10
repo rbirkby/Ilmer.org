@@ -10,6 +10,7 @@ import { createCacheBustFilter } from './plugins/cache-bust.ts';
 import { censusScroll } from './plugins/census-scroll.ts';
 import { censusOccupations } from './plugins/census-occupations.ts';
 import { yearBarChart } from './plugins/year-bar-chart.ts';
+import { medianAge } from './plugins/median-age.ts';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 
@@ -50,6 +51,7 @@ export default function (eleventyConfig: any) {
   eleventyConfig.addFilter('censusScroll', censusScroll);
   /** Bar-chart geometry for event counts per year, zero-filled across the full year range. */
   eleventyConfig.addFilter('yearBarChart', yearBarChart);
+  eleventyConfig.addFilter('medianAge', medianAge);
   /**
    * Sorts a collection so items whose `url` appears in `urls` come first,
    * in that list's order. Remaining items keep their date order.

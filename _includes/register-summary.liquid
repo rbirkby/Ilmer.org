@@ -17,5 +17,14 @@
       <dt>Busiest year</dt>
       <dd>{{ stats.busiestYear }} <span class="register-summary__substat">({{ stats.maxCount }})</span></dd>
     </div>
+    {%- for field in ageFields -%}
+      {%- assign ageStats = records | medianAge: field.key -%}
+      {%- if ageStats -%}
+        <div class="register-summary__stat">
+          <dt>{{ field.label }}</dt>
+          <dd>{{ ageStats.median }} years</dd>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
   </dl>
 {%- endif -%}

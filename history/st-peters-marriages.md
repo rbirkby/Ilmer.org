@@ -7,13 +7,20 @@ tags: [history]
 image: images/IlmerChurch-RoyManser-1984.avif
 ancestorCrumb2Source: { label: 'Parish Records', url: '/history/parish-records/' }
 ancestorCrumb1Source: { label: "St Peter's Church", url: '/history/st-peters/' }
+ageFields:
+  - { key: groom_age, label: 'Median age at marriage (grooms)' }
+  - { key: bride_age, label: 'Median age at marriage (brides)' }
 ---
 
-{% render "register-summary.liquid", records: st-peters-marriages, yearKey: "year", label: "marriages" %}
+{% render "register-summary.liquid", records: st-peters-marriages, yearKey: "year", label: "marriages", ageFields: ageFields %}
+
+{% render "year-bar-chart.liquid", records: st-peters-marriages, yearKey: "year", label: "marriages", href: "#register" %}
 
 Marriages transcribed from the [registers and records of St Peter's Ilmer](/history/parish-records/). Entries before 1679 are taken from Bishops Transcripts rather than the surviving parish registers. Age, marital condition and occupation were only recorded by the register from 1822, so those columns are blank for earlier entries. The Type column records whether a marriage was authorised by Banns or by Licence, where the register from 1708-1837 states it.
 
-<table class="census-table">
+Median ages use only explicitly stated numeric ages; blank entries and "full age" (21 or over) are excluded.
+
+<table id="register" class="census-table">
   <thead class="table-header--sticky">
     <tr>
       <th rowspan="2">Year</th>

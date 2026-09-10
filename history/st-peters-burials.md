@@ -7,13 +7,19 @@ tags: [history]
 image: images/IlmerChurch-RoyManser-1984.avif
 ancestorCrumb2Source: { label: 'Parish Records', url: '/history/parish-records/' }
 ancestorCrumb1Source: { label: "St Peter's Church", url: '/history/st-peters/' }
+ageFields:
+  - { key: age, label: 'Median Age At Death' }
 ---
 
-{% render "register-summary.liquid", records: st-peters-burials, yearKey: "year", label: "burials" %}
+{% render "register-summary.liquid", records: st-peters-burials, yearKey: "year", label: "burials", ageFields: ageFields %}
+
+{% render "year-bar-chart.liquid", records: st-peters-burials, yearKey: "year", label: "burials", href: "#register" %}
 
 Burials transcribed from the [registers and records of St Peter's Ilmer](/history/parish-records/). Entries before 1687 are taken from Bishops Transcripts rather than the surviving parish registers. Age at death was only recorded by the register from the early 19th century, so that column is blank for earlier entries. The Notes column preserves the register's own wording, such as a relationship ("wife of Thomas") or address.
 
-<table class="census-table">
+The median uses only recorded ages, including infant ages converted to fractions of a year; blank entries and "no age" are excluded. It describes these recorded burials, not life expectancy.
+
+<table id="register" class="census-table">
   <thead class="table-header--sticky">
     <tr>
       <th>Year</th>

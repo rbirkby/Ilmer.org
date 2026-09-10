@@ -11,9 +11,11 @@ ancestorCrumb1Source: { label: "St Peter's Church", url: '/history/st-peters/' }
 
 {% render "register-summary.liquid", records: st-peters-baptisms, yearKey: "baptism_date", label: "baptisms" %}
 
+{% render "year-bar-chart.liquid", records: st-peters-baptisms, yearKey: "baptism_date", label: "baptisms", href: "#register" %}
+
 Baptisms transcribed from the [registers and records of St Peter's Ilmer](/history/parish-records/). Entries before 1660 are taken from Bishops Transcripts rather than the surviving parish registers. Where a father's occupation or a birth date was recorded (from 1813 and 1910 respectively) it is shown alongside the entry; blank cells mean the register did not record that detail.
 
-<table class="census-table">
+<table id="register" class="census-table">
   <thead class="table-header--sticky">
     <tr>
       <th>Baptised</th>
