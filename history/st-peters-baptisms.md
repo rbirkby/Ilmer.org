@@ -5,7 +5,8 @@ description: "Full transcript of baptisms recorded at St Peter's Ilmer, 1575-198
 category: history
 tags: [history]
 image: images/IlmerChurch-RoyManser-1984.avif
-ancestorCrumb1Source: { label: 'Parish Records', url: '/history/parish-records/' }
+ancestorCrumb2Source: { label: 'Parish Records', url: '/history/parish-records/' }
+ancestorCrumb1Source: { label: "St Peter's Church", url: '/history/st-peters/' }
 ---
 
 {% render "register-summary.liquid", records: st-peters-baptisms, yearKey: "baptism_date", label: "baptisms" %}
