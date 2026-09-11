@@ -1,0 +1,73 @@
+{%- if chart -%}
+{%- if chart.bucketSize > 1 -%}
+  {%- assign rangeLabel = chart.firstBucket | append: "s to " | append: chart.lastBucket | append: "s" -%}
+{%- else -%}
+  {%- assign rangeLabel = chart.minYear | append: " to " | append: chart.maxYear -%}
+{%- endif -%}
+<svg
+  class="year-bar-chart"
+  viewBox="0 0 {{ chart.width }} {{ chart.height }}"
+  role="img"
+  aria-label="Number of {{ label }} per {{ period }}, {{ rangeLabel }}">
+  <line
+    class="year-bar-chart__axis"
+    x1="{{ chart.plotLeft }}"
+    x2="{{ chart.plotRight }}"
+    y1="{{ chart.axisY }}"
+    y2="{{ chart.axisY }}"></line>
+  {%- for y in chart.yMinorTicks -%}
+    <line
+      class="year-bar-chart__gridline year-bar-chart__gridline--minor"
+      x1="{{ chart.plotLeft }}"
+      x2="{{ chart.plotRight }}"
+      y1="{{ y }}"
+      y2="{{ y }}"></line>
+  {%- endfor -%}
+  {%- for t in chart.yTicks -%}
+    <line
+      class="year-bar-chart__gridline"
+      x1="{{ chart.plotLeft }}"
+      x2="{{ chart.plotRight }}"
+      y1="{{ t.y }}"
+      y2="{{ t.y }}"></line>
+    <text class="year-bar-chart__y-label" x="{{ chart.plotLeft | minus: 6 }}" y="{{ t.y | plus: 4 }}">{{ t.value }}</text>
+  {%- endfor -%}
+  {%- for bar in chart.bars -%}
+    {%- comment -%}
+      At a bar-per-year scale the visible bar is only a couple of pixels
+      wide with a sub-pixel gap beside it, so hovering just that rect makes
+      the cursor flicker as the pointer crosses the gap. This invisible rect
+      fills the bar's whole column (gap included, full plot height) and
+      carries the hover cursor and tooltip instead; the visible bar sits on
+      top with pointer-events disabled so it never fights this for hover.
+    {%- endcomment -%}
+    <rect
+      class="year-bar-chart__hit"
+      x="{{ bar.x }}"
+      y="{{ chart.plotTop }}"
+      width="{{ chart.columnWidth }}"
+      height="{{ chart.axisY | minus: chart.plotTop }}"><title>{{ bar.label }}: {{ bar.count }}</title></rect>
+    <rect
+      class="year-bar-chart__bar"
+      x="{{ bar.x }}"
+      y="{{ bar.y }}"
+      width="{{ bar.width }}"
+      height="{{ bar.height }}"></rect>
+  {%- endfor -%}
+  {%- for t in chart.xTicks -%}
+    {%- assign anchor = "middle" -%}
+    {%- if forloop.first -%}
+      {%- assign anchor = "start" -%}
+    {%- elsif forloop.last -%}
+      {%- assign anchor = "end" -%}
+    {%- endif -%}
+    <line
+      class="year-bar-chart__tick"
+      x1="{{ t.x }}"
+      x2="{{ t.x }}"
+      y1="{{ chart.tickTop }}"
+      y2="{{ chart.tickBottom }}"></line>
+    <text class="year-bar-chart__x-label" style="text-anchor: {{ anchor }}" x="{{ t.x }}" y="{{ chart.labelY }}">{{ t.year }}</text>
+  {%- endfor -%}
+</svg>
+{%- endif -%}

@@ -971,17 +971,190 @@ details.archive-year {
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.04);
 }
 
+/* The chart's title is a select, so the period it is grouped by can be
+   changed from the heading itself. Left as a plain select on touch devices
+   (where the browser's own picker is a bottom sheet already) and upgraded to
+   a styled, in-page picker where the pointer is fine and there is room. */
+.year-bar-chart-figure__grouping {
+  appearance: none;
+  /* Sized to the period actually showing, so the arrow sits with the title
+     rather than out at the width of the longest option. `field-sizing:
+     content` did this too, but it's new enough to still re-measure under
+     hover in some builds, nudging the box edge under a stationary cursor -
+     max-content is the same result without that risk. */
+  width: max-content;
+  max-width: 100%;
+  margin: 0 0 0.6rem -0.8rem;
+  padding: 0.2rem 3.2rem 0.2rem 0.8rem;
+  border: 1px solid transparent;
+  border-radius: 0.6rem;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%23766c5c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m1 1.75 5 4.5 5-4.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.2rem;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2.6rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--archive-ink);
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--archive-border);
+    background-color: var(--archive-cream);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--archive-green);
+    outline-offset: 2px;
+  }
+}
+
+/* Both charts are drawn into the same grid cell so the selected one can
+   cross-fade over the other without the card changing height. `option:checked`
+   tracks the select whichever picker the browser used to change it. */
+.year-bar-chart-figure__panels {
+  display: grid;
+}
+
+.year-bar-chart-figure__panel {
+  grid-area: 1 / 1;
+  /* the two charts share an axis, so a straight cross-fade keeps the
+     gridlines and year labels still while only the bars change */
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s;
+}
+
+.year-bar-chart-figure__panel[data-grouping='decade'],
+.year-bar-chart-figure:has(option[value='decade']:checked) .year-bar-chart-figure__panel[data-grouping='year'] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.year-bar-chart-figure:has(option[value='decade']:checked) .year-bar-chart-figure__panel[data-grouping='decade'] {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .year-bar-chart-figure__panel {
+    transition: none;
+  }
+}
+
+@supports (appearance: base-select) {
+  @media (pointer: fine) and (min-width: 48rem) {
+    .year-bar-chart-figure__grouping {
+      appearance: base-select;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding-right: 0.8rem;
+      background-image: none;
+
+      &::picker-icon {
+        color: var(--archive-muted);
+        font-size: 1.4rem;
+        transition: rotate 0.15s ease;
+      }
+
+      &:open::picker-icon {
+        rotate: 180deg;
+      }
+    }
+
+    .year-bar-chart-figure__grouping::picker(select) {
+      appearance: base-select;
+      width: max-content;
+      min-width: anchor-size(width);
+      margin-top: 0.4rem;
+      padding: 0.5rem;
+      border: 1px solid var(--archive-border);
+      border-radius: 0.8rem;
+      background: var(--archive-card);
+      box-shadow: 0 1.2rem 3rem rgb(29 29 26 / 0.18);
+
+      /* Fades in from just under the title rather than appearing whole. */
+      opacity: 1;
+      translate: 0 0;
+      transition:
+        opacity 0.15s ease,
+        translate 0.15s ease,
+        display 0.15s allow-discrete,
+        overlay 0.15s allow-discrete;
+
+      @starting-style {
+        opacity: 0;
+        translate: 0 -0.6rem;
+      }
+    }
+
+    .year-bar-chart-figure__grouping:not(:open)::picker(select) {
+      opacity: 0;
+      translate: 0 -0.6rem;
+    }
+
+    .year-bar-chart-figure__grouping option {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      cursor: pointer;
+      padding: 0.7rem 1.2rem 0.7rem 0.8rem;
+      border-radius: 0.5rem;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2.2rem;
+      color: var(--archive-ink);
+
+      &:hover,
+      &:focus {
+        background: var(--archive-cream);
+        color: var(--archive-green);
+      }
+
+      &::checkmark {
+        color: var(--archive-green);
+        font-size: 1.4rem;
+      }
+
+      &:not(:checked)::checkmark {
+        visibility: hidden;
+      }
+    }
+  }
+}
+
 .year-bar-chart {
   display: block;
   width: 100%;
   height: auto;
 
+  & .year-bar-chart__hit {
+    fill: transparent;
+    /* SVG hit-testing only counts a shape as "painted" - and so hoverable -
+       by its fill; some engines don't extend that to a fully transparent
+       fill, which would silently make this whole rect unhoverable. `all`
+       says explicitly: hit-test this shape regardless of what it paints. */
+    pointer-events: all;
+    /* the hoverable target for its bar (see the comment in
+       year-bar-chart-svg.liquid) - carries the tooltip and cursor so
+       hovering never lands on a dead sliver between two bars */
+    cursor: pointer;
+  }
+
   & .year-bar-chart__bar {
     fill: var(--archive-green);
+    /* hover is handled by the .year-bar-chart__hit rect in front of it, but
+       matching its cursor here too means that even if pointer-events: none
+       goes unhonoured somewhere, this rect never disagrees with the hit
+       rect and flashes the cursor back to the default arrow between them. */
+    pointer-events: none;
+    cursor: pointer;
     transition: fill 0.1s ease;
   }
 
-  & .year-bar-chart__bar:hover {
+  & .year-bar-chart__hit:hover + .year-bar-chart__bar {
     fill: var(--archive-highlight);
   }
 

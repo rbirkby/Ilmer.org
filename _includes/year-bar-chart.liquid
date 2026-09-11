@@ -1,58 +1,29 @@
 {%- assign chart = records | yearBarChart: yearKey -%}
+{%- assign decadeChart = records | yearBarChart: yearKey, 10 -%}
 {%- if chart -%}
   <figure class="year-bar-chart-figure">
-    <svg
-      class="year-bar-chart"
-      viewBox="0 0 {{ chart.width }} {{ chart.height }}"
-      role="img"
-      aria-label="Number of {{ label }} per year, {{ chart.minYear }} to {{ chart.maxYear }}">
-      <line
-        class="year-bar-chart__axis"
-        x1="{{ chart.plotLeft }}"
-        x2="{{ chart.plotRight }}"
-        y1="{{ chart.axisY }}"
-        y2="{{ chart.axisY }}"></line>
-      {%- for y in chart.yMinorTicks -%}
-        <line
-          class="year-bar-chart__gridline year-bar-chart__gridline--minor"
-          x1="{{ chart.plotLeft }}"
-          x2="{{ chart.plotRight }}"
-          y1="{{ y }}"
-          y2="{{ y }}"></line>
-      {%- endfor -%}
-      {%- for t in chart.yTicks -%}
-        <line
-          class="year-bar-chart__gridline"
-          x1="{{ chart.plotLeft }}"
-          x2="{{ chart.plotRight }}"
-          y1="{{ t.y }}"
-          y2="{{ t.y }}"></line>
-        <text class="year-bar-chart__y-label" x="{{ chart.plotLeft | minus: 6 }}" y="{{ t.y | plus: 4 }}">{{ t.value }}</text>
-      {%- endfor -%}
-      {%- for bar in chart.bars -%}
-        <rect
-          class="year-bar-chart__bar"
-          x="{{ bar.x }}"
-          y="{{ bar.y }}"
-          width="{{ bar.width }}"
-          height="{{ bar.height }}"><title>{{ bar.year }}: {{ bar.count }}</title></rect>
-      {%- endfor -%}
-      {%- for t in chart.xTicks -%}
-        {%- assign anchor = "middle" -%}
-        {%- if forloop.first -%}
-          {%- assign anchor = "start" -%}
-        {%- elsif forloop.last -%}
-          {%- assign anchor = "end" -%}
-        {%- endif -%}
-        <line
-          class="year-bar-chart__tick"
-          x1="{{ t.x }}"
-          x2="{{ t.x }}"
-          y1="{{ chart.tickTop }}"
-          y2="{{ chart.tickBottom }}"></line>
-        <text class="year-bar-chart__x-label" style="text-anchor: {{ anchor }}" x="{{ t.x }}" y="{{ chart.labelY }}">{{ t.year }}</text>
-      {%- endfor -%}
-    </svg>
-    <figcaption>{{ chart.total }} {{ label }}, {{ chart.minYear }}&ndash;{{ chart.maxYear }}. <a href="{{ href }}">View the full register</a>.</figcaption>
+    {%- comment -%}
+      The chart's title doubles as its grouping control: picking a period
+      swaps which panel below is shown, with no script involved (see
+      .year-bar-chart-figure:has(...) in archive.css).
+    {%- endcomment -%}
+    <label class="sr-only" for="chart-grouping-{{ label }}">Group {{ label }} by</label>
+    <select
+      class="year-bar-chart-figure__grouping"
+      id="chart-grouping-{{ label }}"
+      name="chart-grouping-{{ label }}">
+      <option value="year" selected>{{ label | capitalize }} by year</option>
+      <option value="decade">{{ label | capitalize }} by decade</option>
+    </select>
+    <div class="year-bar-chart-figure__panels">
+      <div class="year-bar-chart-figure__panel" data-grouping="year">
+        {% render "year-bar-chart-svg.liquid", chart: chart, label: label, period: "year" %}
+      </div>
+      <div class="year-bar-chart-figure__panel" data-grouping="decade">
+        {% render "year-bar-chart-svg.liquid", chart: decadeChart, label: label, period: "decade" %}
+      </div>
+    </div>
+    <figcaption>{{ chart.total }} {{ label }}, {{ chart.minYear }}&ndash;{{ chart.maxYear }}.
+      <a href="{{ href }}">View the full register</a>.</figcaption>
   </figure>
 {%- endif -%}

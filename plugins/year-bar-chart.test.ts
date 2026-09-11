@@ -202,3 +202,63 @@ test('the tallest bar leaves headroom below a rounded-up gridline maximum', () =
   // reach all the way to the top of the plot area
   assert.ok(tallest.height < chart.axisY - chart.plotTop);
 });
+
+test('an unbucketed chart reports single-year periods labelled by the bare year', () => {
+  const chart = yearBarChart([{ year: 1602 }, { year: 1981 }], 'year');
+  assert.ok(chart);
+  assert.equal(chart.bucketSize, 1);
+  assert.equal(chart.firstBucket, 1602);
+  assert.equal(chart.lastBucket, 1981);
+  assert.equal(chart.bars[0]?.label, '1602');
+});
+
+test('bucketing by decade starts and ends on whole decades', () => {
+  const chart = yearBarChart([{ year: 1602 }, { year: 1981 }], 'year', 10);
+  assert.ok(chart);
+  assert.equal(chart.minYear, 1602);
+  assert.equal(chart.maxYear, 1981);
+  assert.equal(chart.firstBucket, 1600);
+  assert.equal(chart.lastBucket, 1980);
+  assert.equal(chart.bars.length, 39); // the 1600s through the 1980s
+  assert.equal(chart.bars[0]?.label, '1600s');
+  assert.equal(chart.bars.at(-1)?.label, '1980s');
+});
+
+test('decade bars total the years they cover, including the empty ones', () => {
+  const chart = yearBarChart([...counted(1741, 3), { year: 1749 }, { year: 1760 }], 'year', 10);
+  assert.ok(chart);
+  assert.equal(chart.bars.find((b) => b.year === 1740)?.count, 4);
+  assert.equal(chart.bars.find((b) => b.year === 1750)?.count, 0);
+  assert.equal(chart.bars.find((b) => b.year === 1760)?.count, 1);
+  assert.equal(chart.total, 5);
+  assert.equal(chart.maxCount, 4);
+  assert.equal(chart.busiestYear, 1740);
+});
+
+test('the per-year average is the same figure however the bars are grouped', () => {
+  const records = [...counted(1741, 3), { year: 1749 }, { year: 1760 }];
+  assert.equal(yearBarChart(records, 'year', 10)?.average, yearBarChart(records, 'year')?.average);
+});
+
+test('decade x-axis ticks land on whole decades, first and last included', () => {
+  const chart = yearBarChart([{ year: 1602 }, { year: 1981 }], 'year', 10);
+  assert.ok(chart);
+  const tickYears = chart.xTicks.map((t) => t.year);
+  assert.equal(tickYears[0], 1600);
+  assert.equal(tickYears.at(-1), 1980);
+  for (const year of tickYears) assert.equal(year % 10, 0, tickYears.join(', '));
+  // every tick sits at the centre of the bar for its decade
+  const bars = chart.bars;
+  for (const tick of chart.xTicks) {
+    const bar = bars.find((b) => b.year === tick.year)!;
+    assert.ok(Math.abs(tick.x - (bar.x + bar.width / 2)) < 2.5, `${tick.year}`);
+  }
+});
+
+test('a bucket size other than a decade is labelled as a span of years', () => {
+  const chart = yearBarChart([{ year: 1600 }, { year: 1624 }], 'year', 25);
+  assert.ok(chart);
+  assert.equal(chart.bars.length, 1);
+  assert.equal(chart.bars[0]?.label, '1600–1624');
+  assert.equal(chart.bars[0]?.count, 2);
+});

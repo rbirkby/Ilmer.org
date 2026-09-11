@@ -1,13 +1,18 @@
 /** Geometry for an inline SVG bar chart of event counts per year, with every
  * year in the data's range represented (as a zero-height bar where there is
- * no entry), not just the years that happen to appear. */
+ * no entry), not just the years that happen to appear. Counts can be bucketed
+ * into wider periods (`bucketSize: 10` for decades) for a coarser view of the
+ * same records. */
 
 export interface YearBar {
   x: number;
   y: number;
   width: number;
   height: number;
+  /** The first year of the bar's period (the year itself when unbucketed). */
   year: number;
+  /** How the period reads to a person: "1741", or "1740s" for a decade. */
+  label: string;
   count: number;
 }
 
@@ -37,13 +42,26 @@ export interface YearBarChart {
   labelY: number;
   minYear: number;
   maxYear: number;
+  /** Years per bar: 1 for a year-by-year chart, 10 for decades. */
+  bucketSize: number;
+  /** First and last periods the bars span, which reach past minYear/maxYear
+   * when bucketing (1602-1981 fills the 1600s through the 1980s). */
+  firstBucket: number;
+  lastBucket: number;
+  /** Full width of one bar's column, `bar.x` to the next bar's `x` - wider
+   * than `bar.width`, which is shrunk by the inter-bar gap. A hoverable hit
+   * area should use this instead: at a bar-per-year scale the visible gap is
+   * sub-pixel, so hit-testing against the gapped `bar.width` alone makes the
+   * cursor flicker between the bar and its neighbouring gap as the pointer
+   * crosses that hairline. */
+  columnWidth: number;
   maxCount: number;
   total: number;
   /** Events per year, averaged across the full min-max span (including
    * years with none), formatted to one decimal place (e.g. "1.0", not "1")
    * so a column of these always lines up. */
   average: string;
-  /** The earliest year with the most events (ties broken chronologically,
+  /** The earliest period with the most events (ties broken chronologically,
    * so the figure is stable rather than depending on Map iteration order). */
   busiestYear: number;
 }
@@ -112,27 +130,48 @@ function extractYear(value: unknown): number | null {
   return null;
 }
 
-export function yearBarChart(records: Array<Record<string, unknown>>, yearKey: string): YearBarChart | null {
+/** How a bucket reads to a person: a bare year when the chart is
+ * year-by-year, "1740s" for a decade, and a span for anything else. */
+function bucketLabel(start: number, bucketSize: number): string {
+  if (bucketSize === 1) return String(start);
+  if (bucketSize === 10) return `${start}s`;
+  return `${start}\u2013${start + bucketSize - 1}`;
+}
+
+export function yearBarChart(
+  records: Array<Record<string, unknown>>,
+  yearKey: string,
+  bucketSize = 1
+): YearBarChart | null {
   const years = records.map((r) => extractYear(r[yearKey])).filter((y): y is number => y !== null);
   if (years.length === 0) return null;
 
   const minYear = Math.min(...years);
   const maxYear = Math.max(...years);
+  // A bucketed chart starts and ends on whole periods, so 1602-1981 by
+  // decade runs from the 1600s to the 1980s rather than from a part-decade.
+  const bucketOf = (year: number) => Math.floor(year / bucketSize) * bucketSize;
+  const firstBucket = bucketOf(minYear);
+  const lastBucket = bucketOf(maxYear);
+  const bucketCount = (lastBucket - firstBucket) / bucketSize + 1;
   const counts = new Map<number, number>();
-  for (const y of years) counts.set(y, (counts.get(y) ?? 0) + 1);
+  for (const y of years) counts.set(bucketOf(y), (counts.get(bucketOf(y)) ?? 0) + 1);
   const maxCount = Math.max(...counts.values());
   const busiestYear = [...counts.entries()]
     .filter(([, count]) => count === maxCount)
     .reduce((earliest, [year]) => Math.min(earliest, year), Infinity);
 
+  // The average stays per-year whatever the bars are grouped into, so the
+  // same figure holds however the chart is being read.
   const yearSpan = maxYear - minYear + 1;
   const average = (years.length / yearSpan).toFixed(1);
   const plotWidth = WIDTH - MARGIN_LEFT - MARGIN_RIGHT;
   const plotHeight = AXIS_Y - PLOT_TOP;
-  const barWidth = plotWidth / yearSpan;
+  const barWidth = plotWidth / bucketCount;
   // Below ~3px a rounded cap reads as a triangle rather than a bar - only
-  // round the corner when there's room for it to look like one.
-  const gap = barWidth > 3 ? Math.min(0.6, barWidth * 0.15) : 0;
+  // round the corner when there's room for it to look like one. Wide
+  // (bucketed) bars can afford a wider gutter than year-by-year hairlines.
+  const gap = barWidth > 3 ? Math.min(bucketSize > 1 ? 4 : 0.6, barWidth * 0.15) : 0;
 
   // The chart's own counts are always whole numbers, so a fractional major
   // step would be a strange axis to read - clamp to at least 1. The top
@@ -142,8 +181,8 @@ export function yearBarChart(records: Array<Record<string, unknown>>, yearKey: s
   const niceMax = Math.ceil(maxCount / step) * step;
 
   const bars: YearBar[] = [];
-  for (let i = 0; i < yearSpan; i++) {
-    const year = minYear + i;
+  for (let i = 0; i < bucketCount; i++) {
+    const year = firstBucket + i * bucketSize;
     const count = counts.get(year) ?? 0;
     const x = MARGIN_LEFT + i * barWidth;
     const barHeight = (count / niceMax) * plotHeight;
@@ -153,28 +192,32 @@ export function yearBarChart(records: Array<Record<string, unknown>>, yearKey: s
       width: round(Math.max(barWidth - gap, 0.3)),
       height: round(barHeight),
       year,
+      label: bucketLabel(year, bucketSize),
       count
     });
   }
 
-  const interval = pickTickInterval(yearSpan);
+  // Ticks land at the centre of the bar holding that year, and never come
+  // closer together than one bucket.
+  const interval = Math.max(bucketSize, pickTickInterval(yearSpan));
+  const tickX = (year: number) => round(MARGIN_LEFT + ((bucketOf(year) - firstBucket) / bucketSize + 0.5) * barWidth);
   const xTicks: YearTick[] = [];
-  const firstTickYear = Math.ceil(minYear / interval) * interval;
-  for (let year = firstTickYear; year <= maxYear; year += interval) {
-    xTicks.push({ x: round(MARGIN_LEFT + (year - minYear + 0.5) * barWidth), year });
+  const firstTickYear = Math.ceil(firstBucket / interval) * interval;
+  for (let year = firstTickYear; year <= lastBucket; year += interval) {
+    xTicks.push({ x: tickX(year), year });
   }
-  // minYear/maxYear are always labelled so the range is never ambiguous, but
-  // a regular tick sitting close to one crowds its label into it - drop the
-  // regular tick rather than let them collide.
+  // The first and last bars are always labelled so the range is never
+  // ambiguous, but a regular tick sitting close to one crowds its label into
+  // it - drop the regular tick rather than let them collide.
   const minGap = interval * 0.4;
-  if (xTicks[0] && xTicks[0].year - minYear < minGap) xTicks.shift();
-  if (xTicks[0]?.year !== minYear) {
-    xTicks.unshift({ x: round(MARGIN_LEFT + 0.5 * barWidth), year: minYear });
+  if (xTicks[0] && xTicks[0].year - firstBucket < minGap) xTicks.shift();
+  if (xTicks[0]?.year !== firstBucket) {
+    xTicks.unshift({ x: tickX(firstBucket), year: firstBucket });
   }
   const last = xTicks[xTicks.length - 1];
-  if (last && last.year !== minYear && maxYear - last.year < minGap) xTicks.pop();
-  if (xTicks[xTicks.length - 1]?.year !== maxYear) {
-    xTicks.push({ x: round(MARGIN_LEFT + (yearSpan - 0.5) * barWidth), year: maxYear });
+  if (last && last.year !== firstBucket && lastBucket - last.year < minGap) xTicks.pop();
+  if (xTicks[xTicks.length - 1]?.year !== lastBucket) {
+    xTicks.push({ x: tickX(lastBucket), year: lastBucket });
   }
 
   const valueToY = (value: number) => round(AXIS_Y - (value / niceMax) * plotHeight);
@@ -209,6 +252,10 @@ export function yearBarChart(records: Array<Record<string, unknown>>, yearKey: s
     labelY: LABEL_Y,
     minYear,
     maxYear,
+    bucketSize,
+    firstBucket,
+    lastBucket,
+    columnWidth: round(barWidth),
     maxCount,
     total: years.length,
     average,
