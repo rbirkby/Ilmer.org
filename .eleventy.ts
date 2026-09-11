@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import markdownItFootnote from 'markdown-it-footnote';
 import { RenderPlugin } from '@11ty/eleventy';
@@ -25,6 +26,134 @@ interface CollectionItem {
 /** The subset of Eleventy's `CollectionApi` this config relies on. */
 interface CollectionApi {
   getFilteredByTag(tag: string): CollectionItem[];
+}
+
+interface WeeklyNewsEvent {
+  /** Free-text date parsed client-side by assets/js/anniversary-dates.js, e.g. "20 May 1575". */
+  date: string;
+  title: string;
+  url: string;
+  category: 'Baptism' | 'Marriage' | 'Burial' | 'Will' | 'Census' | 'Village event';
+}
+
+const NEWS_MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/** Pulls a few flat scalar front-matter fields out of a markdown file, without pulling in a YAML parser. */
+function readFrontMatterFields(content: string): Record<string, string> {
+  const block = /^---\r?\n([\s\S]*?)\r?\n---/.exec(content)?.[1] ?? '';
+  const fields: Record<string, string> = {};
+  for (const line of block.split('\n')) {
+    const [, key, value] = /^(\w+):\s*(.*)$/.exec(line) ?? [];
+    if (key) fields[key] = value.trim().replace(/^['"]|['"]$/g, '');
+  }
+  return fields;
+}
+
+/** Aggregates every dated register/collection into "on this day" entries for the newsroom's weekly anniversary widget. */
+function buildWeeklyNewsEvents(): WeeklyNewsEvent[] {
+  const readJson = <T>(file: string): T => JSON.parse(readFileSync(path.join(ROOT, '_data', file), 'utf8'));
+  const events: WeeklyNewsEvent[] = [];
+
+  for (const event of readJson<Array<{ date: string; title: string; hidden?: boolean }>>('historicalEvents.json')) {
+    // "Census Data" entries duplicate the dedicated Census events built from census/*.md below, which link to the actual census page.
+    if (event.hidden || !event.date || event.title === 'Census Data') continue;
+    events.push({ date: event.date, title: event.title, url: '/history/timeline/', category: 'Village event' });
+  }
+
+  for (const b of readJson<Array<{ baptism_date: string; child_forename: string; child_surname: string }>>(
+    'st-peters-baptisms.json'
+  )) {
+    if (!b.baptism_date) continue;
+    events.push({
+      date: b.baptism_date,
+      title: `Baptism of ${b.child_forename} ${b.child_surname}`.trim(),
+      url: '/history/st-peters-baptisms/#register',
+      category: 'Baptism'
+    });
+  }
+
+  for (const m of readJson<
+    Array<{
+      year: number;
+      date: string;
+      groom_forename: string;
+      groom_surname: string;
+      bride_forename: string;
+      bride_surname: string;
+    }>
+  >('st-peters-marriages.json')) {
+    if (!m.date || !m.year) continue;
+    events.push({
+      date: `${m.date} ${m.year}`,
+      title: `Marriage of ${m.groom_forename} ${m.groom_surname} & ${m.bride_forename} ${m.bride_surname}`,
+      url: '/history/st-peters-marriages/#register',
+      category: 'Marriage'
+    });
+  }
+
+  for (const b of readJson<Array<{ year: number; date: string; forename: string; surname: string }>>(
+    'st-peters-burials.json'
+  )) {
+    if (!b.date || !b.year) continue;
+    events.push({
+      date: `${b.date} ${b.year}`,
+      title: `Burial of ${b.forename} ${b.surname}`,
+      url: '/history/st-peters-burials/#register',
+      category: 'Burial'
+    });
+  }
+
+  for (const w of readJson<
+    Array<{
+      FirstName: string;
+      LastName: string;
+      DaysWill: number | null;
+      MonthWill: number | null;
+      YearWill: number | null;
+      DaysProved: number | null;
+      MonthProved: number | null;
+      YearProved: number | null;
+      Transcription?: string;
+    }>
+  >('wills.json')) {
+    const name = `${w.FirstName ?? ''} ${w.LastName ?? ''}`.trim();
+    const url = w.Transcription || '/wills/';
+    if (w.DaysWill && w.MonthWill && w.YearWill) {
+      events.push({
+        date: `${w.DaysWill} ${NEWS_MONTH_ABBR[w.MonthWill - 1]} ${w.YearWill}`,
+        title: `Will of ${name} written`,
+        url,
+        category: 'Will'
+      });
+    }
+    if (w.DaysProved && w.MonthProved && w.YearProved) {
+      events.push({
+        date: `${w.DaysProved} ${NEWS_MONTH_ABBR[w.MonthProved - 1]} ${w.YearProved}`,
+        title: `Will of ${name} proved`,
+        url,
+        category: 'Will'
+      });
+    }
+  }
+
+  const censusDir = path.join(ROOT, 'census');
+  for (const file of readdirSync(censusDir)) {
+    if (!file.endsWith('.md')) continue;
+    const fields = readFrontMatterFields(readFileSync(path.join(censusDir, file), 'utf8'));
+    if (!fields.tags?.includes('census')) continue;
+
+    const dateMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(fields.date ?? '');
+    if (!dateMatch) continue; // Censuses before 1841 only recorded a year, with no exact day.
+    const [, year, month, day] = dateMatch;
+    events.push({
+      date: `${Number(day)} ${NEWS_MONTH_ABBR[Number(month) - 1]} ${year}`,
+      title: fields.title,
+      url: `/census/${file.replace(/\.md$/, '')}/`,
+      category: 'Census'
+    });
+  }
+
+  return events;
 }
 
 export default function (eleventyConfig: any) {
@@ -221,6 +350,8 @@ export default function (eleventyConfig: any) {
   eleventyConfig.addFilter('subjectLabel', (tag: string) => (tag || '').replace(/-/g, ' '));
 
   eleventyConfig.amendLibrary('md', (mdLib: MarkdownIt) => mdLib.use(MarkdownItGitHubAlerts));
+
+  eleventyConfig.addGlobalData('weeklyNewsEvents', buildWeeklyNewsEvents);
 
   eleventyConfig.addGlobalData('eleventyComputed', {
     ancestorCrumb1: (data: Record<string, any>) => (data.hideAncestorCrumb1 ? undefined : data.ancestorCrumb1Source),

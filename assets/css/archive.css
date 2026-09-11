@@ -1530,3 +1530,177 @@ main.archive .census-scroll table {
     font-variant-numeric: tabular-nums;
   }
 }
+
+/* ---------- Newsroom: weekly "on this day" list ---------- */
+
+.weekly-news {
+  margin-top: 2.4rem;
+}
+
+.weekly-news-day {
+  display: grid;
+  grid-template-columns: 9rem 2.4rem 1fr;
+  column-gap: 2rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--archive-border);
+
+  &:first-child {
+    border-top: none;
+  }
+}
+
+.weekly-news-day__label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 0.2rem;
+}
+
+.weekly-news-day__relative {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--archive-muted);
+}
+
+.weekly-news-day__num {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 4.8rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--archive-green);
+}
+
+.weekly-news-day__month {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--archive-muted);
+}
+
+.weekly-news-day__marker {
+  position: relative;
+  display: flex;
+  justify-content: center;
+
+  &::before {
+    content: '';
+    width: 1rem;
+    height: 1rem;
+    margin-top: 1.6rem;
+    border-radius: 50%;
+    background: var(--archive-green);
+    z-index: 1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 2.1rem;
+    bottom: -2rem;
+    width: 2px;
+    background: var(--archive-border);
+  }
+}
+
+.weekly-news-day:last-child .weekly-news-day__marker::after {
+  display: none;
+}
+
+.weekly-news-day__events {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.weekly-news-event {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.4rem;
+  font-size: 1.6rem;
+}
+
+.weekly-news-event__badge {
+  flex: none;
+  padding: 0.4rem 1.2rem;
+  border-radius: 999px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--archive-border);
+  color: var(--archive-ink);
+
+  &.weekly-news-event__badge--baptism,
+  &.weekly-news-event__badge--burial {
+    background: #dce8dd;
+    color: #2f4b30;
+  }
+
+  &.weekly-news-event__badge--marriage {
+    background: #f0e3c4;
+    color: #6b4f22;
+  }
+
+  &.weekly-news-event__badge--will {
+    background: #e8dbe9;
+    color: #5b3a63;
+  }
+
+  &.weekly-news-event__badge--census {
+    background: #d7e7ea;
+    color: #1f4e5c;
+  }
+
+  &.weekly-news-event__badge--village-event {
+    background: #dee2f2;
+    color: #39406b;
+  }
+}
+
+.weekly-news-event__title {
+  flex: 1 1 24rem;
+  color: var(--archive-green);
+}
+
+.weekly-news-event__year {
+  flex: none;
+  width: 4.4rem;
+  text-align: right;
+  color: var(--archive-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.weekly-news-event__divider {
+  flex: none;
+  color: var(--archive-border);
+}
+
+.weekly-news-event__ago {
+  flex: none;
+  width: 12rem;
+  color: var(--archive-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  .weekly-news-day {
+    grid-template-columns: 6.4rem 1.8rem 1fr;
+  }
+
+  .weekly-news-day__num {
+    font-size: 3.6rem;
+  }
+
+  .weekly-news-event__year,
+  .weekly-news-event__ago {
+    width: auto;
+    text-align: left;
+  }
+}
