@@ -705,7 +705,9 @@
     "date": "23 Jul. 1552",
     "title": "Edwardian Inventory of Church",
     "description": "An inventory of Ilmer church mentioned Edmund Godwyn and Wylliam Mede. It reported the church included two further bells - a handbell and a Saunse bell, which would have been located outside the church on the Western gable",
-    "references": ["The Edwardian inventories for Buckinghamshire, 1908"],
+    "references": [
+      "[The Edwardian inventories for Buckinghamshire](https://www.google.co.uk/books/edition/The_Edwardian_Inventories_for_Buckingham/ylVVuFZfl3QC), Francis Carolus Eeles and the Rev James Edward Brown, 1908"
+    ],
     "labels": ["church"]
   },
   {
