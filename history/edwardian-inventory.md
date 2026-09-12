@@ -55,3 +55,5 @@ Transcribed by the Rev J.E. Brown[^1], and published in 1908:
 > [Three marks]
 
 The names of Edmund Godwyn and Wylliam Mede were written in another hand.
+
+\* _Drawing of Ilmer Church from handbill sold in aid of the Ilmer Church restoration fund, printed by Judges Ltd, Hastings. Reproduced in 1978 Flower Festival scrapbook. Artist unknown._
