@@ -30,7 +30,7 @@ The inventory formed part of Edward VI’s [nationwide survey](https://en.wikipe
 
 Transcribed by the Rev J.E. Brown[^1], and published in 1908:
 
-[^1]: [The Edwardian Inventories for Buckinghamshire](https://www.google.co.uk/books/edition/The_Edwardian_Inventories_for_Buckingham/ylVVuFZfl3QC), 1908, Francis Carolus Eeles and the Rev James Edward Brown.
+[^1]: [The Edwardian Inventories for Buckinghamshire](https://www.google.co.uk/books/edition/The_Edwardian_Inventories_for_Buckingham/ylVVuFZfl3QC), 1908, [Francis Carolus Eeles](https://en.wikipedia.org/wiki/Francis_Carolus_Eeles) and the Rev James Edward Brown.
 
 > [1-13, no. 11] Ilmer\
 > Thys inventorye indentyde made [23 July 1552] of all\
