@@ -31,21 +31,33 @@ During the reformation, the Edwardian Inventory of 23rd July 1552 included two f
 
 ## Chancel restoration
 
-By the mid-19th century, the church had fallen into disrepair. In 1850, the Oxford Diocese appointed the ecclesiastical architect [George Edmund Street](https://en.wikipedia.org/wiki/George_Edmund_Street), who would go on to build or renovate 113 churches across the diocese. St. Peter's, overseen by Reverend William Edwards Partridge since 1833, was among these projects and was described as 'dilapidated' in a letter to the Bucks Herald five decades later. At that time, it was remembered that the congregation would wear strongly scented herbs and flowers to counteract the musty odours inside the church, which had an interior of high pews and benches. Street completely rebuilt the chancel and restored the nave between 1859 and 1860. During this renovation, a Tudor-origin rood screen, which separated the chancel from the nave, was found to be supporting the roof with farm hurdles[^3]. The church was reopened on Thursday, 30th August 1860, by Bishop Samuel Wilberforce, the son of William Wilberforce, exactly two months after the bishop's notable participation in an Oxford debate. In this debate, Bishop Wilberforce had [vigorously challenged](https://en.wikipedia.org/wiki/1860_Oxford_evolution_debate) Darwin's theory of evolution.
+By the mid-19th century, the church had fallen into disrepair. In 1850, the Oxford Diocese appointed the ecclesiastical architect [George Edmund Street](https://en.wikipedia.org/wiki/George_Edmund_Street), who would go on to build or renovate 113 churches across the diocese. St. Peter's, overseen by Reverend William Edwards Partridge since 1833, was among these projects and was described as 'dilapidated' in a letter to the Bucks Herald five decades later. At that time, it was remembered that the congregation would wear strongly scented herbs and flowers to counteract the musty odours inside the church, which had an interior of high pews and benches. Street completely rebuilt the chancel and restored the nave between 1859 and 1860.
+
+![St Peter's Rood Screen](/images/roodscreen.avif#left)
+_Carved detail on the rood screen_
+
+During this renovation, the Tudor-origin rood screen separating the chancel from the nave was found to be supporting the roof with farm hurdles[^3]. Often painted and gilded, the rood screen would have originally supported a rood loft - a walkable narrow wooden gallery spanning the width of the church with a carved depiction of the crucifixion. These lofts were destroyed nationwide following an Elizabeth I order of October 1561[^idolatry] to appease her Bishops' disdain for [idolatry](https://en.wikipedia.org/wiki/Thou_shalt_not_make_unto_thee_any_graven_image). Ilmer's rood screen was mentioned in an 1865 talk by Street to the Royal Institute of British Architects[^riba] suggesting the screen was pre-tudor.
+
+The church was reopened on Thursday, 30th August 1860, by Bishop Samuel Wilberforce, the son of William Wilberforce, exactly two months after the bishop's notable participation in an Oxford debate. In this debate, Bishop Wilberforce had [vigorously challenged](https://en.wikipedia.org/wiki/1860_Oxford_evolution_debate) Darwin's theory of evolution.
+
+[^idolatry]: English reformations : religion, politics, and society under the Tudors, Christopher Haigh, 1993
 
 [^3]: Rood screen renovation. Source: Bucks Herald, 26 Jun 1909
 
-![1860 commemoration stone](/images/1860-dedication-stone.jpg#right)
-_1860 commemoration stone on North wall_
+[^riba]: [On English woodwork in the thirteenth and fourteenth centuries](https://babel.hathitrust.org/cgi/pt?id=nnc1.0069645264&seq=147), G. E. Street, read at RIBA, 20 Feb 1865
 
-The commemoration stone on the North wall (replaced 1983), has an inscription written by Reverends Partridge and Faber (Saunderton), the brother of hymn writer F Faber. Translated from Latin, it reads:
+![1983 commemoration stone, replacing the 1860 original](/images/1860-dedication-stone.jpg#right)
+_1983 commemoration stone on North wall_
+
+The commemoration stone on the North wall (replaced 1983), has an inscription written by Reverends Partridge and Faber (Saunderton), the brother of hymn writer [F.W. Faber](https://en.wikipedia.org/wiki/Frederick_William_Faber). Translated from Latin, it reads:
 
 > This church among the most ancient by length of years seriously weakened and decayed at his own proper charge restored and furnished William E. Partridge B.A. vicar of the same and patron in the year of Christ 1860.
 > To God alone be the honour and the glory.
 
 ![1860 commemoration stone](/images/original-church-tablet.jpg#left)
+_1860 commemoration stone on North wall_
 
-In 1983 during replacement of the inscribed stone, erosion of the final sentence required research into the probable final words. Local historian Rex Kidd approached the Bodleian Library for advice. Molly Barratt from the Department of Western Manuscripts responded[^bodleian] that it likely ended `HONOR ET GLORIA`. The new tablet cost £386+VAT.
+In 1983 during replacement of the inscribed stone, erosion of the final sentence required research into the probable final words. Local historian Rex Kidd approached the [Bodleian Library](https://www.bodleian.ox.ac.uk/) for advice. Molly Barratt from the Department of Western Manuscripts responded[^bodleian] that it likely ended `HONOR ET GLORIA`. The new tablet cost £386+VAT.
 
 [^bodleian]: Source: Oxford History Centre, [DIOC/1/C/5/1587](<https://heritagesearch.oxfordshire.gov.uk/records/DIOC/1/C/5/1587(2)>).
 
