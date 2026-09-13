@@ -8,9 +8,11 @@ image: images/church-drawing-unknown-1978.avif
 ancestorCrumb1Source: { label: St Peter's Church, url: '/history/st-peters/' }
 ---
 
-On 23 July 1552, commissioners acting for the government of the young Edward VI recorded[^1] the possessions of St Peter’s Church, Ilmer. The goods were placed in the custody of Edmund Godwyn and William Mede, probably the parish representatives or churchwardens.
+On 23 July 1552, commissioners[^1] acting for the government of the young Edward VI recorded[^2] the possessions of St Peter’s Church, Ilmer. The goods were placed in the custody of Edmund Godwyn and William Mede, probably the parish representatives or churchwardens.
 
-[^1]: [Harley MS 1419](https://searcharchives.bl.uk/catalog/040-002047249)
+[^1]: [Commissioners on seizure of church goods, 1552-1553](https://en.wikipedia.org/wiki/Edwardian_Reformation#1552_prayer_book_and_parish_confiscations)
+
+[^2]: [Harley MS 1419](https://searcharchives.bl.uk/catalog/040-002047249)
 
 The church possessed:
 
