@@ -6,6 +6,7 @@ category: history
 tags: [military]
 ancestorCrumb1Source: { label: 'Military', url: '/history/military/' }
 lightbox: true
+scrollAllTables: true
 ---
 
 | Name                                            | Conflict                | Location               | Date              | Casualty Record       | Age |

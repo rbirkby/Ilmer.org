@@ -20,7 +20,7 @@ Marriages transcribed from the [registers and records of St Peter's Ilmer](/hist
 
 Median ages use only explicitly stated numeric ages; blank entries and "full age" (21 or over) are excluded.
 
-<table id="register" class="census-table">
+<table id="register" class="scrollable-table">
   <thead class="table-header--sticky">
     <tr>
       <th rowspan="2">Year</th>

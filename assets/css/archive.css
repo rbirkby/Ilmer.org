@@ -1384,28 +1384,29 @@ main.archive table {
   }
 }
 
-/* Census record tables have many narrow columns (place, names, age, sex,
-   occupation, birthplace) — some years run to a dozen+. Left to the browser's
-   own auto table layout, columns shrink and cell text wraps to fit the
-   available width first; white-space is deliberately left at its default
-   (not nowrap) so that shrinking is possible. Only once every column is down
-   to its min-content width (the longest unbreakable word) and the table
-   still doesn't fit does it overflow — at which point display:block +
-   overflow-x let the table scroll horizontally instead of blowing out the
-   page. Applied unconditionally (no viewport breakpoint): whether that point
-   is reached depends on how many columns a given year's table has, not on a
-   fixed screen width. */
+/* Some tables have many narrow columns (a census's place, names, age, sex,
+   occupation, birthplace — some years run to a dozen+; or a tithe map's many
+   plot fields) that don't fit a narrow viewport. Left to the browser's own
+   auto table layout, columns shrink and cell text wraps to fit the available
+   width first; white-space is deliberately left at its default (not nowrap)
+   so that shrinking is possible. Only once every column is down to its
+   min-content width (the longest unbreakable word) and the table still
+   doesn't fit does it overflow — at which point display:block + overflow-x
+   let the table scroll horizontally instead of blowing out the page. Applied
+   unconditionally (no viewport breakpoint): whether that point is reached
+   depends on how many columns a given table has, not on a fixed screen
+   width. */
 main.archive.census table,
-main.archive table.census-table {
+main.archive table.scrollable-table {
   display: block;
   max-width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-.census-scroll {
+.table-scroll {
   container-type: scroll-state;
-  container-name: census-scroll;
+  container-name: table-scroll;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   overflow-x: auto;
@@ -1416,14 +1417,14 @@ main.archive table.census-table {
   }
 }
 
-main.archive .census-scroll table {
+main.archive .table-scroll table {
   grid-area: 2 / 1;
   display: table;
   max-width: none;
   overflow: visible;
 }
 
-.census-scroll-hint {
+.table-scroll-hint {
   display: none;
   grid-area: 1 / 1;
   position: sticky;
@@ -1434,7 +1435,7 @@ main.archive .census-scroll table {
   line-height: 1.5;
 }
 
-.census-scroll-shadow {
+.table-scroll-shadow {
   grid-area: 2 / 1;
   position: sticky;
   width: 1.2rem;
@@ -1443,32 +1444,32 @@ main.archive .census-scroll table {
   opacity: 0;
 }
 
-.census-scroll-shadow--left {
+.table-scroll-shadow--left {
   left: 0;
   justify-self: start;
   background: linear-gradient(to right, rgb(77 61 37 / 20%), transparent);
 }
 
-.census-scroll-shadow--right {
+.table-scroll-shadow--right {
   left: calc(100% - 1.2rem);
   justify-self: end;
   background: linear-gradient(to left, rgb(77 61 37 / 20%), transparent);
 }
 
-@container census-scroll scroll-state(scrollable: inline) {
-  .census-scroll-hint {
+@container table-scroll scroll-state(scrollable: inline) {
+  .table-scroll-hint {
     display: block;
   }
 }
 
-@container census-scroll scroll-state(scrollable: left) {
-  .census-scroll-shadow--left {
+@container table-scroll scroll-state(scrollable: left) {
+  .table-scroll-shadow--left {
     opacity: 1;
   }
 }
 
-@container census-scroll scroll-state(scrollable: right) {
-  .census-scroll-shadow--right {
+@container table-scroll scroll-state(scrollable: right) {
+  .table-scroll-shadow--right {
     opacity: 1;
   }
 }

@@ -70,7 +70,7 @@
       {% endif %}
     {% endif %}
 
-    {{ content | censusScroll: tags }}
+    {{ content | tableScroll: tags, scrollAllTables }}
 
     {% if headerUseDate %}
       {%- assign adjacent = collections[collectionName] | adjacentItem: page.url -%}

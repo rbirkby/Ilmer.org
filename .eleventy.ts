@@ -8,7 +8,7 @@ import type { MarkdownIt } from 'markdown-it';
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts';
 import markdownItMarginNotes from './plugins/markdown-it-margin-notes.ts';
 import { createCacheBustFilter } from './plugins/cache-bust.ts';
-import { censusScroll } from './plugins/census-scroll.ts';
+import { tableScroll } from './plugins/table-scroll.ts';
 import { censusOccupations } from './plugins/census-occupations.ts';
 import { yearBarChart } from './plugins/year-bar-chart.ts';
 import { medianAge } from './plugins/median-age.ts';
@@ -177,7 +177,7 @@ export default function (eleventyConfig: any) {
 
   /** Counts people per occupation from a census HTML table. */
   eleventyConfig.addFilter('censusOccupations', censusOccupations);
-  eleventyConfig.addFilter('censusScroll', censusScroll);
+  eleventyConfig.addFilter('tableScroll', tableScroll);
   /** Bar-chart geometry for event counts per year, zero-filled across the full year range. */
   eleventyConfig.addFilter('yearBarChart', yearBarChart);
   eleventyConfig.addFilter('medianAge', medianAge);

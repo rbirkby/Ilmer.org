@@ -28,7 +28,7 @@ for (const kind of ['baptisms', 'marriages', 'burials']) {
     );
     assert.equal((html.match(/class="year-bar-chart__bar"/g) ?? []).length, chart.bars.length + byDecade.bars.length);
     assert.match(html, /href="#register"/);
-    assert.match(source, /<table id="register" class="census-table">/);
+    assert.match(source, /<table id="register" class="scrollable-table">/);
     // a blank line inside the figure would end the Markdown HTML block early,
     // leaving stray paragraph tags wrapped around the chart
     assert.doesNotMatch(html, /\n[ \t]*\n/);

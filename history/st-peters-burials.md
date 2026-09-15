@@ -19,7 +19,7 @@ Burials transcribed from the [registers and records of St Peter's Ilmer](/histor
 
 The median uses only recorded ages, including infant ages converted to fractions of a year; blank entries and "no age" are excluded. It describes these recorded burials, not life expectancy.
 
-<table id="register" class="census-table">
+<table id="register" class="scrollable-table">
   <thead class="table-header--sticky">
     <tr>
       <th>Year</th>
