@@ -24,7 +24,7 @@ Meanwhile, in 1892, his youngest brother Ernest aged 13 [departed Liverpool](htt
 
 By 1907, Albert was further recorded in Kelly's as a wholesaler at the foreign flower market of Covent Garden. An advert in a Guernsey newspaper seeking flower growers indicates his import business.
 
-In 1905, Ilmer Farm, also known as Upper Farm was put up for sale. It had previously been owned by the joint owners of the manor - the Raper family. Sarah Maria Clotilda Raper had died in 1881. Richard Belgrove, father of Charles Belgrove, the "Ilmer Hermit", was tenant farmer. Albert must have made sufficient money from his Covent Garden business to puchase the farm in 1909. He then set about demolishing the farmhouse and building the grand Ilmer House in its place.
+In 1905, Ilmer Farm, also known as Upper Farm was put up for sale. It had previously been owned by the joint owners of the manor - the Raper family. Sarah Maria Clotilda Raper had died in 1881. Richard Belgrove, father of Charles Belgrove, the "Ilmer Hermit", was tenant farmer. Albert must have made sufficient money from his Covent Garden business to purchase the farm in 1909. He then set about demolishing the farmhouse and building the grand Ilmer House in its place.
 
 ![132 Tulse Hill](/images/ilmergrove-132tulsehill.jpg#left)
 
