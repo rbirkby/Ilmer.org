@@ -379,6 +379,15 @@ export default function (eleventyConfig: any) {
     eleventyConfig.addCollection(name, (collectionApi: CollectionApi) => subjectsForCollection(collectionApi, baseTag));
   }
 
+  /** Sorts monumental-inscription collection items by the numeric part of their id (e.g. 'C24' -> 24), so C10 sorts after C9 rather than before C2. Ids without a trailing number (e.g. 'RollOfHonour') sort last. */
+  eleventyConfig.addFilter('sortByMemorialId', (items: CollectionItem[] | undefined) => {
+    const num = (id: string) => {
+      const m = /(\d+)$/.exec(id || '');
+      return m ? Number(m[1]) : Number.POSITIVE_INFINITY;
+    };
+    return [...(items || [])].sort((a, b) => num(a.data.id) - num(b.data.id));
+  });
+
   /** The chronologically previous/next item in a date-sorted collection, relative to `url`. */
   eleventyConfig.addFilter('adjacentItem', (collection: CollectionItem[], url: string) => {
     const index = collection.findIndex((item) => item.url === url);

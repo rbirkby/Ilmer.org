@@ -1,0 +1,82 @@
+{
+  "source": "Hand-drawn churchyard survey plan (page 9 of the digitised PDF), approximate grid positions traced from the original graph-paper sketch",
+  "unit": "Each grid position is an integer grid-cell index (col increasing eastward, row increasing southward from the sketch's top-left corner), one per intersection of the original graph-paper grid. Individual memorials' plot positions are given by the col/row front matter on the memorial's own file in monumental-inscriptions/; this file holds only the plan's drawn geometry (features) and section labels.",
+  "features": [
+    {
+      "id": "boundary-1",
+      "type": "boundary",
+      "points": [
+        [12, 1],
+        [39, 1]
+      ]
+    },
+    {
+      "id": "boundary-2",
+      "type": "boundary",
+      "points": [
+        [41, 1],
+        [45, 1]
+      ]
+    },
+    {
+      "id": "boundary-3",
+      "type": "boundary",
+      "points": [
+        [46, 1],
+        [50, 1]
+      ]
+    },
+    {
+      "id": "path-south-edge",
+      "type": "path",
+      "points": [
+        [39, 1],
+        [39, 30]
+      ]
+    },
+    {
+      "id": "path-north-edge",
+      "type": "path",
+      "points": [
+        [41, 1],
+        [41, 30]
+      ]
+    },
+    {
+      "id": "church",
+      "type": "building",
+      "points": [
+        [29, 8],
+        [38, 8],
+        [38, 12],
+        [39, 12],
+        [39, 14],
+        [38, 14],
+        [38, 28],
+        [29, 28]
+      ]
+    }
+  ],
+  "labels": [
+    {
+      "text": "Section A",
+      "col": 35,
+      "row": 12
+    },
+    {
+      "text": "Section B",
+      "col": 44,
+      "row": 13
+    },
+    {
+      "text": "Section C",
+      "col": 9,
+      "row": 16
+    },
+    {
+      "text": "Path",
+      "col": 40,
+      "row": 11
+    }
+  ]
+}

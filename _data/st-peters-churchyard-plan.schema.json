@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ilmer.org/schemas/st-peters-churchyard-plan.schema.json",
+  "title": "St Peter's Ilmer Churchyard Plan",
+  "description": "Drawn geometry and section labels for the hand-drawn churchyard survey sketch on the last page of the digitised monumental-inscriptions PDF, for recreating the plan (e.g. as an SVG). Each memorial's own plotted position is given by the col/row front matter on its file in monumental-inscriptions/, not here.",
+  "type": "object",
+  "required": ["source", "unit", "features", "labels"],
+  "additionalProperties": false,
+  "properties": {
+    "source": { "type": "string", "minLength": 1 },
+    "unit": { "type": "string", "minLength": 1 },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "points"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "type": {
+            "type": "string",
+            "enum": ["boundary", "path", "building"],
+            "description": "boundary = churchyard wall, path = edge of the path between sections, building = the church footprint"
+          },
+          "points": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": { "type": "integer" },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "minItems": 2,
+            "description": "[col, row] integer grid-cell vertices of an open polyline (boundary, path) or closed polygon (building)"
+          }
+        }
+      }
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["text", "col", "row"],
+        "additionalProperties": false,
+        "properties": {
+          "text": { "type": "string", "minLength": 1 },
+          "col": { "type": "integer" },
+          "row": { "type": "integer" }
+        }
+      }
+    }
+  }
+}

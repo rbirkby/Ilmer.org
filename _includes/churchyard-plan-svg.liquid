@@ -1,0 +1,49 @@
+{%- if plan -%}
+  {%- assign cell = 24 -%}
+  <svg
+    class="churchyard-plan"
+    viewBox="0 0 1248 792"
+    role="img"
+    aria-label="Plan of St Peter's churchyard, showing the position of each numbered memorial in Section B (north side) and Section C (south side)">
+    {%- for f in plan.features -%}
+      {%- if f.type == "building" -%}
+        <polygon class="churchyard-plan__building" points="{%- for p in f.points -%}{{ p[0] | times: cell }},{{ p[1] | times: cell }} {% endfor -%}"></polygon>
+      {%- else -%}
+        <polyline class="churchyard-plan__{{ f.type }}" points="{%- for p in f.points -%}{{ p[0] | times: cell }},{{ p[1] | times: cell }} {% endfor -%}"></polyline>
+      {%- endif -%}
+    {%- endfor -%}
+    {%- for l in plan.labels -%}
+      <text
+        class="churchyard-plan__label"
+        x="{{ l.col | times: cell }}"
+        y="{{ l.row | times: cell }}">{{ l.text }}</text>
+    {%- endfor -%}
+    {%- for plot in plots -%}
+      {%- assign cx = plot.data.col | times: cell -%}
+      {%- assign cy = plot.data.row | times: cell -%}
+      <a href="#{{ plot.data.id }}" class="churchyard-plan__plot churchyard-plan__plot--{{ plot.data.section }}">
+        <title>{{ plot.data.id }}</title>
+        <rect
+          x="{{ cx | minus: 10 }}"
+          y="{{ cy | minus: 10 }}"
+          width="20"
+          height="20"
+          rx="3"></rect>
+        <text x="{{ cx }}" y="{{ cy | plus: 4 }}">{{ plot.data.id | slice: 1, 2 }}</text>
+      </a>
+    {%- endfor -%}
+    <g class="churchyard-plan__compass" aria-label="North points to the lower right of this plan">
+      <circle
+        cx="1200"
+        cy="744"
+        r="22"></circle>
+      <line
+        x1="1200"
+        y1="744"
+        x2="1211.1"
+        y2="748.6"></line>
+      <polygon points="1217.5,751.3 1209.6,752.3 1212.6,744.9"></polygon>
+      <text x="1227.7" y="755.5">N</text>
+    </g>
+  </svg>
+{%- endif -%}

@@ -1,0 +1,11 @@
+<article class="memorial" id="{{ memorial.data.id }}">
+  <h3 class="memorial__heading">
+    <a class="memorial__id" href="#{{ memorial.data.id }}">{% if memorial.data.id == "RollOfHonour" %}Roll of Honour{% else %}{{ memorial.data.id }}{% endif %}</a>
+    <span class="memorial__location">{{ memorial.data.location }}</span>
+  </h3>
+  {%- if memorial.templateContent and memorial.templateContent != "" -%}
+    <div class="memorial__inscriptions">
+      {{ memorial.templateContent }}
+    </div>
+  {%- endif -%}
+</article>

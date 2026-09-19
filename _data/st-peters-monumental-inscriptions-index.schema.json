@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ilmer.org/schemas/st-peters-monumental-inscriptions-index.schema.json",
+  "title": "St Peter's Ilmer Monumental Inscriptions Surname Index",
+  "description": "The survey's own alphabetical surname index, mapping each named person to the memorial ID(s) that mention them. Extracted automatically from the digitised PDF.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["surname", "forename"],
+    "additionalProperties": false,
+    "properties": {
+      "surname": { "type": "string", "minLength": 1 },
+      "forename": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Forename(s) as given in the index; may include a parenthetical note such as '(glassmaker)'"
+      },
+      "locations": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^(A[1-7]|B[1-7]|C([1-9]|[1-3][0-9]|4[0-6])|RollOfHonour|PREFACE)$"
+        },
+        "minItems": 1,
+        "description": "Memorial ID(s) this person appears on; 'PREFACE' refers to the introductory text rather than a numbered memorial. Mutually exclusive with seeAlso."
+      },
+      "seeAlso": {
+        "type": "string",
+        "minLength": 1,
+        "description": "This person is indexed under another surname (e.g. by marriage); look them up there instead. Mutually exclusive with locations."
+      }
+    },
+    "oneOf": [{ "required": ["locations"] }, { "required": ["seeAlso"] }]
+  }
+}
