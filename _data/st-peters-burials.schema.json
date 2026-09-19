@@ -28,6 +28,10 @@
       "notes": {
         "type": "string",
         "description": "Free text following the name and age: relation (e.g. 'wife of Thomas'), address, or register annotations"
+      },
+      "link": {
+        "type": "string",
+        "description": "Optional link to the corresponding monumental inscription"
       }
     }
   }

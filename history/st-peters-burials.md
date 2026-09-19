@@ -32,13 +32,22 @@ The median uses only recorded ages, including infant ages converted to fractions
   </thead>
   <tbody>
     {%- for item in st-peters-burials -%}
-      <tr>
+      <tr{% if item.link %} class="row-link"{% endif %}>
+        {%- if item.link -%}
+        <td data-type="number"><a href="{{ item.link }}">{{ item.year }}</a></td>
+        <td><a href="{{ item.link }}">{{ item.date }}</a></td>
+        <td><a href="{{ item.link }}">{{ item.forename }}</a></td>
+        <td><a href="{{ item.link }}">{{ item.surname }}</a></td>
+        <td><a href="{{ item.link }}">{{ item.age }}</a></td>
+        <td><a href="{{ item.link }}">{{ item.notes }}</a></td>
+        {%- else -%}
         <td data-type="number">{{ item.year }}</td>
         <td>{{ item.date }}</td>
         <td>{{ item.forename }}</td>
         <td>{{ item.surname }}</td>
         <td>{{ item.age }}</td>
         <td>{{ item.notes }}</td>
+        {%- endif -%}
       </tr>
     {%- endfor -%}
   </tbody>

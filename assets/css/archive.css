@@ -1898,3 +1898,34 @@ main.archive .table-scroll table {
   flex: none;
   color: var(--archive-muted);
 }
+
+/* Rows with a link: every cell's text links to the same target */
+main.archive tr.row-link td a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+main.archive tr.row-link:hover a {
+  text-decoration: underline;
+}
+
+main.archive tr.row-link:hover td {
+  background-color: color-mix(in srgb, var(--archive-border) 60%, var(--archive-cream));
+}
+
+/* Stretch the first cell's link over the whole row so padding and gaps are clickable */
+main.archive tr.row-link {
+  position: relative;
+}
+
+main.archive tr.row-link td:first-child a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+main.archive tr.row-link {
+  cursor: pointer;
+}
