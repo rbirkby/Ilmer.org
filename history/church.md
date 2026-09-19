@@ -38,7 +38,7 @@ _Carved detail on the rood screen_
 
 During this renovation, the Tudor-origin rood screen separating the chancel from the nave was found to be supporting the roof with farm hurdles[^3]. Often painted and gilded, the rood screen would have originally supported a rood loft - a walkable narrow wooden gallery spanning the width of the church with a carved depiction of the crucifixion. These lofts were destroyed nationwide following an Elizabeth I order of October 1561[^idolatry] to appease her Bishops' disdain for [idolatry](https://en.wikipedia.org/wiki/Thou_shalt_not_make_unto_thee_any_graven_image). Ilmer's rood screen was mentioned in an 1865 talk by Street to the Royal Institute of British Architects[^riba] suggesting the screen was pre-tudor.
 
-The church was reopened on Thursday, 30th August 1860, by Bishop Samuel Wilberforce, the son of William Wilberforce, exactly two months after the bishop's notable participation in an Oxford debate. In this debate, Bishop Wilberforce had [vigorously challenged](https://en.wikipedia.org/wiki/1860_Oxford_evolution_debate) Darwin's theory of evolution.
+The church was reopened on Thursday, 30th August 1860, by [Bishop Samuel Wilberforce](https://en.wikipedia.org/wiki/Samuel_Wilberforce), the son of William Wilberforce, exactly two months after the bishop's notable participation in an Oxford debate. In this debate, Bishop Wilberforce had [vigorously challenged](https://en.wikipedia.org/wiki/1860_Oxford_evolution_debate) Darwin's theory of evolution.
 
 [^idolatry]: English reformations : religion, politics, and society under the Tudors, Christopher Haigh, 1993
 
@@ -51,7 +51,16 @@ _1983 commemoration stone on North wall_
 
 The commemoration stone on the North wall (replaced 1983), has an inscription written by Reverends Partridge and Faber (Saunderton), the brother of hymn writer [F.W. Faber](https://en.wikipedia.org/wiki/Frederick_William_Faber). Translated from Latin, it reads:
 
-> This church among the most ancient by length of years seriously weakened and decayed at his own proper charge restored and furnished William E. Partridge B.A. vicar of the same and patron in the year of Christ 1860.
+> This church\
+> among the most ancient\
+> by length of years seriously\
+> weakened and decayed\
+> at his own proper charge\
+> restored and furnished\
+> William E. Partridge B.A.\
+> vicar of the same and patron\
+> in the year of Christ\
+> 1860\
 > To God alone be the honour and the glory.
 
 ![1860 commemoration stone](/images/original-church-tablet.jpg#left)
@@ -151,7 +160,7 @@ At the time, lighting was provided by pendant oil lamps. When electrification ca
 ![Oil lamp converted to electric using the same bracket as shown in VCH](/images/electrical-lighting-retrofit-oil-lamp.jpg#right)
 _Oil lamp converted to electric using the repurposed oil lamp saddle_
 
-In 1924, a proposal was made to lay electricity lines to Ilmer[^electricity] and a faculty granted in 1928[^wilson] to install electric lighting in the church however power was supplied at this time from the generator at Ilmer House[^vestryminutes1928] courtesy of owner Albert Goodchild. The 1931 vestry minutes held in January 1932 and October 1932 record the cost of the electricity now charged using a slot meter following the death of Albert Goodchild the previous year.
+In 1924, a proposal was made to lay electricity lines to Ilmer[^electricity] and a faculty granted in 1928[^wilson] to install electric lighting in the church however power was supplied at this time from the generator at Ilmer House[^vestryminutes1928] courtesy of owner Albert Goodchild. The vestry minutes held in [April 1932](/parish/vestrymeeting/1932-04-05) and [April 1936](/parish/vestrymeeting/1936-04-15) record the cost of the electricity now charged using a slot meter following the death of Albert Goodchild the previous year.
 
 [^vestryminutes1928]: Source: Vestry Minutes, Bucks Archives
 

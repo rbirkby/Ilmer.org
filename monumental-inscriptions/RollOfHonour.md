@@ -4,7 +4,7 @@ section: A
 location: 'Plaque inside church'
 ---
 
-![Roll of Honour](/images/IlmerWarPlaque.avif)
+![Plaque inside church](/images/IlmerWarPlaque.avif)
 
 Aubrey S GOMME 21st Canadian Battalion \
 killed in action in France April 9th 1917 aged 24

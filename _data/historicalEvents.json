@@ -2506,7 +2506,7 @@
     "date": "3 Oct. 1930",
     "title": "Death of Thomas Goodchild",
     "description": "Thomas Goodchild (Farmer) dies aged 67.",
-    "references": ["HM GRO death register", "Ilmer Graveyard"],
+    "references": ["HM GRO death register", "[Ilmer Graveyard](/history/monumental-inscriptions/#C19)"],
     "labels": ["death", "farm", "person", "property"]
   },
   {
@@ -2520,7 +2520,11 @@
     "date": "15 Jul. 1931",
     "title": "Death of Albert Goodchild",
     "description": "Albert Goodchild, husband of Elizabeth Goodchild of Ilmer House, died aged 57.",
-    "references": ["Bucks Herald, 17 Jul 1931", "Church Records"],
+    "references": [
+      "Bucks Herald, 17 Jul 1931",
+      "Church Records",
+      "[Ilmer graveyard](/history/monumental-inscriptions/#C11)"
+    ],
     "labels": ["death", "housing", "person"]
   },
   {
@@ -2549,7 +2553,7 @@
     "title": "Death of Owen Goodchild",
     "description": "Owen Goodchild died aged 54.",
     "image": "/images/owen-goodchild.jpg",
-    "references": ["Ilmer graveyard", "ancestry.com"],
+    "references": ["[Ilmer graveyard](/history/monumental-inscriptions/#C18)", "ancestry.com"],
     "labels": ["death", "person"]
   },
   {
@@ -2662,7 +2666,7 @@
     "date": "16 Aug. 1934",
     "title": "Death of Edward Albert Goodchild",
     "description": "Edward Albert Goodchild, second son of the late Albert Goodchild, died aged 32.",
-    "references": ["Ilmer Graveyard"],
+    "references": ["[Ilmer Graveyard](/history/monumental-inscriptions/#C10)"],
     "labels": ["death", "person"]
   },
   {
@@ -3274,7 +3278,10 @@
     "date": "26 Feb. 1968",
     "title": "Death of (Robert) Harold Attenborough",
     "description": "(Robert) Harold Attenborough of Ilmer House dies aged 88.",
-    "references": ["Parish registers and records, transcribed by Rex A Kidd"],
+    "references": [
+      "Parish registers and records, transcribed by Rex A Kidd",
+      "[Ilmer Graveyard](/history/monumental-inscriptions/#C15"
+    ],
     "labels": ["death", "housing", "person"]
   },
   {
@@ -3629,8 +3636,8 @@
   {
     "date": "1983",
     "title": "Commemoration Stone Replaced",
-    "description": "The commemoration stone on the church's north wall was replaced.",
-    "references": ["Parish church history pamphlet", "Oxfordshire History Centre diocesan records"],
+    "description": "The commemoration stone on the church's north wall was replaced by CDL Stone Restoration of Kingswood Bristol.",
+    "references": ["Parish church history pamphlet", "Oxfordshire History Centre diocesan records, DIOC:1:C:5:1587(2)"],
     "labels": ["church"]
   },
   {
@@ -3700,7 +3707,7 @@
     "date": "1988",
     "title": "Death of Charles Henry Mardell MBE",
     "description": "Charles Henry Mardell MBE died. A plaque is in the churchyard. His connection to Ilmer is unknown. He was the Honorary Secretary of the British Association of the Hard of Hearing which eventually merged with [Hearing Dogs for the Deaf](https://www.hearingdogs.org.uk/) based in nearby Saunderton",
-    "references": ["London Gazette, Page 17"],
+    "references": ["London Gazette, Page 17", "[Ilmer Graveyard](/history/monumental-inscriptions/#C40)"],
     "labels": ["church", "death", "person"]
   },
   {
@@ -3873,14 +3880,20 @@
     "date": "12 Nov. 2000",
     "title": "Death of (Annie) Mavis Head",
     "description": "(Annie) Mavis Head, wife of (Stanley) Frank Head, resident of Old Orchard, died and is buried in Ilmer churchyard.",
-    "references": ["https://www.thegazette.co.uk/notice/L-56356-344"],
+    "references": [
+      "https://www.thegazette.co.uk/notice/L-56356-344",
+      "[Ilmer Graveyard](/history/monumental-inscriptions/#C16)"
+    ],
     "labels": ["church", "death", "person"]
   },
   {
     "date": "23 Feb. 2001",
     "title": "Death of (Stanley) Frank Head",
     "description": "(Stanley) Frank Head, resident of Old Orchard, died and is buried in Ilmer churchyard.",
-    "references": ["https://www.thegazette.co.uk/notice/L-56455-355"],
+    "references": [
+      "https://www.thegazette.co.uk/notice/L-56455-355",
+      "[Ilmer Graveyard](/history/monumental-inscriptions/#C16)"
+    ],
     "labels": ["church", "death", "person"]
   },
   {
