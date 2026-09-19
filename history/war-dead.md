@@ -48,7 +48,7 @@ The following paragraph under the Horsenden-with-Ilmer parish in the **AYLESBURY
 Mr Fritz Kingham was described as the churchwarden. The note was written by Rev W. M. Tuke of 4, Priory
 Avenue, High Wycombe.
 
-**Albert Richardson** was born in 1895, the son of Alfred and Alice Richardson. Both father and son worked as farm labourers at Manor Farm, Ilmer, for Alfred Hill. Albert served as a Corporal in the 13th Kings Royal Rifles Corps and [died of his wounds](https://buckinghamshireremembers.org.uk/php_scripts/Cas_Print.php?id=3955) in 11 September 1918 at the age of 23 years. Albert Richardson was a bell ringer and active church worker and a special memorial service was held for him at Ilmer Church. He is [buried](https://www.findagrave.com/memorial/25064846/albert-ernest-richardson) at Ruyaulcourt Military Cemetery, Pas de Calais.
+**Albert Richardson** was born in 1895, the son of Alfred and Alice Richardson. Both father and son worked as farm labourers at Manor Farm, Ilmer, for Alfred Hill. Albert served as a Corporal in the 13th Kings Royal Rifles Corps and [died of his wounds](https://buckinghamshireremembers.org.uk/php_scripts/Cas_Print.php?id=3955) in 11 September 1918 at the age of 23 years. Albert Richardson was a bell ringer and active church worker and a [special memorial service](/history/monumental-inscriptions/#C25) was held for him at Ilmer Church. He is [buried](https://www.findagrave.com/memorial/25064846/albert-ernest-richardson) at Ruyaulcourt Military Cemetery, Pas de Calais.
 
 ## Great War Memorial Tablet
 
