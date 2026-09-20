@@ -31,12 +31,12 @@
       },
       "image": {
         "type": "string",
-        "pattern": "^/images/[^/]+\\.(jpg|jpeg|png|avif)$",
+        "pattern": "^/images/(?:[^/]+/)*[^/]+\\.(jpg|jpeg|png|avif)$",
         "description": "Primary image path"
       },
       "smallimage": {
         "type": "string",
-        "pattern": "^/images/[^/]+\\.(jpg|jpeg|png|avif)$",
+        "pattern": "^/images/(?:[^/]+/)*[^/]+\\.(jpg|jpeg|png|avif)$",
         "description": "Thumbnail image path"
       },
       "hidden": { "type": "boolean", "description": "Hide this event from the timeline" }

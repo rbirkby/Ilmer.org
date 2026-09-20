@@ -2115,7 +2115,8 @@
     "date": "16 Sep. 1909",
     "title": "Organist dies",
     "description": "Longtime church organist Martha Belgrove dies. A window in the church was later dedicated to her memory.",
-    "references": [],
+    "references": ["[Monumental Inscriptions](/history/monumental-inscriptions/#A2)"],
+    "image": "/images/monumental-inscriptions/A2.avif",
     "labels": ["church", "death"]
   },
   {
@@ -2603,7 +2604,8 @@
     "date": "25 Oct. 1932",
     "title": "Memorial Window Commissioned",
     "description": "A meeting at the Parish Hall resolves to install a stained glass window in honour of Mary Clara Jaques (daughter of former vicar Rev. W. E. Partridge) to commemorate her charitable deeds. The window, costing £70, was crafted by Joseph Edward Nuttgens.",
-    "references": [],
+    "references": ["[Monumental Inscriptions](/history/monumental-inscriptions/#A3)"],
+    "image": "/images/monumental-inscriptions/A3.avif",
     "labels": ["charity", "church", "meeting", "person"]
   },
   {
@@ -2631,7 +2633,8 @@
     "date": "Feb. 1933",
     "title": "Stained Glass Window Installed",
     "description": "A stained glass window by Joseph Edward Nuttgens was installed in the church nave in commemoration of Mary Clara Jaques.",
-    "references": [],
+    "references": ["[Monumental Inscriptions](/history/monumental-inscriptions/#A3)"],
+    "image": "/images/monumental-inscriptions/A3.avif",
     "labels": ["church"]
   },
   {
@@ -3797,8 +3800,10 @@
     "references": [
       "Parish church history pamphlet",
       "St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999",
-      "Bucks Herald, 15 Nov 1990"
+      "Bucks Herald, 15 Nov 1990",
+      "[Monumental Inscriptions](/history/monumental-inscriptions/#A1)"
     ],
+    "image": "/images/monumental-inscriptions/A1.avif",
     "labels": ["church"]
   },
   {
@@ -3908,6 +3913,7 @@
     "title": "Lectern and Pews Restored",
     "description": "The lectern and pews were restored.",
     "references": ["plaque attached to pew"],
+    "image": "/images/monumental-inscriptions/pew-plaque.avif",
     "labels": ["document"]
   },
   {
