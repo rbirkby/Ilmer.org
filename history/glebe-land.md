@@ -48,7 +48,7 @@ A 1970 letter from solicitors Lightfoot and Lowndes to solicitors Trollope & Win
 
 On 8 January 1980, a declaration by the Diocesan Trustees described the glebe land as being 1.9 acres, plot 4571 on OS map and managed by the vicars and churchwardens of Ilmer. It further described the ecclesiastical charitable purpose as being “For the repairs of the church at Ilmer”.
 
-The present tenant of Church Close, Mr John Shurrock recalls how his mother, Mollie, used the land for allotments and prior to that, it was used by the whole village as allotments. He also recalls Charles Belgrove digging a well for his mother within the space. The remains of the well still exist today.
+The present tenant of Church Close, recalls how Mrs Mollie Shurrock used the land for allotments and prior to that, it was used by the whole village as allotments. He also recalls Charles Belgrove digging a well for Mrs Shurrock within the space. The remains of the well still exist today.
 
 In contemporary annual reports for the Princes Risborough with Ilmer PCC, Church Close is called “Field at Ilmer” and is capitalised at £1,800. An aerial survey measures it at 1.82 acres.
 
