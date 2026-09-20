@@ -2115,7 +2115,10 @@
     "date": "16 Sep. 1909",
     "title": "Organist dies",
     "description": "Longtime church organist Martha Belgrove dies. A window in the church was later dedicated to her memory.",
-    "references": ["[Monumental Inscriptions](/history/monumental-inscriptions/#A2)"],
+    "references": [
+      "[Monumental Inscriptions](/history/monumental-inscriptions/#A2)",
+      "[Ilmer Graveyard](/history/monumental-inscriptions/#C22)"
+    ],
     "image": "/images/monumental-inscriptions/A2.avif",
     "labels": ["church", "death"]
   },
