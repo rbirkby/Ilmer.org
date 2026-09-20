@@ -467,6 +467,11 @@ body > footer {
     max-width: 1120px;
     margin: 0 auto;
   }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
 }
 
 blockquote {
