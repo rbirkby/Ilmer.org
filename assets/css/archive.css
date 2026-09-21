@@ -1706,14 +1706,19 @@ main.archive .table-scroll table {
   }
 }
 
-.churchyard-plan {
-  display: block;
-  width: 100%;
-  height: auto;
+.churchyard-plan-wrap {
   margin: 1.6rem 0 2.4rem;
   background: var(--archive-card);
   border: 1px solid var(--archive-border);
   border-radius: 0.6rem;
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+.churchyard-plan {
+  display: block;
+  width: 100%;
+  height: auto;
 
   & .churchyard-plan__building {
     fill: rgb(47 75 48 / 8%);
@@ -1792,6 +1797,30 @@ main.archive .table-scroll table {
       font-size: 15px;
       text-anchor: middle;
       dominant-baseline: middle;
+    }
+  }
+}
+
+/* Narrow screens: turn the plan -90deg to fill the width, keeping text upright */
+@media (max-width: 640px) {
+  .churchyard-plan-wrap {
+    position: relative;
+    aspect-ratio: 792 / 1248;
+  }
+
+  .churchyard-plan {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100cqw * 1248 / 792);
+    height: 100cqw;
+    transform-origin: 0 0;
+    transform: translateY(calc(100cqw * 1248 / 792)) rotate(-90deg);
+
+    & text {
+      transform-box: fill-box;
+      transform-origin: center;
+      transform: rotate(90deg);
     }
   }
 }
