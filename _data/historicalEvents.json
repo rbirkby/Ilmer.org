@@ -3683,7 +3683,9 @@
     "date": "1986",
     "title": "Book records survey of life in Aylesbury Vale villages",
     "description": "This Doomsday survey recorded a population of 64, with a Fete on late-May bank holiday and a Barbeque in August, both at Severalles Farm (Lower Farm). It also recorded a village Cricket team. The compilation for Ilmer was provided by Susan Underwood of [Ilmer House](/history/ilmer-house).",
-    "references": ["Chronicle of the Vale, The Friends of the Vale of Aylesbury, 1986"],
+    "references": [
+      "[Chronicle of the Vale](/history/chronicle-of-the-vale), The Friends of the Vale of Aylesbury, 1986"
+    ],
     "labels": ["infrastructure", "housing"]
   },
   {
@@ -3733,7 +3735,9 @@
     "title": "Sunrise 'Back to the future' Rave",
     "description": "The Sunrise 'Back to the future' acid house dance festival was held in fields east of Ilmer, with 15,000 attendees. For the party goers, it became the stuff of legend.",
     "image": "/images/sunrise-backtothefuture-1989.jpg",
-    "references": ["Rave New World, Kirk Field, Nine Eight Books, 2023"],
+    "references": [
+      "[Rave New World](https://www.amazon.co.uk/Rave-New-World-Confessions-Reporter/dp/1788707702), Kirk Field, Nine Eight Books, 2023"
+    ],
     "labels": ["housing"]
   },
   {
@@ -3855,9 +3859,7 @@
     "date": "1 May 1994",
     "title": "Cheese and Wine on The Green",
     "description": "Cheese and Wine on The Green to commemorate 100 years of Parish Councils.",
-    "references": [
-      "[Minutes of the Parish Council Meeting, 19 Apr. 1994, Bucks Archives](https://archives.buckinghamshire.gov.uk/records/PR_136/UNCAT/AR_83-2009)"
-    ],
+    "references": ["[Minutes of the Parish Meeting, 19 Apr. 1994, Bucks Archives](/parish/parishmeeting/1994-04-19/)"],
     "labels": ["celebration"]
   },
   {
@@ -3921,7 +3923,7 @@
     "date": "18 Aug. 2009",
     "title": "Parish Records Archived",
     "description": "The parish council agreed to archive parish records at the County Archive.",
-    "references": ["Minutes of the Parish Council Meeting, 18 Aug 2009"],
+    "references": ["[Minutes of the Parish Council Meeting](/parish/parishcouncil/2009-08-18/), 18 Aug 2009"],
     "labels": ["church"]
   },
   {
