@@ -18,5 +18,10 @@
 
 <script>
   const searchModal = document.querySelector('search-modal-snippet');
+  searchModal?.addEventListener('ready', () => {
+    // The Cloudflare snippet manages aria-expanded and results, but its input
+    // needs the combobox role for that state to be exposed to assistive tech.
+    searchModal.shadowRoot?.querySelector('input[aria-expanded]')?.setAttribute('role', 'combobox');
+  });
   document.querySelector('#open-search')?.addEventListener('click', () => searchModal?.open());
 </script>
