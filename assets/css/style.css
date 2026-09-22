@@ -29,6 +29,11 @@
 html {
   font-size: 62.5%;
   height: 100%;
+  /* Matches the header and footer. Body paints its own background over the
+     whole page, so this only shows in the overscroll areas above and below
+     it, e.g. iOS Safari's rubber-band scroll, which then bleeds out from the
+     header and footer instead of flashing white. */
+  background-color: #15171a;
 }
 
 body {
