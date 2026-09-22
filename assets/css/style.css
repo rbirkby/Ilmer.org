@@ -555,10 +555,12 @@ table {
 
 #image-lightbox {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  width: auto;
-  height: auto;
+  /* Centred with inset + auto margins rather than left/top 50% + translate: an
+     auto-width box offset by left: 50% can only shrink-to-fit into the half of the
+     viewport to its right, which capped the lightbox at 50vw */
+  inset: 0;
+  width: fit-content;
+  height: fit-content;
   max-width: min(90vw, 800px);
   max-height: min(85vh, 600px);
   background: rgb(0 0 0 / 0.95);
@@ -570,13 +572,13 @@ table {
   padding: 3rem 2rem 2rem 2rem;
   box-sizing: border-box;
   z-index: 1000;
-  margin: 0;
+  margin: auto;
   border: none;
   border-radius: 12px;
   box-shadow: 0 20px 60px rgb(0 0 0 / 0.8);
   pointer-events: none;
   opacity: 0;
-  transform: translate(-50%, -50%) scale(0.8);
+  transform: scale(0.8);
   transition:
     opacity 0.3s ease,
     transform 0.3s ease,
@@ -588,7 +590,7 @@ table {
   display: flex;
   pointer-events: auto;
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
+  transform: scale(1);
 }
 
 #image-lightbox::backdrop {
@@ -624,6 +626,9 @@ table {
 #lightbox-image {
   max-width: 100%;
   max-height: 100%;
+  /* Lets the flex column shrink a tall image to fit the lightbox's max-height
+     (object-fit keeps its proportions) instead of overflowing it */
+  min-height: 0;
   width: auto;
   height: auto;
   object-fit: contain;
@@ -655,6 +660,19 @@ table {
 @starting-style {
   #image-lightbox:popover-open {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8);
+    transform: scale(0.8);
+  }
+}
+
+/* On phones use the full width, enlarging small images rather than leaving a narrow box */
+@media (max-width: 640px) {
+  #image-lightbox {
+    width: calc(100vw - 2rem);
+    max-width: none;
+    padding: 5rem 1rem 1rem;
+  }
+
+  #lightbox-image {
+    width: 100%;
   }
 }
