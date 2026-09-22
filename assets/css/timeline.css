@@ -59,6 +59,36 @@ main.timeline .timeline-body {
   padding: 0 clamp(2rem, 6vw, 6rem) 4rem;
 }
 
+/* No hero band or photo scrim on the timeline: a plain page header aligned with the content */
+main.archive.timeline::before {
+  content: none;
+}
+
+.timeline-header {
+  padding: 5rem 0 3rem;
+
+  @media (max-width: 860px) {
+    padding-top: 4rem;
+  }
+
+  & h1 {
+    margin: 0;
+    font-size: clamp(3.4rem, 5vw, 5.4rem);
+    font-weight: 600;
+    line-height: 1.05;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+
+  & .timeline-description {
+    margin: 0;
+    max-width: 44em;
+    font-size: 1.9rem;
+    line-height: 1.6;
+    color: var(--timeline-text);
+  }
+}
+
 #timeline-container {
   position: relative;
   /* max-width: 900px; */
@@ -178,8 +208,15 @@ main.timeline .timeline-body {
 
       h2 {
         margin-top: 0;
-        font-size: 1.2em;
+        font-size: 2.6rem;
+        /* 600 is the heaviest Cormorant weight loaded; anything bolder is synthesised */
+        font-weight: 600;
+        line-height: 1.25;
         color: var(--timeline-title);
+
+        @media (max-width: 480px) {
+          font-size: 2.2rem;
+        }
       }
 
       img {
@@ -191,9 +228,11 @@ main.timeline .timeline-body {
       .date {
         background-color: var(--timeline-date-bg);
         color: var(--timeline-date-color);
-        padding: 3px 8px;
+        padding: 2px 9px 3px;
         border-radius: 4px;
-        font-size: 0.85em;
+        font-size: 1.9rem;
+        font-variant-numeric: lining-nums;
+        letter-spacing: 0.02em;
         margin-right: 10px;
         font-weight: 600;
       }
@@ -225,6 +264,15 @@ main.timeline .timeline-body {
 
 /* Responsive design for smaller screens */
 @media screen and (max-width: 768px) {
+  /* In the single-column layout a floated filter would squeeze the first event,
+     so give it its own line (it stays sticky while scrolling) */
+  select#timeline-filter {
+    float: none;
+    display: flex;
+    width: fit-content;
+    margin-bottom: 3rem;
+  }
+
   #timeline-container {
     &::after {
       left: 31px;

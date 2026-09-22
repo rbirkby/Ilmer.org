@@ -12,8 +12,8 @@
 
 {% render "site-header" %}
 <main class="archive timeline">
-  <section class="archive-hero">
-    <div class="archive-hero__text">
+  <section class="timeline-body">
+    <header class="timeline-header">
       {% render "breadcrumb.liquid"
         , ancestorCrumb1: ancestorCrumb1
         , ancestorCrumb2: ancestorCrumb2
@@ -22,11 +22,9 @@
         , title: title %}
       <h1>{{ title }}</h1>
       {% render "archive-flourish.liquid" %}
-      <p class="archive-hero__description">{{ description }}</p>
-    </div>
-  </section>
+      <p class="timeline-description">{{ description }}</p>
+    </header>
 
-  <section class="timeline-body">
     {{ content }}
   </section>
 </main>
