@@ -273,15 +273,21 @@ main.archive.timeline::before {
     margin-bottom: 3rem;
   }
 
+  main.timeline .timeline-body {
+    padding-inline: 1.6rem;
+  }
+
+  /* Line centred 12px in: the 24px icon sits flush left on it, the arrow bridges the
+     gap from 30px, and the card starts at 40px and runs to the right edge */
   #timeline-container {
     &::after {
-      left: 31px;
+      left: 12px;
     }
 
     .timeline-item {
       width: 100%;
-      padding-left: 70px;
-      padding-right: 25px;
+      padding-left: 40px;
+      padding-right: 0;
 
       /* Superficial unnecessary duplication due to CSS specificity rules */
       &:nth-child(odd of :not(&.hidden)),
@@ -291,12 +297,12 @@ main.archive.timeline::before {
 
       &:nth-child(odd of :not(&.hidden)) .timeline-icon,
       &:nth-child(even of :not(&.hidden)) .timeline-icon {
-        left: 19px;
+        left: 0;
       }
 
       &:nth-child(odd of :not(&.hidden)):before,
       &:nth-child(even of :not(&.hidden)):before {
-        left: 60px;
+        left: 30px;
         border-width: 10px 10px 10px 0;
         border-color: transparent var(--timeline-arrow-bg) transparent transparent;
       }
