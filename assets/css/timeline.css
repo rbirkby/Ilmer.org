@@ -463,9 +463,10 @@ main.archive.timeline::before {
     color: var(--timeline-reference);
   }
 
+  /* Darkened slightly: the small italic weekday needs 4.5:1 on cream, which the raw highlight just misses */
   .is-today .anniversary-day-number,
   .is-today .anniversary-weekday {
-    color: var(--archive-highlight);
+    color: color-mix(in srgb, var(--archive-highlight) 90%, black);
   }
 
   .anniversary-entries {
