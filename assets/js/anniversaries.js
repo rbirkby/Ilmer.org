@@ -7,10 +7,10 @@ import { DateUtils } from './anniversary-dates.js';
 // Anniversary Web Component using LitElement
 class TimelineAnniversary extends LitElement {
   static properties = {
-    relativeDate: { type: String, attribute: 'relative-date' },
     title: { type: String },
-    yearsAgo: { type: String, attribute: 'years-ago' },
-    originalDate: { type: String, attribute: 'original-date' }
+    year: { type: String },
+    yearsAgo: { type: Number, attribute: 'years-ago' },
+    target: { type: String }
   };
 
   createRenderRoot() {
@@ -19,51 +19,13 @@ class TimelineAnniversary extends LitElement {
   }
 
   render() {
+    const ago = this.yearsAgo === 1 ? '1 year ago' : `${this.yearsAgo} years ago`;
     return html`
-      <a
-        href="#${this.originalDate ?? ''}"
-        class="anniversary-tile"
-        data-date="${this.originalDate ?? ''}"
-        @click="${this._handleClick}"
-      >
-        <div class="anniversary-date-label">${this.relativeDate ?? ''}</div>
-        <div class="anniversary-title">${this.title ?? ''}</div>
-        <div class="anniversary-meta">${this.yearsAgo ?? ''} years ago (${this.originalDate ?? ''})</div>
+      <a href="#${this.target}" class="anniversary-entry">
+        <span class="anniversary-title">${this.title ?? ''}</span>
+        <span class="anniversary-meta">${this.year}, ${ago}</span>
       </a>
     `;
-  }
-
-  _handleClick(event) {
-    event.preventDefault(); // Prevent default anchor navigation
-    const eventDate = this.originalDate;
-    if (eventDate) {
-      TimelineAnniversary.scrollToTimelineEvent(eventDate);
-    }
-  }
-
-  static scrollToTimelineEvent(eventDate) {
-    const timelineItems = document.querySelectorAll('.timeline-item');
-
-    // Find the timeline item with matching date
-    const targetElement = Array.from(timelineItems).find((item) => {
-      const dateSpan = item.querySelector('.date');
-      return dateSpan && dateSpan.textContent.trim() === eventDate;
-    });
-
-    if (targetElement) {
-      // Smooth scroll to the element
-      targetElement.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-      });
-
-      // Add a temporary highlight effect
-      targetElement.style.transition = 'background-color 0.3s ease';
-      targetElement.style.backgroundColor = 'var(--timeline-card-border)';
-      setTimeout(() => {
-        targetElement.style.backgroundColor = '';
-      }, 1700);
-    }
   }
 }
 
@@ -105,6 +67,7 @@ class TimelineAnniversaries extends LitElement {
     if (eventsScript) {
       try {
         this.events = JSON.parse(eventsScript.textContent).map((event) => ({
+          id: event.id,
           date: event.date,
           title: event.title
         }));
@@ -134,13 +97,12 @@ class TimelineAnniversaries extends LitElement {
       // Include if it's within the look-ahead period
       if (daysDiff <= this.lookAheadDays) {
         const yearsAgo = this.currentYear - parsedDate.year;
-        const relativeDateStr = this.dateUtils.getRelativeDateString(daysDiff, this.now);
 
         anniversaries.push({
           daysDiff,
-          relativeDateStr,
+          year: parsedDate.year,
           yearsAgo,
-          originalDate: event.date,
+          id: event.id,
           title: event.title
         });
       }
@@ -150,40 +112,71 @@ class TimelineAnniversaries extends LitElement {
     this.anniversaries = anniversaries.toSorted((a, b) => a.daysDiff - b.daysDiff).slice(0, this.maxAnniversaries);
   }
 
-  render() {
-    const currentMonthName = this.dateUtils.monthNames[this.currentMonth - 1];
+  // Anniversaries sharing a day are shown together under one date
+  groupByDay() {
+    const groups = new Map();
+    for (const anniversary of this.anniversaries) {
+      if (!groups.has(anniversary.daysDiff)) groups.set(anniversary.daysDiff, []);
+      groups.get(anniversary.daysDiff).push(anniversary);
+    }
+    return [...groups].map(([daysDiff, items]) => {
+      const date = new Date(this.now);
+      date.setDate(date.getDate() + daysDiff);
+      return { daysDiff, date, items };
+    });
+  }
 
+  // Local calendar date; toISOString() would shift to UTC and can land on the wrong day
+  isoDate(date) {
+    const pad = (n) => String(n).padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  }
+
+  weekdayLabel(daysDiff, date) {
+    if (daysDiff === 0) return 'Today';
+    if (daysDiff === 1) return 'Tomorrow';
+    return date.toLocaleDateString('en-GB', { weekday: 'long' });
+  }
+
+  render() {
     return html`
-      <div id="anniversaries-container" class="anniversaries-container">
-        <h2 class="anniversaries-heading">🕐 Upcoming Anniversaries</h2>
-        <p class="anniversaries-date-intro">
-          Today is ${currentMonthName} ${this.currentDay}, ${this.currentYear}. Here are the upcoming historical
-          anniversaries:
-        </p>
-        <div class="anniversaries-list">
-          ${
-            this.anniversaries.length === 0
-              ? html`<p class="no-anniversaries">
-                  No historical anniversaries found for the next 2 weeks. Check back later!
-                </p>`
-              : html`
-                  <div class="anniversary-grid">
-                    ${this.anniversaries.map(
-                      (anniversary) => html`
-                        <timeline-anniversary
-                          relative-date="${anniversary.relativeDateStr}"
-                          title="${anniversary.title}"
-                          years-ago="${anniversary.yearsAgo}"
-                          original-date="${anniversary.originalDate}"
-                        >
-                        </timeline-anniversary>
-                      `
-                    )}
-                  </div>
-                `
-          }
-        </div>
-      </div>
+      <section id="anniversaries-container" class="anniversaries-container" aria-labelledby="anniversaries-heading">
+        <h2 id="anniversaries-heading" class="anniversaries-heading">On these days in Ilmer</h2>
+        <p class="anniversaries-intro">Anniversaries from the timeline over the next two weeks.</p>
+        ${
+          this.anniversaries.length === 0
+            ? html`<p class="no-anniversaries">No anniversaries fall in the next two weeks.</p>`
+            : html`
+                <ol class="anniversary-days">
+                  ${this.groupByDay().map(
+                    ({ daysDiff, date, items }) => html`
+                      <li class="anniversary-day${daysDiff === 0 ? ' is-today' : ''}">
+                        <time class="anniversary-when" datetime="${this.isoDate(date)}">
+                          <span class="anniversary-day-number">${date.getDate()}</span>
+                          <span class="anniversary-month">${date.toLocaleDateString('en-GB', { month: 'short' })}</span>
+                          <span class="anniversary-weekday">${this.weekdayLabel(daysDiff, date)}</span>
+                        </time>
+                        <ul class="anniversary-entries">
+                          ${items.map(
+                            (anniversary) => html`
+                              <li>
+                                <timeline-anniversary
+                                  title="${anniversary.title}"
+                                  year="${anniversary.year}"
+                                  years-ago="${anniversary.yearsAgo}"
+                                  target="${anniversary.id}"
+                                ></timeline-anniversary>
+                              </li>
+                            `
+                          )}
+                        </ul>
+                      </li>
+                    `
+                  )}
+                </ol>
+              `
+        }
+      </section>
       <slot></slot>
     `;
   }

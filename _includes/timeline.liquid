@@ -11,18 +11,22 @@
   , image: image %}
 
 {% render "site-header" %}
-<main>
-  <section>
-    {% render "breadcrumb.liquid"
-      , ancestorCrumb1: ancestorCrumb1
-      , ancestorCrumb2: ancestorCrumb2
-      , breadcrumbUseDate: breadcrumbUseDate
-      , page: page
-      , title: title %}
-    <h1>{{ title }}</h1>
+<main class="archive timeline">
+  <section class="archive-hero">
+    <div class="archive-hero__text">
+      {% render "breadcrumb.liquid"
+        , ancestorCrumb1: ancestorCrumb1
+        , ancestorCrumb2: ancestorCrumb2
+        , breadcrumbUseDate: breadcrumbUseDate
+        , page: page
+        , title: title %}
+      <h1>{{ title }}</h1>
+      {% render "archive-flourish.liquid" %}
+      <p class="archive-hero__description">{{ description }}</p>
+    </div>
+  </section>
 
-    <p>{{ description }}</p>
-
+  <section class="timeline-body">
     {{ content }}
   </section>
 </main>

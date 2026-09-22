@@ -104,6 +104,11 @@ main.archive {
 .archive-hero {
   min-height: var(--hero-band-height);
 
+  /* The band's height exists to show the hero photo; without one, fit the text */
+  main.archive:not([style*='--hero-image']) & {
+    min-height: 0;
+  }
+
   & .archive-hero__text {
     /* Proportional, not a fixed cap: the text column should keep growing
        with the viewport (to ~60% of it) rather than freezing at a fixed

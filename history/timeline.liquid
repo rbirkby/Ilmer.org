@@ -18,6 +18,19 @@ image: images/timeline.png
     });
   });
 
+  // A linked event hidden by the category filter can't be scrolled to, so clear the filter first
+  function revealTarget() {
+    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target?.classList.contains('hidden')) {
+      const filter = document.getElementById('timeline-filter');
+      filter.value = '';
+      filter.dispatchEvent(new Event('change'));
+      target.scrollIntoView();
+    }
+  }
+  addEventListener('hashchange', revealTarget);
+  revealTarget();
+
   document.getElementById('scroll-to-top').addEventListener('click', function() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
@@ -34,7 +47,7 @@ image: images/timeline.png
 <timeline-anniversaries>
   {% assign filteredEvents = historicalEvents | where_exp: "event", "event.hidden != true" %}
   <script type="application/json" data-events>
-    [{% for event in filteredEvents %}{"date":{{ event.date | jsonify }},"title":{{ event.title | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
+    [{% for event in filteredEvents %}{"id":{{ event.date | append: " " | append: event.title | slugify | jsonify }},"date":{{ event.date | jsonify }},"title":{{ event.title | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
   </script>
 </timeline-anniversaries>
 
@@ -66,7 +79,10 @@ image: images/timeline.png
 <div id="timeline-container">
   {% for event in historicalEvents %}
     {% unless event.hidden %}
-      <div class="timeline-item" data-categories='{{ event.labels | jsonify }}'>
+      <div
+        class="timeline-item"
+        id="{{ event.date | append: " " | append: event.title | slugify }}"
+        data-categories='{{ event.labels | jsonify }}'>
         <div class="timeline-icon"></div>
         <div class="timeline-content">
           <h2>

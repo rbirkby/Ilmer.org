@@ -25,7 +25,7 @@ test('archive stylesheet loading is determined by layout without a page flag', a
     const html = await liquid.parseAndRender(head, { layout, site: {}, tags: [] });
     assert.equal(
       html.includes('/assets/css/archive.css'),
-      ['post', 'archive', 'parish-hub', '404'].includes(layout),
+      ['post', 'archive', 'parish-hub', 'timeline', '404'].includes(layout),
       layout
     );
   }
