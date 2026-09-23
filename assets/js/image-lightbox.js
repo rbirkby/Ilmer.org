@@ -17,12 +17,15 @@ export function initImageLightbox({ triggerSelector = '.timeline-image-link' } =
 
     event.preventDefault();
 
-    const fullImageSrc = trigger.getAttribute('data-full-image') || trigger.getAttribute('href');
+    const childImage = trigger.querySelector('img');
+    const fullImageSrc =
+      (childImage?.closest('.is-colorized') && childImage.getAttribute('src')) ||
+      trigger.getAttribute('data-full-image') ||
+      trigger.getAttribute('href');
     if (!fullImageSrc) {
       return;
     }
 
-    const childImage = trigger.querySelector('img');
     const caption = trigger.getAttribute('data-caption') || childImage?.getAttribute('alt') || '';
 
     lightboxImage.src = fullImageSrc;
