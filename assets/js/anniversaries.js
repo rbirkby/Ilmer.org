@@ -7,7 +7,7 @@ import { DateUtils } from './anniversary-dates.js';
 // Anniversary Web Component using LitElement
 class TimelineAnniversary extends LitElement {
   static properties = {
-    title: { type: String },
+    label: { type: String },
     year: { type: String },
     yearsAgo: { type: Number, attribute: 'years-ago' },
     target: { type: String }
@@ -22,7 +22,7 @@ class TimelineAnniversary extends LitElement {
     const ago = this.yearsAgo === 1 ? '1 year ago' : `${this.yearsAgo} years ago`;
     return html`
       <a href="#${this.target}" class="anniversary-entry">
-        <span class="anniversary-title">${this.title ?? ''}</span>
+        <span class="anniversary-title">${this.label ?? ''}</span>
         <span class="anniversary-meta">${this.year}, ${ago}</span>
       </a>
     `;
@@ -161,7 +161,7 @@ class TimelineAnniversaries extends LitElement {
                             (anniversary) => html`
                               <li>
                                 <timeline-anniversary
-                                  title="${anniversary.title}"
+                                  label="${anniversary.title}"
                                   year="${anniversary.year}"
                                   years-ago="${anniversary.yearsAgo}"
                                   target="${anniversary.id}"
