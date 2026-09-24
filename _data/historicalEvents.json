@@ -1018,7 +1018,7 @@
     "title": "Edward Gomme Leases Land",
     "description": "Edward Gomme leased land in Ilmer from Edward Saunders of Bledlow.",
     "references": ["Feet of Fines"],
-    "labels": ["land"]
+    "labels": ["land", "lease"]
   },
   {
     "date": "23 Apr. 1685",
@@ -1191,7 +1191,7 @@
     "references": [
       "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
     ],
-    "labels": ["church", "economy"]
+    "labels": ["church", "economy", "charity"]
   },
   {
     "date": "1778",
@@ -1207,7 +1207,7 @@
     "references": [
       "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
     ],
-    "labels": ["church", "economy"]
+    "labels": ["church", "economy", "charity"]
   },
   {
     "date": "23 Jun. 1791",
@@ -1233,14 +1233,14 @@
     "title": "Farm Occupied by Thomas Kingham for Sale",
     "description": "A farm in the occupation of Thomas Kingham was put up for sale.",
     "references": ["Oxford Journal, 7 Nov 1795"],
-    "labels": ["auction", "farm", "occupation", "property", "sale"]
+    "labels": ["auction", "farm", "property", "sale"]
   },
   {
     "date": "15 Jul. 1796",
     "title": "Lease Agreements Mention Farms",
     "description": "Lease agreements with Lord Chesterfield mentioned Lower Farm, Middle Farm, and 'Coal Harbour' Farm.",
     "references": ["the W.H.Smith estate papers, Reading University"],
-    "labels": ["farm", "property"]
+    "labels": ["farm", "property", "lease"]
   },
   {
     "date": "1798",
@@ -1424,7 +1424,7 @@
     "title": "Wycombe Poor Law Union Formed",
     "description": "The Wycombe Poor Law Union was formed, with Ilmer as one of the founding 33 parishes.",
     "references": ["https://www.workhouses.org.uk/Wycombe"],
-    "labels": ["church"]
+    "labels": ["church", "administration", "charity"]
   },
   {
     "date": "1837",
@@ -1439,7 +1439,7 @@
     "description": "The tithe map shows the existence of Middle Farm sited on the pasture adjacent to September and October cottages.",
     "image": "/images/middle-farm.jpg",
     "references": [],
-    "labels": ["farm", "map", "property"]
+    "labels": ["farm", "property"]
   },
   {
     "date": "1839",
@@ -1671,7 +1671,7 @@
     "title": "Death of Sarah Maria Clotilda Raper",
     "description": "Sarah Maria Clotilda Raper died and bequeathed part of her estate for the annual benefit of the poor. The Rapers were land-owners including the Manor of Ilmer.",
     "references": ["Bucks Advertiser, 6th May 1882", "Victoria History of the County of Buckingham vol 3"],
-    "labels": ["death", "land", "manor", "person", "property"]
+    "labels": ["death", "land", "manor", "person", "property", "charity"]
   },
   {
     "date": "Jul. 1882",
@@ -1798,7 +1798,7 @@
     "title": "Tea given to parishoners on Easter Monday",
     "description": "Tea, athletic sports and games was held at Horsenden for parishioners of Horsenden and Illmire. The event was hosted by Rev J Ormonde.",
     "references": ["Bucks Herald, 27 Apr 1889"],
-    "labels": ["church", "event"]
+    "labels": ["church"]
   },
   {
     "date": "5 Apr. 1891",
@@ -1880,7 +1880,7 @@
     "title": "George Kingham Tenancy Begins",
     "description": "George Kingham's tenancy began at Lower Farm.",
     "references": ["Lloyd George Domesday Survey, ~1913"],
-    "labels": ["farm", "property"]
+    "labels": ["farm", "property", "lease"]
   },
   {
     "date": "1898",
@@ -1901,7 +1901,7 @@
     "title": "Farm Tenancies Begin",
     "description": "Alfred Hill's tenancy began at Manor Farm and George Gomme's tenancy began at Coldharbour.",
     "references": ["Lloyd George Domesday Survey, ~1913"],
-    "labels": ["farm", "manor", "property"]
+    "labels": ["farm", "manor", "property", "lease"]
   },
   {
     "date": "1901",
@@ -2179,7 +2179,7 @@
     "title": "Coronation Celebration",
     "description": "The parish room hosted a celebration of the coronation of George V.",
     "references": ["Bucks Herald 1 Jul 1911"],
-    "labels": ["church"]
+    "labels": ["church", "celebration"]
   },
   {
     "date": "27 Oct. 1911",
@@ -2265,7 +2265,7 @@
     "title": "Manor Farm Tenancy",
     "description": "Alfred Hill was the tenant farmer at Manor Farm, owned by Elizabeth Moreton.",
     "references": ["Lloyd George Survey, 1913"],
-    "labels": ["farm", "property"]
+    "labels": ["farm", "property", "lease"]
   },
   {
     "date": "12 Dec. 1915",
@@ -2476,7 +2476,7 @@
     "description": "Ilmer Halt station on the Great Western & Great Centrail Joint Railway was opened. It was to close in 1963 only 34 years later.",
     "image": "/images/ilmer-halt-ticket.jpg",
     "references": ["Bucks Herald, 5 Apr 1929"],
-    "labels": ["infrastructure"]
+    "labels": ["infrastructure", "railway"]
   },
   {
     "date": "1929",
@@ -2718,7 +2718,7 @@
     "title": "Ilmer featured in the Daily Sketch newspaper",
     "description": "Captioned \"A village that 'marks time'\", the village features alongside 4 photos of Lower Farm, the church and residents.",
     "references": ["Daily Sketch, 25 Mar 1935"],
-    "labels": ["infrastructure", "people"]
+    "labels": ["infrastructure", "media"]
   },
   {
     "date": "24 Apr. 1935",
@@ -2957,7 +2957,7 @@
     "title": "Fatality at Ilmer Halt",
     "description": "Thomas Walker, a railway worker, was found dead on the platform of Ilmer Halt after being hit by a train.",
     "references": ["Bucks Herald, 5 May 1944", "GW & GC Joint Railway accident report, national archives"],
-    "labels": ["infrastructure"]
+    "labels": ["infrastructure", "railway"]
   },
   {
     "date": "12 Feb. 1945",
@@ -3107,7 +3107,7 @@
     "title": "Divorce granted",
     "description": "Decree nisi granted at Reading divorce court to Mrs Sybil Violet Head of Windsor against her husband Stanley Francis Head of Ilmer House on the grounds of desertion.",
     "references": ["Berkshire Chronicle, 7 Feb 1958"],
-    "labels": ["divorce", "person"]
+    "labels": ["person"]
   },
   {
     "date": "Jun. 1958",
@@ -3180,7 +3180,7 @@
     "image": "/images/ilmer-halt-timetable.jpg",
     "smallimage": "/images/ilmer-halt-timetable-cropped.jpg",
     "references": ["Birmingham Post, 2 Jan 1963"],
-    "labels": ["infrastructure"]
+    "labels": ["infrastructure", "railway"]
   },
   {
     "date": "1964",
