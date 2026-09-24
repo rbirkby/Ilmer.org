@@ -12,6 +12,7 @@ import { tableScroll } from './plugins/table-scroll.ts';
 import { censusOccupations } from './plugins/census-occupations.ts';
 import { yearBarChart } from './plugins/year-bar-chart.ts';
 import { medianAge } from './plugins/median-age.ts';
+import { regnalYears } from './plugins/regnal-years.ts';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 
@@ -181,6 +182,7 @@ export default function (eleventyConfig: any) {
   /** Bar-chart geometry for event counts per year, zero-filled across the full year range. */
   eleventyConfig.addFilter('yearBarChart', yearBarChart);
   eleventyConfig.addFilter('medianAge', medianAge);
+  eleventyConfig.addFilter('regnalYears', regnalYears);
   /**
    * Sorts a collection so items whose `url` appears in `urls` come first,
    * in that list's order. Remaining items keep their date order.

@@ -35,6 +35,27 @@ image: images/timeline.png
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
+  document.querySelectorAll('.date[data-regnal-date]').forEach(date => {
+    const calendarDate = date.textContent;
+    const regnalDate = date.dataset.regnalDate;
+    date.setAttribute('role', 'button');
+    date.tabIndex = 0;
+    date.setAttribute('aria-label', `${calendarDate}: show regnal year`);
+
+    function toggleDate() {
+      const showRegnal = date.textContent === calendarDate;
+      date.textContent = showRegnal ? regnalDate : calendarDate;
+      date.setAttribute('aria-label', `${date.textContent}: show ${showRegnal ? 'calendar date' : 'regnal year'}`);
+    }
+    date.addEventListener('click', toggleDate);
+    date.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleDate();
+      }
+    });
+  });
+
   initImageLightbox({ triggerSelector: '.timeline-image-link' });
 </script>
 
@@ -86,7 +107,8 @@ image: images/timeline.png
         <div class="timeline-icon"></div>
         <div class="timeline-content">
           <h2>
-            <span class="date">{{ event.date }}</span>
+            {% assign regnalDate = event.date | regnalYears %}
+            <span class="date"{% if regnalDate != empty %} data-regnal-date="{{ regnalDate | escape }}"{% endif %}>{{ event.date }}</span>
             {{ event.title }}</h2>
           {% if event.smallimage %}
             <a
