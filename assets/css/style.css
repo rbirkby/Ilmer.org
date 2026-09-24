@@ -29,6 +29,13 @@
 html {
   font-size: 62.5%;
   height: 100%;
+  /* Light-scheme UI: a dark scrollbar thumb. Left unset, browsers take the
+     dark overscroll background below — and a dark OS appearance — as a dark
+     page and paint a light thumb, which disappears against the white body.
+     The thumb colour is set explicitly because that background still wins
+     the automatic choice in some engines. */
+  color-scheme: light;
+  scrollbar-color: var(--archive-muted) transparent;
   /* Matches the header and footer. Body paints its own background over the
      whole page, so this only shows in the overscroll areas above and below
      it, e.g. iOS Safari's rubber-band scroll, which then bleeds out from the

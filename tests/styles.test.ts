@@ -6,6 +6,15 @@ import { Liquid } from 'liquidjs';
 
 const root = new URL('../', import.meta.url);
 
+test('the light page keeps a dark scrollbar despite the dark overscroll background', () => {
+  const styles = readFileSync(new URL('assets/css/style.css', root), 'utf8');
+  const html = styles.match(/html \{([^}]+)\}/)?.[1];
+  assert.ok(html);
+  assert.match(html, /color-scheme:\s*light;/);
+  assert.match(html, /scrollbar-color:\s*var\(--archive-muted\)\s+transparent;/);
+  assert.match(html, /background-color:\s*#15171a;/);
+});
+
 test('small article images halve their frame width without constraining height', () => {
   const styles = readFileSync(new URL('assets/css/style.css', root), 'utf8');
   for (const direction of ['left', 'right']) {
