@@ -1822,7 +1822,9 @@ main.archive .table-scroll table {
     transform-origin: 0 0;
     transform: translateY(calc(100cqw * 1248 / 792)) rotate(-90deg);
 
-    & text {
+    /* Safari ignores transform-origin on SVG <text> and swings the label off
+       the plan. A wrapping <g> honours the origin. */
+    & .churchyard-plan__upright {
       transform-box: fill-box;
       transform-origin: center;
       transform: rotate(90deg);

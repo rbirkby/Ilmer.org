@@ -14,10 +14,12 @@
       {%- endif -%}
     {%- endfor -%}
     {%- for l in plan.labels -%}
-      <text
-        class="churchyard-plan__label"
-        x="{{ l.col | times: cell }}"
-        y="{{ l.row | times: cell }}">{{ l.text }}</text>
+      <g class="churchyard-plan__upright">
+        <text
+          class="churchyard-plan__label"
+          x="{{ l.col | times: cell }}"
+          y="{{ l.row | times: cell }}">{{ l.text }}</text>
+      </g>
     {%- endfor -%}
     {%- for plot in plots -%}
       {%- assign cx = plot.data.col | times: cell -%}
@@ -30,7 +32,9 @@
           width="20"
           height="20"
           rx="3"></rect>
-        <text x="{{ cx }}" y="{{ cy | plus: 4 }}">{{ plot.data.id | slice: 1, 2 }}</text>
+        <g class="churchyard-plan__upright">
+          <text x="{{ cx }}" y="{{ cy | plus: 4 }}">{{ plot.data.id | slice: 1, 2 }}</text>
+        </g>
       </a>
     {%- endfor -%}
     <g class="churchyard-plan__compass" aria-label="North points to the lower right of this plan">
@@ -44,7 +48,9 @@
         x2="1211.1"
         y2="748.6"></line>
       <polygon points="1217.5,751.3 1209.6,752.3 1212.6,744.9"></polygon>
-      <text x="1227.7" y="755.5">N</text>
+      <g class="churchyard-plan__upright">
+        <text x="1227.7" y="755.5">N</text>
+      </g>
     </g>
   </svg>
   </div>
