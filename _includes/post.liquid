@@ -104,6 +104,23 @@
           </a>
         {% endif %}
       </nav>
+    {% elsif showPager %}
+      {%- assign adjacent = collections[collectionName] | adjacentItem: page.url -%}
+      {%- assign pagerNoun = pagerNounSingular | default: "entry" | capitalize -%}
+      <nav class="minute-pager" aria-label="{{ pagerNoun }} navigation">
+        {% if adjacent.previous %}
+          <a class="minute-pager__link minute-pager__link--prev" href="{{ adjacent.previous.url }}">
+            <span aria-hidden="true">&larr;</span>
+            Previous {{ pagerNoun }}
+          </a>
+        {% endif %}
+        {% if adjacent.next %}
+          <a class="minute-pager__link minute-pager__link--next" href="{{ adjacent.next.url }}">
+            Next {{ pagerNoun }}
+            <span aria-hidden="true">&rarr;</span>
+          </a>
+        {% endif %}
+      </nav>
     {% endif %}
   </section>
 

@@ -9,5 +9,7 @@
   },
   "breadcrumbUseDate": false,
   "headerUseDate": false,
-  "collectionName": "rapercharity"
+  "collectionName": "rapercharity",
+  "showPager": true,
+  "pagerNounSingular": "year"
 }

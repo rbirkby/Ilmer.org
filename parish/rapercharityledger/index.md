@@ -1,7 +1,7 @@
 ---
 layout: archive
 title: 'Raper Charity Ledger'
-description: "Explore the yearly receipts and disbursements of the Raper Charity, which supported Ilmer's poor, sick and elderly."
+description: 'Explore the yearly accounts of the Raper Charity, bequeathed in 1881 by Sarah Maria Clotilda Raper for the annual benefit of the poor.'
 category: history
 tags: [raper-charity]
 hideAncestorCrumb2: true
