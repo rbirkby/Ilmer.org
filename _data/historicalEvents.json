@@ -2319,7 +2319,7 @@
     "date": "1918",
     "title": "Parish Room Piano Sold",
     "description": "The parish room piano was sold for £4.",
-    "references": ["[Vestry meeting minutes, 1918](/parish/vestrymeeting/1918-04-06/)"],
+    "references": ["[Vestry meeting minutes, 6 Apr 1918](/parish/vestrymeeting/1918-04-06/)"],
     "labels": ["auction", "sale"]
   },
   {
@@ -2342,7 +2342,7 @@
     "date": "15 Nov. 1919",
     "title": "War Memorial Tablet Agreed",
     "description": "It was agreed to put a memorial tablet in the church.",
-    "references": ["Vestry meeting minutes, 1919"],
+    "references": ["[Vestry meeting minutes, 15 Nov 1919](/parish/vestrymeeting/1919-11-15/)"],
     "labels": ["church"]
   },
   {
@@ -2448,7 +2448,7 @@
     "date": "1927",
     "title": "Church Stove Repaired",
     "description": "The church stove was repaired. It was likely to have been an octagonal Tortoise stove, a popular brand at the time and visible in historical photographs.",
-    "references": ["Vestry minutes"],
+    "references": ["[Vestry minutes, 2 Jul 1927](/parish/vestrymeeting/1927-07-02/)"],
     "labels": ["church", "repair"]
   },
   {
@@ -2462,7 +2462,7 @@
     "date": "Feb. 1928",
     "title": "Electric Lighting Offered",
     "description": "Albert Goodchild of Ilmer House offered to install electric lighting in the church and supply power.",
-    "references": ["Vestry minutes"],
+    "references": ["[Vestry minutes, 12 Apr 1928](/parish/vestrymeeting/1928-04-12/)"],
     "labels": ["church", "housing"]
   },
   {
@@ -2491,7 +2491,7 @@
     "date": "1929",
     "title": "W Harper Elected Church Warden",
     "description": "W Harper, father of George Harper, was elected People's Warden.",
-    "references": ["Vestry Minutes, 1929"],
+    "references": ["[Vestry Minutes, 2 Apr 1929](/parish/vestrymeeting/1929-04-02/)"],
     "labels": ["church"]
   },
   {
@@ -2570,17 +2570,17 @@
     "labels": ["death"]
   },
   {
-    "date": "1932",
+    "date": "5 Apr. 1932",
     "title": "Church Electric Lighting",
     "description": "Ilmer church had electric lighting, with the electricity cost recorded as a 1931 expenditure.",
-    "references": ["Vestry minutes, 10 Jan 1932"],
+    "references": ["[Vestry minutes, 5 Apr 1932](/parish/vestrymeeting/1932-04-05/)"],
     "labels": ["church"]
   },
   {
-    "date": "1932",
+    "date": "5 Apr. 1932",
     "title": "Electricity Slot Meter Request",
     "description": "The vicar requested Aylesbury corporation install an electricity slot meter in the church.",
-    "references": ["Vestry minutes, 5 April 1932"],
+    "references": ["[Vestry minutes, 5 Apr 1932](/parish/vestrymeeting/1932-04-05/)"],
     "labels": ["church", "person"]
   },
   {
@@ -2597,13 +2597,6 @@
     "image": "/images/ilmerhouse1932.jpg",
     "references": ["Bucks Herald, 20 May 1932", "Country Life, 11 Jun 1932"],
     "labels": ["auction", "housing", "sale"]
-  },
-  {
-    "date": "25 Oct. 1932",
-    "title": "Electricity Slot Meters Installed",
-    "description": "Electricity slot meters had been installed in the church.",
-    "references": ["Vestry minutes, 25 Oct 1932"],
-    "labels": ["church"]
   },
   {
     "date": "25 Oct. 1932",
@@ -2655,6 +2648,13 @@
     "description": "(Robert) Douglas Goodchild, youngest son of Albert and Elizabeth Goodchild, was fined £1 for consuming beer during unlicensed hours at the Six Bells, Thame.",
     "references": ["Bucks Herald, 21 May, 1933"],
     "labels": ["document"]
+  },
+  {
+    "date": "15 Jul. 1933",
+    "title": "Electricity Slot Meters to be Installed",
+    "description": "Electricity slot meters would be installed in the church.",
+    "references": ["[Vestry minutes, 15 Jul 1933](/parish/vestrymeeting/1933-07-15/)"],
+    "labels": ["church"]
   },
   {
     "date": "Q4 1933",
@@ -2726,7 +2726,7 @@
     "date": "24 Apr. 1935",
     "title": "Church Warden",
     "description": "Mrs W T White was church warden.",
-    "references": ["Vestry minutes, 24 Apr 1935"],
+    "references": ["[Vestry minutes, 24 Apr 1935](/parish/vestrymeeting/1935-04-24/)"],
     "labels": ["church"]
   },
   {
@@ -2803,7 +2803,7 @@
     "date": "7 Apr. 1937",
     "title": "Church Warden",
     "description": "(Robert) Harold Attenborough of Ilmer House became church warden.",
-    "references": ["Vestry minutes, 7 Apr 1937"],
+    "references": ["[Vestry minutes, 7 Apr 1937](/parish/vestrymeeting/1937-04-07/)"],
     "labels": ["church", "housing"]
   },
   {
@@ -2839,8 +2839,8 @@
   {
     "date": "20 Apr. 1938",
     "title": "Parish Room Ownership Discussed",
-    "description": "Ownership of the parish room was discussed.",
-    "references": ["Vestry minutes, 20 Apr 1938"],
+    "description": "Ownership of the 'church room' was discussed.",
+    "references": ["[Vestry minutes, 20 Apr 1938](/parish/vestrymeeting/1938-04-20/)"],
     "labels": ["church"]
   },
   {
@@ -2856,7 +2856,7 @@
     "title": "Church Chimney Repair",
     "description": "Approval was given to repair the church chimney.",
     "image": "/images/churchchimney.jpg",
-    "references": ["Vestry Minutes, 12 Apr 1939"],
+    "references": ["[Vestry Minutes, 12 Apr 1939](/parish/vestrymeeting/1939-04-12/)"],
     "labels": ["church", "repair"]
   },
   {
@@ -2979,7 +2979,7 @@
     "date": "5 Apr. 1945",
     "title": "Church Walls Repaired",
     "description": "Cracks that had appeared in the north and south walls of the church were repaired.",
-    "references": ["Vestry minutes, 5 Apr 1945"],
+    "references": ["[Vestry minutes, 5 Apr 1945](/parish/vestrymeeting/1945-04-05/)"],
     "labels": ["church", "repair"]
   },
   {
