@@ -11,6 +11,10 @@
   , image: image %}
 
 {% render "site-header" %}
+{%- assign itemSingular = itemNounSingular | default: "minute" -%}
+{%- assign itemPlural = itemNounPlural | default: "minutes" -%}
+{%- assign eventSingular = eventNounSingular | default: "meeting" -%}
+{%- assign eventPlural = eventNounPlural | default: "meetings" -%}
 {%- assign coll = collections[collectionName] -%}
 {%- assign archiveData = coll | archiveByDecade -%}
 {%- assign subjectTags = coll | archiveSubjectTags: collectionName -%}
@@ -22,16 +26,18 @@
 {%- endif -%}
 
 {%- assign featuredItem = nil -%}
-{%- if featured -%}
-  {%- for item in coll -%}
-    {%- assign itemDate = item.date | date: "%Y-%m-%d" -%}
-    {%- if itemDate == featured -%}
-      {%- assign featuredItem = item -%}
-    {%- endif -%}
-  {%- endfor -%}
-{%- endif -%}
-{%- unless featuredItem -%}
-  {%- assign featuredItem = firstItem -%}
+{%- unless hideFeatured -%}
+  {%- if featured -%}
+    {%- for item in coll -%}
+      {%- assign itemDate = item.date | date: "%Y-%m-%d" -%}
+      {%- if itemDate == featured -%}
+        {%- assign featuredItem = item -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+  {%- unless featuredItem -%}
+    {%- assign featuredItem = firstItem -%}
+  {%- endunless -%}
 {%- endunless -%}
 {%- if featuredItem -%}
   {%- assign featuredExcerpt = featuredItem.templateContent | strip_html | strip_newlines | truncate: 240 -%}
@@ -65,13 +71,13 @@
         <form
           class="archive-search"
           role="search"
-          aria-label="Search the minutes">
-          <label for="archive-search-input" class="sr-only">Search the minutes</label>
+          aria-label="Search the {{ itemPlural }}">
+          <label for="archive-search-input" class="sr-only">Search the {{ itemPlural }}</label>
           <input
             id="archive-search-input"
             type="search"
             name="q"
-            placeholder="Search the minutes">
+            placeholder="Search the {{ itemPlural }}">
           <button type="submit">Search</button>
         </form>
       {% endunless %}
@@ -82,7 +88,7 @@
     {% if featuredItem %}
       <section class="archive-card archive-featured" aria-labelledby="from-the-minutes-heading">
         <div class="archive-card__heading">
-          <h2 id="from-the-minutes-heading">from the minutes</h2>
+          <h2 id="from-the-minutes-heading">from the {{ itemPlural }}</h2>
           {% render "archive-flourish.liquid"
             , small: true %}
         </div>
@@ -94,7 +100,7 @@
           <p class="archive-featured__title">{{ featuredHeadline }}</p>
         {% endif %}
         <p class="archive-featured__quote">&ldquo;{{ featuredExcerpt }}&hellip;&rdquo;</p>
-        <a class="archive-featured__link" href="{{ featuredItem.url }}">Read the full minute
+        <a class="archive-featured__link" href="{{ featuredItem.url }}">Read the full {{ itemSingular }}
           <span aria-hidden="true">&rarr;</span>
         </a>
       </section>
@@ -103,7 +109,7 @@
     <section class="archive-card archive-browse" aria-labelledby="browse-heading">
       <div class="archive-card__heading">
         <h2 id="browse-heading">Browse the archive</h2>
-        <span class="archive-browse__total">{{ coll.size }} minute{% if coll.size != 1 %}s{% endif %}
+        <span class="archive-browse__total">{{ coll.size }} {% if coll.size != 1 %}{{ itemPlural }}{% else %}{{ itemSingular }}{% endif %}
         </span>
       </div>
       <div class="archive-decades">
@@ -119,7 +125,7 @@
                 {% render "icons/calendar.liquid" %}
                 {{ decadeGroup.decade }}s
               </span>
-              <span class="archive-decade__count">{{ decadeGroup.totalCount }} minute{% if decadeGroup.totalCount != 1 %}s{% endif %}
+              <span class="archive-decade__count">{{ decadeGroup.totalCount }} {% if decadeGroup.totalCount != 1 %}{{ itemPlural }}{% else %}{{ itemSingular }}{% endif %}
               </span>
               {% render "icons/chevron-down.liquid" %}
             </label>
@@ -128,13 +134,13 @@
                 <details class="archive-year">
                   <summary>
                     <span>{{ y.year }}</span>
-                    <span class="archive-year__count">{{ y.count }} meeting{% if y.count != 1 %}s{% endif %}
+                    <span class="archive-year__count">{{ y.count }} {% if y.count != 1 %}{{ eventPlural }}{% else %}{{ eventSingular }}{% endif %}
                     </span>
                   </summary>
                   <ul class="archive-year__list">
                     {% for it in y.items %}
                       <li>
-                        <a href="{{ it.url }}">{{ it.date | date: "%-d %b" }}</a>
+                        <a href="{{ it.url }}">{% if itemsAreAnnual %}{{ it.title }}{% else %}{{ it.date | date: "%-d %b" }}{% endif %}</a>
                       </li>
                     {% endfor %}
                   </ul>
@@ -143,7 +149,7 @@
             </div>
           </div>
         {% else %}
-          <p class="archive-browse__empty">Minutes will appear here as they are added to the archive.</p>
+          <p class="archive-browse__empty">{{ itemPlural | capitalize }} will appear here as they are added to the archive.</p>
         {% endfor %}
       </div>
     </section>

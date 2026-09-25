@@ -1,0 +1,13 @@
+{
+  "ancestorCrumb1Source": {
+    "label": "Parish Archive",
+    "url": "/parish/"
+  },
+  "ancestorCrumb2Source": {
+    "label": "Raper Charity Ledger",
+    "url": "/parish/rapercharityledger/"
+  },
+  "breadcrumbUseDate": false,
+  "headerUseDate": false,
+  "collectionName": "rapercharity"
+}

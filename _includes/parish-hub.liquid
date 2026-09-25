@@ -66,6 +66,14 @@
       , href: "/parish/vestrymeeting/" %}
 
     {% render "archive-link-card.liquid"
+      , modifier: "raper-charity"
+      , icon: "heart"
+      , heading: "Raper Charity Ledger"
+      , description: "Yearly receipts and disbursements of the charity that supported Ilmer's poor, sick and elderly."
+      , archiveCollection: collections.rapercharity
+      , href: "/parish/rapercharityledger/" %}
+
+    {% render "archive-link-card.liquid"
       , modifier: "overseers"
       , icon: "document"
       , heading: "Overseers and Surveyors"

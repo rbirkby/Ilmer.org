@@ -376,7 +376,8 @@ export default function (eleventyConfig: any) {
     ['parishCouncilSubjects', 'minutes'],
     ['parishMeetingSubjects', 'parishmeetings'],
     ['ilmerParishMeetingSubjects', 'ilmerparishmeetings'],
-    ['vestryMeetingSubjects', 'vestrymeetings']
+    ['vestryMeetingSubjects', 'vestrymeetings'],
+    ['raperCharitySubjects', 'rapercharity']
   ]) {
     eleventyConfig.addCollection(name, (collectionApi: CollectionApi) => subjectsForCollection(collectionApi, baseTag));
   }

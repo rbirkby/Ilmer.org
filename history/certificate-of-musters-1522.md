@@ -7,6 +7,9 @@ tags: [military]
 ancestorCrumb1Source: { label: 'Military', url: '/history/military/' }
 ---
 
+_Valor terr' et tent'_ is the value of land and tenements.\
+_Valor bonorum_ is the value of goods.
+
 | Name                                                         | Valor terr' et tent'<br> £ s. d. | Valor bonorum<br> £ s. d. |
 | :----------------------------------------------------------- | -------------------------------: | ------------------------: |
 | The Churche boxe                                             |                                  |                     6 0 0 |

@@ -1,0 +1,33 @@
+---
+pagination:
+  data: collections.raperCharitySubjects
+  size: 1
+  alias: subject
+  addAllPagesToCollections: true
+permalink: "/parish/rapercharityledger/subject/{{ subject.tag }}/"
+layout: post
+category: history
+tags: []
+breadcrumbUseDate: false
+headerUseDate: false
+headerUseSubject: true
+eleventyComputed:
+  title: "Raper Charity Ledger: {{ subject.tag | subjectLabel | capitalize }}"
+  subjectHeading: "{{ subject.tag | subjectLabel }}"
+  description: "Raper Charity accounts concerning {{ subject.tag | subjectLabel }}."
+---
+
+<ul class="subject-list">
+  {%- for item in subject.items -%}
+    <li>
+      <span class="subject-list__date">
+        {% render "icons/calendar.liquid" %}
+        {{ item.date | date: "%Y" }}
+      </span>
+      <span class="subject-list__summary">{{ item.data.summary }}</span>
+      <a class="subject-list__link" href="{{ item.url }}">Read accounts
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    </li>
+  {%- endfor -%}
+</ul>

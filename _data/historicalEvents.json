@@ -34,7 +34,7 @@
   {
     "date": "1203",
     "title": "Church Patronage Granted",
-    "description": "The right to appoint the priest (the advowson) of Ilmer Church is granted to the Nunnery of Stodeley (aka Studley Priory) in Oxfordshire by Aubrey, daughter of David de Rumenel. She is otherwise known as Aubrea, Albrea, Albritha, Aubretha, Albreda, Aubreda widow of William de Jarpenville. Their daughter Alice married Thomas Fitz-Bernard.",
+    "description": "The right to appoint the priest (the advowson) of Ilmer Church is granted to the Nunnery of Stodeley (aka [Studley Priory](https://en.wikipedia.org/wiki/Studley_Priory,_Oxfordshire)) in Oxfordshire by Aubrey, daughter of David de Rumenel. She is otherwise known as Aubrea, Albrea, Albritha, Aubretha, Albreda, Aubreda widow of William de Jarpenville. Their daughter Alice married Thomas Fitz-Bernard.",
     "references": [
       "Lipscomb",
       "Dugdale's Monasticon Anglicanum, Vol. 4, p. 249",
@@ -109,7 +109,7 @@
     "description": "The lord of the manor, John Fitz-Bernard, dies. Guardianship of his heir is granted to Imbert de Puges who had married Joan de Aguillon, widow of Fitz-Bernard (Note: There are doubts over whether Joan was the wife of John). The Ilmer manor descended to his son Ralph.",
     "references": [
       "Escheats Rolls, 44 Henry III, no. 22",
-      "Testa de Nevill, p. 245",
+      "[Testa de Nevill, p. 245](https://babel.hathitrust.org/cgi/pt?id=mdp.39015039388007&seq=245)",
       "[Archaeologia Cantiana, Kent Archaeological Society, Volume 13, 1880](https://books.google.co.uk/books?id=0CxKAAAAYAAJ&lpg=PA370&pg=PA369#v=onepage&q&f=false)"
     ],
     "labels": ["death", "inheritance", "manor", "person", "property"]
@@ -641,8 +641,10 @@
   {
     "date": "1522",
     "title": "Mr Sacheverell is Lord of the Manor",
-    "description": "Mr. Sacheverell is cheiffe Lord by yeare with a value of land and tenements (valor terr' et tent') of £24 6s 8d. Walter Curson holds land to the value of 2s. Neither of them are resident as their value of goods (Valor bonorum) is nil.\n\n [Certificate of Musters](/history/certificate-of-musters-1522)",
-    "references": ["1522 Military Survey: The Certificate of Musters in Buckinghamshire for 1522, A C Chibnall, 1973"],
+    "description": "Mr. Sacheverell is cheiffe Lord by yeare with a value of land and tenements (valor terr' et tent') of £24 6s 8d. Walter Curson holds land to the value of 2s. Neither of them are resident as their value of goods (Valor bonorum) is nil.",
+    "references": [
+      "1522 Military Survey: [The Certificate of Musters](/history/certificate-of-musters-1522) in Buckinghamshire for 1522, A C Chibnall, 1973"
+    ],
     "labels": ["manor", "property"]
   },
   {
