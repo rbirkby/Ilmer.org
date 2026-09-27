@@ -2471,7 +2471,7 @@
     "title": "Farmer died",
     "description": "William Smith, farmer at Ray Farm, died aged 67 leaving his wife Kate, 3 daughters and son (Reginald) Wilfred. He was a parish constable and co-managed Longwick school. He was burried at the Baptist Church",
     "references": ["Bucks Free Press, 6 Aug. 1927"],
-    "labels": ["farm", "death", "person"]
+    "labels": ["farm", "death", "person", "education"]
   },
   {
     "date": "Feb. 1928",
@@ -2521,7 +2521,7 @@
     "title": "(Robert) Douglas Goodchild, Nursery Student",
     "description": "(Robert) Douglas Goodchild, son of Albert Goodchild of Ilmer House, is listed as a nursery student.",
     "references": ["Bucks Herald, 24 Nov 1939"],
-    "labels": ["housing"]
+    "labels": ["housing", "education"]
   },
   {
     "date": "3 Oct. 1930",
@@ -2534,6 +2534,7 @@
     "date": "7 Oct. 1930",
     "title": "Burial of Thomas Goodchild",
     "description": "Thomas Goodchild was buried.",
+    "image": "/images/monumental-inscriptions/C19.avif",
     "references": [
       "[Registers and Records of St Peters](/history/st-peters-burials/), Rex Kidd, Dec 1982",
       "[Ilmer Graveyard](/history/monumental-inscriptions/#C19)"
@@ -2555,6 +2556,7 @@
     "date": "18 Jul. 1931",
     "title": "Burial of Albert Goodchild",
     "description": "Albert Goodchild was buried.",
+    "image": "/images/monumental-inscriptions/C11.avif",
     "references": [
       "[Registers and Records of St Peters](/history/st-peters-burials/), Rex Kidd, Dec 1982",
       "[Ilmer Graveyard](/history/monumental-inscriptions/#C11)"
@@ -2587,6 +2589,7 @@
     "date": "12 Mar. 1932",
     "title": "Burial of Owen Goodchild",
     "description": "Owen Goodchild of Watlington was buried.",
+    "image": "/images/monumental-inscriptions/C18.avif",
     "references": [
       "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
       "[Ilmer Graveyard](/history/monumental-inscriptions/#C18)"
@@ -2700,8 +2703,11 @@
     "date": "15 Jun. 1934",
     "title": "(Robert) Merrick Attenborough in Play",
     "description": "R M H Attenborough, son of (Robert) Harold Attenborough, appeared in the cast of a play at Massey Agricultural College, New Zealand.",
-    "references": ["Manawatu Times, 15 Jun 1934"],
-    "labels": ["land"]
+    "references": [
+      "Manawatu Times, 15 Jun 1934",
+      "[Massey Agricultural College campus, 5 Jul. 1934](https://tamiro.massey.ac.nz/nodes/view/1833?showbacklinknav=1428)"
+    ],
+    "labels": ["education"]
   },
   {
     "date": "16 Aug. 1934",
@@ -2714,6 +2720,7 @@
     "date": "18 Aug. 1934",
     "title": "Burial of Edward Albert Goodchild",
     "description": "Edward Albert Goodchild of Saunderton was buried.",
+    "image": "/images/monumental-inscriptions/C10.avif",
     "references": [
       "Bucks Herald, 24 Aug 1934",
       "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
@@ -2733,7 +2740,7 @@
     "title": "(Robert) Merrick Attenborough at College",
     "description": "(Robert) Merrick Attenborough, son of (Robert) Harold Attenborough, held several positions in clubs at Massey Agricultural College.",
     "references": ["The Bleat, Massey Agricultural College Students' Association, 1934"],
-    "labels": ["document"]
+    "labels": ["document", "education"]
   },
   {
     "date": "1934",
