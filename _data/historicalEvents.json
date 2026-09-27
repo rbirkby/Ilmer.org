@@ -2534,7 +2534,10 @@
     "date": "7 Oct. 1930",
     "title": "Burial of Thomas Goodchild",
     "description": "Thomas Goodchild was buried.",
-    "references": ["Ilmer parish records"],
+    "references": [
+      "[Registers and Records of St Peters](/history/st-peters-burials/), Rex Kidd, Dec 1982",
+      "[Ilmer Graveyard](/history/monumental-inscriptions/#C19)"
+    ],
     "labels": ["death"]
   },
   {
@@ -2552,7 +2555,10 @@
     "date": "18 Jul. 1931",
     "title": "Burial of Albert Goodchild",
     "description": "Albert Goodchild was buried.",
-    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "references": [
+      "[Registers and Records of St Peters](/history/st-peters-burials/), Rex Kidd, Dec 1982",
+      "[Ilmer Graveyard](/history/monumental-inscriptions/#C11)"
+    ],
     "labels": ["death"]
   },
   {
@@ -2581,7 +2587,10 @@
     "date": "12 Mar. 1932",
     "title": "Burial of Owen Goodchild",
     "description": "Owen Goodchild of Watlington was buried.",
-    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
+    "references": [
+      "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
+      "[Ilmer Graveyard](/history/monumental-inscriptions/#C18)"
+    ],
     "labels": ["death"]
   },
   {
@@ -2698,7 +2707,8 @@
     "description": "Edward Albert Goodchild of Saunderton was buried.",
     "references": [
       "Bucks Herald, 24 Aug 1934",
-      "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"
+      "[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982",
+      "[Ilmer Graveyard](/history/monumental-inscriptions/#C10)"
     ],
     "labels": ["death"]
   },
@@ -3019,7 +3029,7 @@
     "date": "1946",
     "title": "Old Vicarage Sold",
     "description": "Elizabeth Keene (widow of Albert Goodchild) sold the Old Vicarage where her son (Robert) Douglas Goodchild had been living.",
-    "references": ["Ilmer and its old Vicarage, 1992"],
+    "references": ["[Ilmer and its old Vicarage](/history/vicarage), 1992"],
     "labels": ["auction", "church", "person", "sale"]
   },
   {
@@ -3156,7 +3166,9 @@
     "date": "Oct. 1960",
     "title": "ShellStar Purchases Lower Farm",
     "description": "Lower Farm was purchased by ShellStar, aka ShellMex, to be used as a [demonstration farm](/history/demonstration-farm).",
-    "references": ["Shell archive, The Hague"],
+    "references": [
+      "[Shell archive](https://www.shell.com/who-we-are/our-history/shell-historical-heritage-and-archive.html), The Hague"
+    ],
     "labels": ["farm", "property"]
   },
   {
@@ -3349,7 +3361,7 @@
     "title": "Burial of Charles Belgrove",
     "image": "/images/charles-belgrove-sketch.png",
     "description": "Charles Belgrove, the [Ilmer Hermit](/images/ilmer-hermit.avif), was buried.",
-    "references": ["Parish Records, Burials"],
+    "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
     "labels": ["death"]
   },
   {
