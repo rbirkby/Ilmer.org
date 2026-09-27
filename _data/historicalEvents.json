@@ -2911,7 +2911,10 @@
     "date": "1939",
     "title": "Keene Family Residence",
     "description": "Elizabeth (widow of Albert Goodchild late of Ilmer House) and Charles Keene live at 67 Devon Road, Cheam, London.",
-    "references": ["1939 Lloyd George Register", "A Goodchild Ltd incorporation"],
+    "references": [
+      "1939 Lloyd George Register",
+      "[A Goodchild Ltd incorporation](https://find-and-update.company-information.service.gov.uk/company/00358118)"
+    ],
     "labels": ["housing", "infrastructure"]
   },
   {
