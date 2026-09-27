@@ -1682,7 +1682,11 @@
     "date": "5 Apr. 1881",
     "title": "Death of Sarah Maria Clotilda Raper",
     "description": "Sarah Maria Clotilda Raper died and bequeathed part of her estate for the annual benefit of the poor. The Rapers were land-owners including the Manor of Ilmer.",
-    "references": ["Bucks Advertiser, 6th May 1882", "Victoria History of the County of Buckingham vol 3"],
+    "references": [
+      "Bucks Advertiser, 6th May 1882",
+      "Victoria History of the County of Buckingham vol 3",
+      "[Charity Commission](https://register-of-charities.charitycommission.gov.uk/en/charity-search/-/charity-details/242374/full-print)"
+    ],
     "labels": ["death", "land", "manor", "person", "property", "charity"]
   },
   {
