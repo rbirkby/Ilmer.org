@@ -1407,7 +1407,7 @@
     "date": "1831",
     "title": "Birth of David Goodchild",
     "description": "David Goodchild was born in Risborough. David was the father of Albert who would build [Ilmer House](/history/ilmer-house).",
-    "references": ["1871 census"],
+    "references": ["[1871 census](/census/1871/)"],
     "labels": ["birth", "person"]
   },
   {
@@ -1540,7 +1540,7 @@
     "date": "1861",
     "title": "Population Recorded",
     "description": "The population was 79.",
-    "references": ["1861 Census", "Kelly's 1869"],
+    "references": ["[1861 Census](/census/1861/)", "Kelly's 1869"],
     "labels": ["population"]
   },
   {
@@ -1630,7 +1630,7 @@
     "date": "2 Apr. 1871",
     "title": "Census Data",
     "description": "The population was 70. Farm occupants included Richard and Martha Belgrove, Thomas and Mary Eggleton, and Henry and Sarah Gomm. David and Elizabeth Goodchild lived in Longwick.",
-    "references": ["1871 Census"],
+    "references": ["[1871 Census](/census/1871/)"],
     "labels": ["farm", "population", "property"]
   },
   {
@@ -1675,7 +1675,7 @@
     "date": "3 Apr. 1881",
     "title": "Census Data",
     "description": "The population was 63. David and Elizabeth Goodchild lived in Ilmer with four children. This may have been in the Old Vicarage.",
-    "references": ["1881 Census"],
+    "references": ["[1881 Census](/census/1881/)"],
     "labels": ["population"]
   },
   {
@@ -1763,7 +1763,7 @@
     "date": "20 Dec. 1886",
     "title": "Death of David Goodchild",
     "description": "David Goodchild, farmer, dies of a heart attack aged 55. He was the father of Albert, Ernest, and Thomas Goodchild leaving them orphaned as his wife died the previous year.",
-    "references": ["Bucks Herald, 1 Jan 1887", "1881 census"],
+    "references": ["Bucks Herald, 1 Jan 1887", "[1881 census](/census/1881/)"],
     "labels": ["death", "farm", "person", "property"]
   },
   {
@@ -1820,7 +1820,7 @@
     "date": "5 Apr. 1891",
     "title": "Census Data",
     "description": "The population was 48. Albert Goodchild, aged 17, worked as a Gardener in Wycombe.",
-    "references": ["1891 census"],
+    "references": ["[1891 census](/census/1891/)"],
     "labels": ["population"]
   },
   {
@@ -1933,7 +1933,7 @@
     "date": "31 Mar. 1901",
     "title": "Census Data",
     "description": "The population was 51. Farm occupants and families are listed. Albert and Elizabeth Goodchild lived in Beckenham.",
-    "references": ["1901 Census"],
+    "references": ["[1901 Census](/census/1901/)"],
     "labels": ["farm", "population", "property"]
   },
   {
@@ -2187,7 +2187,7 @@
     "date": "2 Apr. 1911",
     "title": "Census Data",
     "description": "Census data lists residents at Manor Farm, Lower Farm, and other locations. Albert and Elizabeth Goodchild lived in Beckenham with six children.",
-    "references": ["1911 census"],
+    "references": ["[1911 census](/census/1911/)"],
     "labels": ["farm", "manor", "population", "property"]
   },
   {
@@ -2370,6 +2370,7 @@
     "date": "1920",
     "title": "War Memorial Erected",
     "description": "The Great War memorial tablet was erected.",
+    "image": "/images/IlmerWarPlaque.avif",
     "references": ["Registers and Records of Ilmer Parish, Rex A Kidd"],
     "labels": ["document"]
   },
@@ -2384,14 +2385,14 @@
     "date": "19 Jun. 1921",
     "title": "Census Data",
     "description": "Residents at Lower Farm, Manor Farm, and Coldharbour Farm are listed.",
-    "references": ["19 June, 1921 census"],
+    "references": ["19 June, [1921 census](/census/1921/)"],
     "labels": ["farm", "property"]
   },
   {
     "date": "1921",
     "title": "Albert Goodchild's Residence",
     "description": "Albert and Elizabeth Goodchild lived at 132 Tulse Hill. They had also built Ilmer House.",
-    "references": ["19 June, 1921 census"],
+    "references": ["19 June, [1921 census](/census/1921/)"],
     "labels": ["building", "housing"]
   },
   {
@@ -2891,7 +2892,11 @@
     "date": "2 Jun. 1939",
     "title": "Death of Elizabeth Kingham",
     "description": "Elizabeth, wife of William Kingham, died age 76. She had been married to William Kingham until his death in 1929. They lived in one of the Close End Cottages.",
-    "references": ["Bucks Herald, 9 Jun 1939", "1921 Census", "The Daily Sketch, 25 Mar 1935"],
+    "references": [
+      "Bucks Herald, 9 Jun 1939",
+      "[1921 Census](/census/1921/)",
+      "[The Daily Sketch, 25 Mar 1935](/history/historic-photos"
+    ],
     "labels": ["death", "person"],
     "image": "/images/ElizabethKingham-DailySketch-1935-03-25.avif"
   },
