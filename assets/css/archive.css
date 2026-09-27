@@ -1906,6 +1906,13 @@ main.archive .table-scroll table {
   }
 }
 
+.memorial__note {
+  margin: 0.6rem 1rem 0;
+  color: var(--archive-muted);
+  font-size: 1.3rem;
+  font-style: italic;
+}
+
 .memorial-index {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));

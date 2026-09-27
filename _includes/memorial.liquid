@@ -8,4 +8,7 @@
       {{ memorial.templateContent }}
     </div>
   {%- endif -%}
+  {%- if memorial.data.note -%}
+    <p class="memorial__note">{{ memorial.data.note }}</p>
+  {%- endif -%}
 </article>

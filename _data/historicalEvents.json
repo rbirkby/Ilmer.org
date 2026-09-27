@@ -2625,8 +2625,13 @@
   {
     "date": "25 Oct. 1932",
     "title": "Memorial Window Commissioned",
-    "description": "A meeting at the Parish Hall resolves to install a stained glass window in honour of Mary Clara Jaques (daughter of former vicar Rev. W. E. Partridge) to commemorate her charitable deeds. The window, costing £70, was crafted by Joseph Edward Nuttgens.",
-    "references": ["[Monumental Inscriptions](/history/monumental-inscriptions/#A3)"],
+    "description": "A meeting at the Parish Hall resolves to install a stained glass window in honour of Mary Clara Jaques (daughter of former vicar Rev. W. E. Partridge) to commemorate her charitable deeds. The window, costing £70, was crafted by [Joseph Edward Nuttgens](https://www.youtube.com/watch?v=3olO-NxLZLA).",
+    "references": [
+      "Bucks Herald, 28 Oct 1932",
+      "[Vestry minutes, 25 Oct 1932](/parish/vestrymeeting/1932-10-25/)",
+      "[Monumental Inscriptions](/history/monumental-inscriptions/#A3)",
+      "[Bucks Churches supplementary information](https://www.buckschurches.uk/churches/suppinfo/ilmer-w06-jaques.pdf)"
+    ],
     "image": "/images/monumental-inscriptions/A3.avif",
     "labels": ["charity", "church", "meeting", "person"]
   },
@@ -2654,8 +2659,12 @@
   {
     "date": "Feb. 1933",
     "title": "Stained Glass Window Installed",
-    "description": "A stained glass window by Joseph Edward Nuttgens was installed in the church nave in commemoration of Mary Clara Jaques.",
-    "references": ["[Monumental Inscriptions](/history/monumental-inscriptions/#A3)"],
+    "description": "A stained glass window by [Joseph Edward Nuttgens](https://www.youtube.com/watch?v=3olO-NxLZLA) was installed in the church nave in commemoration of Mary Clara Jaques.",
+    "references": [
+      "Bucks Herald, 31 Mar. 1933",
+      "[Monumental Inscriptions](/history/monumental-inscriptions/#A3)",
+      "[Bucks Churches supplementary information](https://www.buckschurches.uk/churches/suppinfo/ilmer-w06-jaques.pdf)"
+    ],
     "image": "/images/monumental-inscriptions/A3.avif",
     "labels": ["church"]
   },
@@ -3287,7 +3296,7 @@
     "title": "Ilmer on Magazine Cover",
     "description": "Ilmer Church and the old vicarage featured on the cover of Bucks Life magazine.",
     "image": "/images/buckslife1967.jpg",
-    "references": ["Chris Kingham, PRAHS"],
+    "references": ["Chris Kingham, [PRAHS](https://e-voice.org.uk/prahs/)"],
     "labels": ["church", "media", "person"]
   },
   {
@@ -3578,7 +3587,10 @@
     "date": "2 Oct. 1978",
     "title": "Serious fire at Shell's Lower Farm",
     "description": "A fire at 11:35pm resulted in significant damage to a cattle yard. 90 tonnes of hay and straw, a dutch barn and a Clayson combine were destroyed resulting in £18,000 damage. Foul play was suspected due to a spate of farm fires over 1978 in the Risborough area. An NFU meeting at the Shell Farm was held on 1st November 1978 to discuss the situation.",
-    "references": ["A guide to Lower Farm, Shell Chemicals, 1980", "Bucks Free Press, 6 Oct 1978"],
+    "references": [
+      "A guide to Lower Farm, Shell Chemicals, 1980 (MERL ref 3360, BOX 3/28)",
+      "Bucks Free Press, 6 Oct 1978"
+    ],
     "labels": ["farm", "fire", "property"]
   },
   {
@@ -3908,6 +3920,13 @@
     "title": "New Green Altar Frontal",
     "description": "A new green church altar frontal was purchased using a donation in memory of Winifred Gomme.",
     "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
+    "labels": ["church"]
+  },
+  {
+    "date": "1998",
+    "title": "New stained glass window for Ilmer church",
+    "description": "A new stained glass window was designed for Ilmer church by Joseph Nuttgens. This may be the [1991 window](/history/monumental-inscriptions/#A1) with an incorrect attribution.",
+    "references": ["[Joseph Nuttgens website](http://www.josephnuttgens.co.uk/studio.shtml)"],
     "labels": ["church"]
   },
   {
