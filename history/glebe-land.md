@@ -50,7 +50,7 @@ On 8 January 1980, a declaration by the Diocesan Trustees described the glebe la
 
 The present tenant of Church Close, recalls how Mrs Mollie Shurrock used the land for allotments and prior to that, it was used by the whole village as allotments. He also recalls Charles Belgrove digging a well for Mrs Shurrock within the space. The remains of the well still exist today.
 
-In contemporary annual reports for the Princes Risborough with Ilmer PCC, Church Close is called “Field at Ilmer” and is capitalised at £1,800. An aerial survey measures it at 1.82 acres.
+In [contemporary annual reports](https://register-of-charities.charitycommission.gov.uk/en/about-the-register-of-charities/-/charity-details/5006675/accounts-and-annual-returns) for the Princes Risborough with Ilmer PCC, Church Close is called “Field at Ilmer” and is capitalised at £1,800. An aerial survey measures it at 1.82 acres.
 
 #### 2024 - Google
 
