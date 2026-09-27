@@ -176,11 +176,11 @@ The church was described in 1860 by Shehan as having a harmonium. A pre-1912 pho
 
 ## Memorials
 
-In November 1919, the vestry minutes record the decision to erect the war memorial tablet on the south wall of the nave. The faculty was granted on 13th January 1920 and it was duly erected the same year.
+In November 1919, the [vestry minutes](/parish/vestrymeeting/1919-11-15/) record the decision to erect the war memorial tablet on the south wall of the nave. The faculty was granted on 13th January 1920 and it was duly erected the same year.
 
-The stained glass in the nave's north wall, known as the Pulpit Window, features the parable of the Good Samaritan and serves as a memorial to Mary Clara Jaques (1849-1932), daughter of the former vicar, Reverend W. E. Partridge. A meeting held at the Parish Hall on Tuesday, October 25, 1932, chaired by Reverend A. M. Berry, resolved to install the window in her honour to commemorate her charitable deeds. Contributions were received from both within and outside the parish, with no additional fundraising activities undertaken. The cost was projected at £70. [Joseph Edward Nuttgens](https://www.youtube.com/watch?v=3olO-NxLZLA) of North Dean crafted the window, which was installed in February 1933.
+The stained glass in the nave's north wall, known as the Pulpit Window, features the parable of the Good Samaritan and serves as a [memorial to Mary Clara Jaques](/history/monumental-inscriptions/#A3) (1849-1932), daughter of the former vicar, Reverend W. E. Partridge. A meeting held at the Parish Hall on Tuesday, October 25, 1932, chaired by Reverend A. M. Berry, resolved to install the window in her honour to commemorate her charitable deeds. Contributions were received from both within and outside the parish, with no additional fundraising activities undertaken. The cost was projected at £70. [Joseph Edward Nuttgens](https://www.youtube.com/watch?v=3olO-NxLZLA) of North Dean crafted the window, which was installed in February 1933.
 
-The opposite window, installed 1991, on the south wall of the nave is by his son, Joseph Ambrose Nuttgens[^nuttgens]. This was a gift from an anonymous resident of Longwick[^wilson].
+The [opposite window](/history/monumental-inscriptions/#A1), installed 1991, on the south wall of the nave is by his son, Joseph Ambrose Nuttgens[^nuttgens]. This was a gift from an anonymous resident of Longwick[^wilson]. The chancel window memorial to Richard James Wilson is signed 'J.A.N. 09' - also Joseph Ambrose Nuttgens.
 
 [^nuttgens]: Stained glass windows. Source: [buckschurches.uk](https://buckschurches.uk/glass/building.php?buildingid=134)
 
