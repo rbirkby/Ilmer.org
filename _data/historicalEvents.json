@@ -853,6 +853,13 @@
     "labels": ["economy", "housing"]
   },
   {
+    "date": "25 Oct. 1607",
+    "title": "Church terrier",
+    "description": "A record of the church's land holdings and properties as documented in the church terrier.",
+    "references": ["[1607 Terrier](/history/st-peters/terriers/1607/)"],
+    "labels": ["church", "land"]
+  },
+  {
     "date": "3 Oct. 1612",
     "title": "Thomas Vandrey appointed vicar",
     "description": "[Thomas Vandrey (or Vawdry)](https://theclergydatabase.org.uk/jsp/persons/DisplayCcePerson.jsp?PersonID=140873) is appointed as the new vicar by Sir Robert Dormer.",
