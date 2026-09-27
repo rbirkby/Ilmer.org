@@ -8,7 +8,7 @@ image: images/church-drawing2-unknown-1978.avif
 ancestorCrumb1Source: { label: St Peter's Church, url: '/history/st-peters/' }
 ---
 
-Shown as plot 67 on the 1839 Tithe Map of Illmire (Ilmer), Church Close was 1 acre, 3 roods and 34 perches in size. A rood is ¼ of an acre and there are 40 perches to a rood, so Church Close is 1.96 acres.
+Shown as plot 67 on the 1839 [Tithe Map](/history/fields-farming) of Illmire (Ilmer), Church Close was 1 acre, 3 roods and 34 perches in size. A rood is ¼ of an acre and there are 40 perches to a rood, so Church Close is 1.96 acres.
 
 ![The tithe map showing Church Close](/images/tithemap-churchclose.avif#left)
 
@@ -32,7 +32,7 @@ In the 1853 Printed Parliamentary Reports of the Former Commissioners for Inquir
 
 The Lloyd George "Domesday" Valuation Office survey, conducted 1912, recorded an area of 1·3·27 (1.92 acres) and described as a “Small field of allotments worth £25 per acre”. The survey records the occupier as Thomas Goodchild, but doesn’t record an owner, other than suggesting these are parish allotments. Thomas being the elder brother of Albert, the owner of Ilmer House. Between 1907-1915, Thomas was described in Kelly’s directory as a Poultry Farmer.
 
-The vestry minutes of 29th March 1921 describe the sums attributable to the Ilmer Close Fund, for church repairs. The fund was again mentioned in the minutes of 12th July 1923 and 2nd July 1929.
+The vestry minutes of [29th March 1921](/parish/vestrymeeting/1921-03-29) describe the sums attributable to the Ilmer Close Fund, for church repairs. The fund was again mentioned in the minutes of 12th July 1923 and 2nd July 1929.
 
 In a reply to Rev W M Tuke dated 13 April 1926, the Charity Commission confirmed that the income received from the Church Close is applicable for the repair of the Church, and that this included heating apparatus as proposed.
 
