@@ -18,7 +18,7 @@ scrollAllTables: true
 | Albert Lay                                      | Great War               | Flanders               | December 12 1915  | Accidentally killed   |  20 |
 | Aubrey S Gomme                                  | Great War               | France                 | April 9 1917      | Killed in action      |  24 |
 | William J Claydon                               | Great War               |                        | April 28 1917     | Wounded and Missing   |  20 |
-| Frank P Kingham                                 | Great War               |                        | August 27 1917    | Killed in action      |  21 |
+| Frank P Kingham                                 | Great War               | Flanders               | August 27 1917    | Killed in action      |  21 |
 | Albert Richardson                               | Great War               | France                 | September 11 1918 | Died of Wounds        |  23 |
 | (William) Herbert Smith                         | Great War               | France                 | March 21 1918     | Killed in action      |  33 |
 
