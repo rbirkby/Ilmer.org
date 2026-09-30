@@ -19,8 +19,8 @@ scrollAllTables: true
 | Aubrey S Gomme                                  | Great War               | France                 | April 9 1917      | Killed in action      |  24 |
 | William J Claydon                               | Great War               |                        | April 28 1917     | Wounded and Missing   |  20 |
 | Frank P Kingham                                 | Great War               | Flanders               | August 27 1917    | Killed in action      |  21 |
-| Albert Richardson                               | Great War               | France                 | September 11 1918 | Died of Wounds        |  23 |
 | (William) Herbert Smith                         | Great War               | France                 | March 21 1918     | Killed in action      |  33 |
+| Albert Richardson                               | Great War               | France                 | September 11 1918 | Died of Wounds        |  23 |
 
 [1]: https://en.wikipedia.org/wiki/Siege_of_Orl%C3%A9ans_(1428%E2%80%931429)
 [2]: https://en.wikipedia.org/wiki/Robert_Hungerford,_3rd_Baron_Hungerford
