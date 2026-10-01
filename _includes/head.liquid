@@ -10,6 +10,9 @@
   {% if content contains 'bwphoto' or content contains '#lightbox' or lightbox %}
     <script type="module" src="{{ '/assets/js/colorize-images.js' | cacheBust }}"></script>
   {% endif %}
+  {% if content contains 'class="then-now"' %}
+    <script type="module" src="{{ '/assets/js/then-now.js' | cacheBust }}"></script>
+  {% endif %}
   {% if layout == 'archive' or layout == 'parish-hub' or layout == 'post' or layout == '404' or layout == 'timeline' %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
