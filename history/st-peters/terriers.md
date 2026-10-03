@@ -4,7 +4,7 @@ title: 'Glebe Terriers'
 description: 'Glebe terriers of St Peter’s Church, Ilmer.'
 category: history
 tags: [church, history]
-image: images/church-drawing2-unknown-1978.avif
+image: images/church-vicarage-taunt-front.avif
 ancestorCrumb1Source: { label: St Peter's Church, url: '/history/st-peters/' }
 ---
 
@@ -25,3 +25,5 @@ A terrier typically describes the vicarage house and its outbuildings, the [gleb
     <li>1827</li>
     <li>1828</li>
 </ul>
+
+_Title Image: Henry W Taunt, around 1910_
