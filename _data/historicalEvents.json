@@ -3013,7 +3013,10 @@
     "date": "29 Apr. 1944",
     "title": "Fatality at Ilmer Halt",
     "description": "Thomas Walker, a railway worker, was found dead on the platform of Ilmer Halt after being hit by a train.",
-    "references": ["Bucks Herald, 5 May 1944", "GW & GC Joint Railway accident report, national archives"],
+    "references": [
+      "Bucks Herald, 5 May 1944",
+      "[GW & GC Joint Railway accident report](/history/railway-fatality/), national archives"
+    ],
     "labels": ["infrastructure", "railway"]
   },
   {
