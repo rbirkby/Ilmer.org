@@ -5,6 +5,7 @@ description: 'Opened in 1906, the railway features prominently in the village.'
 category: history
 tags: [railway, bridge, halt, post]
 image: images/ilmer-halt-ticket.jpg
+lightbox: true
 ---
 
 The bridge was constructed in 1904 and the line opened on 2nd April 1906. This [photo](https://www.railwayarchive.org.uk/Lpages/html/L3327.html) shows the newly constructed bridge:
@@ -16,6 +17,8 @@ The bridge was constructed in 1904 and the line opened on 2nd April 1906. This [
 Adjacent to the bridge was Ilmer Halt, an on-request station where a telephone was used to ask for the next train to stop at the halt. The station was opened 1st April 1929 serving the London and North-Eastern Railway Company. Initially, 1 northboard and 1 southbound train stopped here every morning on weekdays. Ilmer Halt can be seen in this still image taken from a [train cab video](http://youtu.be/nyWkpteoa84?t=39s) in 1962. The station closed the following year:
 
 ![Ilmer Halt](/images/halt.jpg)
+
+![Great Western Ticket from High Wycome to Ilmer Halt. Dated 24 Jan '48](/images/ilmer-halt-ticket2.avif#right)
 
 The station was evidently rarely used, as shown in the Parish Council minutes of 1934:
 
@@ -33,19 +36,27 @@ subsequently:
 
 > **Ilmire Footpath.**—The Surveyor brought before the Committee the question of diverting a footpath at Ilmire, and produced a plan thereof. Moved by Mr. Lunnon, seconded by Mr. W. Humphreys, and resolved that this Committee recommend that the Council consent to the diversion of the footpath leading from Ilmire to Longwick, so as to avoid crossing the railway as shown on the plan, if the [Parish meeting](/parish/ilmerparishmeeting/1901-05-30/) approve thereof.
 
+---
+
 #### Bucks Herald, Friday April 5th 1929
 
 > **Train Service.**—The London and North-Eastern Railway Company announce that a new “Halt,” named Ilmer Halt, will be opened between Princes Risborough and Haddenham, as from Monday, 1st April, and the 6.10 a.m. train from Marylebone to Wotton, the 8.15 a.m. from Wotton to Marylebone, on week-days, and the 8.35 a.m. from Marylebone to Calvert, and the 8.22 a.m. from Calvert to Marylebone on Sundays will call at this Station.
 
+---
+
 #### Peterborough & Hunts. Standard, April 12, 1929
 
 > The L. and N.E.R. announce that, commencing April 1st, a new halt, to be known as Ilmer Halt, will be available for passenger traffic. Ilmer Halt is between Princes Risborough and Haddenham, in Buckinghamshire.
+
+---
 
 #### Bucks Free Press, Friday 13th January, 1939
 
 > **Train Service at Ilmer Halt**
 >
 > Alterations in train services notified by the London and North Eastern Railway to come into operation in February include the following: Great Central section—7.58 p.m. Princes Risborough to Haddenham. “W” note to read—“Calls at Ilmer Halt 8.3 p.m. on notice being given to the guard at Princes Risborough.” 5.35 p.m. Haddenham to Princes Risborough calls unconditionally at Ilmer Halt 5.41 p.m. every weekday. 7.0 p.m. Haddenham to Princes Risborough calls also at Ilmer Halt 7.6 p.m.
+
+---
 
 #### Bucks Herald, Friday May 5th 1944
 
