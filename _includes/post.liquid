@@ -43,7 +43,7 @@
     {% else %}
       <h1 class="minute-heading">{{ title }}</h1>
 
-      <p>{{ description }}</p>
+      <p>{{ description | default: "" | renderMarkdownInline }}</p>
     {% endif %}
 
     {% if tags contains 'census' %}
