@@ -46,7 +46,9 @@ scrollAllTables: true
 
 ---
 
-**Frank Kingham**, born on 25 July 1896, was the son of Fritz and Sarah Kingham who lived at Lower Farm Cottage in 1911 and at the [Old Vicarage](/history/vicarage) at the time of his death. Frank served with the Gloucestershire Regiment and [died of his wounds](https://livesofthefirstworldwar.iwm.org.uk/lifestory/2257577) on 27 August 1917, at the age of 21 years; he is [buried](https://www.findagrave.com/memorial/12082418/frank-percy-kingham) in the New Irish Farm Cemetery at Ypres.
+**Frank Kingham**, born on 25 July 1896, was the son of Fritz and Sarah Kingham who lived at Lower Farm Cottage in 1911 and at the [Old Vicarage](/history/vicarage) at the time of his death. He was a carter and stockman for Mr A. Goodchild and applied for Military Exemption in 1916[^3]. Frank served with the Gloucestershire Regiment and [died of his wounds](https://livesofthefirstworldwar.iwm.org.uk/lifestory/2257577) on 27 August 1917, at the age of 21 years; he is [buried](https://www.findagrave.com/memorial/12082418/frank-percy-kingham) in the New Irish Farm Cemetery at Ypres.
+
+[^3]: Rural District Tribunal, Bucks Advertiser, 23 Sep. 1916.
 
 The following paragraph under the Horsenden-with-Ilmer parish in the **AYLESBURY DEANERY MAGAZINE** of unknown date, but between 1920 and 1929, says:
 
