@@ -3745,7 +3745,7 @@
   {
     "date": "20 Nov. 1981",
     "title": "Bells Restored and Re-hung",
-    "description": "The church bells were restored by Whites of Appleton and re-hung. They were also converted to swing chiming. The cost was £2,000.",
+    "description": "The church bells were restored by [Whites of Appleton](https://www.whitesbellhangers.co.uk/) and re-hung. They were also converted to swing chiming. The cost was £2,000.",
     "references": [
       "Parish church history pamphlet",
       "St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999",
@@ -3787,6 +3787,7 @@
     "title": "Commemoration Stone Replaced",
     "description": "The commemoration stone on the church's north wall was replaced by CDL Stone Restoration of Kingswood Bristol.",
     "references": ["Parish church history pamphlet", "Oxfordshire History Centre diocesan records, DIOC:1:C:5:1587(2)"],
+    "image": "/images/1860-dedication-stone.jpg",
     "labels": ["church"]
   },
   {
