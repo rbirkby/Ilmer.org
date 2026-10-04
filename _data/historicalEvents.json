@@ -3526,6 +3526,14 @@
     "labels": ["farm", "property"]
   },
   {
+    "date": "29 May 1975",
+    "title": "Notice of water extraction",
+    "description": "Thames Water gave notice of extracting 96,000 gallons per day from the Horsenden Stream (Lyde Brook) near Coldharbour Farm at [SP758049](https://www.openstreetmap.org/?mlat=51.737691&mlon=-0.903679&zoom=15). The previous license had lapsed. Disused pumping infrastructure still exists at this location today.",
+    "references": ["Bucks Herald, 29 May 1975"],
+    "image": "/images/pumping-station.jpg",
+    "labels": ["farm", "infrastructure"]
+  },
+  {
     "date": "c. 1975 (1970s)",
     "title": "Parish Room Demolished",
     "description": "The wooden Parish Room, which had been donated by Miss Moreton in 1907 and served as a village hall and meeting space, is demolished. It had been purchased by J Pryor of the Old Vicarage in 1971.",
@@ -3554,6 +3562,13 @@
     "labels": ["church", "repair"]
   },
   {
+    "date": "14 Jul. 1977",
+    "title": "Shell Farm Walk",
+    "description": "Shell Chemicals invited the public to an evening walk around the farm to see weed control in cereals, forage maize, grassland management and beef systems. There were light refreshments and a cash bar.",
+    "references": ["Bucks Herald, 7 Jul. 1977"],
+    "labels": ["farm", "event"]
+  },
+  {
     "date": "1978",
     "title": "Spire and Bell Restoration Fund",
     "description": "A fundraising campaign is initiated to raise £8,000 as the spire required new shingle tiles and the tower and bells were in need of restoration. The target was met within two years.",
@@ -3577,8 +3592,8 @@
   {
     "date": "15 & 16 Jul. 1978",
     "title": "Ilmer Flower Festival",
-    "description": "The Ilmer flower festival raised £250 for the Church Restoration Fund.",
-    "references": ["Flower festival scrapbook & letter from Rector, Ilmer church"],
+    "description": "The Ilmer flower festival, which ran from 10am to 8pm, raised £250 for the Church Restoration Fund.",
+    "references": ["Flower festival scrapbook & letter from Rector, Ilmer church", "Bucks Herald, 6 Jul. 1978"],
     "image": "/images/flower-festival.jpg",
     "labels": ["church"]
   },
@@ -3609,7 +3624,8 @@
     "description": "A fire at 11:35pm resulted in significant damage to a cattle yard. 90 tonnes of hay and straw, a dutch barn and a Clayson combine were destroyed resulting in £18,000 damage. Foul play was suspected due to a spate of farm fires over 1978 in the Risborough area. An NFU meeting at the Shell Farm was held on 1st November 1978 to discuss the situation.",
     "references": [
       "A guide to Lower Farm, Shell Chemicals, 1980 (MERL ref 3360, BOX 3/28)",
-      "Bucks Free Press, 6 Oct 1978"
+      "Bucks Free Press, 6 Oct 1978",
+      "Bucks Herald, 9 Nov 1978"
     ],
     "labels": ["farm", "fire", "property"]
   },
@@ -3621,12 +3637,47 @@
     "labels": ["church", "repair"]
   },
   {
+    "date": "23 Nov. 1978",
+    "title": "Work started on Church Repairs",
+    "description": "Work commenced on reshingleing the church spire and repairing the bell frame. The expected costs for bell refurbishment was £2,500. The total bill expected to reach £7,000.",
+    "references": ["Bucks Herald, 23 Nov. 1978"],
+    "labels": ["church", "repair"]
+  },
+  {
+    "date": "15 Feb. 1979",
+    "title": "Church appeal fund reached £5,000",
+    "description": "A further £4,000 was needed for refurbishing the bells - bringing the estimated cost to £9,000 up from £7,000.",
+    "references": ["Bucks Herald, 15 Feb. 1979"],
+    "labels": ["church"]
+  },
+  {
     "date": "1979",
     "title": "Church Spire Re-shingled",
     "description": "The church spire was re-shingled from donations totalling £8,000.",
-    "references": ["Parish church history pamphlet"],
+    "references": ["Parish church history pamphlet", "Bucks Herald, 15 Feb. 1979"],
     "image": "/images/reshingling.jpg",
     "labels": ["church"]
+  },
+  {
+    "date": "23 Jun 1979",
+    "title": "Farm Open Day",
+    "description": "Saturday and Sunday, the 23rd and 24th of June from 2pm to 5pm were Shell Chemicals farm open days. Admission was free.",
+    "references": ["Bucks Herald, 21 Jun. 1979"],
+    "labels": ["farm"]
+  },
+  {
+    "date": "21 Jul 1979",
+    "title": "Donkey Show",
+    "description": "A donkey show affiliated to the Donkey Breed Society was held at Ilmer House organised by Mrs Underwood. Trophies were awarded for different classes ",
+    "references": ["Bucks Herald, 26 Jul. 1979"],
+    "labels": ["event"]
+  },
+  {
+    "date": "Jul. 1979",
+    "title": "Engagement Announcement",
+    "description": "Joanna Hadwen Attenborough, daughter of Merrick of Close End, was engaged to Nicholas Palmer Kyle Montgomery.",
+    "references": ["Daily Telegraph, 12 Jul 1979"],
+    "labels": ["document"]
   },
   {
     "date": "1979",
@@ -3636,11 +3687,11 @@
     "labels": ["church", "farm", "land", "property"]
   },
   {
-    "date": "Jul. 1979",
-    "title": "Engagement Announcement",
-    "description": "Joanna Hadwen Attenborough, daughter of Merrick of Close End, was engaged to Nicholas Palmer Kyle Montgomery.",
-    "references": ["Daily Telegraph, 12 Jul 1979"],
-    "labels": ["document"]
+    "date": "2 Nov. 1979",
+    "title": "Church restoration cost comes to £8,300",
+    "description": "Rev. W Hugh Jones wrote in the parish magazine that the church restoration cost had come to £8,300 including 375 for laying underground electricity cables. Parishoners raised £5,010 and grants of £2,250 were received. The PCC covered £500. The amount appears not to have covered the bells.",
+    "references": ["Bucks Herald, 22 Nov 1979", "Bucks Herald, 19 Jun 1980"],
+    "labels": ["church"]
   },
   {
     "date": "1980",
@@ -3657,11 +3708,25 @@
     "labels": ["church", "land", "repair"]
   },
   {
+    "date": "19 Jun. 1980",
+    "title": "Church began fundraising for bell refurbishment",
+    "description": "The target was £3,000 of which £1,500 had already been raised.",
+    "references": ["Bucks Herald, 19 Jun 1980"],
+    "labels": ["church"]
+  },
+  {
     "date": "c. 1980",
     "title": "Altar Linen Embroidered",
     "description": "Altar linen was embroidered with IHS by Betty Attenborough of Close End.",
     "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
     "labels": ["document"]
+  },
+  {
+    "date": "15 Nov. 1980",
+    "title": "Mexican style evening raises £80 for church restoration fund",
+    "description": "£80 raised for the church restoration fund at a Mexican style evening run by Peter and Valerie Alsford who had recently been on holiday to Mexico. They served Chilli con carne and turkey with chocolate sauce which was some visitor's first taste of Mexican food.",
+    "references": ["Bucks Herald, 20 Nov. 1980"],
+    "labels": ["event", "church"]
   },
   {
     "date": "11 Nov. 1981",
@@ -3671,21 +3736,29 @@
     "labels": ["death", "person"]
   },
   {
-    "date": "1981",
+    "date": "25 May. 1981",
+    "title": "Village Fete at Shell Chemicals Farm",
+    "description": "Grand Spring fete held in the gardens of Lower Farm by permission of Shell Chemicals. All proceeds went to the church restoration fund. Despite it raining all day, £800 was raised.",
+    "references": ["Bucks Herald, 21 May 1981", "Bucks Herald, 28 May 1981"],
+    "labels": ["farm", "property", "fete", "fundraising"]
+  },
+  {
+    "date": "20 Nov. 1981",
     "title": "Bells Restored and Re-hung",
-    "description": "The church bells were restored by Whites of Appleton and re-hung. They were also converted to swing chiming",
+    "description": "The church bells were restored by Whites of Appleton and re-hung. They were also converted to swing chiming. The cost was £2,000.",
     "references": [
       "Parish church history pamphlet",
       "St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999",
-      "Resident's recollections"
+      "Resident's recollections",
+      "Bucks Herald, 26 Nov. 1981"
     ],
     "labels": ["church"]
   },
   {
     "date": "31 May 1982",
     "title": "Village Fete at Shell Chemicals Farm",
-    "description": "1,000 people attended the last village fete held in the grounds of Shell Chemicals experimental farm on Spring Bank Holiday, raising over £1,200. Sheep shearing and donkey rides were part of the entertainment.",
-    "references": ["Thame Gazette, 4 Jun 1982"],
+    "description": "1,000-1,500 people attended the last village fete held in the grounds of Shell Chemicals experimental farm on Spring Bank Holiday, raising over £1,200-£1,300. Sheep shearing and donkey rides were part of the entertainment.",
+    "references": ["Thame Gazette, 4 Jun 1982", "Bucks Herald, 3 Jun 1982"],
     "labels": ["farm", "property", "fete", "fundraising"]
   },
   {
@@ -3696,10 +3769,17 @@
     "labels": ["church", "repair"]
   },
   {
-    "date": "Sep. 1982",
+    "date": "22 Sep. 1982",
     "title": "Shellstar Sells Equipment",
-    "description": "Shellstar began selling off equipment from Lower Farm.",
-    "references": ["Bucks Examiner, 3 Sep 1982"],
+    "description": "Shellstar began selling off equipment from Lower Farm including 150 head of Grand Hereford cross store cattle, a 1979 New Holland combine, various tractors, fork lift and harvest machinery.",
+    "references": ["Bucks Examiner, 3 Sep 1982", "Bucks Herald, 9 Sept 1982"],
+    "labels": ["farm", "property"]
+  },
+  {
+    "date": "30 Sep. 1982",
+    "title": "Shell Chemicals farm sold",
+    "description": "Shell Chemicals announced they had sold the farm to a new owner who said the farm would be run by Mr. George Harper.",
+    "references": ["Bucks Herald, 30 Sept 1982"],
     "labels": ["farm", "property"]
   },
   {
