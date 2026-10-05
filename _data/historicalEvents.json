@@ -2116,7 +2116,7 @@
     "date": "16 Jun. 1909",
     "title": "Rose Fête Raises Funds for Spire",
     "description": "A 'Rose Fête' is held at the Horsenden Rectory to raise the final £100 needed for the spire. The event, opened by [Lady Susan Trueman](https://cheshammuseum.org.uk/blogs/women-who-have-made-a-difference-locally/#:~:text=Lady%20Susan%20Trueman%2C%20O.B.E.), featured stalls, dances, races, and a Punch and Judy show, successfully raising £40.",
-    "references": ["Bucks Herald"],
+    "references": ["Bucks Herald", "Bucks Advertiser, 19 Jun. 1909"],
     "labels": ["church"]
   },
   {
@@ -2492,6 +2492,7 @@
     "title": "Electric Lighting Faculty Granted",
     "description": "Faculty was granted to install electric lighting in the church. The oil lamp holders were re-purposed to become electric light fittings and these still exist today.",
     "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
+    "image": "/images/electrical-lighting-retrofit-oil-lamp.jpg",
     "labels": ["church"]
   },
   {
@@ -3179,9 +3180,12 @@
   {
     "date": "17 Apr 1959",
     "title": "Church organ for sale",
-    "description": "Offers requested for a walnut 'pedal organ' manufactured by the Chicago Cottage Organ Co. A separate photo, pre-1912, shows an organ resembling designs from the Chicago Cottage Organ Co.",
+    "description": "Offers requested for a walnut 'pedal organ' manufactured by the Chicago Cottage Organ Co. A separate photo, pre-1912, shows an organ resembling designs from the Chicago Cottage Organ Co. A plan of the church from the 1983 faculty shows the Harmonium in the chancel behind the pulpit.",
     "image": "/images/harmonium.jpg",
-    "references": ["Bucks Free Press, 17 Apr 1959"],
+    "references": [
+      "Bucks Free Press, 17 Apr 1959",
+      "[Faculty](https://heritagesearch.oxfordshire.gov.uk/records/DIOC/1/C/5/1587(2))"
+    ],
     "labels": ["church"]
   },
   {
@@ -3621,9 +3625,10 @@
   {
     "date": "2 Oct. 1978",
     "title": "Serious fire at Shell's Lower Farm",
-    "description": "A fire at 11:35pm resulted in significant damage to a cattle yard. 90 tonnes of hay and straw, a dutch barn and a Clayson combine were destroyed resulting in £18,000 damage. Foul play was suspected due to a spate of farm fires over 1978 in the Risborough area. An NFU meeting at the Shell Farm was held on 1st November 1978 to discuss the situation.",
+    "description": "A fire at 11:35pm resulted in significant damage to a cattle yard. 300 tonnes, the entire crop, of hay and straw, a dutch barn and a Clayson combine were destroyed resulting in £18,000 damage. Appliances were dispatched from Risborough, Haddenham and Aylesbury with three relief crews taking over the following morning. Foul play was suspected due to a spate of farm fires over 1978 in the Risborough area. An NFU meeting at the Shell Farm was held on 1st November 1978 to discuss the situation.",
     "references": [
-      "A guide to Lower Farm, Shell Chemicals, 1980 (MERL ref 3360, BOX 3/28)",
+      "A guide to Lower Farm, Shell Chemicals, 1980 ([MERL ref 3360, BOX 3/28](https://rdg.ent.sirsidynix.net.uk/client/en_GB/merl/search/detailnonmodal/ent:$002f$002fSD_ILS$002f0$002fSD_ILS:1565151/one))",
+      "Bucks Herald, 5 Oct 1978",
       "Bucks Free Press, 6 Oct 1978",
       "Bucks Herald, 9 Nov 1978"
     ],
@@ -3712,6 +3717,13 @@
     "title": "Church began fundraising for bell refurbishment",
     "description": "The target was £3,000 of which £1,500 had already been raised.",
     "references": ["Bucks Herald, 19 Jun 1980"],
+    "labels": ["church"]
+  },
+  {
+    "date": "7 Aug. 1980",
+    "title": "Quotation for bell refurbishment",
+    "description": "Quotation for bell refurbishment quoted £1,790+VAT for bell restoration.",
+    "references": ["[Faculty](https://heritagesearch.oxfordshire.gov.uk/records/DIOC/1/C/5/1587(2))"],
     "labels": ["church"]
   },
   {
