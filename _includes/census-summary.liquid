@@ -1,0 +1,55 @@
+{% if chart and occupations.size > 0 %}
+  <div class="census-summary">
+    <span id="census-ages" class="census-summary__target" aria-hidden="true"></span>
+    <span id="census-occupations" class="census-summary__target" aria-hidden="true"></span>
+    <div class="census-summary__nav census-summary__nav--ages">
+      <h2 id="census-ages-heading" tabindex="-1">Age and sex</h2>
+      <a href="#census-occupations">Occupations</a>
+    </div>
+    <div class="census-summary__nav census-summary__nav--occupations">
+      <a href="#census-ages">Age and sex</a>
+      <h2 id="census-occupations-heading" tabindex="-1">Occupations</h2>
+    </div>
+    <section class="census-summary__panel census-summary__panel--ages" aria-labelledby="census-ages-heading">
+      {% render "census-age-pyramid.liquid", chart: chart, embedded: true %}
+    </section>
+    <section
+      class="census-occupations census-summary__panel census-summary__panel--occupations"
+      aria-labelledby="census-occupations-heading"
+      tabindex="0">
+      <ul>
+        {% for o in occupations %}
+          <li>
+            <span class="census-occupations__label">{{ o.occupation }}</span>
+            <span class="census-occupations__count">{{ o.count }}
+              <span class="sr-only">
+                {% if o.count == 1 %}person{% else %}people{% endif %}
+              </span>
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+{% elsif chart %}
+  {% render "census-age-pyramid.liquid", chart: chart %}
+{% elsif occupations.size > 0 %}
+  <section
+    class="census-occupations"
+    aria-labelledby="census-occupations-heading"
+    tabindex="0">
+    <h2 id="census-occupations-heading">Occupations</h2>
+    <ul>
+      {% for o in occupations %}
+        <li>
+          <span class="census-occupations__label">{{ o.occupation }}</span>
+          <span class="census-occupations__count">{{ o.count }}
+            <span class="sr-only">
+              {% if o.count == 1 %}person{% else %}people{% endif %}
+            </span>
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endif %}

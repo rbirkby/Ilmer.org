@@ -1,0 +1,68 @@
+{% unless embedded %}
+<section class="census-ages" aria-labelledby="census-ages-heading" style="--census-age-max: {{ chart.axisMax }}">
+  <h2 id="census-ages-heading">Age and sex</h2>
+{% else %}
+<div class="census-ages" style="--census-age-max: {{ chart.axisMax }}">
+{% endunless %}
+  <p class="census-ages__summary">{{ chart.summary }}</p>
+  <div class="census-ages__chart">
+    <div class="census-ages__legend">
+      <span class="census-ages__key census-ages__key--male">Male <span class="census-ages__swatch" aria-hidden="true"></span></span>
+      <span></span>
+      <span class="census-ages__key census-ages__key--female"><span class="census-ages__swatch" aria-hidden="true"></span> Female</span>
+    </div>
+    <div class="census-ages__plot">
+      <div class="census-ages__grid" aria-hidden="true">
+        <div class="census-ages__grid-side census-ages__grid-side--male">
+          {%- for tick in chart.ticks -%}
+            <span class="census-ages__gridline{% if tick == 0 %} census-ages__gridline--axis{% endif %}{% if tick == chart.axisMax %} census-ages__gridline--max{% endif %}" style="--tick: {{ tick }}"></span>
+          {%- endfor -%}
+        </div>
+        <div></div>
+        <div class="census-ages__grid-side census-ages__grid-side--female">
+          {%- for tick in chart.ticks -%}
+            <span class="census-ages__gridline{% if tick == 0 %} census-ages__gridline--axis{% endif %}{% if tick == chart.axisMax %} census-ages__gridline--max{% endif %}" style="--tick: {{ tick }}"></span>
+          {%- endfor -%}
+        </div>
+      </div>
+      <ul class="census-ages__bands">
+        {%- for band in chart.bands -%}
+          <li>
+            <span class="census-ages__side census-ages__side--male" aria-hidden="true">
+              {%- if band.male > 0 -%}
+                <span class="census-ages__bar" style="--count: {{ band.male }}" title="{{ band.maleTitle }}"></span>
+              {%- endif -%}
+            </span>
+            <span class="census-ages__label">{{ band.label }}<span class="sr-only">, {{ band.maleLabel }}, {{ band.femaleLabel }}</span></span>
+            <span class="census-ages__side census-ages__side--female" aria-hidden="true">
+              {%- if band.female > 0 -%}
+                <span class="census-ages__bar" style="--count: {{ band.female }}" title="{{ band.femaleTitle }}"></span>
+              {%- endif -%}
+            </span>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+    <div class="census-ages__axis" aria-hidden="true">
+      <div class="census-ages__ticks census-ages__ticks--male">
+        {%- for tick in chart.ticks -%}
+          <span class="census-ages__tick{% if tick == 0 %} census-ages__tick--zero{% endif %}{% if tick == chart.axisMax %} census-ages__tick--max{% endif %}" style="--tick: {{ tick }}">{{ tick }}</span>
+        {%- endfor -%}
+      </div>
+      <div></div>
+      <div class="census-ages__ticks census-ages__ticks--female">
+        {%- for tick in chart.ticks -%}
+          <span class="census-ages__tick{% if tick == 0 %} census-ages__tick--zero{% endif %}{% if tick == chart.axisMax %} census-ages__tick--max{% endif %}" style="--tick: {{ tick }}">{{ tick }}</span>
+        {%- endfor -%}
+      </div>
+    </div>
+    <p class="census-ages__unit">Number of people</p>
+  </div>
+  {%- if chart.note -%}
+    <p class="census-ages__note">{{ chart.note }}</p>
+  {%- endif -%}
+{% unless embedded %}
+</section>
+{% else %}
+</div>
+{% endunless %}

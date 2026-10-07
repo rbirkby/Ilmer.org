@@ -13,6 +13,9 @@
   {% if content contains 'class="then-now"' %}
     <script type="module" src="{{ '/assets/js/then-now.js' | cacheBust }}"></script>
   {% endif %}
+  {% if tags contains 'census' %}
+    <script type="module" src="{{ '/assets/js/census-summary.js' | cacheBust }}"></script>
+  {% endif %}
   {% if layout == 'archive' or layout == 'parish-hub' or layout == 'post' or layout == '404' or layout == 'timeline' %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

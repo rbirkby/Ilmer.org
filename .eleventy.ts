@@ -10,6 +10,7 @@ import markdownItMarginNotes from './plugins/markdown-it-margin-notes.ts';
 import { createCacheBustFilter } from './plugins/cache-bust.ts';
 import { tableScroll } from './plugins/table-scroll.ts';
 import { censusOccupations } from './plugins/census-occupations.ts';
+import { censusAgePyramid } from './plugins/census-age-pyramid.ts';
 import { yearBarChart } from './plugins/year-bar-chart.ts';
 import { medianAge } from './plugins/median-age.ts';
 import { regnalYears } from './plugins/regnal-years.ts';
@@ -178,6 +179,8 @@ export default function (eleventyConfig: any) {
 
   /** Counts people per occupation from a census HTML table. */
   eleventyConfig.addFilter('censusOccupations', censusOccupations);
+  /** Age-and-sex bands from a census HTML table, for the population pyramid. */
+  eleventyConfig.addFilter('censusAgePyramid', censusAgePyramid);
   eleventyConfig.addFilter('tableScroll', tableScroll);
   /** Bar-chart geometry for event counts per year, zero-filled across the full year range. */
   eleventyConfig.addFilter('yearBarChart', yearBarChart);
