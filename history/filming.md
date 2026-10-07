@@ -61,3 +61,5 @@ The 1968 film starring Dick Van Dyke had a memorable scene filmed at the railway
     <input class="then-now__range" type="range" min="0" max="100" step="1" value="50" aria-label="Compare then and now: lane where the cars pass" aria-valuetext="50% film still, 50% January 2026">
   </div>
 </figure>
+
+Other "Now and Then" images featuring Ilmer are available at [ReelStreets.com](https://www.reelstreets.com/films/chitty-chitty-bang-bang/).

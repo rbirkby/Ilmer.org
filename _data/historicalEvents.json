@@ -175,6 +175,16 @@
     "labels": ["death", "manor", "person", "property"]
   },
   {
+    "date": "1306",
+    "title": "Ilmer had a windmill",
+    "description": "Ilmer had a windmill, out of repair. Later repaired 1342-3.",
+    "references": [
+      "Chancery Inquisition Post Mortem, 34, Edward I",
+      "[Bucks Heritage Portal](https://heritageportal.buckinghamshire.gov.uk/Monument/MBC11393)"
+    ],
+    "labels": ["property"]
+  },
+  {
     "date": "25 Nov. 1315",
     "title": "Manor Sold to Blacket",
     "description": "Thomas Fitz-Bernard sells the estate of Adynton', Ilmere and Aston' Bernard to John Blacket (or Blaket) but only to take posession once Thomas' wife Agatha had died. She died 1 Feb. 1333/4.",
@@ -4130,6 +4140,16 @@
     "description": "[Nicholas Parsons](https://www.oxforddnb.com/view/10.1093/odnb/9780198614128.001.0001/odnb-9780198614128-e-90000381685), actor, TV and radio presenter, and resident of Ilmer died.",
     "references": ["London Gazette, https://www.thegazette.co.uk/notice/3730232"],
     "labels": ["death", "media", "person"]
+  },
+  {
+    "date": "17 May 2021",
+    "title": "Tornado Hits Ilmer",
+    "description": "\n> At 1520 GMT, during a storm of thunder and hail, a probable T1/2 (mild to moderate) tornado caused damage at Ilmer along a track of 1km (L3) WNW to ESE, from Bumpers Farm (SP762059) to the Railway Bridge (SP771055). After observing rotation in approaching storm clouds a witness experienced the wind suddenly rushing through his house and observed debris and birds swirling in the air. A mature horse chestnut tree was snapped off and its branches scattered in different directions; the roof and door of a barn were damaged, solar farm panels were dislodged, and there was minor damage in gardens.",
+    "image": "/images/tornado.avif",
+    "references": [
+      "[The Tornado and Storm Research Organisation](https://www.torro.org.uk/pdf/torro_whirlwind_report_Brown2021.pdf#page=11)"
+    ],
+    "labels": ["event"]
   },
   {
     "date": "14 Mar. 2023",
