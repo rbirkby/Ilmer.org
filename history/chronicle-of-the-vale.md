@@ -2,7 +2,6 @@
 layout: post
 title: 'Chronicle of the Vale'
 description: 'A “Doomsday” survey of life in the villages of the Vale of Aylesbury in the mid-1980’s.'
-category: history
 tags: [history, post]
 image: images/chronicle-of-the-vale.jpg
 ---

@@ -2,7 +2,6 @@
 layout: post
 title: 'Farms'
 description: 'A farming community.'
-category: history
 tags: [farming]
 ---
 

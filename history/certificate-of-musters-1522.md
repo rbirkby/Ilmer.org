@@ -2,7 +2,6 @@
 layout: post
 title: Ilmer and Aston Mullins, Certificate of Musters, 1522
 description: The Certificate of Musters in Buckinghamshire for 1522, A C Chibnall, 1973
-category: history
 tags: [military]
 ancestorCrumb1Source: { label: 'Military', url: '/history/military/' }
 ---

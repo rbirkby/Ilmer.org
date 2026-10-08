@@ -2,7 +2,6 @@
 layout: post
 title: 'Lockington'
 description: 'An abandoned hamlet, once home to 33 people, lies secluded in undergrowth just off a popular footpath.'
-category: history
 tags: [farming, post]
 image: images/lockington-photo.jpg
 ---

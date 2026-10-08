@@ -2,7 +2,6 @@
 layout: post
 title: Coldharbour
 description: Along the bridleway to Towersey is a copse which hides an historic settlement with a sad story.
-category: history
 tags: [farm, fatality, death]
 image: images/coldharbour-barn.jpg
 lightbox: true

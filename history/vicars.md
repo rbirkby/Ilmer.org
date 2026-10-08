@@ -2,7 +2,6 @@
 layout: post
 title: Vicars
 description: "Vicars of St Peter's Ilmer"
-category: history
 tags: [vicar, history, church]
 image: images/church-drawing-unknown-1978.avif
 ancestorCrumb1Source: { label: St Peter's Church, url: '/history/st-peters/' }

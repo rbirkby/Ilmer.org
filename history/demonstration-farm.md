@@ -2,7 +2,6 @@
 layout: post
 title: Demonstration Farm
 description: From 1960 until 1982, Lower Farm and Bumpers were a demonstration farm owned by oil company Shell
-category: history
 tags: [history, farm]
 image: images/shellstar-training-centre.avif
 ancestorCrumb1Source: { label: 'Fields and Farming', url: '/history/fields-farming/' }

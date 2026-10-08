@@ -2,7 +2,6 @@
 layout: post
 title: Burials
 description: "Full transcript of burials recorded at St Peter's Ilmer, 1602-1981."
-category: history
 tags: [history]
 image: images/IlmerChurch-RoyManser-1984.avif
 ancestorCrumb2Source: { label: 'Parish Records', url: '/history/parish-records/' }

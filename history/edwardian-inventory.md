@@ -2,7 +2,6 @@
 layout: post
 title: Edwardian Inventory
 description: 'The Edwardian Inventory of 1552'
-category: history
 tags: [history, church]
 image: images/church-drawing-unknown-1978.avif
 ancestorCrumb1Source: { label: St Peter's Church, url: '/history/st-peters/' }

@@ -2,7 +2,6 @@
 layout: post
 title: 'Domesday'
 description: 'The Domesday book of 1086'
-category: history
 tags: [post]
 image: images/domesday-buk-04.png
 ---

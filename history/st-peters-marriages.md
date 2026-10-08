@@ -2,7 +2,6 @@
 layout: post
 title: Marriages
 description: "Full transcript of marriages recorded at St Peter's Ilmer, 1600-1969."
-category: history
 tags: [history]
 image: images/IlmerChurch-RoyManser-1984.avif
 ancestorCrumb2Source: { label: 'Parish Records', url: '/history/parish-records/' }

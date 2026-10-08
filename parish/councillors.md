@@ -2,7 +2,6 @@
 layout: post
 title: 'Parish Councillors'
 description: 'The parish councillors of Ilmer after the creation of modern parish councils by the Local Government Act of 1894'
-category: history
 tags: []
 image: images/parishcouncil-hero.avif
 ancestorCrumb1Source: { 'label': 'Parish Archive', 'url': '/parish/' }

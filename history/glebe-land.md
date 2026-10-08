@@ -2,7 +2,6 @@
 layout: post
 title: 'Glebe Land'
 description: 'The history of the Church Close'
-category: history
 tags: [church, history]
 image: images/church-drawing2-unknown-1978.avif
 ancestorCrumb1Source: { label: St Peter's Church, url: '/history/st-peters/' }

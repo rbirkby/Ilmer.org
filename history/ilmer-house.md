@@ -2,7 +2,6 @@
 layout: post
 title: 'Ilmer House'
 description: 'The history of Ilmer House'
-category: history
 tags: [history, post, property]
 image: images/ilmerhouse1932.jpg
 lightbox: true

@@ -2,7 +2,6 @@
 layout: post
 title: 'Custumal of 1337/38'
 description: 'The 1337/38 Custumal of Ilmer held in the national archives [SC 11/79](https://discovery.nationalarchives.gov.uk/details/r/C5190417)'
-category: history
 tags: []
 ---
 

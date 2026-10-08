@@ -2,7 +2,6 @@
 layout: post
 title: 'Courts and Crime'
 description: 'Courts, crime and misdemeanours.'
-category: history
 tags: [post]
 image: images/quarter-sessions.avif
 ---

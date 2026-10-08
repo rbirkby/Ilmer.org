@@ -2,7 +2,6 @@
 layout: archive
 title: 'Raper Charity Ledger'
 description: 'Explore the [yearly accounts](https://archives.buckinghamshire.gov.uk/records/PR_114/25/1) of the [Raper Charity](https://register-of-charities.charitycommission.gov.uk/en/charity-search/-/charity-details/242374/full-print), bequeathed in 1881 by Sarah Maria Clotilda Raper for the annual benefit of the poor.'
-category: history
 tags: [raper-charity]
 hideAncestorCrumb2: true
 breadcrumbUseDate: false

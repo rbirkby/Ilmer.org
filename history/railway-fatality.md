@@ -2,7 +2,6 @@
 layout: post
 title: 'Railway Fatality'
 description: 'Archived at the National Archives, Kew as [RAIL 1053/130/167](https://discovery.nationalarchives.gov.uk/details/r/C10587956).'
-category: history
 tags: [railway, bridge, halt]
 ancestorCrumb1Source: { label: 'Railway', url: '/history/railway/' }
 ---

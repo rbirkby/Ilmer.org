@@ -2,7 +2,6 @@
 layout: post
 title: 'Overseers and surveyors of the highway'
 description: 'The overseers of Ilmer'
-category: history
 tags: []
 image: images/parishcouncil-hero.avif
 ancestorCrumb1Source: { 'label': 'Parish Archive', 'url': '/parish/' }

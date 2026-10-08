@@ -2,7 +2,6 @@
 layout: post
 title: 'The market garden'
 description: 'A thriving source of employment for many residents.'
-category: history
 tags: [farming, flowers]
 ---
 

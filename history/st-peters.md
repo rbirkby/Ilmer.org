@@ -2,7 +2,6 @@
 layout: post
 title: St Peter's Church
 description: '12th century church in Ilmer, Buckinghamshire, England.'
-category: history
 tags: [post]
 image: images/VicarageChurch.avif
 ---

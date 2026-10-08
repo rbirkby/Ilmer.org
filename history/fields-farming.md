@@ -2,7 +2,6 @@
 layout: post
 title: 'Fields and farming'
 description: 'The fields and farms of Ilmer'
-category: history
 tags: [history, post]
 image: images/1778PlanOfTheParishOfIlmer.avif
 scrollAllTables: true

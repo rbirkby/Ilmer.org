@@ -2,7 +2,6 @@
 layout: post
 title: 'Glebe Terriers'
 description: 'Glebe terriers of St Peter’s Church, Ilmer.'
-category: history
 tags: [church, history]
 image: images/church-vicarage-taunt-front.avif
 ancestorCrumb1Source: { label: St Peter's Church, url: '/history/st-peters/' }

@@ -2,7 +2,6 @@
 layout: post
 title: Baptisms
 description: "Full transcript of baptisms recorded at St Peter's Ilmer, 1575-1982."
-category: history
 tags: [history]
 image: images/IlmerChurch-RoyManser-1984.avif
 ancestorCrumb2Source: { label: 'Parish Records', url: '/history/parish-records/' }

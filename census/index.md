@@ -1,9 +1,7 @@
 ---
 layout: post
 title: 'Censuses'
-subtitle: 'Censuses from X to X'
 description: 'Historic censuses of Ilmer.'
-category: history
 tags: [post]
 image: images/census.avif
 headerUseCensus: true

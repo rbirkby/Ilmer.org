@@ -2,7 +2,6 @@
 layout: post
 title: War Dead
 description: A record of those who lost their lives during times of conflict
-category: history
 tags: [military]
 ancestorCrumb1Source: { label: 'Military', url: '/history/military/' }
 lightbox: true
