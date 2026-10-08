@@ -454,6 +454,26 @@
     "labels": ["church", "person", "vicar"]
   },
   {
+    "date": "22 Oct. 1425",
+    "title": "Survey of William Moleyns' estate",
+    "description": "Inquisitions post mortem records 160 acres of arable land, 21 acres of meadow, pasture called “le Grove”, rents from free tenants, and customary tenants paying six capons (male chicken) and one hen at Christmas.",
+    "references": [
+      "[National Archives, C 139/17/29](https://discovery.nationalarchives.gov.uk/details/r/C6158713)",
+      "[Mapping the Medieval Countryside](https://inquisitionspostmortem.ac.uk/view/inquisition/22-451/454.html#CIPM-DOC-22-454)"
+    ],
+    "labels": ["property"]
+  },
+  {
+    "date": "30 Sep. 1429",
+    "title": "A second survey of William Moleyns' estate",
+    "description": "Inquisitions post mortem records the same details as the previous survey. It also records a court every 3 weeks. It also ordered Nicholas Clopton as the household administrator (seneschal), be responsible for ensuring rents and debts are paid by seizing property.",
+    "references": [
+      "[National Archives, C 139/45/38](https://discovery.nationalarchives.gov.uk/details/r/C6159087)",
+      "[Mapping the Medieval Countryside](https://inquisitionspostmortem.ac.uk/view/inquisition/23-389/#CIPM-DOC-23-392)"
+    ],
+    "labels": ["property"]
+  },
+  {
     "date": "1429",
     "title": "William de Moleyns is killed during the siege of Orleans",
     "description": "William de Moleyns dies at the siege of Orleans during the hundred years war. He is succeeded by his only daughter Eleanor (Alianor) aged 3 years old. She marries Robert de Hungerford.",
@@ -1987,6 +2007,13 @@
     "labels": ["auction", "farm", "property", "sale"]
   },
   {
+    "date": "20 Nov. 1905",
+    "title": "Railway opened for goods traffic",
+    "description": "The Great Western and Great Central Joint Railway opened for goods traffic north of Princes Risborough, through Ilmer.",
+    "references": [],
+    "labels": ["railway"]
+  },
+  {
     "date": "1905-1910",
     "title": "Lodge Cottages Built",
     "description": "1 and 2 Lodge Cottages (site of Folly Cottage) were built.",
@@ -1997,7 +2024,7 @@
   },
   {
     "date": "2 Apr. 1906",
-    "title": "Great Western and Great Central Joint Railway Line Opens through Ilmer",
+    "title": "Great Western and Great Central Joint Railway Line Opens for passengers through Ilmer",
     "description": "The Great Western and Great Central Joint Railway line opened through Ilmer. The line was built to provide a more direct route from London to the Midlands and North of England. The line was built on an embankment over the village, with a bridge over the road to the church. The line is still in use today.",
     "references": [],
     "labels": ["railway"]
@@ -3145,6 +3172,13 @@
     "description": "Lower and Bumpers farms were registered in HM land registry by Claridge.",
     "references": ["[www.thegazette.co.uk](https://www.thegazette.co.uk/London/issue/40433/page/1635)"],
     "labels": ["farm", "land", "property"]
+  },
+  {
+    "date": "21 Jun 1955",
+    "title": "Church listed",
+    "description": "St Peters, Ilmer is first listed Grade II*.",
+    "references": ["[Historic England](https://historicengland.org.uk/listing/the-list/list-entry/1332033)"],
+    "labels": ["church", "property"]
   },
   {
     "date": "1955",
