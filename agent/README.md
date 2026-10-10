@@ -65,10 +65,10 @@ Redeploy whenever the site's content changes, so that the agent's corpus stays c
 
 Set these environment variables when running `npm run deploy` or `npm run dev`. They are read by `cloudflare.config.ts`.
 
-| Variable                         | Default                         | Purpose                                            |
-| -------------------------------- | ------------------------------- | -------------------------------------------------- |
-| `ILMER_POPPY_MODEL`              | `@cf/moonshotai/kimi-k2.7-code` | Workers AI model                                   |
-| `ILMER_POPPY_DAILY_PROMPT_LIMIT` | `500`                           | Prompts per UTC day across all visitors and agents |
-| `ILMER_POPPY_OFFLINE`            | unset                           | `true` omits Workers AI for credential-free dev    |
+| Variable                         | Default                     | Purpose                                            |
+| -------------------------------- | --------------------------- | -------------------------------------------------- |
+| `ILMER_POPPY_MODEL`              | `@cf/zai-org/glm-5.3-flash` | Workers AI model                                   |
+| `ILMER_POPPY_DAILY_PROMPT_LIMIT` | `500`                       | Prompts per UTC day across all visitors and agents |
+| `ILMER_POPPY_OFFLINE`            | unset                       | `true` omits Workers AI for credential-free dev    |
 
 The daily limit caps Workers AI spend, because the page is public and anonymous. Visitors see a friendly message once it is reached.

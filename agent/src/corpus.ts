@@ -135,7 +135,8 @@ function snippet(text: string, terms: string[], width = 320) {
 
 let loaded: Promise<Corpus> | undefined;
 export function corpus(env: Env) {
-  loaded ??= env.ASSETS.fetch('https://assets.local/corpus.json')
+  // Fetched on the Worker's own origin: Vite's dev server refuses unknown hosts with 403.
+  loaded ??= env.ASSETS.fetch(new URL('/corpus.json', env.ORIGIN))
     .then(async (response) => {
       if (!response.ok) throw new Error(`corpus.json unavailable (${response.status})`);
       const { pages } = (await response.json()) as { pages: Page[] };

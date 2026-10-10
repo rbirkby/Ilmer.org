@@ -110,7 +110,20 @@ export class HistoryAgent extends Agent<Env> {
       ))
     )
       fail('daily_limit_reached', 429);
-    return this.session().submit(prompt, { operationId, whenBusy });
+    const session = this.session();
+    await this.useConfiguredModel(session);
+    return session.submit(prompt, { operationId, whenBusy });
+  }
+
+  /**
+   * Pi fixes a session's model when the session is created, so after MODEL changes, existing visitor sessions
+   * and Poppy conversations are moved to it before their next prompt (never mid-run).
+   */
+  private async useConfiguredModel(session: ReturnType<HistoryAgent['session']>) {
+    const key = 'model:' + session.id;
+    if (this.ctx.storage.kv.get<string>(key) === this.env.MODEL || (await session.busy())) return;
+    await session.setModel(this.ai(this.env.MODEL));
+    this.ctx.storage.kv.put(key, this.env.MODEL);
   }
 
   /** The operation's outcome, waiting up to `timeoutMs` for it to settle. */
