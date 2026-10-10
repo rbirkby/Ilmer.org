@@ -25,7 +25,7 @@
     "streamdown": "^2.7.0"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^2.0.0-beta.sha-91c870c02",
+    "@cloudflare/vite-plugin": "2.0.0-beta.sha-91c870c02",
     "@cloudflare/workers-types": "^5.20261010.1",
     "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.3.0",
