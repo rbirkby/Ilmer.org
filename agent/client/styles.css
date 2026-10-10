@@ -1,0 +1,111 @@
+@import 'tailwindcss';
+@import '@cloudflare/kumo/styles/tailwind';
+/* Tailwind ignores node_modules by default, so source Kumo and Streamdown for class extraction. */
+@source "../node_modules/@cloudflare/kumo/dist/**/*.{js,jsx,ts,tsx}";
+@source "../node_modules/streamdown/dist/*.js";
+
+/* Ilmer Past archive palette (www.ilmer.org assets/css/style.css) mapped onto Kumo's tokens. */
+:root[data-mode='light'] {
+  --color-kumo-brand: #2f4b30;
+  --color-kumo-brand-hover: #1a2f22;
+  --color-kumo-base: #fbf8f1;
+  --color-kumo-elevated: #f6f1e6;
+  --color-kumo-canvas: #f6f1e6;
+  --color-kumo-line: #e2d8c1;
+  --color-kumo-hairline: #e2d8c1;
+  --color-kumo-contrast: #2f4b30;
+  --ilmer-link: #b3541a;
+}
+:root[data-mode='dark'] {
+  --color-kumo-brand: #4f7a50;
+  --color-kumo-brand-hover: #608f61;
+  --color-kumo-base: #1b1d18;
+  --color-kumo-elevated: #131511;
+  --color-kumo-canvas: #131511;
+  --color-kumo-line: #33372c;
+  --color-kumo-hairline: #33372c;
+  --color-kumo-contrast: #e9e3d3;
+  --ilmer-link: #e39a62;
+}
+
+html,
+body,
+#root {
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+}
+body {
+  min-height: 100vh;
+  font-family: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
+}
+.ilmer-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Streamdown theme bridge: shadcn-style tokens to the archive palette. */
+.sd-theme {
+  --color-primary: var(--color-kumo-brand);
+  --color-primary-foreground: #fff;
+  --color-foreground: light-dark(#1d1d1a, #ece6d6);
+  --color-background: var(--color-kumo-base);
+  --color-muted: var(--color-kumo-elevated);
+  --color-muted-foreground: light-dark(#766c5c, #a99f8c);
+  --color-border: var(--color-kumo-line);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+.sd-theme a {
+  color: var(--ilmer-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.sd-theme .rounded-xl:has(pre) {
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0.5rem 0;
+  background: none;
+}
+.sd-theme .rounded-xl:has(pre) > :not(:has(pre)):not(pre) {
+  display: none !important;
+}
+.sd-theme pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  background: var(--color-muted);
+  border-radius: 0.375rem;
+  padding: 0.75rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  border: none;
+  margin: 0;
+}
+.sd-theme pre code {
+  all: unset;
+  font: inherit;
+  /* `all: unset` also wipes Streamdown's line-number counter; restore it. */
+  counter-reset: line;
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.25;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.streaming-cursor {
+  display: inline-block;
+  width: 0.5rem;
+  height: 1rem;
+  margin-left: 0.15rem;
+  vertical-align: text-bottom;
+  background: var(--color-kumo-brand);
+  animation: pulse 0.8s step-start infinite;
+}

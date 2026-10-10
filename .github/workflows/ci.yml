@@ -78,6 +78,61 @@ jobs:
           path: _site/
           retention-days: 1
 
+  agent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: build
+    defaults:
+      run:
+        working-directory: agent
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: 'agent/.node-version'
+          cache: npm
+          cache-dependency-path: agent/package-lock.json
+
+      - name: Install agent dependencies
+        run: npm ci
+
+      - name: Download built site
+        uses: actions/download-artifact@v7
+        with:
+          name: site
+          path: _site/
+
+      - name: Type-check
+        run: npm run check
+
+      # Without Workers AI, offline dev serves everything but model answers, so the
+      # end-to-end Poppy tests run with no Cloudflare credentials.
+      - name: Start offline dev server
+        run: |
+          ILMER_POPPY_OFFLINE=true npm run dev > dev.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:8787/.well-known/poppy.json > /dev/null && exit 0
+            sleep 2
+          done
+          cat dev.log
+          exit 1
+
+      - name: Run unit and end-to-end tests
+        env:
+          POPPY_E2E_ORIGIN: http://localhost:8787
+        run: npm test
+
+      - name: Show dev server log
+        if: failure()
+        run: cat dev.log
+
+      # Builds the Worker and its knowledge corpus from the built site; uploads nothing.
+      - name: Dry-run deploy
+        run: npm run deploy:dry-run
+
   accessibility:
     runs-on: ubuntu-latest
     timeout-minutes: 10
