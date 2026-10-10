@@ -440,13 +440,6 @@
     "labels": ["church", "person", "vicar"]
   },
   {
-    "date": "1424",
-    "title": "Sir William de Moleyns dies",
-    "description": "William de Moleyns dies and the manor passes to his son William who was killed in 1429 at the siege of Orleans during the hundred years war.",
-    "references": ["Victoria History of the County of Buckingham vol3, stoke poges"],
-    "labels": ["manor", "person"]
-  },
-  {
     "date": "4 Aug. 1424",
     "title": "William Gibbes formally admitted as vicar",
     "description": "William Gibbes is formally admitted as the Vicar of Ilmer.",
@@ -454,8 +447,18 @@
     "labels": ["church", "person", "vicar"]
   },
   {
+    "date": "8 Jun. 1425",
+    "title": "Sir William de Moleyns dies",
+    "description": "William de Moleyns dies and the manor passes to his son William who was killed in 1429 at the siege of Orleans during the hundred years war.",
+    "references": [
+      "Victoria History of the County of Buckingham vol3, stoke poges",
+      "[History of Parliament](https://www.historyofparliamentonline.org/volume/1386-1421/member/moleyns-sir-william-1378-1425)"
+    ],
+    "labels": ["manor", "person"]
+  },
+  {
     "date": "22 Oct. 1425",
-    "title": "Survey of William Moleyns' estate",
+    "title": "Survey of the elder William Moleyns' estate",
     "description": "Inquisitions post mortem records 160 acres of arable land, 21 acres of meadow, pasture called “le Grove”, rents from free tenants, and customary tenants paying six capons (male chicken) and one hen at Christmas.",
     "references": [
       "[National Archives, C 139/17/29](https://discovery.nationalarchives.gov.uk/details/r/C6158713)",
@@ -464,21 +467,24 @@
     "labels": ["property"]
   },
   {
+    "date": "8 May 1429",
+    "title": "William de Moleyns is killed during the siege of Orleans",
+    "description": "William de Moleyns dies at the siege of Orleans during the hundred years war. He is succeeded by his only daughter Eleanor (Alianor) aged 3 years old. She marries Robert de Hungerford.",
+    "references": [
+      "Victoria History of the County of Buckingham vol3, stoke poges",
+      "[FindAGrave.com](https://www.findagrave.com/memorial/111378008/william-moleyns)"
+    ],
+    "labels": ["manor", "person"]
+  },
+  {
     "date": "30 Sep. 1429",
-    "title": "A second survey of William Moleyns' estate",
+    "title": "Survey of William Moleyns' estate",
     "description": "Inquisitions post mortem records the same details as the previous survey. It also records a court every 3 weeks. It also ordered Nicholas Clopton as the household administrator (seneschal), be responsible for ensuring rents and debts are paid by seizing property.",
     "references": [
       "[National Archives, C 139/45/38](https://discovery.nationalarchives.gov.uk/details/r/C6159087)",
       "[Mapping the Medieval Countryside](https://inquisitionspostmortem.ac.uk/view/inquisition/23-389/#CIPM-DOC-23-392)"
     ],
     "labels": ["property"]
-  },
-  {
-    "date": "1429",
-    "title": "William de Moleyns is killed during the siege of Orleans",
-    "description": "William de Moleyns dies at the siege of Orleans during the hundred years war. He is succeeded by his only daughter Eleanor (Alianor) aged 3 years old. She marries Robert de Hungerford.",
-    "references": ["Victoria History of the County of Buckingham vol3, stoke poges"],
-    "labels": ["manor", "person"]
   },
   {
     "date": "1440",
@@ -620,7 +626,10 @@
     "date": "c. 1500",
     "title": "First Bell Cast",
     "description": "The first of the three church bells was cast. It is inscribed *Sancta Margareta ora pro nobis*. Between 1494-1509, William Hasylwood, the likely founder of this bell, was active as a bell caster at his foundry in Reading",
-    "references": ["The church bells of Buckinghamshire, Cocks, 1897"],
+    "references": [
+      "The church bells of Buckinghamshire, Cocks, 1897",
+      "[Dove's Guide](https://dove.cccbr.org.uk/bells?founder=720)"
+    ],
     "labels": ["church"]
   },
   {

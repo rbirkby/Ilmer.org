@@ -10,7 +10,7 @@ scrollAllTables: true
 
 | Name                                            | Conflict                | Location               | Date              | Casualty Record       | Age |
 | ----------------------------------------------- | ----------------------- | ---------------------- | ----------------- | --------------------- | --: |
-| Sir William de Moleyns                          | Hundred Years War       | [Siege of Orleans][1]  | 1429              |                       |     |
+| Sir William de Moleyns                          | Hundred Years War       | [Siege of Orleans][1]  | 8 May 1429        |                       |     |
 | [Robert 3rd Baron Hungerford (Lord Moleyns)][2] | [Wars of the Roses][3]  | [Battle of Hexam][4]   | May 18 1464       | Beheaded at Newcastle | ~35 |
 | [Sir Thomas Hungerford][5]                      | [Wars of the Roses][3]  | Salisbury              | January 17 1469   | Beheaded              | ~29 |
 | [Robert Dormer, 1st Earl of Carnarvon][6]       | First English Civil War | [Battle of Newbury][7] | September 20 1643 |                       | ~33 |
