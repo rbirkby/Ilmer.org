@@ -15,9 +15,9 @@ The water tower was a prominent feature, shown here in 2015 just before it was d
 
 In 1955, residents complained that Ilmer was still not on mains water supply. The deep bore water supply feeding the nursery water tower was unreliable - sometimes supplying no water and at other times being muddy[^3]. It had a high alkaline content and sometimes he was able to pump 600 gallons an hour[^4].
 
-[^3]: Bucks Advertiser, 6th May 1955.
+[^3]: _Bucks Advertiser_, 6th May 1955.
 
-[^4]: Bucks Herald, 6th May 1955
+[^4]: _Bucks Herald_, 6th May 1955
 
 ## The nursery from the air
 
@@ -29,9 +29,11 @@ These views of Ilmer Nurseries and its glasshouses were photographed by Aerofilm
 
 ## Robert Douglas Goodchild's nursery
 
-Construction of Ilmer Nurseries began in 1933. Goodchild expanded it in 1936 by building two further greenhouses. He grew flowers, including gladioli, but the business struggled financially in the run up to WWII due to the Munich crisis. In 1939, he appeared at Aylesbury Bankruptcy Court over the nursery. The court heard that starting it had cost £3,100, and that he had been growing mostly gladioli. The nursery, Brick Pits and Cottage were put up for sale the following year.[^1] In 1943, the Bankruptcy was discharged and Goodchild moved to Hertfordshire.
+Construction of Ilmer Nurseries began in 1933. Goodchild expanded it in 1936 by building two further greenhouses, in total 18,750 square feet[^5]. He grew flowers, including gladioli, but the business struggled financially in the run up to WWII due to the Munich crisis. In 1939, he appeared at Aylesbury Bankruptcy Court over the nursery. The court heard that starting it had cost £3,100, and that he had been growing mostly gladioli. The 6 ¼ acre nursery, Brick Pits and Cottage were put up for sale the following year.[^1] In 1943, the Bankruptcy was discharged and Goodchild moved to Hertfordshire.
 
 [^1]: _Bucks Herald_, 24 November 1939; _Bedfordshire Times_, 19 July 1940.
+
+[^5]: _Bedfordshire Times_, 19 July 1940
 
 ## Leuw and Lawrence
 
