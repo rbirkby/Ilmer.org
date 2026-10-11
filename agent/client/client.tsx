@@ -301,6 +301,7 @@ function App() {
 
       <div className="shrink-0 border-t border-kumo-line bg-kumo-base">
         <form
+          autoComplete="off"
           onSubmit={(event) => {
             event.preventDefault();
             submit();
@@ -319,6 +320,12 @@ function App() {
               }}
               placeholder={running ? 'Ask a follow-up…' : 'Ask about Ilmer’s history'}
               aria-label="Your question"
+              // A chat prompt, never a credential: keep browser and password-manager autofill away.
+              autoComplete="off"
+              data-1p-ignore
+              data-lpignore="true"
+              data-bwignore
+              data-form-type="other"
               disabled={!connected}
               maxLength={4000}
               rows={2}
