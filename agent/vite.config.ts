@@ -10,7 +10,7 @@ function corpus(): Plugin {
     name: 'ilmer-corpus',
     applyToEnvironment: (environment) => environment.name === 'client',
     buildStart() {
-      execFileSync(process.execPath, ['scripts/build-corpus.mjs'], { stdio: 'inherit' });
+      execFileSync(process.execPath, ['scripts/build-corpus.ts'], { stdio: 'inherit' });
     }
   };
 }

@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Ilmer history agent (Pi Durable) with a Poppy endpoint, served at poppy.ilmer.org",
   "scripts": {
-    "corpus": "node scripts/build-corpus.mjs",
+    "corpus": "node scripts/build-corpus.ts",
     "dev": "ILMER_POPPY_LOCAL=true cf dev",
     "build": "vite build",
     "check": "tsc --noEmit && tsc --noEmit -p client/tsconfig.json && tsc --noEmit -p tests/tsconfig.json",

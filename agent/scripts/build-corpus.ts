@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import type { Page } from '../src/corpus.ts';
 
 const agentDir = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const siteRoot = path.dirname(agentDir);
@@ -17,9 +18,19 @@ if (!existsSync(siteDir) || process.env.CORPUS_REBUILD_SITE === 'true') {
   execFileSync('npm', ['run', 'build'], { cwd: siteRoot, stdio: 'inherit' });
 }
 
-const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', ndash: '–', mdash: '—', hellip: '…' };
-export function decode(text) {
-  return text.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, code) => {
+const ENTITIES: Record<string, string> = {
+  amp: '&',
+  lt: '<',
+  gt: '>',
+  quot: '"',
+  apos: "'",
+  nbsp: ' ',
+  ndash: '–',
+  mdash: '—',
+  hellip: '…'
+};
+export function decode(text: string) {
+  return text.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, code: string) => {
     if (code[0] === '#') {
       const value = code[1].toLowerCase() === 'x' ? parseInt(code.slice(2), 16) : parseInt(code.slice(1), 10);
       return Number.isFinite(value) ? String.fromCodePoint(value) : match;
@@ -28,7 +39,7 @@ export function decode(text) {
   });
 }
 
-export function htmlToText(html) {
+export function htmlToText(html: string) {
   return decode(
     html
       .replace(/<(script|style|noscript|svg|template)[\s\S]*?<\/\1>/gi, ' ')
@@ -45,7 +56,7 @@ export function htmlToText(html) {
     .trim();
 }
 
-export function extractPage(html) {
+export function extractPage(html: string): Omit<Page, 'url'> {
   const title = decode(html.match(/<title>([^<]*)<\/title>/i)?.[1] ?? '')
     .replace(/\s+[–-]\s+Ilmer Past$/, '')
     .trim();
@@ -55,7 +66,7 @@ export function extractPage(html) {
   return { title, description, text: htmlToText(main) };
 }
 
-function* walk(dir) {
+function* walk(dir: string): Generator<string> {
   for (const name of readdirSync(dir)) {
     const full = path.join(dir, name);
     if (statSync(full).isDirectory()) yield* walk(full);
@@ -63,13 +74,13 @@ function* walk(dir) {
   }
 }
 
-function urlFor(file) {
+function urlFor(file: string) {
   const rel = '/' + path.relative(siteDir, file).split(path.sep).join('/');
   return rel.endsWith('/index.html') ? rel.slice(0, -'index.html'.length) : rel;
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const pages = [];
+  const pages: Page[] = [];
   for (const file of walk(siteDir)) {
     const url = urlFor(file);
     if (SKIP.some((pattern) => pattern.test(url))) continue;

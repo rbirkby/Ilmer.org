@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { extractPage, htmlToText } from '../scripts/build-corpus.mjs';
+import { extractPage, htmlToText } from '../scripts/build-corpus.ts';
 import { Corpus, tokenize } from '../src/corpus.ts';
 
 const pages = [

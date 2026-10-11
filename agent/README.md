@@ -21,7 +21,7 @@ graph LR
 - **Pi Durable agent** (`src/agent.ts`). Each website visitor and each Poppy conversation gets its own `HistoryAgent` Durable Object. Each one runs Pi through the Agents SDK's `PiHarness`. Prompts are submitted durably, so a run survives the object being evicted. The agent has two read-only tools:
   - `search_site`: BM25 search over the site.
   - `read_page`: reads one page in windows of up to 8,000 characters.
-- **Knowledge.** `scripts/build-corpus.mjs` takes the `<main>` text of every built page in `../_site`, so URLs match the live site exactly. The result is written to `public/corpus.json` (by a Vite plugin in `vite.config.ts`), which the Worker reads through its assets binding. It is not served publicly. The corpus is rebuilt on every deploy; set `CORPUS_REBUILD_SITE=true` to rebuild `_site` first.
+- **Knowledge.** `scripts/build-corpus.ts` takes the `<main>` text of every built page in `../_site`, so URLs match the live site exactly. The result is written to `public/corpus.json` (by a Vite plugin in `vite.config.ts`), which the Worker reads through its assets binding. It is not served publicly. The corpus is rebuilt on every deploy; set `CORPUS_REBUILD_SITE=true` to rebuild `_site` first.
 - **Poppy receiver** (`src/poppy.ts`, `src/state.ts`). Any personal agent can connect:
   - Its `client_id` is an HTTPS URL to its client metadata.
   - It authenticates with `private_key_jwt` (ES256) and gets a DPoP-bound Session Token through the JWT bearer grant.

@@ -1,4 +1,4 @@
-// The Ilmer Past site as searchable text. scripts/build-corpus.mjs writes public/corpus.json at build time;
+// The Ilmer Past site as searchable text. scripts/build-corpus.ts writes public/corpus.json at build time;
 // it is read through the ASSETS binding (never routed publicly) and indexed once per isolate.
 
 export type Page = { url: string; title: string; description: string; text: string };
