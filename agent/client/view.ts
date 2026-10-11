@@ -1,6 +1,6 @@
 import type { AssistantMessage } from '@earendil-works/pi-ai';
 import type { AgentEvent, EntryRecord, MessageChange } from '@earendil-works/pi-durable';
-import { projectEntries, projectEntry, projectMessage, type PiMessage, type PiMessagePart } from './transcript';
+import { projectEntries, projectEntry, projectMessage, type PiMessage, type PiMessagePart } from './transcript.ts';
 
 /** A tool call running now, with its streamed output. */
 export type PiRunningTool = {

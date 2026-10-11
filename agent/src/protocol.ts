@@ -39,12 +39,14 @@ export async function sha256(value: string) {
 }
 
 export class ProtocolError extends Error {
-  constructor(
-    public code: string,
-    public status = 400,
-    public extra: Record<string, unknown> = {}
-  ) {
+  code: string;
+  status: number;
+  extra: Record<string, unknown>;
+  constructor(code: string, status = 400, extra: Record<string, unknown> = {}) {
     super(code);
+    this.code = code;
+    this.status = status;
+    this.extra = extra;
   }
 }
 export function fail(code: string, status = 400, extra: Record<string, unknown> = {}): never {
