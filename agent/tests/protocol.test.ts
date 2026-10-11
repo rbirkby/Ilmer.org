@@ -113,7 +113,10 @@ test('securityHeaders keeps the response and adds headers, even to immutable res
   const response = securityHeaders(Response.redirect('https://www.ilmer.org/', 302));
   assert.equal(response.status, 302);
   assert.equal(response.headers.get('Location'), 'https://www.ilmer.org/');
-  assert.equal(response.headers.get('X-Frame-Options'), 'DENY');
+  assert.equal(
+    response.headers.get('Content-Security-Policy'),
+    "frame-ancestors 'self' https://www.ilmer.org https://ilmer.org http://localhost:8080"
+  );
   assert.equal(response.headers.get('X-Content-Type-Options'), 'nosniff');
 });
 

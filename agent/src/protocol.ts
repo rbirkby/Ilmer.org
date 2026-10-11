@@ -68,7 +68,11 @@ export function securityHeaders(response: Response) {
   response = new Response(response.body, response);
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  response.headers.set('X-Frame-Options', 'DENY');
+  // Only the Ilmer Past site may frame Poppy (the footer chat popover).
+  response.headers.set(
+    'Content-Security-Policy',
+    "frame-ancestors 'self' https://www.ilmer.org https://ilmer.org http://localhost:8080"
+  );
   return response;
 }
 

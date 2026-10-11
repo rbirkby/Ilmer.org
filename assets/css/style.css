@@ -664,6 +664,10 @@ body > footer {
   padding: 20px calc(4vw + env(safe-area-inset-right, 0px)) 40px calc(4vw + env(safe-area-inset-left, 0px));
 
   .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0 1em;
     max-width: 1120px;
     margin: 0 auto;
   }
@@ -671,6 +675,65 @@ body > footer {
   a {
     color: inherit;
     text-decoration: underline;
+  }
+}
+
+.poppy-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.poppy-chat {
+  inset: auto calc(16px + env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) auto;
+  width: min(400px, calc(100vw - 32px));
+  height: min(600px, calc(100dvh - 32px));
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+
+  &:popover-open {
+    display: flex;
+    flex-direction: column;
+  }
+
+  iframe {
+    flex: 1;
+    width: 100%;
+    border: 0;
+  }
+}
+
+.poppy-chat-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px 4px 14px;
+  background: #15171a;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.3rem;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    padding: 0 6px;
+    border: 0;
+    background: none;
+    color: inherit;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
   }
 }
 
