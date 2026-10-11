@@ -2720,6 +2720,13 @@
     "labels": ["church"]
   },
   {
+    "date": "26 Mar. 1933",
+    "title": "Stained Glass Window Unveiled",
+    "description": "The memorial window to Mary Clara Jaques was unveiled at Sunday service.",
+    "references": ["Bucks Herald, 31 Mar. 1933"],
+    "labels": ["church"]
+  },
+  {
     "date": "Apr. 1933",
     "title": "Motorcycle Trial",
     "description": "Ilmer Lane formed part of the Putnam Cup motorcycle trial, where most competitors got stuck in the mud.",
@@ -3051,6 +3058,13 @@
     "labels": ["auction", "church", "sale"]
   },
   {
+    "date": "6 Aug. 1943",
+    "title": "(Robert) Douglas Goodchild granted discharge from Bankruptcy",
+    "description": "Claiming his insolvency was due to the Munich crisis, and represented by Charles Keen, his step-father, Judge Hurst granted discharge, suspended for eight months, despite observing that misfortune was not the cause of the insolvency, but that inexperience, careless with money matters and a lack of proper bookkeeping contributed. The cost of starting the nursery was noted as £3,100 (nearly £200,000 today). During this period, he was mostly growing Gladioli.",
+    "references": ["Bucks Advertiser, 13 Aug 1943", "Bucks Herald, 20 Aug 1943"],
+    "labels": ["business"]
+  },
+  {
     "date": "29 Apr. 1944",
     "title": "Fatality at Ilmer Halt",
     "description": "Thomas Walker, a railway worker, was found dead on the platform of Ilmer Halt after being hit by a train.",
@@ -3197,6 +3211,13 @@
     "labels": ["farm", "property"]
   },
   {
+    "date": "2 Sep. 1956",
+    "title": "Passenger is killed falling from a train near Ilmer Halt",
+    "description": "Ewart William Govier, aged 24, of Worcestershire fell to his death, after fainting earlier in the journey and being moved to the guard's van. He was returning from a holiday in Ostend, Belgium which he had cut short. The train was from Paddington to Birkenhead. A search party eventually found the unconscious Govier with multiple injuries. He died 30-40 minutes later.",
+    "references": ["Bucks Advertiser, 5 Oct. 1956", "Bucks Herald, 5 Oct. 1956"],
+    "labels": ["railway", "death"]
+  },
+  {
     "date": "May 1957",
     "title": "New Carpet Fitted",
     "description": "A new carpet was fitted in the church for the sum of £19-1-3.",
@@ -3271,6 +3292,13 @@
     "description": "Elizabeth Keene, widow of Albert Goodchild of [Ilmer House](/history/ilmer-house) died.",
     "references": ["Daily Telegraph, 6 Jun 1962", "BMD records for Hitchin, Apr-Jun 1962"],
     "labels": ["death", "housing", "person"]
+  },
+  {
+    "date": "15 Jun. 1962",
+    "title": "Transport meeting held regarding Ilmer Halt",
+    "description": "The transport meeting was told that closing Ilmer Halt and other passenger services on the Risborough to Banbury line will cut the villages off from civilisation. This line was known as the 'Banbury Cake'. The meeting was told two passengers joined and one alighted each day from Ilmer Halt.",
+    "references": ["Bucks Advertiser, 22 Jun. 1962"],
+    "labels": ["railway"]
   },
   {
     "date": "30 Oct. 1962",
