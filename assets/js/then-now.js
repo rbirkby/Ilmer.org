@@ -16,7 +16,7 @@ export function valueText(value, thenLabel = 'film still', nowLabel = 'January 2
 function paint(stage, range) {
   const value = Number(range.value);
   stage.style.setProperty('--then-now', `${value}%`);
-  range.setAttribute('aria-valuetext', valueText(value));
+  range.setAttribute('aria-valuetext', valueText(value, range.dataset?.thenLabel, range.dataset?.nowLabel));
 }
 
 function bindStage(stage) {

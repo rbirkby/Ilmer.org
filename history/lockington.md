@@ -8,11 +8,9 @@ image: images/lockington-photo.jpg
 
 Lockington, or sometimes Lookington, was situated south-east of Ilmer in what is now a copse by the side of a footpath.
 
-![Lockington map](/images/lockington.jpg)
+![Lockington map](/images/lockington.jpg#right)
 
 [Census records](/assets/pdfs/lockington-all-years.pdf) for 1841 show 22 inhabitants in 5 dwellings comprising 11 members of the Allen family, 2 Roberts, a Gregory, 3 Burnhams and 5 Watsons living in Lockington.
-
-![Building](/images/lockington-dwelling.jpg)
 
 By 1851, the number of inhabitants was 23 with 13 Allens remaining in addition to 5 Burnhams and 5 Bass, all living in the 5 houses.
 
@@ -20,19 +18,36 @@ In the 1861 census, there were 33 people living in 4 properties with just 2 Alle
 
 Most were either lace makers or agricultural labourers.
 
-![Interior](/images/lockington-dwelling-interior.jpg)
-
 Old maps show 2 wells within the curtilage of the hamlet. They are both easy to find. One of the wells is situated inside what remains of the walls of a dwelling. At the other end of the house are the remains of a kitchen stove.
 
 ![Stove](/images/lockington-stove.jpg)
 
-During the 20th century, Charlie Belgrove lived here. The Bucks Herald described him being inside a hut when they went to interview him. Could this be it?
+During the 20th century, Charlie Belgrove known as the Ilmer Hermit lived here. Charles' Daytime House was photographed in early 1969 (Roy Palmer, Bucks Advertiser, 6 Feb. 1969) and how the same building looked in 2026.
+
+<figure class="then-now">
+  <div class="then-now__stage">
+    <img class="then-now__photo then-now__photo--then" src="/images/CharlesBelgroveDaytimeHouse1969.avif" width="660" height="479" alt="Then, 1969: Charles Begrove's Daytime House." draggable="false">
+    <span class="then-now__label then-now__label--then" aria-hidden="true">1969</span>
+    <div class="then-now__overlay">
+      <img class="then-now__photo then-now__photo--now" src="/images/CharlesBelgroveDaytimeHouse2026.avif" width="1280" height="960" alt="Now, 2026: the remains of Charles Begrove's Daytime House." draggable="false">
+      <span class="then-now__label then-now__label--now" aria-hidden="true">8th Feb. 2026</span>
+    </div>
+    <div class="then-now__divider" aria-hidden="true"><span class="then-now__grip"></span></div>
+    <input class="then-now__range" type="range" min="0" max="100" step="1" value="50" aria-label="Compare then and now: Charles Begrove's Daytime House" aria-valuetext="50% 1969, 50% 2026" data-then-label="1969" data-now-label="2026">
+  </div>
+</figure>
+
+![Building](/images/lockington-dwelling.jpg)
+
+The Bucks Herald described him being inside a hut when they went to interview him in 1963. Roger Duckworth from the Bucks Herald is shown below interviewing Charles in 1963. Photo: Barry Keen.
+
+![Charles Begrove being inverviewed by Roger Duckworth in 1963](/images/CharlesBelgroveBedroomHut1963-RogerDuckworthJournalist-BarryKeenPhotograph.avif)
 
 ![Charlies bedroom](/images/lockington-hut.jpg)
 
-Nearby is another well, this time about 5 foot in diameter with an early 20th century kitchen stove falling in.
+![Another well](/images/lockington-well2.jpg#right)
 
-![Another well](/images/lockington-well2.jpg)
+Nearby is another well, this time about 5 foot in diameter with an early 20th century kitchen stove falling in.
 
 This well is probably the one Charlie built. Basil Purssell, Bucks Herald artist and local musician,
 wrote about it being 50 foot deep in the following magazine article:
