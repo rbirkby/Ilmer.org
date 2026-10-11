@@ -9,7 +9,7 @@ export default defineConfig({
     name: worker,
     entrypoint: 'src/index.ts',
     compatibilityDate: '2026-10-09',
-    compatibilityFlags: ['nodejs_compat'],
+    compatibilityFlags: [],
     // poppy.ilmer.org is attached as a Workers custom domain by cf-config (modules/ilmer-org).
     workersDev: false,
     previewUrls: false,
