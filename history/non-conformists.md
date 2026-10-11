@@ -6,7 +6,7 @@ tags: [church, history]
 ancestorCrumb1Source: { label: St Peter's Church, url: '/history/st-peters/' }
 ---
 
-After the Restoration of the monarchy in 1660, the authorities sought to enforce religious uniformity. The Act of Uniformity of 1662 required clergy to accept the prescribed Church of England services and conditions. Ministers who refused lost their posts; many continued preaching to congregations in private houses, barns and other meeting places.
+After the Restoration of the monarchy in 1660, the authorities sought to enforce religious uniformity. The [Act of Uniformity of 1662](https://en.wikipedia.org/wiki/Act_of_Uniformity_1662) required clergy to accept the prescribed Church of England services and conditions. Ministers who refused lost their posts; many continued preaching to congregations in private houses, barns and other meeting places.
 
 ### Answers to Archbishop Sheldon's questions to the clergy concerning non-conformists 1669
 
