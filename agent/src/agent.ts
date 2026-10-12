@@ -3,6 +3,8 @@
 import { Agent } from 'agents';
 import { createAI } from 'agents/models/pi-ai';
 import { PiHarness, ROOT_SESSION, type PiWhenBusy } from 'agents/harness/pi';
+import { webSearchTool } from 'agents/websearch/pi';
+import { webFetchTool } from 'agents/webfetch/pi';
 import { createModels } from '@earendil-works/pi-ai/models';
 import { Type } from '@earendil-works/pi-ai';
 import { createRegistry, Harness, type ToolRegistration } from '@earendil-works/pi-durable';
@@ -37,10 +39,12 @@ const offline = {
 export class HistoryAgent extends Agent<Env> {
   private ai = createAI({ binding: this.env.AI ?? offline });
   private registry = createRegistry();
+
   private harness = new PiHarness({
     harness: ({ storage, context }) => {
       const models = createModels();
       models.setProvider(this.ai.provider);
+
       const search: ToolRegistration<typeof SearchParameters> = {
         name: 'search_site',
         description: 'Full-text search of the Ilmer Past website. Returns page titles, URLs and matching snippets.',
@@ -60,6 +64,7 @@ export class HistoryAgent extends Agent<Env> {
           };
         }
       };
+
       const read: ToolRegistration<typeof ReadParameters> = {
         name: 'read_page',
         description: 'Read the text of one Ilmer Past page, up to 8000 characters at a time.',
@@ -77,11 +82,18 @@ export class HistoryAgent extends Agent<Env> {
           };
         }
       };
+
       this.registry.install({
         name: 'ilmer',
-        tools: [search, read] as ToolRegistration[],
+        tools: [search, read],
         sections: [{ key: 'preamble', tag: false, render: () => PREAMBLE }]
       });
+
+      this.registry.install({
+        name: 'web-tools',
+        tools: [webSearchTool({ binding: this.env.AI, provider: 'exa' }), webFetchTool({ binding: this.env.AI })]
+      });
+
       return Harness.open(
         storage,
         { models, registry: this.registry, settings: { retry: { enabled: true, maxRetries: 1, baseDelayMs: 500 } } },
