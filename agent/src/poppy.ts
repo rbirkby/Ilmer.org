@@ -47,7 +47,7 @@ export function authorizationServer(env: Env) {
   return json(
     {
       issuer: env.ORIGIN,
-      poppy_domains: [new URL(env.ORIGIN).hostname],
+      poppy_domains: [new URL(env.ORIGIN).hostname, 'ilmer.org'],
       token_endpoint: env.ORIGIN + '/oauth/token',
       revocation_endpoint: env.ORIGIN + '/oauth/revoke',
       grant_types_supported: [JWT_GRANT],
