@@ -159,16 +159,14 @@ function buildWeeklyNewsEvents(): WeeklyNewsEvent[] {
 }
 
 export default function (eleventyConfig: any) {
-  eleventyConfig.addPassthroughCopy('images');
+  eleventyConfig.addPassthroughCopy({ public: '.' });
   eleventyConfig.addPassthroughCopy('assets');
-  eleventyConfig.addPassthroughCopy('favicon.ico');
+
   eleventyConfig.addPassthroughCopy({
     'node_modules/markdown-it-github-alerts/styles/*.css': 'assets/css'
   });
-  eleventyConfig.addPassthroughCopy('robots.txt');
-  eleventyConfig.addPassthroughCopy('_redirects');
-  eleventyConfig.addWatchTarget('assets/css/');
-  eleventyConfig.addWatchTarget('assets/js/');
+  eleventyConfig.addWatchTarget('public/assets/css/');
+  eleventyConfig.addWatchTarget('public/assets/js/');
 
   eleventyConfig.amendLibrary('md', (mdLib: MarkdownIt) => mdLib.use(markdownItFootnote));
   eleventyConfig.amendLibrary('md', (mdLib: MarkdownIt) => mdLib.use(markdownItMarginNotes));

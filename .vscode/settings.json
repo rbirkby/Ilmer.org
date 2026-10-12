@@ -28,5 +28,8 @@
       "fileMatch": ["_data/st-peters-marriages.json"],
       "url": "./_data/st-peters-marriages.schema.json"
     }
-  ]
+  ],
+  "[typescript]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  }
 }

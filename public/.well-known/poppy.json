@@ -1,0 +1,24 @@
+{
+  "protocol_version": "0.1",
+  "organization": {
+    "name": "Ilmer Past",
+    "domain": "ilmer.org",
+    "url": "https://www.ilmer.org"
+  },
+  "description": "Local history archive for the parish of Ilmer, Buckinghamshire. Ask about its people, church, records and past.",
+  "auth": {
+    "issuer": "https://poppy.ilmer.org"
+  },
+  "agent": {
+    "protocols": [
+      {
+        "type": "poppy",
+        "endpoint": "https://poppy.ilmer.org/poppy/conversations"
+      }
+    ]
+  },
+  "apis": [],
+  "web": {
+    "url": "https://www.ilmer.org"
+  }
+}
