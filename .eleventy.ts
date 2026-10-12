@@ -166,6 +166,7 @@ export default function (eleventyConfig: any) {
     'node_modules/markdown-it-github-alerts/styles/*.css': 'assets/css'
   });
   eleventyConfig.addPassthroughCopy('robots.txt');
+  eleventyConfig.addPassthroughCopy('_redirects');
   eleventyConfig.addWatchTarget('assets/css/');
   eleventyConfig.addWatchTarget('assets/js/');
 
