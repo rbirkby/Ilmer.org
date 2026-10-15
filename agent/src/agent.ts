@@ -89,10 +89,12 @@ export class HistoryAgent extends Agent<Env> {
         sections: [{ key: 'preamble', tag: false, render: () => PREAMBLE }]
       });
 
-      this.registry.install({
-        name: 'web-tools',
-        tools: [webSearchTool({ binding: this.env.AI, provider: 'exa' }), webFetchTool({ binding: this.env.AI })]
-      });
+      // The web tools need the Workers AI binding and throw without it, so offline dev goes without them.
+      if (this.env.AI)
+        this.registry.install({
+          name: 'web-tools',
+          tools: [webSearchTool({ binding: this.env.AI, provider: 'exa' }), webFetchTool({ binding: this.env.AI })]
+        });
 
       return Harness.open(
         storage,
