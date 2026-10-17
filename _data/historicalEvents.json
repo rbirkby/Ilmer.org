@@ -51,11 +51,13 @@
     "labels": ["document", "inheritance", "manor"]
   },
   {
-    "date": "1221/22",
+    "date": "14 Jan. 1221/22",
     "title": "Manor Claim Settled",
-    "description": "A legal claim to half the manor by other descendants of the Romenel family is settled, securing the title for Albreda de Jarponville.\n\n > 6 Hen. III, Westm., octave of S. Hilary [14--20 Jan., 1222]: Rob. Achard, Rog. de Cauz, Aymery de Nodariis, and Gilb. de Sancto Claro pet. and (i) Albreda de Garpervill ten.; a moiety of the manor of ILMERE; (ii) Alice wid. Thorn. s. Bernard ten. ; a moiety of the manor of ESTON ; (iii) Ralf s. Bernard; a moiety of the manor of ADINTON; R.R.A. and G. claim the moieties as their reasonable portion of the inheritance which was of David de Romenel their ancestor; they quitclaimed; saving to G. 1 hide land in  Sucot which he formerly held of Albr. ; A. A. and R. gave to R.R.A. and G. 40 mks. of silver. ",
+    "description": "A legal claim to half the manor by other descendants of the Romenel family is settled, securing the title for Albreda de Jarponville.\n\n > 6 Hen. III, Westm., octave of S. Hilary [14—20 Jan., 1222]: Rob. Achard, Rog. de Cauz, Aymery de Nodariis, and Gilb. de Sancto Claro pet. and (i) Albreda de Garpervill ten.; a moiety of the manor of ILMERE; (ii) Alice wid. Thorn. s. Bernard ten. ; a moiety of the manor of ESTON ; (iii) Ralf s. Bernard; a moiety of the manor of ADINTON; R.R.A. and G. claim the moieties as their reasonable portion of the inheritance which was of David de Romenel their ancestor; they quitclaimed; saving to G. 1 hide land in  Sucot which he formerly held of Albr. ; A. A. and R. gave to R.R.A. and G. 40 mks. of silver. ",
     "references": [
-      "Fine Rolls, 6 Henry III",
+      "[Feet of fines for 4-6 Hen III, National Archives, CP 25/1/14/13](https://discovery.nationalarchives.gov.uk/details/r/C647536)",
+      "[Fine Rolls, 6 Henry III](https://discovery.nationalarchives.gov.uk/details/r/C393900)",
+      "[Fine Rolls, 6 Henry III, Fine Rolls Project](https://finerollshenry3.org.uk/content/calendar/roll_029.html)",
       "[Feet of Fines, 6 Henry III, no. 16](https://www.bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-04.pdf)"
     ],
     "labels": ["legal", "manor", "property"]
@@ -68,10 +70,14 @@
     "labels": ["manor", "property", "death"]
   },
   {
-    "date": "1229",
+    "date": "30 Sep. 1230",
     "title": "Church Grant Confirmed",
-    "description": "A legal agreement (a fine) is made between Ralph Fitz-Bernard and the Prioress of Stodeley (Studley), further securing the nunnery's rights to the church.",
-    "references": ["Fine Rolls, 14 Henry III"],
+    "description": "A legal agreement (a fine) is made between Ralph Fitz-Bernard and the Prioress of Stodeley (Studley), further securing the nunnery's rights to the church.\n> 14 Hen. III, Westm., in 15 days from S. Michael [30 Sept.—14 Oct., 1230] ; Ralf. s. Bernard pet. and Juliana prioress of Stodleye ten. ; advowson of the church of ILMERE; R. quitclaimed for ever; J. received R. and his heirs into every benefit and prayer. ",
+    "references": [
+      "[Feet of Fines, 14 Henry III, National Archives, CP 25/1/15/18](https://discovery.nationalarchives.gov.uk/details/r/C647541)",
+      "[Fine Rolls, 14 Henry III](https://discovery.nationalarchives.gov.uk/details/r/C393900)",
+      "Feet of Fines, 14 Henry III [Bucks Records Society](https://www.bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-04.pdf)"
+    ],
     "labels": ["church", "legal"]
   },
   {
@@ -82,6 +88,33 @@
       "Dunkin's History, p. 68",
       "Fine Rolls for Buckinghamshire, 14 Henry III, nos. 87, 98",
       "Le Neve's Fasti, p. 139"
+    ],
+    "labels": ["church", "economy", "person"]
+  },
+  {
+    "date": "19 May 1231",
+    "title": "Land Confirmed and Quitclaimed",
+    "description": "> 15 Hen. III, Westm., in octave of Holy Trinity [19—25 May, 1231]; Ralf s. Bernard pet. and Pernell prioress of Stodlegh ten.; ½ virg. land in ILMERE; R. ackn. right of prioress as of the gift of Albreda de Jarpenvill grandmother of R. who is her heir; to hold in free pure and perpetual alms; prioress received R. and his heirs etc..\n\n also \n\n> Date as 12 ; Ralf s. Bernard pet. and Jo. de Bledelawe ten. ; ½ virg. land in ILMERE; R. quitclaimed for ever; J. gave R. 6 mks. of silver.",
+    "references": [
+      "[A Calendar of the Feet of Fines for the County of Buckingham 7 Richard I to 44 Henry III](https://www.bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-04.pdf), Bucks Records Society"
+    ],
+    "labels": ["church", "economy", "person"]
+  },
+  {
+    "date": "1237-1238",
+    "title": "Chattels of Ralph son of Bernard",
+    "description": "> Concerning the chattels of Ralph son of Bernard. Order to the sheriffs of Buckinghamshire and Kent , and William son of Richard, keeper of [the honour of] Rayleigh , to cause the king's advantage to be made from a third part of the corn and chattels formerly of Ralph son of Bernard by the view and testimony of law-worthy men , so that they answer for them at the Exchequer\n\n with \n> The value of the third part of the corn and chattels of Ralph son of Bernard in Ilmer and Aston Mullins in Buckinghamshire is £22 18s. These corn and chattels have been delivered to Master Simon de Steyland by the king's writ . These are the pledges for the aforesaid monies, namely William, son of the reeve of Ilmer , Robert son of Osbert, Peter Sperewe, Peter, son of Henry of Ilmer , William, son of Alan of the same , William Attecastele, William, son of Richard Young of the same , William, son of Robert of the same , Walter Everard, John Pikot of Aston, Alan Young of the same, Richard Gerard of the same, William de Lucy of the same, Walter, son of Alfwyn of the same , Roger de Wimberville , Gilbert Wace, Peter of Ilmer, Simon de Cotes and Peter de Molendinis of Buckingham.",
+    "references": [
+      "[Fine Rolls of Henry III Project](https://finerollshenry3.org.uk/content/calendar/roll_005E.html#d19728e21136)"
+    ],
+    "labels": ["church", "economy", "person"]
+  },
+  {
+    "date": "13 Sep. 1250",
+    "title": "Collection from Studley Priory Paused for 1 month",
+    "description": "> 13 Sept. Oxford. For the prioress of Studley. Order to the sheriff of Buckinghamshire to place in respite, until the quindene of Michaelmas in the thirty-fourth year, the distraint that he makes upon the prioress of Studley for paying 30s. to the king for the land which she holds in Ilmer of the fee of John son of Bernard and which is of the king’s sergeanty, as is said, and to cause the livestock of the same prioress, taken for this reason, to be delivered to her in the meantime.",
+    "references": [
+      "[Fine Rolls of Henry III Project](https://finerollshenry3.org.uk/content/calendar/roll_047.html#it687_003)"
     ],
     "labels": ["church", "economy", "person"]
   },
