@@ -164,18 +164,19 @@
     "labels": ["church", "economy", "person"]
   },
   {
-    "date": "1305/06",
+    "date": "Abt 5 Sep. 1306",
     "title": "Death of Ralph Fitz-Bernard",
-    "description": "Ralph Fitz-Bernard, son of John, grandson of Ralph, dies while holding the title to the manor of Ilmer. Ralph's son John had pre-deceased him in 1297. And so his heir was John's son, Ralph's grandson, Thomas (b 1288, d 1322, wife Bona). The manor along with Aston was assigned to his widow Agatha in dower.",
+    "description": "Ralph Fitz-Bernard, son of John, grandson of Ralph, dies while holding the title to the manor of Ilmer. Ralph's son John had pre-deceased him in 1297. And so his heir was John's son, Ralph's grandson, Thomas (b 1288, d 1322, wife Bona). The manor along with Aston was assigned to his widow Agatha in dower. \n> RALPH SON OF BERNARD alias FIZ BERNARD. \n> Writ, 10 Sept. 34 Edw. I.\n> Inq. made at Aston Bernard, 9 Oct. 34 Edw. I.\n> Ilmere. The manor with Aston, a member of the same, (very full extent given with names of tenants) held of the king in chief by service of being marshal of the king's hawks or finding another in his place to execute the said office. Thomas son of John son of Bernard, aged 18 and more, is his next heir",
     "references": [
-      "Escheats Rolls, 34 Edward I, no. 53",
+      "[National Archives Discovery ref C 133/123/8](https://discovery.nationalarchives.gov.uk/details/r/C9532728)",
+      "Escheats Rolls, [34 Edward I, no. 53](https://www.british-history.ac.uk/inquis-post-mortem/vol4/pp249-264#mt24-50)",
       "Calendar Close Rolls Edward I, 1 Nov. 1306",
       "Cokayne, G. E. [The complete peerage, Volume 5](https://archive.org/details/CokayneG.E.TheCompletePeerageSecondEditionVolume5EAGO/page/n209/mode/2up)"
     ],
     "labels": ["death", "manor", "person", "property"]
   },
   {
-    "date": "1306",
+    "date": "9 Oct. 1306",
     "title": "Ilmer had a windmill",
     "description": "Ilmer had a windmill, out of repair. Later repaired 1342-3.",
     "references": [
