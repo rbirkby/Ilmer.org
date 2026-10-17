@@ -946,8 +946,11 @@
   {
     "date": "17 Jul. 1637",
     "title": "Steeple Reported in Need of Repair",
-    "description": "Bishop Williams of Lincoln reported that 'The steeple to be repaired in the whole'. By the 19th century, the church had no steeple. It is not known when or why it was removed.",
-    "references": ["The church bells of Buckinghamshire : their inscriptions, founders, uses and traditions, 1897"],
+    "description": "Bishop Williams of Lincoln reported that 'The steeple to be repaired in the whole'. By the 19th century, the church had no steeple. It is not known when or why it was removed.\n> The seats are uniform, but in decay; the church and chancel must be unripped; no reading seat; the church wants paving; the S. aisle employed to lay timber (! ! !); 3 windows in the chancel partly dammed up, and 1 window in the aisle; the steeple to be repaired in the whole; no poor man's box; the vicarage-house in decay, and the rest of the things not seen.",
+    "references": [
+      "The church bells of Buckinghamshire : their inscriptions, founders, uses and traditions, 1897",
+      "State of the Buckinghamshire parish churches in the sixteenth and seventeenth centuries. Robert Gibbs. [Records of Buckinghamshire 1888 Volume 6 part 2](http://www.bucksas.org.uk/rob/rob_6_2_154.pdf)"
+    ],
     "labels": ["church", "repair"]
   },
   {
