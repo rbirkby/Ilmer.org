@@ -70,6 +70,15 @@
     "labels": ["manor", "property", "death"]
   },
   {
+    "date": "13 Aug. 1229",
+    "title": "Assize of darrein (last presentment) between Ralph Fitz-Bernard and the Prioress of Stodeley (Studley)",
+    "description": "> Radulfus Hareng, Walterus Foliot, Robertus Aumary et Robertus de Valeines constituti sunt justiciarii ad assisam ultime presentationis ecclesie de Ilmere capiendam in octabis Nativitatis Beate Marie apud Bukingham, inter Radulfum filium Bernardi, petentem, et priorissam de Stodleg, deforciantem : salvis etc. Teste rege, apud Sanctum Edmundum, xiij die Augusti. Per breve justic[iarii].",
+    "references": [
+      "[Patent Rolls. 1225-1232, pg 301](https://archive.org/details/patentrollsreig03lytegoog/page/298/mode/2up)"
+    ],
+    "labels": ["manor", "property"]
+  },
+  {
     "date": "30 Sep. 1230",
     "title": "Church Grant Confirmed",
     "description": "A legal agreement (a fine) is made between Ralph Fitz-Bernard and the Prioress of Stodeley (Studley), further securing the nunnery's rights to the church.\n> 14 Hen. III, Westm., in 15 days from S. Michael [30 Sept.—14 Oct., 1230] ; Ralf. s. Bernard pet. and Juliana prioress of Stodleye ten. ; advowson of the church of ILMERE; R. quitclaimed for ever; J. received R. and his heirs into every benefit and prayer. ",
@@ -110,9 +119,16 @@
     "labels": ["church", "economy", "person"]
   },
   {
+    "date": "1238",
+    "title": "Dower assigned to Joan, widow of Ralph Fitz-Bernard",
+    "description": "The sheriff of Buckinghamshire was ordered to assign Joan, widow of Ralph son of Bernard, her reasonable dower in the manors of Ilmer and Aston, and with it one of the chief houses of those manors. \n\n > Pro Johanna que fuit uxor Radulfi filii Bernardi - Mandatum est vicecomiti Buk' quod una cum rationabili dote quam rex assignari precepit Johanne, que fuit uxor Radulfi filii Bernardi, in maneriis de Ilmer' et Eston' faciat assignari eidem Johanne unum de capitalibus mesuagiis eorundem maneriorum. Teste ut supra.",
+    "references": ["[Close Rolls, 1238 pg 68](https://archive.org/details/closerollsofreig04grea/page/68/mode/2up)"],
+    "labels": ["manor", "person"]
+  },
+  {
     "date": "13 Sep. 1250",
     "title": "Collection from Studley Priory Paused for 1 month",
-    "description": "> 13 Sept. Oxford. For the prioress of Studley. Order to the sheriff of Buckinghamshire to place in respite, until the quindene of Michaelmas in the thirty-fourth year, the distraint that he makes upon the prioress of Studley for paying 30s. to the king for the land which she holds in Ilmer of the fee of John son of Bernard and which is of the king’s sergeanty, as is said, and to cause the livestock of the same prioress, taken for this reason, to be delivered to her in the meantime.",
+    "description": "> 13 Sept. Oxford. For the prioress of Studley. Order to the sheriff of Buckinghamshire to place in respite, until the <abbr title='13th October'>quindene of Michaelmas</abbr> in the thirty-fourth year, the distraint that he makes upon the prioress of Studley for paying 30s. to the king for the land which she holds in Ilmer of the fee of John son of Bernard and which is of the king’s sergeanty, as is said, and to cause the livestock of the same prioress, taken for this reason, to be delivered to her in the meantime.",
     "references": [
       "[Fine Rolls of Henry III Project](https://finerollshenry3.org.uk/content/calendar/roll_047.html#it687_003)"
     ],
@@ -219,6 +235,15 @@
     "labels": ["property"]
   },
   {
+    "date": "1 Nov. 1306",
+    "title": "Agatha, widow of Ralph Fitz-Bernard, receives manor",
+    "description": "At Lanercost, the escheator was ordered to deliver to Agatha, widow of Ralph son of Bernard, the manor of Ilmer and the hamlet of Aston as her dower. Together they were valued at £19 19s. 4½d. a year. \n\n> To Walter de Gloucestr[ia], escheator beyond Trent. Order to deliver to Agatha, late the wife of Ralph son of Bernard, tenant in chief, the following of Ralph's lands, which the king has assigned to her in dower: the manor of Ilmer' and the hamlet of Aston, co. Buckingham, which are extended at 19l. 19s. 4½d. yearly ; a quarter of a chief messuage in Sibeton, co. Kent, together with a quarter of the easement of the houses there, which quarter is extended at 6d. yearly ; 70 acres of arable land in the same town, which are extended at 70s. yearly, to wit each acre at 12d. yearly ; four acres of meadow there, which are extended at 12s. yearly, each acre at 8s. yearly ; and four acres of pasture there, which are extended at 16d. yearly, each acre at 4d. yearly.",
+    "references": [
+      "[Close Rolls, Edward I, pg 419](https://archive.org/details/calendarclosero00changoog/page/418/mode/2up)"
+    ],
+    "labels": ["property"]
+  },
+  {
     "date": "25 Nov. 1315",
     "title": "Manor Sold to Blacket",
     "description": "Thomas Fitz-Bernard sells the estate of Adynton', Ilmere and Aston' Bernard to John Blacket (or Blaket) but only to take posession once Thomas' wife Agatha had died. She died 1 Feb. 1333/4.",
@@ -241,9 +266,9 @@
   {
     "date": "4 Mar. 1327",
     "title": "John Blaket claims theft of property",
-    "description": "Theft of forty horses, fifty oxen, sixty bullocks, thirty cows and two hundred swine, worth £100 from manors of Ilmer, Aston and Addington. John Blaket appears to have a history of claiming similar thefts across his manors in Buckinghamshire and beyond.",
+    "description": "Theft of forty horses, fifty oxen, sixty bullocks, thirty cows and two hundred swine, worth £100 from manors of Ilmer, Aston and Addington. John Blaket appears to have a history of claiming similar thefts across his manors in Buckinghamshire and beyond.\n\n> The like to Robert de Asshele and John de Chetyngdon, on complaint by John Blaket that certain evildoers broke his houses at Aston, Ilmer and Adyngton, and took away his goods",
     "references": [
-      "Calendar of the patent rolls preserved in the Public Record Office : Edward III, Membrane 26d and membrane 24d"
+      "Calendar of the patent rolls preserved in the Public Record Office : Edward III, [Membrane 26d](https://archive.org/details/calendarpatentr10offigoog/page/74/mode/2up) and [membrane 24d](https://archive.org/details/calendarpatentr10offigoog/page/76/mode/2up)"
     ],
     "labels": ["manor", "property"]
   },
@@ -258,7 +283,9 @@
     "date": "18 Feb. 1328",
     "title": "John Blaket claims theft of property",
     "description": "Theft of twenty horses, twenty mares, sixty oxen, forty bullocks, forty cows and two hundred swine, worth 200 marks (1.5 marks = £1), and felled and carried away his trees from his manors of Ilmer, Aston and Addington.",
-    "references": ["Calendar of the patent rolls preserved in the Public Record Office : Edward III, Membrane 30d"],
+    "references": [
+      "Calendar of the patent rolls preserved in the Public Record Office : Edward III, [Membrane 30d](https://archive.org/details/calendarpatentr10offigoog/page/280/mode/2up)"
+    ],
     "labels": ["manor", "property"]
   },
   {
@@ -288,10 +315,32 @@
     "labels": ["manor", "property"]
   },
   {
-    "date": "1336",
+    "date": "18 Mar. 1336",
     "title": "Private Park Created",
-    "description": "Sir John de Molyns receives a royal license from Edward III to enclose his woods at Ilmer, creating a private hunting park.",
-    "references": ["Dugdale's Baronage of England, Vol. 2, p. 145", "Lipscomb"],
+    "description": "Sir John de Molyns receives a royal license from Edward III to enclose his woods at Ilmer, creating a private hunting park.\n\n> Licence, of special grace, to John de Molyns and Giles his wife to strengthen with a wall of stone and mortar and to crenellate the house (mansum) of their manor of Aston and to enclose and make a park of their woods of Ilmere and la Sale with 100 acres of pasture in the towns of Bekenesfeld, Burnham and Chippenham, co. Buckingham, which they hold in several, and to hold the said house and park to them and their heirs without let or hindrance of the king and his heirs or any their ministers; provided that they are not within the king's forest; grant also to the same of free warren in all their demesne lands of Aston, Ilmere and Adyngton, and to the said John and his heirs of free warren in all their demesne lands of Bekennesfeld, Burnham and Cippenham and of Chalfonte, Huggeleye and Farnham, co. Buckingham.",
+    "references": [
+      "Dugdale's Baronage of England, Vol. 2, p. 145",
+      "Lipscomb",
+      "[Charter Rolls 1-14 Edward III, Membrane 26](https://babel.hathitrust.org/cgi/pt?id=inu.30000086172677&seq=375)"
+    ],
+    "labels": ["document", "manor"]
+  },
+  {
+    "date": "24 Mar. 1337",
+    "title": "Grant of Liberties to John de Molyns",
+    "description": "> Pursuant to an inquisition ad quod damnum [File 241, No. 24], grant, for good service rendered, that John de Molyns and his heirs shall have within their manors of Stokepugeys, Ditton, Dacchette, Fulmere, Ilmere, Adynton, Aston Bernard, Weston Turvile, and Lutgershale, co. Buckingham, and also in the manor and town of Henle, co. Oxford, and the manor of Swirford, co. Oxford, after the deaths of Margaret wife of Hugh Daudele and John de Haudlo, tenants for life of the said town and manor and manor respectively, return of all the king's writs and precepts and summonses of the Exchequer, and the execution thereof, infangenethef and outfangenethef, chattels of their men and tenants fugitive and felons, wayf and stray ; with the power to set up gallows on their own soil in the said manors and to do justice (judicium) on the malefactors whom they may take there according to the liberties of infangenethef and outfangenethef aforesaid, without impediment from the king or his ministers ; and that the said John and his heirs and their men and tenants within the said manors and town shall be quit of toll, murage, pavage and pontage through all the king's realm ; and also that the said John and his heirs shall have free warren in all the said manors and town.",
+    "references": [
+      "[Charter Rolls 1-14 Edward III, Membrane 27](https://babel.hathitrust.org/cgi/pt?id=inu.30000086172677&seq=421)"
+    ],
+    "labels": ["document", "manor"]
+  },
+  {
+    "date": "2 Oct. 1337",
+    "title": "Grant of Privileges to John de Molyns",
+    "description": "> Pursuant to an inquisition ad quod damnum taken by the sheriff of Buckingham and returned into the chancery [Inquisitions ad quod damnum, file 241, no. 24] grant, of special grace and for good service, to John de Molyns and his heirs that they shall have within the manors of Brehull, Stokepugeys, Ditton, Dachette, Fulmere, Ilmere, Adynton, Aston Bernard, Weston Turvile and Lutgershale and also in the manor and town of Henle, co. Oxford, which Hugh Daudele, earl of Gloucester, and Margaret his wife hold for her life, and in the manor of Swirford, co. Oxford, which John de Haudlo holds for his life, when the said manor and town and manor shall come to the said John and his heirs by remainder, return of all the king's writs and precepts, and summons of the Exchequer and executions thereof, and also infangenthef and outfangenthef and chattels of their men and tenants, felons and fugitive, and chattels called 'wayf' and 'stray' in the said manors and town ; and that the said John and his heirs may set up gallows upon their soil of the said manors and do justice upon malefactors taken under the said liberties of infangenethef and outfangenethef without impediment from the king and his ministers ; and that the said John and his heirs and their men and tenants of the said manors and town shall be quit of toll, murage, pavage and pontage throughout the king's realm ; and that the said John and his heirs shall have free warren in all their demesne lands of the said manors.",
+    "references": [
+      "[Charter Rolls 1-14 Edward III, Membrane 12, pg 430](https://babel.hathitrust.org/cgi/pt?id=inu.30000086172677&seq=452)"
+    ],
     "labels": ["document", "manor"]
   },
   {
@@ -308,22 +357,37 @@
     "date": "7 Jan. 1338",
     "title": "Ilmer Custumal Recorded",
     "description": "An Ilmer Custumal (economic, political, and social customs) was written and still exists at Kew.",
-    "references": ["National Archives", "[Ilmer Custumal](/history/custumal)"],
+    "references": [
+      "[National Archives SC 11/79](https://discovery.nationalarchives.gov.uk/details/r/C5190417)",
+      "[Ilmer Custumal](/history/custumal)"
+    ],
     "labels": ["document"]
   },
   {
-    "date": "Mar. 1338",
+    "date": "5 Mar. 1338",
     "title": "Manor Held in Serjeanty",
-    "description": "Sir John Moleyns of Stoke Poges held the manor of Ilmer in serjeanty as keeper of the king's hawks.",
-    "references": ["Oxford Dictionary of National Biography"],
+    "description": "Sir John Moleyns of Stoke Poges held the manor of Ilmer in serjeanty as keeper of the king's hawks.\n> To the treasurer and barons of the exchequer. Order to deliver to John de Molyns, the custody of the king’s goshawks and birds and the fees and wages pertaining to that custody, if they shall find that he holds the custody of the manor of Ilmere, co. Buckingham, by the service of that custody; as lately at the suit of John, by his petition before the king and his council, beseeching the king to cause him to have that custody, as Ralph le fitz Bernard and his ancestors, formerly lords of the said manor and other lords there, have held it of the king, from time out of mind, by the said service, receiving the said fees and wages, and John lately acquired the manor by the king’s licence; the king ordered the treasurer and barons to inspect Domesday book and the rolls and memoranda of the exchequer, and to inform the king of what they should find thereupon, and they returned that they had found, among other things, in a certain roll of arented serjeanties, that the serjeanty which belonged to William son of Bernard in Ylemer, for which he ought to be marshal of the king’s goshawks and birds, was in part alienated.",
+    "references": [
+      "Oxford Dictionary of National Biography",
+      "[Close rolls, Edward III pg 322](https://archive.org/details/cu31924091767883/page/322/mode/2up)"
+    ],
+    "labels": ["manor", "property"]
+  },
+  {
+    "date": "12 Nov. 1338",
+    "title": "Further Grant of Liberties to John de Molyns",
+    "description": "> Whereas John de Molyns and his heirs by previous grants of the king have the return of writs and precepts and summons of the Exchequer, and the execution thereof, and infangenthef and outfangenthef and various other liberties in their manors of Brehull, Stokepugeys, Ditton, Dachet, Fulmere, Ilmere, Adynton, Aston Bernard, Weston Turvill and Lutegarshale, co. Buckingham, and of Henle and Swireford, co. Oxford ; now the king for good service rendered by the said John, has granted to him and his heirs aforesaid in the said manors and also in those of Henle, co. Surrey, and Styvecle, Litlecote and Swanebourn, co. Buckingham, view of frank pledge of all their tenants, with all belonging thereto, and amends of the assize of bread and ale of all their men and tenants of the said manors. By the keeper of the realm and C.",
+    "references": [
+      "[Charter Rolls 1-14 Edward III, Membrane 4, pg 457](https://babel.hathitrust.org/cgi/pt?id=inu.30000086172677&seq=479)"
+    ],
     "labels": ["manor", "property"]
   },
   {
     "date": "12 Apr. 1339",
     "title": "John Fitz-Bernard releases all rights to the manor of Ilmer",
-    "description": "Signed at Stoke Poges, all remaining rights to the manor of Ilmer are released by John Fitz-Bernard and he gives these rights to Sir John de Molyns, his wife Egidia, and their son John. John Fitz-Bernard received 100 marks (1.5 marks = £1) of silver.",
+    "description": "Signed at Stoke Poges, all remaining rights to the manor of Ilmer are released by John Fitz-Bernard and he gives these rights to Sir John de Molyns, his wife Egidia, and their son John. John Fitz-Bernard received 100 marks (1.5 marks = £1) of silver.\n> Enrolment of release by John Fitz Bernard son and heir of Thomas Fitz Bernard, knight, to Sir John de Molyns, knight, and Egidia his wife, William their son and his heirs, of all his right and claim in the manor of Adynton, co. Buckingham with all its appurtenances. Witnesses: Sir Nicholas de la Beche, Sir Gerard de Braybrok, knights, Richard le Warde, Robert le Warde, Thomas de Tochewyk, John le Bruyn, William de Berkhamstede. Dated at Stoke Pugeys on 12 April, 13 Edward III. Memorandum, that on 14 May John came at Tyllebury co. Essex before Walter de Notingham, clerk, to whom the king gave power by writ to receive his acknowledgment, and acknowledged the preceding deed, and that the seal appended thereto is his, as appears by the writ which is on the files among the writs of dedimus potestatem of this year. Enrolment of release by the same John to Sir John de Molyns, Egidia, John their son and his heirs of all his right and claim in the manors of Aston Bernard, Ilmere and Adynton, co. Buckingham with all their appurtenances. [Witnesses as above. Dated as above.] Memorandum that John acknowledged the preceding deed before Walter de Notingham at Tyllebury on 14 May, as aforesaid.\n\n and the second membrane: \n> Enrolment of release by John Fitz Bernard son and heir of Sir Thomas Fitz Bernard, knight, to Sir John de Molyns, knight, Egidia his wife and John’s heirs, of all his right and claim in the manors of Aston Bernard, Ilmere and Adynton, co. Buckingham, with their appurtenances. Witnesses: Sir Nicholas de la Beche, Sir Gerard de Braybrok, knights, Richard le Warde, Robert le Warde, Thomas de Tochewyk, John le Bruyn, William de Berkhampstede. Dated at Stoke Pugeys on 12 April, 13 Edward III. Memorandum, that John came to Tyllebury, co. Essex, on 14 May, and acknowledged the preceding deed before Walter de Notingham, clerk, to whom the king gave the power of receiving it, by a writ which is on the files among the writs of dedimus potestatem of this year.",
     "references": [
-      "Calendar of close rolls, membranes 43d and 39d, 13 Edward III, 13 May 1339",
+      "Calendar of close rolls, [membrane 43d](https://archive.org/details/calendarclosero04offigoog/page/n226/mode/2up) and [membrane 39d](https://archive.org/details/calendarclosero04offigoog/page/n232/mode/2up), 13 Edward III, 13 May 1339",
       "Feet of fines, 13 Edward III, 6 Oct 1339"
     ],
     "labels": ["manor", "property"]
@@ -340,26 +404,40 @@
     "labels": ["manor", "property"]
   },
   {
-    "date": "1346",
+    "date": "10 Jul. 1346",
     "title": "Manor Restored",
-    "description": "The manor is returned to Sir John de Molyns, along with a new charter confirming his ownership and the royal services attached to it.",
+    "description": "The manor is returned to Sir John de Molyns, along with a new charter confirming his ownership and the royal services attached to it.\n\n> To the king’s escheators, sheriffs, bailiffs and other ministers. Order not to distrain John de Molyns for his homage for his manors of Stoketristre, Cokelyngton, Boyford, Aston, Ilmere, Dachet, Foulmere, Henleye on Thames, Brehull, Cippenham, Morton Pynkenye, Adyngton and Wendovere, and for his fees of Pynkeneye and Chokes, which he holds of the king, as he has done homage to the king for them.",
     "references": [
-      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847"
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847",
+      "[Calendar of the Close Rolls, Membrane 26, pg 89](https://archive.org/details/cu31924091767925/page/88/mode/2up)"
     ],
     "labels": ["manor", "property"]
   },
   {
-    "date": "1348",
+    "date": "26 Feb. 1347",
+    "title": "Giles, son of Sir John Blaket, released to Sir John de Molyns and Egidia, the rights to Ilmer",
+    "description": "> Enrolment of release by Giles son of Sir John Blaket, knight, to Sir John de Molyns, knight, and Egidia his wife of all his right and claim in the manors of Aston Bernard, Ilmere and Adynton, co. Buckingham, by reason of any yearly rent granted to him therein by John Blaket his father, with a general release. Witnesses: John Hamond, William Box, John de Aulton, Nicholas de Aumbresden, John Sergeant, John Edred, William de Berkhamsted, Martin Chaunceaux. Dated at London on 26 February, 21 Edward III. Memorandum that Giles came into chancery at Westminster on 1 March and acknowledged the preceding deed.",
+    "references": [
+      "[Calendar of the Close Rolls, 1 Mar. 1347, membrane 29d, pg 238](https://archive.org/details/cu31924091767925/page/238/mode/2up)"
+    ],
+    "labels": ["manor", "property"]
+  },
+  {
+    "date": "19 Mar. 1348",
     "title": "Legal Claim Dropped",
-    "description": "Isabella, daughter of a previous owner, formally gives up any legal claim she might have had to the manor of Ilmer.",
-    "references": ["Close Rolls, 22 Edward III, membrane 27"],
+    "description": "Isabella, daughter of a previous owner, formally gives up any legal claim she might have had to the manor of Ilmer.\n\n> Enrolment of release by Isabel daughter of Sir John Blaket, knight, to Sir John de Molyns and Gile, his wife, and to William their son and to John’s heirs of all her right and claim in the manors of Aston Bernard Ilmere and Adynton or in any rent therefrom. Witnesses: Sir Richard de la Vache, Sir Philip Buktot, knights, John Brian, Alexander de Saundreston, Laurence de Stretlegh, Martyn Chaunceux, John de Ardern, Hugh Wolf, Renald atte Hull, Thomas atte Hull. Dated at Wendovere on Tuesday after St. Gregory, 22 Edward III. Memorandum that Isabel came into chancery at Westminster on 9 April and acknowledged the preceding deed.",
+    "references": [
+      "[Calendar of the Close Rolls, 22 Edward III, 2 Apr. 1348, membrane 27d, pg 506](https://archive.org/details/cu31924091767925/page/506/mode/2up)"
+    ],
     "labels": ["legal", "manor", "property"]
   },
   {
-    "date": "9 Mar. 1349",
+    "date": "19 Feb. 1349",
     "title": "Vicar Granted Land",
-    "description": "Sir Richard Gladewyne, vicar, was granted a plot 100ft x 50ft, facing east by John de Molyns. An additional grant of 2 plots totalling 7.5 acres was also made in Middlefurlong Undertoun and Middlefurlong benorth.",
-    "references": ["Calendar of Close Rolls of Edward III, 1349"],
+    "description": "Sir Richard Gladewyne, vicar, was granted a plot 100ft x 50ft, facing east by John de Molyns. An additional grant of 2 plots totalling 7.5 acres was also made in Middlefurlong Undertoun and Middlefurlong benorth.\n\n> Enrolment of indenture testifying that John de Molyns and Egidia his wife have granted to Sir Richard Gladewyne, chaplain, sometime vicar of Ilmere church, for life, a plot of the garden of their manor of Ilmere, 100 feet long and 50 feet broad, which lies in the north part of the said garden, and one head extends towards the east, granting him full power to root up the trees growing in that plot and to bring it into culture and otherwise to do his pleasure therewith, as he shall see fit, to build thereon and to remove such buildings with his goods and chattels there without hindrance, unless John and Egidia will give him competent satisfaction for the same ; they also grant to him for life 7½ acres of arable land of the demesne lands of that manor, whereof 3½ acres lie in a plot called Middelfurlong Undertoun’, scattered among the lands of their bondmen, tenants of that manor, and 4 acres lie together in a plot called ‘Middelfurlong benorth,’ between the land of the prioress of Stodlegh on the north and the land of their bondmen their tenants on the south, to hold for life, rendering a rose yearly at Midsummer, so that he shall have them in memory, with their children and benefactors, both in masses and in orisons, as well as all those for whom they are bound to pray. Witnesses : Thomas Freysel, John I’ryan, John de Bergh, John de Bledelawe, John Isabel, Richard de Aston, Hugh Horpede. Dated at Ilmere on Wednesday before St. Peter in Cathedra, 23 Edward III. Memorandum that John, Egidia and Richard came at Ditton, co. Buckingham, on 4 March, before William de Burstall, clerk, to whom the king gave power by writ to receive their acknowledgments, and acknowledged the preceding deed, which writ is on the files among the writs of dedimus potestatem for this year.",
+    "references": [
+      "[Calendar of Close Rolls of Edward III, 9 Mar. 1349, membrane 24d, pg 58](https://archive.org/details/cu31924091767933/page/58/mode/2up)"
+    ],
     "labels": ["church", "land", "person"]
   },
   {
@@ -374,6 +452,15 @@
     "title": "John de Horwood appointed vicar",
     "description": "John de Horwood is appointed as the new vicar by Margery, the Prioress of Stodley (Studley).",
     "references": ["[Willis's Manuscripts](https://marco.ox.ac.uk/ark:29072/x0r781wf11q7), Bodleian Library"],
+    "labels": ["church", "person", "vicar"]
+  },
+  {
+    "date": "1 Nov. 1351",
+    "title": "Rent from Ilmer and Other Townships",
+    "description": "> Enrolment of indenture made between the king and John de Molyns, knight, testifying that in exchange for 550*l.* paid down to John from the treasury and for a rent or yearly ferm of 4*l.* 17*s.* 1*d.* issuing from hidage, view of frankpledge, prests for beaupleader (pulcre placitando), suits and wards and arrented serjeanties of the townships of Dachet, Bisshopeston, Stone, Aston Bernard and Ilmere, co. Buckingham, granted to John by the king, he has given to the king all his manor of Henle, co. Surrey, with the knights’ fees, advowsons and all other appurtenances ; and the king has given to John, in full satisfaction of the value of that manor, the said rent of 4*l.* 17*s.* 1*d.* due to him from the said towns, to wit : of the township of Dachet of hidage 26*s., of view of frank-pledge 13*s. 4*d., of prests for beaupleader 8*s., of suit and ward 15*s., and of arrented serjeanties, to wit of the lands which belonged to Robert Picot in the town of Aston Bernard, 7*s. ; of the lands which belonged to Walter Orpede in the town of Ilmere, 3*s.* 4*d.* ; of the lands of the prioress of Stodle in the town of Ilmere 10*s.* and of the lands which belonged to William de Sancto Claro in the towns of Stone and Bisshopeston, 14*s.* 5*d.* ; to hold for John’s life, rendering a rose yearly at the exchequer, at Midsummer, with remainder after John’s death to William, John’s son and the heirs male of his body, or in default to John’s rightful heirs, so that John and his heirs and the sheriffs of Buckingham shall be quit of the said rent. The king will warrant the said rent notwithstanding that the manor is entailed and that he has not been informed by writ ad quod damnum or otherwise of the value of the manor of Henle or of the profit which may come to him from that rent. Dated at Westminster, 26 June, 25 Edward III.",
+    "references": [
+      "[Calendar of the Close Rolls, 1351, membrane 4d, pg 403](https://archive.org/details/cu31924091767933/page/402/mode/2up)"
+    ],
     "labels": ["church", "person", "vicar"]
   },
   {
@@ -394,12 +481,12 @@
     "labels": ["death", "person"]
   },
   {
-    "date": "1367",
+    "date": "Bef. 26 Feb. 1367",
     "title": "Death of Lady Egidia de Moleyns",
-    "description": "Lady Egidia (aka Gilles de Moleyns), widow of Sir John Molines, dies, and the Ilmer property passes to her son, Sir William Molines.",
+    "description": "Lady Egidia (aka Gilles de Moleyns), widow of Sir John Molines, dies, and the Ilmer property passes to her son, Sir William Molines.\n\n> Order to John de Olneye, escheator in the county of Buckingham,—pursuant to an inquisition made by him shewing that Egidia late the wife of John de Molyns held in chief in fee tail on the day of her death the manors of Aston Bernard and Ilmere, co. Buckingham, by the service of being the king’s falconer, of the gift and grant of John Blaket, son and heir of John Blaket, knight, made with the king’s licence to her and her said husband and the heirs of their bodies, and that William de Molyns, knight, is their son and next heir, and of full age,—to deliver the manors to the said heir, as the king has taken his homage and fealty.",
     "references": [
       "Stoke Poges, a concise account of the church and manor, and also of the poet, Thomas Gray, 1896",
-      "Fine Rolls, 40 Edward III, folio 158",
+      "[Fine Rolls, 40 Edward III, folio 158, membrane 20, 26 Feb 1367](https://archive.org/details/calendaroffiner07greauoft/page/346/mode/2up)",
       "Dugdale's Baronage of England, Vol. 2, p. 147"
     ],
     "labels": ["death", "person", "property", "manor"]

@@ -60,7 +60,9 @@ body > header,
 body > footer {
   flex: none;
 }
-
+abbr {
+  cursor: help;
+}
 main {
   flex: 1 0 auto;
   max-width: 1120px;
