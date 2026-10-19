@@ -338,25 +338,16 @@
   },
   {
     "date": "2 Oct. 1337",
-    "title": "Grant of Privileges to John de Molyns",
-    "description": "> Pursuant to an inquisition ad quod damnum taken by the sheriff of Buckingham and returned into the chancery [Inquisitions ad quod damnum, file 241, no. 24] grant, of special grace and for good service, to John de Molyns and his heirs that they shall have within the manors of Brehull, Stokepugeys, Ditton, Dachette, Fulmere, Ilmere, Adynton, Aston Bernard, Weston Turvile and Lutgershale and also in the manor and town of Henle, co. Oxford, which Hugh Daudele, earl of Gloucester, and Margaret his wife hold for her life, and in the manor of Swirford, co. Oxford, which John de Haudlo holds for his life, when the said manor and town and manor shall come to the said John and his heirs by remainder, return of all the king's writs and precepts, and summons of the Exchequer and executions thereof, and also infangenthef and outfangenthef and chattels of their men and tenants, felons and fugitive, and chattels called 'wayf' and 'stray' in the said manors and town ; and that the said John and his heirs may set up gallows upon their soil of the said manors and do justice upon malefactors taken under the said liberties of infangenethef and outfangenethef without impediment from the king and his ministers ; and that the said John and his heirs and their men and tenants of the said manors and town shall be quit of toll, murage, pavage and pontage throughout the king's realm ; and that the said John and his heirs shall have free warren in all their demesne lands of the said manors.",
-    "references": [
-      "[Charter Rolls 1-14 Edward III, Membrane 12, pg 430](https://babel.hathitrust.org/cgi/pt?id=inu.30000086172677&seq=452)"
-    ],
-    "labels": ["document", "manor"]
-  },
-  {
-    "date": "1337",
-    "title": "Feudal Privileges Granted",
-    "description": "Sir John de Molyns is granted exclusive hunting rights (known as 'free warren') and other valuable feudal privileges for his estates.",
+    "title": "Grant of Feudal Privileges to John de Molyns",
+    "description": "Sir John de Molyns is granted exclusive hunting rights (known as 'free warren') and other valuable feudal privileges for his estates\n\n> Pursuant to an inquisition ad quod damnum taken by the sheriff of Buckingham and returned into the chancery [Inquisitions ad quod damnum, file 241, no. 24] grant, of special grace and for good service, to John de Molyns and his heirs that they shall have within the manors of Brehull, Stokepugeys, Ditton, Dachette, Fulmere, Ilmere, Adynton, Aston Bernard, Weston Turvile and Lutgershale and also in the manor and town of Henle, co. Oxford, which Hugh Daudele, earl of Gloucester, and Margaret his wife hold for her life, and in the manor of Swirford, co. Oxford, which John de Haudlo holds for his life, when the said manor and town and manor shall come to the said John and his heirs by remainder, return of all the king's writs and precepts, and summons of the Exchequer and executions thereof, and also infangenthef and outfangenthef and chattels of their men and tenants, felons and fugitive, and chattels called 'wayf' and 'stray' in the said manors and town ; and that the said John and his heirs may set up gallows upon their soil of the said manors and do justice upon malefactors taken under the said liberties of infangenethef and outfangenethef without impediment from the king and his ministers ; and that the said John and his heirs and their men and tenants of the said manors and town shall be quit of toll, murage, pavage and pontage throughout the king's realm ; and that the said John and his heirs shall have free warren in all their demesne lands of the said manors.",
     "references": [
       "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847 (see Brill, p. 99)",
-      "Charter Rolls, 11 Edward III, membrane 12"
+      "[Charter Rolls 1-14 Edward III, Membrane 12, pg 430](https://babel.hathitrust.org/cgi/pt?id=inu.30000086172677&seq=452)"
     ],
-    "labels": ["legal"]
+    "labels": ["document", "manor", "legal"]
   },
   {
-    "date": "7 Jan. 1338",
+    "date": "7 Jan. 1337/38",
     "title": "Ilmer Custumal Recorded",
     "description": "An Ilmer Custumal (economic, political, and social customs) was written and still exists at Kew.",
     "references": [
@@ -395,9 +386,9 @@
     "labels": ["manor", "property"]
   },
   {
-    "date": "Dec. 1340",
+    "date": "1 Dec. 1340",
     "title": "Manor Seized by the King",
-    "description": "After Sir John de Molyns falls from royal favour, his extensive properties, including the manor of Ilmer, are seized by the Crown.",
+    "description": "After Sir John de Molyns falls from royal favour, his extensive properties, including the manor of Ilmer, are seized by the Crown. He was put into the Tower of London, but escaped later that December.",
     "references": [
       "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847 (see Stoke Poges)",
       "Fine Rolls, 16 Edward III, membrane 14",
@@ -406,9 +397,18 @@
     "labels": ["manor", "property"]
   },
   {
+    "date": "1341",
+    "title": "Nonarum Inquisitiones (Inquisition of the Ninths)",
+    "description": "> Taxatio viij librarum et dimidii. Valor nonae in eadem parochia una cum nona de dominicis terris domini Johannis de Molyns in eadem parochia per presentatos Roberti North, Hugonis le Orpede, Johannis Knyght filii Janekyn, Johannis Parmenter et Johannis Ernaldi viij librarum et dimidii et non plus, quia dicunt quod parochiani ita depauperati quod nequeunt terras suas colere ut deberent et pauci sunt habitantes in eadem parochia propter defectum pasturae et quod nulli sunt mercatores seu catallarii in eadem. Valor nonae viij librarum et dimidii.\n\n translated: \n> Taxation: £8 10s. The value of the ninth in the same parish, together with the ninth from the demesne lands of the lord John de Molyns in the same parish, by the presenters Robert North, Hugh le Orpede, John Knyght son of Janekyn, John Parmenter and John Ernaldi, is £8 10s and no more, because they say that the parishioners are so impoverished that they cannot cultivate their lands as they ought, and few are living in the same parish for lack of pasture, and that there are no merchants or traders in the same. Value of the ninth: £8 10s.",
+    "references": [
+      "[Nonarum Inquisitiones in curia scaccarii; Temp. Regis Edwardi III](https://archive.org/details/india.history.resource.105840/page/n361/mode/2up)"
+    ],
+    "labels": ["taxation"]
+  },
+  {
     "date": "10 Jul. 1346",
     "title": "Manor Restored",
-    "description": "The manor is returned to Sir John de Molyns, along with a new charter confirming his ownership and the royal services attached to it.\n\n> To the king’s escheators, sheriffs, bailiffs and other ministers. Order not to distrain John de Molyns for his homage for his manors of Stoketristre, Cokelyngton, Boyford, Aston, Ilmere, Dachet, Foulmere, Henleye on Thames, Brehull, Cippenham, Morton Pynkenye, Adyngton and Wendovere, and for his fees of Pynkeneye and Chokes, which he holds of the king, as he has done homage to the king for them.",
+    "description": "The manor is returned to Sir John de Molyns, along with a new charter confirming his ownership and the royal services attached to it.\n\n> To the king's escheators, sheriffs, bailiffs and other ministers. Order not to distrain John de Molyns for his homage for his manors of Stoketristre, Cokelyngton, Boyford, Aston, Ilmere, Dachet, Foulmere, Henleye on Thames, Brehull, Cippenham, Morton Pynkenye, Adyngton and Wendovere, and for his fees of Pynkeneye and Chokes, which he holds of the king, as he has done homage to the king for them.",
     "references": [
       "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847",
       "[Calendar of the Close Rolls, Membrane 26, pg 89](https://archive.org/details/cu31924091767925/page/88/mode/2up)"
@@ -432,6 +432,13 @@
       "[Calendar of the Close Rolls, 22 Edward III, 2 Apr. 1348, membrane 27d, pg 506](https://archive.org/details/cu31924091767925/page/506/mode/2up)"
     ],
     "labels": ["legal", "manor", "property"]
+  },
+  {
+    "date": "1348-1349",
+    "title": "Black Death",
+    "description": "The Black Death reaches England, killing a large proportion of the population. Ilmer and surrounding communities would have suffered severe loss of life, labour shortages and lasting social and economic disruption.",
+    "references": [],
+    "labels": ["disease"]
   },
   {
     "date": "19 Feb. 1349",
