@@ -147,33 +147,39 @@ class TimelineAnniversaries extends LitElement {
           this.anniversaries.length === 0
             ? html`<p class="no-anniversaries">No anniversaries fall in the next two weeks.</p>`
             : html`
-                <ol class="anniversary-days">
-                  ${this.groupByDay().map(
-                    ({ daysDiff, date, items }) => html`
-                      <li class="anniversary-day${daysDiff === 0 ? ' is-today' : ''}">
-                        <time class="anniversary-when" datetime="${this.isoDate(date)}">
-                          <span class="anniversary-day-number">${date.getDate()}</span>
-                          <span class="anniversary-month">${date.toLocaleDateString('en-GB', { month: 'short' })}</span>
-                          <span class="anniversary-weekday">${this.weekdayLabel(daysDiff, date)}</span>
-                        </time>
-                        <ul class="anniversary-entries">
-                          ${items.map(
-                            (anniversary) => html`
-                              <li>
-                                <timeline-anniversary
-                                  label="${anniversary.title}"
-                                  year="${anniversary.year}"
-                                  years-ago="${anniversary.yearsAgo}"
-                                  target="${anniversary.id}"
-                                ></timeline-anniversary>
-                              </li>
-                            `
-                          )}
-                        </ul>
-                      </li>
-                    `
-                  )}
-                </ol>
+                <div class="anniversary-scroll">
+                  <ol class="anniversary-days">
+                    ${this.groupByDay().map(
+                      ({ daysDiff, date, items }) => html`
+                        <li class="anniversary-day${daysDiff === 0 ? ' is-today' : ''}">
+                          <time class="anniversary-when" datetime="${this.isoDate(date)}">
+                            <span class="anniversary-day-number">${date.getDate()}</span>
+                            <span class="anniversary-month"
+                              >${date.toLocaleDateString('en-GB', { month: 'short' })}</span
+                            >
+                            <span class="anniversary-weekday">${this.weekdayLabel(daysDiff, date)}</span>
+                          </time>
+                          <ul class="anniversary-entries">
+                            ${items.map(
+                              (anniversary) => html`
+                                <li>
+                                  <timeline-anniversary
+                                    label="${anniversary.title}"
+                                    year="${anniversary.year}"
+                                    years-ago="${anniversary.yearsAgo}"
+                                    target="${anniversary.id}"
+                                  ></timeline-anniversary>
+                                </li>
+                              `
+                            )}
+                          </ul>
+                        </li>
+                      `
+                    )}
+                  </ol>
+                  <span class="anniversary-scroll-shadow anniversary-scroll-shadow--left" aria-hidden="true"></span>
+                  <span class="anniversary-scroll-shadow anniversary-scroll-shadow--right" aria-hidden="true"></span>
+                </div>
               `
         }
       </section>

@@ -86,6 +86,21 @@ test('local stylesheet links are cache-busted and owned by the head template', (
   }
 });
 
+test('the anniversary strip fades its scroll edges more lightly than wide tables', () => {
+  const timeline = readFileSync(new URL('assets/css/timeline.css', root), 'utf8');
+  const archive = readFileSync(new URL('assets/css/archive.css', root), 'utf8');
+  const script = readFileSync(new URL('assets/js/anniversaries.js', root), 'utf8');
+  assert.match(script, /class="anniversary-scroll"/);
+  assert.match(script, /anniversary-scroll-shadow anniversary-scroll-shadow--left" aria-hidden="true"/);
+  assert.match(script, /anniversary-scroll-shadow anniversary-scroll-shadow--right" aria-hidden="true"/);
+  assert.match(timeline, /container-type:\s*scroll-state;/);
+  assert.match(timeline, /@container anniversary-scroll scroll-state\(scrollable:\s*left\)/);
+  assert.match(timeline, /@container anniversary-scroll scroll-state\(scrollable:\s*right\)/);
+  assert.match(timeline, /linear-gradient\(to right, rgb\(77 61 37 \/ 10%\), transparent\)/);
+  assert.match(timeline, /linear-gradient\(to left, rgb\(77 61 37 \/ 10%\), transparent\)/);
+  assert.match(archive, /linear-gradient\(to right, rgb\(77 61 37 \/ 20%\), transparent\)/);
+});
+
 test('CSS is static and the archive theme inherits the shared palette', () => {
   const files = authoredFiles('assets/css/').filter((file) => file.endsWith('.css'));
   const sources = files.map((file) => readFileSync(new URL(file, root), 'utf8'));
