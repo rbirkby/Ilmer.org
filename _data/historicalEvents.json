@@ -407,6 +407,16 @@
     "labels": ["taxation"]
   },
   {
+    "date": "1342-1343",
+    "title": "Ilmer windmill was repaired",
+    "description": "Ilmer windmill repaired.",
+    "references": [
+      "[Bucks Heritage Portal](https://heritageportal.buckinghamshire.gov.uk/Monument/MBC11393)",
+      "Ministers' Accounts (General Series), Bundle 761, Number 2 1341-1345 [Reeves's accounts, SC/761/2](https://discovery.nationalarchives.gov.uk/details/r/C5958808)"
+    ],
+    "labels": ["property", "infrastructure", "repair"]
+  },
+  {
     "date": "10 Jul. 1346",
     "title": "Manor Restored",
     "description": "The manor is returned to Sir John de Molyns, along with a new charter confirming his ownership and the royal services attached to it.\n\n> To the king's escheators, sheriffs, bailiffs and other ministers. Order not to distrain John de Molyns for his homage for his manors of Stoketristre, Cokelyngton, Boyford, Aston, Ilmere, Dachet, Foulmere, Henleye on Thames, Brehull, Cippenham, Morton Pynkenye, Adyngton and Wendovere, and for his fees of Pynkeneye and Chokes, which he holds of the king, as he has done homage to the king for them.",
