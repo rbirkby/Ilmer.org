@@ -232,9 +232,10 @@
     "references": [
       "[National Archives Discovery ref C 133/123/8](https://discovery.nationalarchives.gov.uk/details/r/C9532728)",
       "[Chancery Inquisition Post Mortem, 34, Edward I, 9 Oct. 1306, pg 254](https://archive.org/details/cu31924011387820/page/254/mode/2up)",
-      "[Bucks Heritage Portal](https://heritageportal.buckinghamshire.gov.uk/Monument/MBC11393)"
+      "[Bucks Heritage Portal](https://heritageportal.buckinghamshire.gov.uk/Monument/MBC11393)",
+      "Ministers' Accounts (General Series), Bundle 761, Number 2 1341-1345 [Reeves's accounts, SC/761/2](https://discovery.nationalarchives.gov.uk/details/r/C5958808)"
     ],
-    "labels": ["property"]
+    "labels": ["property", "infrastructure"]
   },
   {
     "date": "1 Nov. 1306",
@@ -1228,7 +1229,7 @@
     "title": "Highway Repair Indictment Discharged",
     "description": "Ilmer inhabitants were discharged from an indictment after repairing the highway from Bicester to Wycombe through Ilmer. This is likely to be the footpath taking a north-westerly route from the railway bridge and the bridleway south-easterly from the railway bridge.",
     "references": ["Calendar to the session records"],
-    "labels": ["repair"]
+    "labels": ["infrastructure"]
   },
   {
     "date": "2 Jan. 1701",
@@ -1281,7 +1282,7 @@
     "title": "Inhabitants Cited for Unrepaired Highways",
     "description": "The inhabitants of Ilmer were cited for not repairing the highways, which were in a 'ruinous and bad condition'.",
     "references": ["Buckinghamshire Sessions Records: Volume 5"],
-    "labels": ["repair"]
+    "labels": ["infrastructure"]
   },
   {
     "date": "21 Jul. 1722",
@@ -1299,7 +1300,7 @@
     "title": "Inhabitants Cited Again for Unrepaired Highways",
     "description": "The inhabitants of Ilmer were cited for not repairing the highways.",
     "references": ["Chronological Quarter Sessions Records"],
-    "labels": ["repair"]
+    "labels": ["infrastructure"]
   },
   {
     "date": "1726",
