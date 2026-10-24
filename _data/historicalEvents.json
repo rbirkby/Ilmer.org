@@ -363,7 +363,8 @@
     "description": "Sir John Moleyns of Stoke Poges held the manor of Ilmer in serjeanty as keeper of the king's hawks.\n> To the treasurer and barons of the exchequer. Order to deliver to John de Molyns, the custody of the king’s goshawks and birds and the fees and wages pertaining to that custody, if they shall find that he holds the custody of the manor of Ilmere, co. Buckingham, by the service of that custody; as lately at the suit of John, by his petition before the king and his council, beseeching the king to cause him to have that custody, as Ralph le fitz Bernard and his ancestors, formerly lords of the said manor and other lords there, have held it of the king, from time out of mind, by the said service, receiving the said fees and wages, and John lately acquired the manor by the king’s licence; the king ordered the treasurer and barons to inspect Domesday book and the rolls and memoranda of the exchequer, and to inform the king of what they should find thereupon, and they returned that they had found, among other things, in a certain roll of arented serjeanties, that the serjeanty which belonged to William son of Bernard in Ylemer, for which he ought to be marshal of the king’s goshawks and birds, was in part alienated.",
     "references": [
       "Oxford Dictionary of National Biography",
-      "[Close rolls, Edward III pg 322](https://archive.org/details/cu31924091767883/page/322/mode/2up)"
+      "[Close rolls, Edward III pg 322](https://archive.org/details/cu31924091767883/page/322/mode/2up)",
+      "Cokayne, G. E. [The complete peerage, Vol 9, pg 37](https://babel.hathitrust.org/cgi/pt?id=osu.32435070599725&seq=51)"
     ],
     "labels": ["manor", "property"]
   },
@@ -389,11 +390,12 @@
   {
     "date": "1 Dec. 1340",
     "title": "Manor Seized by the King",
-    "description": "After Sir John de Molyns falls from royal favour, his extensive properties, including the manor of Ilmer, are seized by the Crown. He was put into the Tower of London, but escaped later that December.",
+    "description": "After Sir John de Molyns falls from royal favour, his extensive properties, including the manor of Ilmer, are seized by the Crown. He was put into the Tower of London, but escaped 4 days later.",
     "references": [
       "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847 (see Stoke Poges)",
       "Fine Rolls, 16 Edward III, membrane 14",
-      "[The first fall of Sir John Molyns, G. R. Elvey, Bucks AS](http://www.bucksas.org.uk/rob/rob_19_2_194.pdf)"
+      "[The first fall of Sir John Molyns, G. R. Elvey, Bucks AS](http://www.bucksas.org.uk/rob/rob_19_2_194.pdf)",
+      "Cokayne, G. E. [The complete peerage, Vol 9, pg 38](https://babel.hathitrust.org/cgi/pt?id=osu.32435070599725&seq=52)"
     ],
     "labels": ["manor", "property"]
   },
@@ -422,7 +424,8 @@
     "description": "The manor is returned to Sir John de Molyns, along with a new charter confirming his ownership and the royal services attached to it.\n\n> To the king's escheators, sheriffs, bailiffs and other ministers. Order not to distrain John de Molyns for his homage for his manors of Stoketristre, Cokelyngton, Boyford, Aston, Ilmere, Dachet, Foulmere, Henleye on Thames, Brehull, Cippenham, Morton Pynkenye, Adyngton and Wendovere, and for his fees of Pynkeneye and Chokes, which he holds of the king, as he has done homage to the king for them.",
     "references": [
       "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847",
-      "[Calendar of the Close Rolls, Membrane 26, pg 89](https://archive.org/details/cu31924091767925/page/88/mode/2up)"
+      "[Calendar of the Close Rolls, Membrane 26, pg 89](https://archive.org/details/cu31924091767925/page/88/mode/2up)",
+      "Cokayne, G. E. [The complete peerage, Vol 9, pg 38](https://babel.hathitrust.org/cgi/pt?id=osu.32435070599725&seq=52)"
     ],
     "labels": ["manor", "property"]
   },
@@ -491,19 +494,29 @@
     "labels": ["legal", "manor", "property"]
   },
   {
-    "date": "1360",
-    "title": "Death of Sir John Molines",
-    "description": "Sir John Molines dies.",
+    "date": "10 Mar. 1359/60",
+    "title": "Death of Sir John Moleyns",
+    "description": "Sir John Moleyns dies in prison in Cambridge where he had been since the previous September, along with his wife.",
     "references": [
       "Stoke Poges, a concise account of the church and manor, and also of the poet, Thomas Gray, 1896",
-      "Oxford Dictionary of National Biography"
+      "Oxford Dictionary of National Biography",
+      "Cokayne, G. E. [The complete peerage, Vol 9, pg 39](https://babel.hathitrust.org/cgi/pt?id=osu.32435070599725&seq=53)"
     ],
     "labels": ["death", "person"]
   },
   {
+    "date": "22 May 1360",
+    "title": "Lady Egidia de Moleyns released from prison",
+    "description": "Lady Egidia (aka Gilles de Moleyns), widow of Sir John Molines, is released from prison. She was pardoned 30 June and lands were restored.",
+    "references": [
+      "Cokayne, G. E. [The complete peerage, Vol 9, pg 39](https://babel.hathitrust.org/cgi/pt?id=osu.32435070599725&seq=53)"
+    ],
+    "labels": ["person", "property", "manor"]
+  },
+  {
     "date": "21 January 1366/67",
     "title": "Death of Lady Egidia de Moleyns",
-    "description": "Lady Egidia (aka Gilles de Moleyns), widow of Sir John Molines, dies, and the Ilmer property passes to her son, Sir William Molines.\n\n> Order to John de Olneye, escheator in the county of Buckingham,—pursuant to an inquisition made by him shewing that Egidia late the wife of John de Molyns held in chief in fee tail on the day of her death the manors of Aston Bernard and Ilmere, co. Buckingham, by the service of being the king’s falconer, of the gift and grant of John Blaket, son and heir of John Blaket, knight, made with the king’s licence to her and her said husband and the heirs of their bodies, and that William de Molyns, knight, is their son and next heir, and of full age,—to deliver the manors to the said heir, as the king has taken his homage and fealty.",
+    "description": "Lady Egidia (aka Gilles de Moleyns), widow of Sir John Molines, dies, and the Ilmer property passes to her surviving son, Sir William Molines.\n\n> Order to John de Olneye, escheator in the county of Buckingham,—pursuant to an inquisition made by him shewing that Egidia late the wife of John de Molyns held in chief in fee tail on the day of her death the manors of Aston Bernard and Ilmere, co. Buckingham, by the service of being the king’s falconer, of the gift and grant of John Blaket, son and heir of John Blaket, knight, made with the king’s licence to her and her said husband and the heirs of their bodies, and that William de Molyns, knight, is their son and next heir, and of full age,—to deliver the manors to the said heir, as the king has taken his homage and fealty.",
     "references": [
       "Stoke Poges, a concise account of the church and manor, and also of the poet, Thomas Gray, 1896",
       "[Fine Rolls, 40 Edward III, folio 158, membrane 20, 26 Feb 1367](https://archive.org/details/calendaroffiner07greauoft/page/346/mode/2up)",
@@ -517,7 +530,8 @@
     "description": "Ilmer property descends to Sir Richard Molines, son of Sir William Molines.",
     "references": [
       "Stoke Poges, a concise account of the church and manor, and also of the poet, Thomas Gray, 1896",
-      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847 (see Stoke Poges, vol 4 p. 547)"
+      "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847 (see Stoke Poges, vol 4 p. 547)",
+      "Cokayne, G. E. [The complete peerage, Vol 9, pg 41](https://babel.hathitrust.org/cgi/pt?id=osu.32435070599725&seq=55)"
     ],
     "labels": ["property", "manor"]
   },
@@ -529,10 +543,13 @@
     "labels": ["church", "person", "vicar"]
   },
   {
-    "date": "abt. 1385",
+    "date": "14 Dec. 1384",
     "title": "Sir Richard Molines dies",
     "description": "Richard dies leaving his heir, William de Moleyns aged 7.",
-    "references": ["Victoria History of the County of Buckingham vol3, stoke poges"],
+    "references": [
+      "Victoria History of the County of Buckingham vol3, stoke poges",
+      "Cokayne, G. E. [The complete peerage, Vol 9, pg 41](https://babel.hathitrust.org/cgi/pt?id=osu.32435070599725&seq=55)"
+    ],
     "labels": ["manor", "person"]
   },
   {
@@ -590,12 +607,13 @@
   {
     "date": "8 Jun. 1425",
     "title": "Sir William de Moleyns dies",
-    "description": "William de Moleyns dies and the manor passes to his son William who was killed in 1429 at the siege of Orleans during the hundred years war.",
+    "description": "William de Moleyns dies and the manor passes to his son William who was [killed in 1429 at the siege of Orleans](/history/war-dead/) during the hundred years war.",
     "references": [
       "Victoria History of the County of Buckingham vol3, stoke poges",
-      "[History of Parliament](https://www.historyofparliamentonline.org/volume/1386-1421/member/moleyns-sir-william-1378-1425)"
+      "[History of Parliament](https://www.historyofparliamentonline.org/volume/1386-1421/member/moleyns-sir-william-1378-1425)",
+      "Cokayne, G. E. [The complete peerage, Vol 9, pg 41](https://babel.hathitrust.org/cgi/pt?id=osu.32435070599725&seq=55)"
     ],
-    "labels": ["manor", "person"]
+    "labels": ["manor", "person", "death"]
   },
   {
     "date": "22 Oct. 1425",
@@ -610,7 +628,7 @@
   {
     "date": "8 May 1429",
     "title": "William de Moleyns is killed during the siege of Orleans",
-    "description": "William de Moleyns dies at the siege of Orleans during the hundred years war. He is succeeded by his only daughter Eleanor (Alianor) aged 3 years old. She marries Robert de Hungerford.",
+    "description": "William de Moleyns [dies at the siege of Orleans](/history/war-dead/) during the hundred years war. He is succeeded by his only daughter Eleanor (Alianor) aged 3 years old. She marries Robert de Hungerford.",
     "references": [
       "Victoria History of the County of Buckingham vol3, stoke poges",
       "[FindAGrave.com](https://www.findagrave.com/memorial/111378008/william-moleyns)"
@@ -633,7 +651,8 @@
     "description": "The manor passes to the Hungerford family through the marriage of the Molyns heiress, Alianore (Eleanor), to Robert Hungerford (aged between 10 and 12). He styled himself Lord Moleyns, 1st Baron Moleyns.",
     "references": [
       "[The history and antiquities of the county of Buckingham, Vol 1](https://archive.org/details/historyantiquiti01lips/page/n167/mode/2up), G Lipscomb, 1847",
-      "Dictionary of National Biography, 1885-1900, Vol. 28, Sidney Lee"
+      "Dictionary of National Biography, 1885-1900, Vol. 28, Sidney Lee",
+      "[The Complete Peerage, Vol 9, pg 43](https://babel.hathitrust.org/cgi/pt?id=osu.32435070599725&seq=57)"
     ],
     "labels": ["inheritance", "manor", "marriage", "property"]
   },
@@ -689,9 +708,10 @@
     "description": "Robert Hungerford, husband of Eleanor de Molyns, is captured on 15 May 1464 at the battle of Hexham and beheaded at Newcastle before being buried in Salisbury Cathedral. The manor of Ilmer is inherited by his son Sir Thomas Hungerford.",
     "references": [
       "Victoria History of the County of Buckingham vol3, stoke poges",
-      "Dictionary of National Biography, 1885-1900, Vol. 28, Sidney Lee"
+      "Dictionary of National Biography, 1885-1900, Vol. 28, Sidney Lee",
+      "[The Complete Peerage, Vol 9, pg 43](https://babel.hathitrust.org/cgi/pt?id=osu.32435070599725&seq=57)"
     ],
-    "labels": ["manor", "person"]
+    "labels": ["manor", "person", "death"]
   },
   {
     "date": "res. 1466",
@@ -719,6 +739,7 @@
     "title": "Alianore (Eleanor) Hungerford de Molyns, widow of Robert, Lord Hungerford, marries Sir Oliver Manyngham",
     "description": "Alianore died 1476, but not before they had a daughter, Frideswide who married Thomas Oxenbridge in 1489.",
     "references": [
+      "[The Complete Peerage, Vol 9, pg 43](https://babel.hathitrust.org/cgi/pt?id=osu.32435070599725&seq=57)",
       "Cokayne, G. E. [The complete peerage, Volume 5](https://archive.org/details/CokayneG.E.TheCompletePeerageSecondEditionVolume5EAGO/page/n209/mode/2up)"
     ],
     "labels": ["manor", "person"]
