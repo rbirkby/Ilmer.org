@@ -8,18 +8,18 @@ lightbox: true
 scrollAllTables: true
 ---
 
-| Name                                            | Conflict                | Location               | Date              | Casualty Record       |    Age |
-| ----------------------------------------------- | ----------------------- | ---------------------- | ----------------- | --------------------- | -----: |
-| Sir William de Moleyns                          | Hundred Years War       | [Siege of Orleans][1]  | 8 May 1429        |                       | ~24[8] |
-| [Robert 3rd Baron Hungerford (Lord Moleyns)][2] | [Wars of the Roses][3]  | [Battle of Hexam][4]   | May 18 1464       | Beheaded at Newcastle |    ~35 |
-| [Sir Thomas Hungerford][5]                      | [Wars of the Roses][3]  | Salisbury              | January 17 1469   | Beheaded              |    ~29 |
-| [Robert Dormer, 1st Earl of Carnarvon][6]       | First English Civil War | [Battle of Newbury][7] | September 20 1643 |                       |    ~33 |
-| Albert Lay                                      | Great War               | Flanders               | December 12 1915  | Accidentally killed   |     20 |
-| Aubrey S Gomme                                  | Great War               | France                 | April 9 1917      | Killed in action      |     24 |
-| William J Claydon                               | Great War               |                        | April 28 1917     | Wounded and Missing   |     20 |
-| Frank P Kingham                                 | Great War               | Flanders               | August 27 1917    | Killed in action      |     21 |
-| (William) Herbert Smith                         | Great War               | France                 | March 21 1918     | Killed in action      |     33 |
-| Albert Richardson                               | Great War               | France                 | September 11 1918 | Died of Wounds        |     23 |
+| Name                                                                                       | Conflict                | Location               | Date              | Casualty Record       | Age |
+| ------------------------------------------------------------------------------------------ | ----------------------- | ---------------------- | ----------------- | --------------------- | --: |
+| [Sir William de Moleyns](https://babel.hathitrust.org/cgi/pt?id=osu.32435070599725&seq=56) | Hundred Years War       | [Siege of Orleans][1]  | 8 May 1429        |                       | ~24 |
+| [Robert 3rd Baron Hungerford (Lord Moleyns)][2]                                            | [Wars of the Roses][3]  | [Battle of Hexam][4]   | May 18 1464       | Beheaded at Newcastle | ~35 |
+| [Sir Thomas Hungerford][5]                                                                 | [Wars of the Roses][3]  | Salisbury              | January 17 1469   | Beheaded              | ~29 |
+| [Robert Dormer, 1st Earl of Carnarvon][6]                                                  | First English Civil War | [Battle of Newbury][7] | September 20 1643 |                       | ~33 |
+| Albert Lay                                                                                 | Great War               | Flanders               | December 12 1915  | Accidentally killed   |  20 |
+| Aubrey S Gomme                                                                             | Great War               | France                 | April 9 1917      | Killed in action      |  24 |
+| William J Claydon                                                                          | Great War               |                        | April 28 1917     | Wounded and Missing   |  20 |
+| Frank P Kingham                                                                            | Great War               | Flanders               | August 27 1917    | Killed in action      |  21 |
+| (William) Herbert Smith                                                                    | Great War               | France                 | March 21 1918     | Killed in action      |  33 |
+| Albert Richardson                                                                          | Great War               | France                 | September 11 1918 | Died of Wounds        |  23 |
 
 [1]: https://en.wikipedia.org/wiki/Siege_of_Orl%C3%A9ans_(1428%E2%80%931429)
 [2]: https://en.wikipedia.org/wiki/Robert_Hungerford,_3rd_Baron_Hungerford
@@ -28,7 +28,6 @@ scrollAllTables: true
 [5]: https://en.wikipedia.org/wiki/Thomas_Hungerford_of_Rowden
 [6]: https://en.wikipedia.org/wiki/Robert_Dormer,_1st_Earl_of_Carnarvon
 [7]: https://en.wikipedia.org/wiki/First_Battle_of_Newbury
-[8]: https://babel.hathitrust.org/cgi/pt?id=osu.32435070599725&seq=56
 
 ---
 
