@@ -2,6 +2,7 @@
 id: RollOfHonour
 section: A
 location: 'Plaque inside church'
+note: For more information, see [Ilmer War Dead](/history/war-dead)
 ---
 
 ![Plaque inside church](/images/IlmerWarPlaque.avif)
