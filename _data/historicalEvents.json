@@ -439,7 +439,7 @@
     "labels": ["manor", "property"]
   },
   {
-    "date": "19 Mar. 1348",
+    "date": "18 Mar. 1347/48",
     "title": "Legal Claim Dropped",
     "description": "Isabella, daughter of a previous owner, formally gives up any legal claim she might have had to the manor of Ilmer.\n\n> Enrolment of release by Isabel daughter of Sir John Blaket, knight, to Sir John de Molyns and Gile, his wife, and to William their son and to John’s heirs of all her right and claim in the manors of Aston Bernard Ilmere and Adynton or in any rent therefrom. Witnesses: Sir Richard de la Vache, Sir Philip Buktot, knights, John Brian, Alexander de Saundreston, Laurence de Stretlegh, Martyn Chaunceux, John de Ardern, Hugh Wolf, Renald atte Hull, Thomas atte Hull. Dated at Wendovere on Tuesday after St. Gregory, 22 Edward III. Memorandum that Isabel came into chancery at Westminster on 9 April and acknowledged the preceding deed.",
     "references": [
@@ -455,11 +455,11 @@
     "labels": ["disease"]
   },
   {
-    "date": "19 Feb. 1349",
+    "date": "18 Feb. 1348/49",
     "title": "Vicar Granted Land",
     "description": "Sir Richard Gladewyne, vicar, was granted a plot 100ft x 50ft, facing east by John de Molyns. An additional grant of 2 plots totalling 7.5 acres was also made in Middlefurlong Undertoun and Middlefurlong benorth.\n\n> Enrolment of indenture testifying that John de Molyns and Egidia his wife have granted to Sir Richard Gladewyne, chaplain, sometime vicar of Ilmere church, for life, a plot of the garden of their manor of Ilmere, 100 feet long and 50 feet broad, which lies in the north part of the said garden, and one head extends towards the east, granting him full power to root up the trees growing in that plot and to bring it into culture and otherwise to do his pleasure therewith, as he shall see fit, to build thereon and to remove such buildings with his goods and chattels there without hindrance, unless John and Egidia will give him competent satisfaction for the same ; they also grant to him for life 7½ acres of arable land of the demesne lands of that manor, whereof 3½ acres lie in a plot called Middelfurlong Undertoun’, scattered among the lands of their bondmen, tenants of that manor, and 4 acres lie together in a plot called ‘Middelfurlong benorth,’ between the land of the prioress of Stodlegh on the north and the land of their bondmen their tenants on the south, to hold for life, rendering a rose yearly at Midsummer, so that he shall have them in memory, with their children and benefactors, both in masses and in orisons, as well as all those for whom they are bound to pray. Witnesses : Thomas Freysel, John I’ryan, John de Bergh, John de Bledelawe, John Isabel, Richard de Aston, Hugh Horpede. Dated at Ilmere on Wednesday before St. Peter in Cathedra, 23 Edward III. Memorandum that John, Egidia and Richard came at Ditton, co. Buckingham, on 4 March, before William de Burstall, clerk, to whom the king gave power by writ to receive their acknowledgments, and acknowledged the preceding deed, which writ is on the files among the writs of dedimus potestatem for this year.",
     "references": [
-      "[Calendar of Close Rolls of Edward III, 9 Mar. 1349, membrane 24d, pg 58](https://archive.org/details/cu31924091767933/page/58/mode/2up)"
+      "[Calendar of Close Rolls of Edward III, 9 Mar. 1348/49, membrane 24d, pg 58](https://archive.org/details/cu31924091767933/page/58/mode/2up)"
     ],
     "labels": ["church", "land", "person"]
   },
@@ -479,7 +479,7 @@
   },
   {
     "date": "1 Nov. 1351",
-    "title": "Rent from Ilmer and Other Townships",
+    "title": "Enrolment of rent from Ilmer and Other Townships",
     "description": "> Enrolment of indenture made between the king and John de Molyns, knight, testifying that in exchange for 550*l.* paid down to John from the treasury and for a rent or yearly ferm of 4*l.* 17*s.* 1*d.* issuing from hidage, view of frankpledge, prests for beaupleader (pulcre placitando), suits and wards and arrented serjeanties of the townships of Dachet, Bisshopeston, Stone, Aston Bernard and Ilmere, co. Buckingham, granted to John by the king, he has given to the king all his manor of Henle, co. Surrey, with the knights’ fees, advowsons and all other appurtenances ; and the king has given to John, in full satisfaction of the value of that manor, the said rent of 4*l.* 17*s.* 1*d.* due to him from the said towns, to wit : of the township of Dachet of hidage 26*s., of view of frank-pledge 13*s. 4*d., of prests for beaupleader 8*s., of suit and ward 15*s., and of arrented serjeanties, to wit of the lands which belonged to Robert Picot in the town of Aston Bernard, 7*s. ; of the lands which belonged to Walter Orpede in the town of Ilmere, 3*s.* 4*d.* ; of the lands of the prioress of Stodle in the town of Ilmere 10*s.* and of the lands which belonged to William de Sancto Claro in the towns of Stone and Bisshopeston, 14*s.* 5*d.* ; to hold for John's life, rendering a rose yearly at the exchequer, at Midsummer, with remainder after John's death to William, John's son and the heirs male of his body, or in default to John’s rightful heirs, so that John and his heirs and the sheriffs of Buckingham shall be quit of the said rent. The king will warrant the said rent notwithstanding that the manor is entailed and that he has not been informed by writ ad quod damnum or otherwise of the value of the manor of Henle or of the profit which may come to him from that rent. Dated at Westminster, 26 June, 25 Edward III.",
     "references": [
       "[Calendar of the Close Rolls, 1351, membrane 4d, pg 403](https://archive.org/details/cu31924091767933/page/402/mode/2up)"
@@ -746,7 +746,7 @@
     "labels": ["manor", "person"]
   },
   {
-    "date": "17 Jan. 1469/1470",
+    "date": "17 Jan. 1468/1469",
     "title": "Sir Thomas Hungerford beheaded",
     "description": "Thomas Hungerford, son of Robert Hungerford, is beheaded at Salisbury after joining in the Earl of Warwick's attempt to restore Lancastrian Henry VI. The manor of Ilmer eventually reverts to Mary (daughter of Sir Thomas) and her husband Sir Edward Hastings.",
     "references": [
@@ -1388,7 +1388,7 @@
   {
     "date": "14 Sep. 1752",
     "title": "Change of calendar",
-    "description": "Great Britain changed from the Julian calendar to the Gregorian calendar losing the 11 days from 2nd September. The change of calendar also moved New Year's Day in England to January 1st. Therefore, the year 1752 ran from 25th March (Lady Day) to 31st December. The tax year remained the same, but with the missing 11 days added on, so the tax year ended on 5th April as it does today.",
+    "description": "Great Britain changed from the Julian calendar to the Gregorian calendar losing the 11 days from 2nd September. The change of calendar also moved New Year's Day in England to January 1st. Therefore, the year 1751 ran from 25th March (Lady Day) to 31st December. The tax year remained the same, but with the missing 11 days added on, so the tax year ended on 5th April as it does today.",
     "references": ["[wikipedia](https://en.wikipedia.org/wiki/Calendar_(New_Style)_Act_1750)"],
     "labels": ["document"]
   },
@@ -1698,7 +1698,7 @@
     "labels": ["church"]
   },
   {
-    "date": "13 Mar. 1851",
+    "date": "30 Mar. 1851",
     "title": "Population Recorded",
     "description": "The population was 82.",
     "references": ["Religious Census, Bucks Record Society, 1851", "[1851 census](/census/1851)"],
@@ -1745,7 +1745,7 @@
     "labels": ["church"]
   },
   {
-    "date": "2 Apr. 1861",
+    "date": "7 Apr. 1861",
     "title": "Population Recorded",
     "description": "The population was 79.",
     "references": ["[1861 Census](/census/1861/)", "Kelly's 1869"],
@@ -3051,7 +3051,7 @@
   {
     "date": "8 Apr. 1936",
     "title": "Hotel Contents Sold",
-    "description": "Contents of Ilmergrove Hotel were sold. Prior to being a hotel, Ilmergrove Hotel in London was the private residence of Albert Goodchild late of [Ilmer House](/history/ilmer-house). Following years operating as a hotel, and subsequently as private flats, it was razed to the ground on 16th July 1943 by a V1 bomb.",
+    "description": "Contents of Ilmergrove Hotel were sold. Prior to being a hotel, Ilmergrove Hotel in London was the private residence of Albert Goodchild late of [Ilmer House](/history/ilmer-house). Following years operating as a hotel, and subsequently as private flats, it was razed to the ground on 16th July 1943 (Note: date to be reviewed) by a V1 bomb.",
     "references": ["Daily Telegraph, 27 Mar 1936"],
     "labels": ["auction", "housing", "sale"]
   },
@@ -3627,7 +3627,7 @@
   {
     "date": "c. Dec. 1968",
     "title": "Death of Charles Belgrove",
-    "description": "Charles Belgrove, the Ilmer Hermit, dies aged 84 in [Lockington](/history/lockington). His body was found by Manor Farm employee Les Bailey of Lodge Cottage and with the help of a tractor driven by John E Shurrock was brought back to Ilmer.",
+    "description": "Charles Belgrove, the Ilmer Hermit, dies aged 83 in [Lockington](/history/lockington). His body was found by Manor Farm employee Les Bailey of Lodge Cottage and with the help of a tractor driven by John E Shurrock was brought back to Ilmer.",
     "references": ["Former resident (Shurrock) recollections"],
     "labels": ["death", "person"]
   },
