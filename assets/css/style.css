@@ -89,6 +89,32 @@ main {
   }
 }
 
+/* Mark links that leave the site with a small "link out" arrow. Links to
+   ilmer.org and its subdomains (e.g. poppy.ilmer.org) are not off-site.
+   Image links, links in footnotes and timeline references, and the
+   stretched row links in archive tables (which use ::after as a click
+   overlay) are skipped. The alt text
+   after the slash is empty so screen readers don't announce the arrow. */
+a:is([href^='http://'], [href^='https://']):not(
+    [href^='http://ilmer.org'],
+    [href^='https://ilmer.org'],
+    [href*='.ilmer.org/'],
+    [href$='.ilmer.org'],
+    :has(img, svg, picture),
+    .footnotes a,
+    .timeline .reference a,
+    tr.row-link td:first-child a
+  )::after {
+  content: '\21AA\FE0E';
+  content: '\21AA\FE0E' / '';
+  display: inline-block;
+  font-size: 0.6em;
+  font-weight: 800;
+  line-height: 1;
+  vertical-align: 0.6em;
+  text-decoration: none;
+}
+
 main > figure {
   margin: 0 auto;
   max-width: 1120px;
