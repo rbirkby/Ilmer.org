@@ -148,7 +148,7 @@
   {
     "date": "1255",
     "title": "Ixhill Hundred combined with Ashendon Hundred under a single baliff",
-    "description": "The Ixhill (Hickeshulle) Hundred, which included Ilmer, was combined with the Ashendon (Essedene) Hundred under a single baliff. Thus Ilmer became part of the detatched portion of the Ashendon Hundred.",
+    "description": "The Ixhill (Hickeshulle) Hundred, which included Ilmer, was combined with the Ashendon (Essedene) Hundred under a single baliff. Thus Ilmer became part of the detatched portion of the [Ashendon Hundred](https://en.wikipedia.org/wiki/Ashendon_Hundred).",
     "references": ["The English Hundred-Names: The South-Eastern Counties, Olof Sigfrid Anderson, 1939"],
     "labels": ["land", "administration"]
   },
@@ -1360,7 +1360,7 @@
     "title": "Atypical burials recorded",
     "description": "19 burials are recorded, including 6 from a single family and 4 from another family. Most years, Ilmer recorded no more than 5 burials in a year, so this atypical record indicates a contagious illness such as smallpox or influenza may have been present in the village.",
     "references": ["[Registers and Records of St Peters](/history/parish-records), Rex Kidd, Dec 1982"],
-    "labels": ["death", "person"]
+    "labels": ["death", "person", "disease"]
   },
   {
     "date": "11 Aug. 1746",
@@ -3825,7 +3825,7 @@
     "title": "First Ilmer Grand Fete",
     "description": "The first Ilmer Grand Fete was held.",
     "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999"],
-    "labels": ["fete", "fundraising"]
+    "labels": ["fete", "event", "fundraising"]
   },
   {
     "date": "Jun. 1978",
@@ -3993,7 +3993,7 @@
     "title": "Village Fete at Shell Chemicals Farm",
     "description": "Grand Spring fete held in the gardens of Lower Farm by permission of Shell Chemicals. All proceeds went to the church restoration fund. Despite it raining all day, £800 was raised.",
     "references": ["Bucks Herald, 21 May 1981", "Bucks Herald, 28 May 1981"],
-    "labels": ["farm", "property", "fete", "fundraising"]
+    "labels": ["farm", "property", "fete", "event", "fundraising"]
   },
   {
     "date": "20 Nov. 1981",
@@ -4012,7 +4012,7 @@
     "title": "Village Fete at Shell Chemicals Farm",
     "description": "1,000-1,500 people attended the last village fete held in the grounds of Shell Chemicals experimental farm on Spring Bank Holiday, raising over £1,200-£1,300. Sheep shearing and donkey rides were part of the entertainment.",
     "references": ["Thame Gazette, 4 Jun 1982", "Bucks Herald, 3 Jun 1982"],
-    "labels": ["farm", "property", "fete", "fundraising"]
+    "labels": ["farm", "property", "fete", "event", "fundraising"]
   },
   {
     "date": "Jul. 1982",
@@ -4048,7 +4048,7 @@
     "title": "First Village Fete at Skipworths Farm",
     "description": "1,600 people attended the first village fete held in the grounds of Skipworths farm on Spring Bank Holiday, raising £1,600. Cars were parked over 5 acres of land.",
     "references": ["Thame Gazette, 3 Jun 1983"],
-    "labels": ["farm", "property", "fete", "fundraising"]
+    "labels": ["farm", "property", "fete", "event", "fundraising"]
   },
   {
     "date": "Mar. 1984",
@@ -4099,7 +4099,7 @@
     "title": "Last Ilmer Fete",
     "description": "The last Ilmer fete was held raising £1,100. Only 800 people attended likely due to the wet weather.",
     "references": ["St Peter's Church, Ilmer, History and Events, Janet Wilson, 1999", "Bucks Herald, 2 Jun 1988"],
-    "labels": ["fete", "fundraising"]
+    "labels": ["fete", "event", "fundraising"]
   },
   {
     "date": "1988",
@@ -4252,7 +4252,7 @@
     "title": "Cheese and Wine on The Green",
     "description": "Cheese and Wine on The Green to commemorate 100 years of Parish Councils.",
     "references": ["[Minutes of the Parish Meeting, 19 Apr. 1994, Bucks Archives](/parish/parishmeeting/1994-04-19/)"],
-    "labels": ["celebration"]
+    "labels": ["celebration", "council"]
   },
   {
     "date": "Jun - Jul 1996",
@@ -4323,7 +4323,7 @@
     "title": "Parish Records Archived",
     "description": "The parish council agreed to archive parish records at the County Archive.",
     "references": ["[Minutes of the Parish Council Meeting](/parish/parishcouncil/2009-08-18/), 18 Aug 2009"],
-    "labels": ["church"]
+    "labels": ["church", "council"]
   },
   {
     "date": "c. 2009",
@@ -4361,7 +4361,7 @@
     "description": "George Harper, churchwarden, parish council chair and longtime resident died.",
     "image": "/images/george-harper.jpg",
     "references": [],
-    "labels": ["church", "death", "person"]
+    "labels": ["church", "death", "person", "council"]
   },
   {
     "date": "10 Mar. 2019",
