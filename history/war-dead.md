@@ -37,7 +37,7 @@ scrollAllTables: true
 
 ![Aubrey Gomme](/images/findagrave-aubreygomme.avif#left,small)
 
-**Aubrey Gomme** was born at [Coldharbour Farm](/history/coldharbour), Ilmer, on 20 August 1892, the son of George and Hannah Gomme. Aubrey was a farmer who had emigrated to Canada early in 1911. He joined the [Canadian Infantry](https://www.gatheringourheroes.ca/hero/gomme-a-s/), serving as a private in the [21st Battalion of the East Ontario Regiment](https://www.veterans.gc.ca/en/remembrance/memorials/books-remembrance/page/5422); the Battalion [arrived in England in May 1916](https://21stbattalion.ca/tributedg/gomme_as.html). Aubrey was [killed in action](https://buckinghamshireremembers.org.uk/php_scripts/bksidget.php?id=3953) on 9 April 1917 during the attack at Vimy Ridge. He was 24 years old and is buried at Ecoivres Military Cemetery, Pas de Calais.
+**Aubrey Gomme** was born at [Coldharbour Farm](/history/coldharbour), Ilmer, on 20 August 1892, the son of George and Hannah Gomme. Aubrey was a farmer who had emigrated to Canada early in 1911. He joined the [Canadian Infantry](https://www.gatheringourheroes.ca/hero/gomme-a-s/), serving as a private in the [21st Battalion of the East Ontario Regiment](https://www.veterans.gc.ca/en/remembrance/memorials/books-remembrance/page/5422); the Battalion [arrived in England in May 1916](https://21stbattalion.ca/tributedg/gomme_as.html). Aubrey was [killed in action](https://buckinghamshireremembers.org.uk/php_scripts/bksidget.php?id=3953) on 9 April 1917 during the attack at [Vimy Ridge](https://en.wikipedia.org/wiki/Battle_of_Vimy_Ridge). He was 24 years old and is buried at Ecoivres Military Cemetery, Pas de Calais.
 
 ---
 
