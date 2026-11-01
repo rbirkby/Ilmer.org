@@ -2578,15 +2578,21 @@
     "date": "13 Jan. 1920",
     "title": "War Memorial Faculty Granted",
     "description": "Faculty was granted for the war memorial.",
-    "references": ["Church Report - St Peter's Church, Ilmer, Report 1999, by Janet Wilson"],
+    "references": [
+      "Church Report - St Peter's Church, Ilmer, Report 1999, by Janet Wilson",
+      "[Faculty](https://heritagesearch.oxfordshire.gov.uk/records/DIOC/1/C/5/1484)"
+    ],
     "labels": ["church", "legal"]
   },
   {
     "date": "1920",
     "title": "War Memorial Erected",
-    "description": "The Great War memorial tablet was erected.",
+    "description": "The [Great War memorial tablet](/history/war-dead/#:~:text=Pas%20de%20Calais.-,Great%20War%20Memorial%20Tablet,-Memorial%20Tablet%2C%20erected) was erected after the 30th Jan. 1920.",
     "image": "/images/IlmerWarPlaque.avif",
-    "references": ["Registers and Records of Ilmer Parish, Rex A Kidd"],
+    "references": [
+      "[Registers and Records of Ilmer Parish, Rex A Kidd](/history/parish-records/)",
+      "[Imperial War Museum](https://memorials.iwm.org.uk/memorial/8294)"
+    ],
     "labels": ["document"]
   },
   {
