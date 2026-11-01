@@ -8,18 +8,18 @@ lightbox: true
 scrollAllTables: true
 ---
 
-| Name                                                                                       | Conflict                | Location               | Date              | Casualty Record       | Age |
-| ------------------------------------------------------------------------------------------ | ----------------------- | ---------------------- | ----------------- | --------------------- | --: |
-| [Sir William de Moleyns](https://babel.hathitrust.org/cgi/pt?id=osu.32435070599725&seq=56) | Hundred Years War       | [Siege of Orleans][1]  | 8 May 1429        |                       | ~24 |
-| [Robert 3rd Baron Hungerford (Lord Moleyns)][2]                                            | [Wars of the Roses][3]  | [Battle of Hexam][4]   | May 18 1464       | Beheaded at Newcastle | ~35 |
-| [Sir Thomas Hungerford][5]                                                                 | [Wars of the Roses][3]  | Salisbury              | January 17 1468/69   | Beheaded              | ~29 |
-| [Robert Dormer, 1st Earl of Carnarvon][6]                                                  | First English Civil War | [Battle of Newbury][7] | September 20 1643 |                       | ~33 |
-| Albert Lay                                                                                 | Great War               | Flanders               | December 12 1915  | Accidentally killed   |  20 |
-| Aubrey S Gomme                                                                             | Great War               | France                 | April 9 1917      | Killed in action      |  24 |
-| William J Claydon                                                                          | Great War               |                        | April 28 1917     | Wounded and Missing   |  20 |
-| Frank P Kingham                                                                            | Great War               | Flanders               | August 27 1917    | Killed in action      |  21 |
-| (William) Herbert Smith                                                                    | Great War               | France                 | March 21 1918     | Killed in action      |  33 |
-| Albert Richardson                                                                          | Great War               | France                 | September 11 1918 | Died of Wounds        |  23 |
+| Name                                                                                       | Conflict                | Location               | Date               | Casualty Record       | Age |
+| ------------------------------------------------------------------------------------------ | ----------------------- | ---------------------- | ------------------ | --------------------- | --: |
+| [Sir William de Moleyns](https://babel.hathitrust.org/cgi/pt?id=osu.32435070599725&seq=56) | Hundred Years War       | [Siege of Orleans][1]  | 8 May 1429         |                       | ~24 |
+| [Robert 3rd Baron Hungerford (Lord Moleyns)][2]                                            | [Wars of the Roses][3]  | [Battle of Hexam][4]   | May 18 1464        | Beheaded at Newcastle | ~35 |
+| [Sir Thomas Hungerford][5]                                                                 | [Wars of the Roses][3]  | Salisbury              | January 17 1468/69 | Beheaded              | ~29 |
+| [Robert Dormer, 1st Earl of Carnarvon][6]                                                  | First English Civil War | [Battle of Newbury][7] | September 20 1643  |                       | ~33 |
+| Albert Lay                                                                                 | Great War               | Flanders               | December 12 1915   | Accidentally killed   |  20 |
+| Aubrey S Gomme                                                                             | Great War               | France                 | April 9 1917       | Killed in action      |  24 |
+| William J Claydon                                                                          | Great War               |                        | April 28 1917      | Wounded and Missing   |  20 |
+| Frank P Kingham                                                                            | Great War               | Flanders               | August 27 1917     | Killed in action      |  21 |
+| (William) Herbert Smith                                                                    | Great War               | France                 | March 21 1918      | Killed in action      |  33 |
+| Albert Richardson                                                                          | Great War               | France                 | September 11 1918  | Died of Wounds        |  23 |
 
 [1]: https://en.wikipedia.org/wiki/Siege_of_Orl%C3%A9ans_(1428%E2%80%931429)
 [2]: https://en.wikipedia.org/wiki/Robert_Hungerford,_3rd_Baron_Hungerford
@@ -37,7 +37,7 @@ scrollAllTables: true
 
 ![Aubrey Gomme](/images/findagrave-aubreygomme.avif#left,small)
 
-**Aubrey Gomme** was born at [Coldharbour Farm](/history/coldharbour), Ilmer, on 20 August 1892, the son of George and Hannah Gomme. Aubrey was a farmer who had emigrated to Canada early in 1911. He joined the [Canadian Infantry](https://www.gatheringourheroes.ca/hero/gomme-a-s/), serving as a private in the [21st Battalion of the East Ontario Regiment](https://www.veterans.gc.ca/en/remembrance/memorials/books-remembrance/page/5422); the Battalion [arrived in England in May 1916](https://21stbattalion.ca/tributedg/gomme_as.html). Aubrey was [killed in action](https://buckinghamshireremembers.org.uk/php_scripts/bksidget.php?id=3953) on 9 April 1917 during the attack at [Vimy Ridge](https://en.wikipedia.org/wiki/Battle_of_Vimy_Ridge). He was 24 years old and is buried at Ecoivres Military Cemetery, Pas de Calais.
+**Aubrey Gomme** was born at [Coldharbour Farm](/history/coldharbour), Ilmer, on 20 August 1892, the son of George and Hannah Gomme. Aubrey was a farmer who had emigrated to Canada early in 1911. He joined the [Canadian Infantry](https://www.gatheringourheroes.ca/hero/gomme-a-s/), serving as a private in the [21st Battalion of the East Ontario Regiment](https://www.veterans.gc.ca/en/remembrance/memorials/books-remembrance/page/5422); the Battalion [arrived in England in May 1916](https://21stbattalion.ca/tributedg/gomme_as.html). Aubrey was [killed in action](https://buckinghamshireremembers.org.uk/php_scripts/bksidget.php?id=3953) on 9 April 1917 during the attack at [Vimy Ridge](https://en.wikipedia.org/wiki/Battle_of_Vimy_Ridge). He was 24 years old and is buried at [Ecoivres Military Cemetery](https://maps.app.goo.gl/kszmQMpTQAdb1GMP7), Pas de Calais.
 
 ---
 
@@ -45,7 +45,7 @@ scrollAllTables: true
 
 ---
 
-**Frank Kingham**, born on 25 July 1896, was the son of Fritz and Sarah Kingham who lived at Lower Farm Cottage in 1911 and at the [Old Vicarage](/history/vicarage) at the time of his death. He was a carter and stockman for Mr A. Goodchild and applied for Military Exemption in 1916[^3]. Frank served with the Gloucestershire Regiment and [died of his wounds](https://livesofthefirstworldwar.iwm.org.uk/lifestory/2257577) on 27 August 1917, at the age of 21 years; he is [buried](https://www.findagrave.com/memorial/12082418/frank-percy-kingham) in the New Irish Farm Cemetery at Ypres.
+**Frank Kingham**, born on 25 July 1896, was the son of Fritz and Sarah Kingham who lived at Lower Farm Cottage in 1911 and at the [Old Vicarage](/history/vicarage) at the time of his death. He was a carter and stockman for Mr A. Goodchild and applied for Military Exemption in 1916[^3]. Frank served with the Gloucestershire Regiment and [died of his wounds](https://livesofthefirstworldwar.iwm.org.uk/lifestory/2257577) on 27 August 1917, at the age of 21 years; he is [buried](https://www.findagrave.com/memorial/12082418/frank-percy-kingham) in the [New Irish Farm Cemetery](https://maps.app.goo.gl/hBwoUfsXphzu4BWL9) at Ypres.
 
 [^3]: Rural District Tribunal, Bucks Advertiser, 23 Sep. 1916.
 
@@ -65,7 +65,7 @@ Avenue, High Wycombe.
 
 ---
 
-**Albert Richardson** was born in 1895, the son of Alfred and Alice Richardson. Both father and son worked as farm labourers at Manor Farm, Ilmer, for Alfred Hill. Albert served as a Corporal in the 13th Kings Royal Rifles Corps and [died of his wounds](https://buckinghamshireremembers.org.uk/php_scripts/Cas_Print.php?id=3955) in 11 September 1918 at the age of 23 years. Albert Richardson was a bell ringer and active church worker and a [special memorial service](/history/monumental-inscriptions/#C25) was held for him at Ilmer Church. He is [buried](https://www.findagrave.com/memorial/25064846/albert-ernest-richardson) at Ruyaulcourt Military Cemetery, Pas de Calais.
+**Albert Richardson** was born in 1895, the son of Alfred and Alice Richardson. Both father and son worked as farm labourers at Manor Farm, Ilmer, for Alfred Hill. Albert served as a Corporal in the 13th Kings Royal Rifles Corps and [died of his wounds](https://buckinghamshireremembers.org.uk/php_scripts/Cas_Print.php?id=3955) in 11 September 1918 at the age of 23 years. Albert Richardson was a bell ringer and active church worker and a [special memorial service](/history/monumental-inscriptions/#C25) was held for him at Ilmer Church. He is [buried](https://www.findagrave.com/memorial/25064846/albert-ernest-richardson) at [Ruyaulcourt Military Cemetery](https://maps.app.goo.gl/T74d8p5kZy2GPpHU9), Pas de Calais.
 
 ---
 
