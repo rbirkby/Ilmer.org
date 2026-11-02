@@ -74,7 +74,7 @@ Avenue, High Wycombe.
 ![Great War memorial tablet](/images/IlmerWarPlaque.avif#right)
 Memorial Tablet, erected 1920
 
-The [Ilmer Great War memorial tablet](https://memorials.iwm.org.uk/memorial/8294) on the south wall inside St Peter's was approved in the vestry minutes of [November 1919](/parish/vestrymeeting/1919-11-15/). It is made of Grey Hopton wood stone[^1] and erected after a 30th Jan. 1920 faculty was granted[^2]. It was made to a design of [Miss E.M. Rope](https://en.wikipedia.org/wiki/Ellen_Mary_Rope) of 404 Fulham Road, London.
+The [Ilmer Great War memorial tablet](https://memorials.iwm.org.uk/memorial/8294) on the south wall inside St Peter's was approved in the vestry minutes of [November 1919](/parish/vestrymeeting/1919-11-15/). It is made of Grey Hopton wood stone[^1] and erected after the 30th Jan. 1920 faculty was granted[^2]. It was made to a design of [Miss E.M. Rope](https://en.wikipedia.org/wiki/Ellen_Mary_Rope) of 404 Fulham Road, London.
 
 > Agreed to by the Oxford Diocesan\
 > War Memorials Committee subject\

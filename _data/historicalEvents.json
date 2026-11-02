@@ -3357,6 +3357,24 @@
     "labels": ["church"]
   },
   {
+    "date": "1954",
+    "title": "Ilmer water supply",
+    "description": "> Only one hamlet, Ilmer is without a water supply.\n\nand follows with\n\n> Sampling on a comprehensive scale was commenced at Ilmer towards the end of the year 1954 and continued into the following year in order to determine the wholesomeness of the well water supplies in that area.",
+    "references": [
+      "[[Report 1954] / Medical Officer of Health, Wycombe R.D.C, Wellcome Collection](https://wellcomecollection.org/works/ec98gfjj)"
+    ],
+    "labels": ["utilities"]
+  },
+  {
+    "date": "1955",
+    "title": "Ilmer water supply",
+    "description": "> Sampling on a comprehensive scale was continued at Ilmer in order to determine the wholesomeness of the well water supplies in that area. Water from some of the wells was found to be subject to contamination and subsequently a water main was extended to this hamlet.",
+    "references": [
+      "[[Report 1955] / Medical Officer of Health, Wycombe R.D.C, Wellcome Collection](https://wellcomecollection.org/works/eqwv3dzg)"
+    ],
+    "labels": ["utilities"]
+  },
+  {
     "date": "11 Mar. 1955",
     "title": "Land Registry Entry",
     "description": "1 The Green appears on the Land Registry.",
