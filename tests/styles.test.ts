@@ -20,6 +20,16 @@ test('external links use a decorative, text-sized SVG mask in the link colour', 
   assert.doesNotMatch(rule, /\\21AA|\\FE0E/);
 });
 
+test('external link masks retain the system link colour in forced-colors mode', () => {
+  const styles = readFileSync(new URL('assets/css/style.css', root), 'utf8');
+  const rule = styles.match(/a:is\(\[href\^='http:\/\/'\][\s\S]+?\)::after \{([\s\S]+?)\n\}/)?.[1];
+  assert.ok(rule);
+  assert.match(
+    rule,
+    /@media \(forced-colors: active\) \{\s*forced-color-adjust: none;\s*background-color: LinkText;\s*\}/
+  );
+});
+
 test('the light page keeps a dark scrollbar despite the dark overscroll background', () => {
   const styles = readFileSync(new URL('assets/css/style.css', root), 'utf8');
   const html = styles.match(/html \{([^}]+)\}/)?.[1];
