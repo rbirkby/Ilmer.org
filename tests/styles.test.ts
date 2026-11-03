@@ -6,6 +6,30 @@ import { Liquid } from 'liquidjs';
 
 const root = new URL('../', import.meta.url);
 
+test('external links use a decorative, text-sized SVG mask in the link colour', () => {
+  const styles = readFileSync(new URL('assets/css/style.css', root), 'utf8');
+  const rule = styles.match(/a:is\(\[href\^='http:\/\/'\][\s\S]+?\)::after \{([^}]+)\}/)?.[1];
+  assert.ok(rule);
+  assert.match(rule, /content: '';/);
+  assert.match(rule, /content: '' \/ '';/);
+  assert.match(rule, /background-color: currentColor;/);
+  assert.match(rule, /width: 0\.75em;/);
+  assert.match(rule, /height: 0\.75em;/);
+  assert.match(rule, /mask: url\("data:image\/svg\+xml,/);
+  assert.match(rule, /center \/ contain no-repeat;/);
+  assert.doesNotMatch(rule, /\\21AA|\\FE0E/);
+});
+
+test('external link masks retain the system link colour in forced-colors mode', () => {
+  const styles = readFileSync(new URL('assets/css/style.css', root), 'utf8');
+  const rule = styles.match(/a:is\(\[href\^='http:\/\/'\][\s\S]+?\)::after \{([\s\S]+?)\n\}/)?.[1];
+  assert.ok(rule);
+  assert.match(
+    rule,
+    /@media \(forced-colors: active\) \{\s*forced-color-adjust: none;\s*background-color: LinkText;\s*\}/
+  );
+});
+
 test('the light page keeps a dark scrollbar despite the dark overscroll background', () => {
   const styles = readFileSync(new URL('assets/css/style.css', root), 'utf8');
   const html = styles.match(/html \{([^}]+)\}/)?.[1];
