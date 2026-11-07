@@ -1,9 +1,10 @@
 ---
 layout: post
-title: 'Fifteenth and tenth 1332 Taxation'
+title: 'Fifteenth and tenth 1332'
 description: 'Assessments of the fifteenth and tenth granted to Edward III in 1332.'
-tags: [taxation]
+tags: [fifteenth-and-tenth]
 ancestorCrumb1Source: { label: 'Taxation', url: '/history/taxation/' }
+ancestorCrumb2Source: { label: 'Fifteenth and Tenth', url: '/history/fifteenth-and-tenth/' }
 ---
 
 ## ILMER WITH ASTON SANDFORD
