@@ -2,7 +2,7 @@
 layout: post
 title: 'War subsidy of 15 Henry VIII'
 description: 'The subsidy granted to King Henry VIII to support the wars with Scotland and France in 1524-1525.'
-tags: [post, taxation]
+tags: [taxation]
 ancestorCrumb1Source: { label: 'Taxation', url: '/history/taxation/' }
 ---
 
