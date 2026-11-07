@@ -34,3 +34,5 @@ _Valor bonorum_ is the value of goods.
 | John Watters[^1]                                             |                              2 0 |                    13 6 8 |
 
 [^1]: Six bows.
+
+_**source**: [Certificate of Musters](https://www.bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-17.pdf#page=143), Bucks Record Society, vol 17, page 137, A. C. Chibnall_

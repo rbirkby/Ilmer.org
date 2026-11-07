@@ -53,4 +53,4 @@ Sum 31s. 2d.
 | John Warwykshire  |  W £1.5.0. |
 | Thomas Woodbrigge |       W £1 |
 
-Source: [Subsidy Roll for the County of Buckinghamshire](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-08.pdf), Bucks Records Society edited by A. C. Chibnall and A. Vere Woodman, 1944.
+Source: [Subsidy Roll for the County of Buckinghamshire](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-08.pdf), Bucks Record Society edited by A. C. Chibnall and A. Vere Woodman, 1944.

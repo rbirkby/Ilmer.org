@@ -69,7 +69,7 @@ The following wills proved at the Archdeacon’s Court are available in the [Buc
 | DA/WE | Registered copy of a will         |
 | DA/WF | Original and File Copies of Wills |
 
-### Bucks Records Society
+### Bucks Record Society
 
 #### Buckinghamshire Probate Index
 

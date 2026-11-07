@@ -58,7 +58,7 @@
       "[Feet of fines for 4-6 Hen III, National Archives, CP 25/1/14/13](https://discovery.nationalarchives.gov.uk/details/r/C647536)",
       "[Fine Rolls, 6 Henry III](https://discovery.nationalarchives.gov.uk/details/r/C393900)",
       "[Fine Rolls, 6 Henry III, Fine Rolls Project](https://finerollshenry3.org.uk/content/calendar/roll_029.html)",
-      "[Feet of Fines, 6 Henry III, no. 16](https://www.bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-04.pdf)"
+      "[Feet of Fines, 6 Henry III, no. 16](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-04.pdf#page=52)"
     ],
     "labels": ["legal", "manor", "property"]
   },
@@ -85,7 +85,7 @@
     "references": [
       "[Feet of Fines, 14 Henry III, National Archives, CP 25/1/15/18](https://discovery.nationalarchives.gov.uk/details/r/C647541)",
       "[Fine Rolls, 14 Henry III](https://discovery.nationalarchives.gov.uk/details/r/C393900)",
-      "Feet of Fines, 14 Henry III [Bucks Records Society](https://www.bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-04.pdf)"
+      "Feet of Fines, 14 Henry III [Bucks Record Society](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-04.pdf#page=66)"
     ],
     "labels": ["church", "legal"]
   },
@@ -105,7 +105,7 @@
     "title": "Land Confirmed and Quitclaimed",
     "description": "> 15 Hen. III, Westm., in octave of Holy Trinity [19—25 May, 1231]; Ralf s. Bernard pet. and Pernell prioress of Stodlegh ten.; ½ virg. land in ILMERE; R. ackn. right of prioress as of the gift of Albreda de Jarpenvill grandmother of R. who is her heir; to hold in free pure and perpetual alms; prioress received R. and his heirs etc..\n\n also \n\n> Date as 12 ; Ralf s. Bernard pet. and Jo. de Bledelawe ten. ; ½ virg. land in ILMERE; R. quitclaimed for ever; J. gave R. 6 mks. of silver.",
     "references": [
-      "[A Calendar of the Feet of Fines for the County of Buckingham 7 Richard I to 44 Henry III](https://www.bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-04.pdf), Bucks Records Society"
+      "[A Calendar of the Feet of Fines for the County of Buckingham 7 Richard I to 44 Henry III](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-04.pdf#page=66), Bucks Record Society"
     ],
     "labels": ["church", "economy", "person"]
   },
@@ -1178,6 +1178,15 @@
     "labels": ["person", "manor"]
   },
   {
+    "date": "30 Oct. 1662",
+    "title": "Episcopal Visitation",
+    "description": "At the [bishop's visitation](/history/episcopal-visitation/) the churchwardens present the church and vicarage as out of repair, the want of a flagon, surplice, parish chest, hearse cloth and parish clerk, and cases of bastardy and an unbaptized child.",
+    "references": [
+      "[Episcopal Visitation Book, 1662](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-07.pdf#page=56), Bucks Record Society, E. R. C. Brinkworth, 1943"
+    ],
+    "labels": ["building", "church", "repair"]
+  },
+  {
     "date": "1662",
     "title": "Church Aisle Demolished",
     "description": "Permission is granted to tear down a side aisle or vestry of the church and use the materials for repairs. The aisle is never rebuilt however the blocked-up doorway on the south aspect is still visible today.",
@@ -1225,8 +1234,10 @@
   {
     "date": "2 Feb. 1679/1680",
     "title": "Marriage of Damaris Saunders",
-    "description": "Damaris, daughter of Thomas Saunders, was to marry John Kirton of Hammersmith.",
-    "references": ["Thomas Ellwood's place, Quaker minute book"],
+    "description": "Damaris, daughter of Thomas Saunders, was to marry John Kirton of Hammersmith.\n> Att a Meeting at Tho: Ellwood's on ye 2d. of 2d. mo : 1679. John Kirton of Hammersmith in ye County of Middlesex Maulster, & Damaris ye daughter of Tho : Saunders of Ilmore in ye County of Buck proposed their intention to take each other in marriage. The man brought a Certificate from ye Meeting to wch he belongs, wch gave satisfaction to this Meeting concerning [him] ; & Henry Costard & John White were desired to inquire into ye maid's clearness, & give an accompt therofat ye next Meeting. ",
+    "references": [
+      "[Quaker Minute Book](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-01.pdf#page=96), Bucks Record Society, Vol 1, p. 68, Beatrice Saxon Snell, 1937"
+    ],
     "labels": ["marriage", "person"]
   },
   {
@@ -1239,8 +1250,10 @@
   {
     "date": "2 May 1684",
     "title": "Edward Gomme Leases Land",
-    "description": "Edward Gomme leased land in Ilmer from Edward Saunders of Bledlow.",
-    "references": ["Feet of Fines"],
+    "description": "Edward Gomme leased land in Ilmer from Edward Saunders of Bledlow.\n> Lease (for a year) dated 2 May 1684. Edward Saunders of Bledlowe, yeoman, to Edward Gomme of Ilmer, yeoman. Pieces of land called Katherine Furlong in the South field, Stoney Peece in the west field, the Ball in the west field, piece of meadow called Come lying in the Common Cow Leyes. ",
+    "references": [
+      "[Feet of Fines](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-05.pdf#page=19), Bucks Record Society, Vol 5, p. 13"
+    ],
     "labels": ["land", "lease"]
   },
   {
