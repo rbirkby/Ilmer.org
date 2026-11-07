@@ -18,7 +18,7 @@ source: _Buckinghamshire Dissent and Parish Life, Buckinghamshire Record Society
 
 ### Bishop Wake's Summary of the responses to his visitation questionnaires from Buckingham Archdeacondy, 1706-12
 
-source: _Buckinghamshire Dissent and Parish Life, Buckinghamshire Record Society_
+source: _Buckinghamshire Dissent and Parish Life [page xxx](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-28.pdf#page=29) and [page 20](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-28.pdf#page=65), Buckinghamshire Record Society_
 
 #### Visitation AD 1706
 
@@ -29,6 +29,8 @@ source: _Buckinghamshire Dissent and Parish Life, Buckinghamshire Record Society
 > (c) There is neither lecture, school, almes-house, or hospital in this parish.\
 > No person of quality or gentleman of estate lives in it.\
 > There are no monuments of note in the church nor antiquities in the parish.
+
+source: _Buckinghamshire Dissent and Parish Life [page 208](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-28.pdf#page=253), Buckinghamshire Record Society_
 
 #### Visitation AD 1709
 
