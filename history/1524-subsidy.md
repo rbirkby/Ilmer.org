@@ -10,14 +10,14 @@ ancestorCrumb1Source: { label: 'Taxation', url: '/history/taxation/' }
 
 #### Key
 
-| Symbol | Meaning                         |
-| ------ | ------------------------------- |
-| W      | Wages                           |
-| L      | Lands                           |
-| Blank  | Goods                           |
-| [...]  | Variations between returns      |
-| m      | mark                            |
-| \*     | Perculiar to the printed return |
+| Symbol | Meaning                        |
+| ------ | ------------------------------ |
+| W      | Wages                          |
+| L      | Lands                          |
+| Blank  | Goods                          |
+| [...]  | Variations between returns     |
+| m      | mark                           |
+| \*     | Peculiar to the printed return |
 
 #### 1524
 
