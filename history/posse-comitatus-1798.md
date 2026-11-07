@@ -39,3 +39,18 @@ Thomas Dorsett\
 William Rider
 
 **Total**.....23
+
+---
+
+Register of persons keeping Draught Horses, Waggons or Carts of Burthen
+
+| Name                     | Horses | Waggons | Carts |
+| ------------------------ | -----: | ------: | ----: |
+| J Gomme                  |      1 |       - |     1 |
+| J Kingham (Lower House)  |      6 |       1 |     3 |
+| J Kingham (Middle House) |      7 |       1 |     3 |
+| Mrs Kingham (Widow)      |     11 |       2 |     4 |
+| William Rider            |      - |       - |     1 |
+| **Total**                |     25 |       4 |    12 |
+
+_**source:** [Bucks Record Society](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-22.pdf#page=117) vol 22, pg 88_
