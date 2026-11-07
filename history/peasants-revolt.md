@@ -7,7 +7,31 @@ tags: [courts-and-crimes]
 ancestorCrumb1Source: { label: 'Courts and Crime', url: '/history/courts-and-crime/' }
 ---
 
-Note: The royal pardon for William Matthew of Ilmer connects this event to the peasants revolt.
+#### 219. Ilmer church, Friday 13 June 1381.
+
+> **Jurors**: Geoffrey Hugenden, John Reynham, John Mathew, Thomas
+> Rysburgh, Thomas Andrew, John Kubbull, Robert Taillour,
+> Robert Priesse, John Knyghgel, John Semere, John atte Mede and
+> John Coupere.\
+> John Sewelle of Catesby fled to Ilmer church on Wednesday 11
+> June 1381. On the following Friday he acknowledged before John
+> atte Brook, coroner, that on Friday 7 June 1381, at 'Catyndon' in
+> Hertfordshire, he had feloniously stolen a horse worth 5s. from
+> William Navesby, a canon of St. Paul's, London, and that he was
+> a habitual robber. He asked to abjure the realm of England.
+>
+> **Verdict**: Guilty; no lands or holdings, but goods and chattels worth
+> 35s., for which Ilmer responsible. He was told to cross the sea from
+> Southampton within twelve days.
+
+Sewelle was outlawed 6 April 1390 (438). Note that eleven of the
+twelve jurors in this case formed the jury for 191.
+
+source: _[Buckinghamshire inquests and indictments](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-29.pdf#page=174), Bucks Record Society_
+
+---
+
+Note: The royal pardon for William Matthew of Ilmer connects this event to the [peasants revolt](https://en.wikipedia.org/wiki/Peasants%27_Revolt).
 
 #### 191. Bledlow, Saturday 31 August 1381.
 
@@ -103,3 +127,5 @@ source: _[Buckinghamshire inquests and indictments](https://bucksrecsoc.org.uk/B
 > [[JUST 2/14](https://discovery.nationalarchives.gov.uk/details/r/C4051897) mm.16-19.]
 
 source: _[Buckinghamshire inquests and indictments](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-29.pdf#page=242), Bucks Record Society_
+
+---
