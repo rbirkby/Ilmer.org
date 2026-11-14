@@ -841,6 +841,15 @@
     "labels": ["church", "person", "vicar"]
   },
   {
+    "date": "Jul. 1520",
+    "title": "Trypp of Ilmer Delivers Beans to Horsenden",
+    "description": "Sir Edward Don of Horsenden pays 1d to \"Trypp his man of Ylmer\" for bringing a bushel of beans.",
+    "references": [
+      "[The Household Book of Sir Edward Don](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-33.pdf#page=113), Bucks Record Society vol. 33, p. 59"
+    ],
+    "labels": ["economy", "farm", "person"]
+  },
+  {
     "date": "1522",
     "title": "Mr Sacheverell is Lord of the Manor",
     "description": "Mr. Sacheverell is cheiffe Lord by yeare with a value of land and tenements (valor terr' et tent') of £24 6s 8d. Walter Curson holds land to the value of 2s. Neither of them are resident as their value of goods (Valor bonorum) is nil.",
@@ -848,6 +857,42 @@
       "1522 Military Survey: [The Certificate of Musters](/history/certificate-of-musters-1522) in Buckinghamshire for 1522, A C Chibnall, 1973"
     ],
     "labels": ["manor", "property"]
+  },
+  {
+    "date": "10 Oct. 1527",
+    "title": "Sir Edward Don Dines with the Vicar",
+    "description": "Sir Edward Don of Horsenden records that he dined with the vicar of Ilmer, [James Withington](/wills/james-withington).",
+    "references": [
+      "[The Household Book of Sir Edward Don](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-33.pdf#page=188), Bucks Record Society vol. 33, p. 134"
+    ],
+    "labels": ["church", "person", "vicar"]
+  },
+  {
+    "date": "3 Jan. 1530/31",
+    "title": "Vicar Visits Horsenden",
+    "description": "The vicar of Ilmer and W. Tryp call on Sir Edward Don at Horsenden.",
+    "references": [
+      "[The Household Book of Sir Edward Don](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-33.pdf#page=260), Bucks Record Society vol. 33, p. 206"
+    ],
+    "labels": ["church", "person", "vicar"]
+  },
+  {
+    "date": "1531",
+    "title": "Hay Bought from Ilmer",
+    "description": "Sir Edward Don pays 8d \"to towne of Ylmer\" in earnest for two loads of hay from John a Waters, at 6s the load.",
+    "references": [
+      "[The Household Book of Sir Edward Don](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-33.pdf#page=264), Bucks Record Society vol. 33, p. 210"
+    ],
+    "labels": ["economy", "farm"]
+  },
+  {
+    "date": "May 1533",
+    "title": "Hidden Money Delivered to the Vicar",
+    "description": "Gold and silver found hidden in a house, apparently that of the late vicar of Bledlow, is delivered to the vicar of Ilmer. A further £28 in gold, stolen and later confessed, also reaches him. See [The Vicar's Treasure](/history/vicars-treasure).",
+    "references": [
+      "[The Household Book of Sir Edward Don](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-33.pdf#page=304), Bucks Record Society vol. 33, p. 250"
+    ],
+    "labels": ["church", "legal", "person", "vicar"]
   },
   {
     "date": "1534",
@@ -897,6 +942,15 @@
     "description": "The will of John Godwyn of Ilmere is recorded.",
     "references": ["English Goodwin family papers, 1921"],
     "labels": ["document"]
+  },
+  {
+    "date": "20 Dec. 1551",
+    "title": "Sir Edward Don Remembers Ilmer's Poor",
+    "description": "The will of Sir Edward Don of Horsenden leaves £6 13s 4d to be shared among poor householders of eight parishes, including Ilmer.",
+    "references": [
+      "[The Household Book of Sir Edward Don](https://bucksrecsoc.org.uk/BRS-VOLUMES/brs-vol-33.pdf#page=50), Bucks Record Society vol. 33, p. l"
+    ],
+    "labels": ["charity", "document"]
   },
   {
     "date": "1552",
