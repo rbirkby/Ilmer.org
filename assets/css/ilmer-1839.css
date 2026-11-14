@@ -1,0 +1,198 @@
+.reconstruction {
+  --ink: #283b35;
+  --paper: #f5f1e6;
+  --accent: #79513a;
+  color: var(--ink);
+  background: var(--paper);
+  padding: 32px max(24px, calc((100vw - 1450px) / 2)) 60px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+}
+.reconstruction-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.reconstruction-back {
+  color: var(--accent);
+  font-size: 14px;
+}
+.reconstruction-eyebrow {
+  font:
+    11px/1.7 system-ui,
+    sans-serif;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: #696b56;
+  margin: 16px 0 8px;
+}
+.reconstruction h1 {
+  font:
+    600 clamp(36px, 5vw, 64px)/1.1 'Cormorant Garamond',
+    Georgia,
+    serif;
+  margin: 0 0 10px;
+  color: var(--ink);
+}
+.reconstruction h1 span {
+  font-style: italic;
+  color: var(--accent);
+}
+.reconstruction-heading p:last-child {
+  margin: 0;
+  font-size: 15px;
+}
+.reconstruction-seal {
+  border: 1px solid #afa98d;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: grid;
+  align-content: center;
+  text-align: center;
+  flex-shrink: 0;
+  font:
+    30px Georgia,
+    serif;
+}
+.reconstruction-seal small {
+  font:
+    8px/2 system-ui,
+    sans-serif;
+  letter-spacing: 0.1em;
+}
+.reconstruction-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid #d7d1bf;
+}
+.reconstruction-toolbar button,
+.reconstruction-toolbar select {
+  border: 1px solid #c6c7b5;
+  background: #fffdf4;
+  border-radius: 4px;
+  color: var(--ink);
+  padding: 10px 16px;
+  font:
+    13px system-ui,
+    sans-serif;
+  cursor: pointer;
+}
+#free-flight-controls[hidden] {
+  display: none;
+}
+.reconstruction-toolbar button[aria-pressed='true'] {
+  background: var(--ink);
+  color: white;
+  border-color: var(--ink);
+}
+.reconstruction-toolbar label {
+  font:
+    12px system-ui,
+    sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 12px;
+}
+.reconstruction-toolbar input {
+  accent-color: var(--ink);
+}
+.journey-controls {
+  border-top: 0;
+  padding-top: 0;
+}
+.journey-controls span {
+  font:
+    12px/1.6 system-ui,
+    sans-serif;
+}
+.journey-controls button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+.reconstruction-stage {
+  position: relative;
+  border: 1px solid #c8c9b6;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #e3e8dc;
+}
+#village-scene {
+  height: min(65vh, 700px);
+  min-height: 440px;
+  width: 100%;
+  touch-action: none;
+}
+#village-scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#scene-status {
+  position: absolute;
+  left: 24px;
+  top: 20px;
+  max-width: 60%;
+  background: var(--paper);
+  padding: 12px;
+  z-index: 2;
+}
+#scene-status[hidden] {
+  display: none;
+}
+.scene-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 20px;
+  margin: 0;
+  background: #f5f1e6d9;
+  font:
+    10px system-ui,
+    sans-serif;
+  letter-spacing: 0.15em;
+  pointer-events: none;
+}
+.scene-caption span {
+  float: right;
+  letter-spacing: 0;
+}
+.scene-help {
+  font:
+    12px/1.8 system-ui,
+    sans-serif;
+  color: #626751;
+  margin: 10px 0 32px;
+}
+.reconstruction :focus-visible {
+  outline: 3px solid #a66726;
+  outline-offset: 3px;
+}
+@media (max-width: 800px) {
+  .reconstruction {
+    padding: 20px 16px 40px;
+  }
+  .reconstruction-seal {
+    display: none;
+  }
+  .scene-caption {
+    display: none;
+  }
+  #village-scene {
+    min-height: 350px;
+    height: 52vh;
+  }
+  .reconstruction-toolbar button {
+    flex: 1 0 40%;
+  }
+}

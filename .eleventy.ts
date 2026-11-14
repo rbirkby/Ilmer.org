@@ -161,6 +161,12 @@ function buildWeeklyNewsEvents(): WeeklyNewsEvent[] {
 export default function (eleventyConfig: any) {
   eleventyConfig.addPassthroughCopy({ public: '.' });
   eleventyConfig.addPassthroughCopy('assets');
+  eleventyConfig.addPassthroughCopy({
+    'node_modules/three/build/three.core.js': 'assets/vendor/three/three.core.js',
+    'node_modules/three/build/three.module.js': 'assets/vendor/three/three.module.js',
+    'node_modules/three/examples/jsm/controls/OrbitControls.js': 'assets/vendor/three/OrbitControls.js',
+    'node_modules/three/LICENSE': 'assets/vendor/three/LICENSE.txt'
+  });
 
   eleventyConfig.addPassthroughCopy({
     'node_modules/markdown-it-github-alerts/styles/*.css': 'assets/css'
