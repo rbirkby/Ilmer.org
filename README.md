@@ -28,6 +28,9 @@ are used in the browser and are not uploaded by the site. Alignment is
 approximate: the historic-map registration and phone GPS are not survey-grade.
 AR controls stay hidden without a usable compass heading, except on touch devices
 that require a tap to request compass permission.
+The reconstruction import map content-hashes its helper modules as well as the
+entry script, preventing older cached helpers from breaking startup after an
+update. Module-loading failures display an error instead of leaving the loading message.
 The church's east chancel has an east-facing window following the supplied
 correction; its frame and glazing arrangement are illustrative. The sagging
 roof, slipped tiles and cracked masonry still indicate the chancel's poor repair.

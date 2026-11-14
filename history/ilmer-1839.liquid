@@ -66,6 +66,27 @@ permalink: /history/ilmer-1839/index.html
 <p id="scene-help" class="scene-help">Drag to orbit &middot; Scroll or pinch to zoom &middot; Right-drag or two fingers to pan. Double-click or double-tap the horse and cart to ride; choose a view or press Escape to leave. Keyboard: C rides or pauses the cart, arrows orbit, +/&minus; zoom, R resets the view.</p>
 <noscript><p>The interactive model requires JavaScript. Visit <a href="/history/fields-farming/">Fields &amp; farming</a> for the tithe apportionment.</p></noscript>
 <script type="importmap">
-{"imports":{"three":"/assets/vendor/three/three.module.js"}}
+{
+  "imports": {
+    "three": "/assets/vendor/three/three.module.js",
+    "/assets/js/ilmer-1839-data.js": "{{ '/assets/js/ilmer-1839-data.js' | cacheBust }}",
+    "/assets/js/ilmer-ar.js": "{{ '/assets/js/ilmer-ar.js' | cacheBust }}",
+    "/assets/js/ilmer-terrain.js": "{{ '/assets/js/ilmer-terrain.js' | cacheBust }}",
+    "/assets/js/ilmer-trees.js": "{{ '/assets/js/ilmer-trees.js' | cacheBust }}",
+    "/assets/js/ilmer-ride.js": "{{ '/assets/js/ilmer-ride.js' | cacheBust }}",
+    "/assets/js/ilmer-camera.js": "{{ '/assets/js/ilmer-camera.js' | cacheBust }}",
+    "/assets/js/ilmer-flight.js": "{{ '/assets/js/ilmer-flight.js' | cacheBust }}",
+    "/assets/js/ilmer-ride-audio.js": "{{ '/assets/js/ilmer-ride-audio.js' | cacheBust }}",
+    "/assets/js/ilmer-livestock.js": "{{ '/assets/js/ilmer-livestock.js' | cacheBust }}"
+  }
+}
 </script>
-<script type="module" src="{{ '/assets/js/ilmer-1839.js' | cacheBust }}"></script>
+<script type="module">
+  import("{{ '/assets/js/ilmer-1839.js' | cacheBust }}").catch((error) => {
+    console.error('Ilmer 1839 reconstruction modules could not load:', error);
+    document.getElementById('village-scene').dataset.state = 'error';
+    const status = document.getElementById('scene-status');
+    status.hidden = false;
+    status.textContent = 'The 3D view could not load its JavaScript modules. Please reload the page and check your connection.';
+  });
+</script>

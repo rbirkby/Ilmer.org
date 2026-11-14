@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
+import { fileURLToPath } from 'node:url';
+import { Liquid } from 'liquidjs';
+import { createCacheBustFilter } from '../plugins/cache-bust.ts';
 import {
   MAP,
   CHURCH_PORCH_SIDE,
@@ -275,6 +278,30 @@ test('the tenements garden is not a pond and ducks use the cottages pond', () =>
   );
   const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
   assert.match(scene, /flatPolygon\(tenementGarden, material\(0xb5bc8d\)\)/);
+});
+
+test('all reconstruction helpers use content-hashed URLs, including transitive imports', async () => {
+  const root = new URL('../', import.meta.url);
+  const cacheBust = createCacheBustFilter(fileURLToPath(root));
+  const liquid = new Liquid();
+  liquid.registerFilter('cacheBust', cacheBust);
+  const template = readFileSync(new URL('history/ilmer-1839.liquid', root), 'utf8');
+  const rendered = await liquid.parseAndRender(template);
+  const { imports } = JSON.parse(/<script type="importmap">([\s\S]*?)<\/script>/.exec(rendered)![1]);
+  const pending = ['/assets/js/ilmer-1839.js'];
+  const visited = new Set<string>();
+  while (pending.length) {
+    const module = pending.pop()!;
+    if (visited.has(module)) continue;
+    visited.add(module);
+    const source = readFileSync(new URL(module.slice(1), root), 'utf8');
+    for (const [, relative] of source.matchAll(/from ['"](\.\/[^'"]+)['"]/g)) {
+      const dependency = new URL(relative, `https://example.test${module}`).pathname;
+      assert.equal(imports[dependency], cacheBust(dependency), `${module} imports ${dependency}`);
+      pending.push(dependency);
+    }
+  }
+  assert.ok(visited.size > 1);
 });
 
 test('the experience retains accessible controls and locally served Three.js without the evidence section', () => {
