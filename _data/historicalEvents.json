@@ -1678,6 +1678,13 @@
     "labels": ["farm", "housing", "property"]
   },
   {
+    "date": "17 Sep. 1838",
+    "title": "Land and Tithe Owner meeting",
+    "description": "A meeting to agree the commutation of tithes in the parish of Ilmer was held in the church.",
+    "references": ["[Tithe Files](/history/tithe-file)"],
+    "labels": ["farm", "manor", "property", "church"]
+  },
+  {
     "date": "1839",
     "title": "Tithe Map Shows Middle Farm",
     "description": "The tithe map shows the existence of Middle Farm sited on the pasture adjacent to September and October cottages.",
