@@ -1523,6 +1523,15 @@
     "labels": ["church", "economy", "land", "person"]
   },
   {
+    "date": "1810",
+    "title": "Ilmer agricultural production",
+    "description": "In an 1810 survey for the Board of Agriculture, Ilmer consisted of 4 farms and 6 cottages, with the farms consisting of between 40 and 200 acres which together produced:\n||Wheat bush|Barley bush|Beans bush|Pease bush|Oats bush|\n|-|-:|-:|-:|-:|-:|\n|Seed per acre|2|4|3|-|4|\n|Produce per acre|24|32|30|-|30|\n\nThe 1806 poor rates per pound were 4s.\n\nLand use was:\n|Type|Acres|\n|-|-:|\n|Meadow|100|\n|Pasture|200|\n|Arable|200|\n|Commons|-|\n|Glebe|-|\n|Waste|-|\n|Woods|-|\n|Water|-|\n|**Total**|**500**|\n\n",
+    "references": [
+      "[Agriculture Survey of the county of Bucks](https://archive.org/details/bub_gb_mQjpGm3t6x8C/page/n405/mode/2up), Rev. St. John Priest and Mr. R. Parkinson, 1810"
+    ],
+    "labels": ["farm", "butter"]
+  },
+  {
     "date": "1811",
     "title": "Deed of Lower Farm",
     "description": "A deed for Lower Farm, Ilmer, was recorded.",
@@ -1707,6 +1716,13 @@
     "labels": ["farm", "property"]
   },
   {
+    "date": "23 May 1839",
+    "title": "Report on the agreement for the commutation of tithes",
+    "description": "Ilmer was visited by the assistant tithe commissioner, Thomas Smith Woolley. He identified the majority of the grass lands were used for the production of Butter and sold in London",
+    "references": ["[Tithe Files](/history/tithe-file)"],
+    "labels": ["farm", "property", "butter"]
+  },
+  {
     "date": "1839",
     "title": "Manor Ownership Recorded",
     "description": "Moreton John Edward Frewen and Vice Admiral Henry Raper were joint owners of the manor.",
@@ -1832,6 +1848,16 @@
       "['On English woodwork in the thirteenth and fourteenth centuries'](https://babel.hathitrust.org/cgi/pt?id=nnc1.0069645264&seq=147), G. E. Street, read at RIBA, 20 Feb 1865"
     ],
     "labels": ["church"]
+  },
+  {
+    "date": "November 1865",
+    "title": "Cattle plague (aka rinderpest) hits the area",
+    "description": "The cattle plague, also known as [rinderpest](https://en.wikipedia.org/wiki/Rinderpest), affected the local area, impacting livestock and farming activities. London butter buyers switched to purchasing their butter from other areas, leading to economic difficulties for local farmers. Farms switched to selling milk, likely supplying the Aylesbury Condensed Milk company which became the [Anglo Swiss Condensed Milk company](https://en.wikipedia.org/wiki/Anglo-Swiss_Condensed_Milk_Company) before merging with Nestle.",
+    "references": [
+      "[Victoria County History of the County of Oxford, vol 7](https://www.british-history.ac.uk/vch/oxon/vol7/pp178-193)",
+      "[Agriculture Survey of the county of Bucks](https://archive.org/details/bub_gb_mQjpGm3t6x8C/page/n337/mode/2up?q=butter), Rev. St. John Priest, 1810"
+    ],
+    "labels": ["farm", "butter"]
   },
   {
     "date": "11 Dec. 1865",
