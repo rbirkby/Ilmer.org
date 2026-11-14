@@ -1678,9 +1678,23 @@
     "labels": ["farm", "housing", "property"]
   },
   {
+    "date": "22 Aug. 1838",
+    "title": "Notice of a meeting of Land and Tithe Owners placed on church door",
+    "description": "A notice, dated 21st August, of a meeting to agree the commutation of tithes was placed on the church door by John Eggleton junior.",
+    "references": ["[Tithe Files](/history/tithe-file)"],
+    "labels": ["farm", "manor", "property", "church"]
+  },
+  {
     "date": "17 Sep. 1838",
     "title": "Land and Tithe Owner meeting",
     "description": "A meeting to agree the commutation of tithes in the parish of Ilmer was held in the church.",
+    "references": ["[Tithe Files](/history/tithe-file)"],
+    "labels": ["farm", "manor", "property", "church"]
+  },
+  {
+    "date": "8 Jan. 1839",
+    "title": "Land and Tithe Owner meeting",
+    "description": "A meeting to agree the commutation of tithes in the parish of Ilmer was held in the White Hart Inn, Aylesbury.",
     "references": ["[Tithe Files](/history/tithe-file)"],
     "labels": ["farm", "manor", "property", "church"]
   },
@@ -1698,6 +1712,13 @@
     "description": "Moreton John Edward Frewen and Vice Admiral Henry Raper were joint owners of the manor.",
     "references": ["Apportionment of the Rent Charge, Tithe Map, 26 Mar 1841"],
     "labels": ["manor", "property"]
+  },
+  {
+    "date": "6 Jun. 1840",
+    "title": "Tithe Commutation Agreement",
+    "description": "The tithe commutation agreement for the parish of Ilmer was signed.",
+    "references": ["[Tithe Files](/history/tithe-file)"],
+    "labels": ["farm", "manor", "property", "church"]
   },
   {
     "date": "15 Sep. 1842",
