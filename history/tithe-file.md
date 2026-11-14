@@ -308,11 +308,11 @@ _[15.]_ The rates were paid by the Occupiers – the average total annual expend
 
 **QUESTIONS.**
 
-16. Was the Composition so paid, an average Composition as regards neighbouring Parishes similarly situated?
+16\. Was the Composition so paid, an average Composition as regards neighbouring Parishes similarly situated?
 
-17. Personal Tithes, as Fish, Minerals, &c.; if any, state the amount of Receipts in each year during the seven; and if included in the Agreement, the increase to the Rent-charge on account of them?
+17\. Personal Tithes, as Fish, Minerals, &c.; if any, state the amount of Receipts in each year during the seven; and if included in the Agreement, the increase to the Rent-charge on account of them?
 
-18. If Easter Offerings, Mortuaries or Surplice Fees are included in the Agreement, state the average Receipts for each, and the increase to the Rent-charge on account of them?
+18\. If Easter Offerings, Mortuaries or Surplice Fees are included in the Agreement, state the average Receipts for each, and the increase to the Rent-charge on account of them?
 
 **ANSWERS.**
 
@@ -326,7 +326,7 @@ _[18.]_ not included
 
 **QUESTIONS.**
 
-19. State your opinion as to the accuracy of the Schedule, especially as to any Moduses or Exemptions set out therein; and if there are any objections to the Schedule on this or other points, state them, with the Names and Interests of the objecting Parties, and your opinion thereon?
+19\. State your opinion as to the accuracy of the Schedule, especially as to any Moduses or Exemptions set out therein; and if there are any objections to the Schedule on this or other points, state them, with the Names and Interests of the objecting Parties, and your opinion thereon?
 
 **ANSWERS.**
 
@@ -336,7 +336,7 @@ No moduses or exemptions are claimed
 
 **QUESTIONS.**
 
-20. State your opinion as to the fairness of the Agreement; if any objections are made to the amount of Rent-charge, or to any proceeding relative thereto, state them, the Names and Interests of the objecting Parties, and your opinion thereon?
+20\. State your opinion as to the fairness of the Agreement; if any objections are made to the amount of Rent-charge, or to any proceeding relative thereto, state them, the Names and Interests of the objecting Parties, and your opinion thereon?
 
 **ANSWERS.**
 
@@ -344,11 +344,11 @@ _[20.]_ There are no objectors—all the parties have signed the Agreement – i
 
 I consider however that the Agreement has been made on fair principles and that the Rentcharge is equitable all things considered
 
-As the Tithes of Corn ~~and Hay~~ belong to each Landowner – I have not thought it necessary to notice that Tithe at all the Rentcharge affecting no other parties
+As the Tithes of Corn ~~and Hay~~ belong to each Landowner – I have not thought it necessary to notice that Tithe at all the Rentcharge affecting no other partiess
 
 **QUESTIONS.**
 
-21. Whether the Agreement should be confirmed?
+21\. Whether the Agreement should be confirmed?
 
 **ANSWERS.**
 
