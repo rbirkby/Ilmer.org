@@ -18,7 +18,8 @@ import {
   fieldBoundaries,
   roadEdges,
   churchyard,
-  ponds
+  ponds,
+  tenementGarden
 } from '../assets/js/ilmer-1839-data.js';
 import { validateTerrain, historicalTerrain, terrainHeight } from '../assets/js/ilmer-terrain.js';
 import { validateTrees, register1876Tree, historicalTrees, circleOverlapsTriangles } from '../assets/js/ilmer-trees.js';
@@ -34,7 +35,7 @@ import {
 } from '../assets/js/ilmer-ride.js';
 import { cameraFloor, cameraGroundClearance } from '../assets/js/ilmer-camera.js';
 import { flightStops, flightProgress } from '../assets/js/ilmer-flight.js';
-import { withinField } from '../assets/js/ilmer-livestock.js';
+import { livestockFields, withinField } from '../assets/js/ilmer-livestock.js';
 
 test('historical terrain removes only the eastern modern embankment and keeps the measured source intact', () => {
   const measured = JSON.parse(readFileSync('assets/ilmer-terrain.json', 'utf8'));
@@ -263,9 +264,23 @@ test('cottages pond traces the complete northern 1839 outline and cart has no sc
   assert.doesNotMatch(script, /cartLabel|label\('Horse & cart'/);
 });
 
+test('the tenements garden is not a pond and ducks use the cottages pond', () => {
+  assert.equal(ponds.length, 5);
+  assert.equal(livestockFields.find((field) => field.species === 'duck')?.outline, ponds[0]);
+  assert.equal(tenementGarden.length, 17);
+  assert.equal(withinField(tenementGarden, 895, 285), true);
+  assert.equal(
+    ponds.some((pond) => withinField(pond, 895, 285)),
+    false
+  );
+  const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  assert.match(scene, /flatPolygon\(tenementGarden, material\(0xb5bc8d\)\)/);
+});
+
 test('the experience retains accessible controls and locally served Three.js without the evidence section', () => {
   const page = readFileSync(new URL('../history/ilmer-1839.liquid', import.meta.url), 'utf8');
   const script = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const styles = readFileSync(new URL('../assets/css/ilmer-1839.css', import.meta.url), 'utf8');
   for (const view of ['village', 'church', 'barns', 'middle', 'lower', 'cottages', 'tenements', 'vicarage', 'plan'])
     assert.ok(page.includes(`data-view="${view}"`));
   assert.match(page, /role="status"/);
@@ -275,8 +290,16 @@ test('the experience retains accessible controls and locally served Three.js wit
   assert.doesNotMatch(page, /reconstruction-evidence|reconstruction-sources|Reading the evidence|What we know/);
   assert.doesNotMatch(page, /<img|notes are below|available below|tree-registration\.png|tree-detections\.png/);
   assert.match(page, /id="map-layer"/);
+  assert.match(page, /id="ar-start"/);
+  assert.match(page, /id="ar-controls"[^>]*hidden/);
+  assert.match(styles, /#ar-controls\[hidden\]/);
+  assert.match(page, /id="ar-overlay"[^>]*hidden/);
+  assert.match(page, /id="ar-exit"/);
+  assert.match(script, /getUserMedia/);
+  assert.match(script, /watchPosition/);
+  assert.match(script, /deviceorientation/);
+  assert.match(styles, /body\.ar-active \.reconstruction-stage/);
   assert.doesNotMatch(page, /id="landscape-layer"/);
-  assert.doesNotMatch(script, /landscape\.visible =/);
   assert.match(page, /id="flight-toggle"[^>]*>Historic Tour/);
   assert.doesNotMatch(page, /data-view="(?:west|chancel)"|A rider's-eye journey|A roof-height tour/);
   assert.match(page, /assets\/vendor\/three\/three.module.js/);
@@ -423,12 +446,30 @@ test('the corrected houses override boarded farm architecture without invented s
     ]
   );
   assert.match(places.middle.description, /exposed dark timber framing/);
-  assert.match(places.vicarage.description, /two-storey brick and stone house with windows on both floors/);
+  assert.match(
+    places.vicarage.description,
+    /ground-floor windows on its long elevations and ground-floor and upstairs windows on its gable ends/
+  );
   assert.equal(buildings.find((building) => building.architecture === 'vicarage')?.storeys, 2);
   const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
   const vicarage = scene.slice(scene.indexOf('} else if (vicarage) {'), scene.indexOf('} else if (stoneHouse) {'));
-  assert.match(vicarage, /for \(const level of \[height \* 0\.25, height \* 0\.73\]\)/);
-  assert.match(vicarage, /windowPanel\(part, x, level/);
+  assert.match(vicarage, /const groundWindowCentre = height \/ 3/);
+  assert.match(vicarage, /const upperWindowCentre = height \+ w \* 0\.46 \* 0\.32/);
+  assert.match(vicarage, /windowPanel\(part, x, groundWindowCentre, side \* \(w \/ 2 \+ 0\.09\)\)/);
+  assert.match(
+    vicarage,
+    /for \(const level of \[groundWindowCentre, upperWindowCentre\]\) windowPanel\(gableEnd, 0, level, 0\.02\)/
+  );
+  const vicaragePart = buildings.find((building) => building.architecture === 'vicarage')!.parts[0];
+  const [, , , windowWidth, , eavesHeight] = vicaragePart;
+  const gableRise = windowWidth * MAP.scale * 0.46;
+  const groundWindowCentre = eavesHeight / 3;
+  const upperWindowCentre = eavesHeight + gableRise * 0.32;
+  assert.equal(groundWindowCentre, 2);
+  assert.equal(groundWindowCentre - 0.75, 1.25);
+  assert.equal(groundWindowCentre + 0.75, 2.75);
+  assert.ok(upperWindowCentre - 0.75 > eavesHeight);
+  assert.ok(upperWindowCentre + 0.75 < eavesHeight + gableRise);
   const upperHouse = buildings.find(
     (building) => building.place === 'barns' && building.architecture === 'stone-house'
   );

@@ -22,11 +22,22 @@ terrain and roofs. View transitions, the Historic Tour and riding suspend manual
 movement; changing a view ends the tour or ride. There is no End Flight button.
 The on-page evidence and reference-image section has been removed; source
 images and the terrain/tree provenance datasets remain in the repository.
+On supported mobile browsers, Camera AR view combines the rear camera with the
+GPS-positioned reconstruction and device compass. The camera and live location
+are used in the browser and are not uploaded by the site. Alignment is
+approximate: the historic-map registration and phone GPS are not survey-grade.
+AR controls stay hidden without a usable compass heading, except on touch devices
+that require a tap to request compass permission.
 The church's east chancel has an east-facing window following the supplied
 correction; its frame and glazing arrangement are illustrative. The sagging
 roof, slipped tiles and cracked masonry still indicate the chancel's poor repair.
-The Old Vicarage has two storeys, with ground-floor and upstairs windows on both
-long elevations; the projecting entrance remains between the front window bays.
+The Old Vicarage has ground-floor windows on both long elevations and ground-floor
+and upstairs windows on its gable ends; the projecting entrance remains between
+the front window bays. Its 1.5-metre ground-floor windows are centred 2.0 metres
+above local ground (sills at 1.25 metres, heads at 2.75 metres); the 1.5-metre
+roof-space windows span 6.05–7.55 metres above ground, centred at 6.80 metres
+just above the 6-metre eaves. These heights are model interpretations, not
+surveyed elevations.
 Two Cottages & Gardens and Three Tenements & Gardens retain their mapped
 footprints and boarding, with domestic-sized framed doors, thresholds and windows
 instead of barn entrances. Window bays repeat along the longer ranges and appear
@@ -123,11 +134,13 @@ The pond beside Two Cottages & Gardens is retraced from the 1839 outline.
 Its full surface follows the terrain to keep that historic extent visible;
 the modern ground previously concealed most of a flat water plane. This shows
 the mapped extent, not a measured historic water level or pond depth.
-Three further ponds opposite the church, adjoining plots 46 and 47, follow
+Two further ponds opposite the church, adjoining plots 46 and 47, follow
 the irregular 1839 outlines. The adjacent dotted verge boundaries shape the
 wider road junction. The other roads now follow paired edge traces from the
 1839 map rather than constant-width ribbons fitted from the later map.
-Six illustrative ducks swim and dabble within the large northern pond.
+The area directly beside Three Tenements & Gardens is a garden, not a pond.
+Six illustrative ducks swim and dabble within the pond beside Two Cottages
+& Gardens.
 These new pond surfaces also drape over the ground, depicting their mapped
 extents rather than claiming known historical water elevations.
 Road edges and field hedges have separate coordinate datasets. Road edges,

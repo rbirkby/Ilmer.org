@@ -49,8 +49,8 @@ export const livestockFields = [
     id: 'cross-road-ducks',
     species: 'duck',
     count: 6,
-    centre: [894, 286],
-    outline: ponds[3]
+    centre: [730, 277],
+    outline: ponds[0]
   }
 ];
 

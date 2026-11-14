@@ -49,9 +49,17 @@ permalink: /history/ilmer-1839/index.html
   <button type="button" id="flight-toggle" aria-pressed="false" disabled>Historic Tour</button>
   <span id="flight-status" role="status"></span>
 </div>
+<div id="ar-controls" class="reconstruction-toolbar journey-controls" role="group" aria-label="Augmented reality" hidden>
+  <button type="button" id="ar-start">Camera AR view</button>
+  <span id="ar-start-status" role="status" aria-live="polite">On supported mobile browsers, AR uses the camera, location and compass. Alignment is approximate.</span>
+</div>
 <div class="reconstruction-stage">
   <div id="village-scene" tabindex="0" role="region" aria-label="Interactive 3D reconstruction of Ilmer" aria-describedby="scene-help" aria-keyshortcuts="C Escape">
     <p id="scene-status" role="status">Loading the village&hellip;</p>
+    <div id="ar-overlay" role="group" aria-label="Augmented reality controls" hidden>
+      <p id="ar-live-status" role="status" aria-live="polite"></p>
+      <button type="button" id="ar-exit">Exit AR view</button>
+    </div>
   </div>
   <p class="scene-caption">ILMER &middot; 1839 <span>Historical interpretation, not a measured survey</span></p>
 </div>

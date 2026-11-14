@@ -16,8 +16,10 @@ import {
   fieldBoundaries,
   easternField,
   churchyard,
+  tenementGarden,
   ponds
 } from './ilmer-1839-data.js';
+import { compassHeading, createGeoReference, gpsToMapPixel, observeCompassAvailability } from './ilmer-ar.js';
 import { validateTerrain, historicalTerrain, terrainHeight } from './ilmer-terrain.js';
 import { validateTrees, historicalTrees, circleOverlapsTriangles } from './ilmer-trees.js';
 import { rideCircuitPoint, rideCircuitLength, rideLength, rideStart, rideEnd, rideSpeed } from './ilmer-ride.js';
@@ -33,6 +35,7 @@ async function start() {
   const terrainResponse = await fetch('/assets/ilmer-terrain.json');
   if (!terrainResponse.ok) throw new Error(`Measured terrain could not load: HTTP ${terrainResponse.status}`);
   const terrain = historicalTerrain(validateTerrain(await terrainResponse.json()));
+  const geoReference = createGeoReference(terrain.source.landmarks);
   const treeResponse = await fetch('/assets/ilmer-trees.json');
   if (!treeResponse.ok) throw new Error(`Detected tree symbols could not load: HTTP ${treeResponse.status}`);
   const treeData = validateTrees(await treeResponse.json());
@@ -40,14 +43,21 @@ async function start() {
   let maxSurfaceDrapeError = 0;
   const THREE = await import('three');
   const { OrbitControls } = await import('/assets/vendor/three/OrbitControls.js');
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.setClearColor(0xe3e8dc);
+  renderer.setClearColor(0xe3e8dc, 1);
   renderer.domElement.setAttribute('aria-hidden', 'true');
   host.append(renderer.domElement);
+  const arVideo = document.createElement('video');
+  arVideo.className = 'ar-video';
+  arVideo.autoplay = true;
+  arVideo.muted = true;
+  arVideo.playsInline = true;
+  arVideo.setAttribute('aria-hidden', 'true');
+  host.insertBefore(arVideo, renderer.domElement);
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(43, 1, 0.5, 1800);
@@ -64,9 +74,10 @@ async function start() {
   controls.target.set(0, 0, 40);
   const landscape = new THREE.Group();
   const mappedGround = new THREE.Group();
+  const waterFeatures = new THREE.Group();
   const structures = new THREE.Group();
   const labels = new THREE.Group();
-  scene.add(landscape, mappedGround, structures, labels);
+  scene.add(landscape, mappedGround, waterFeatures, structures, labels);
   scene.add(new THREE.HemisphereLight(0xffffee, 0x6e806b, 2.3));
   const sun = new THREE.DirectionalLight(0xffedc6, 3);
   sun.position.set(-140, 240, 90);
@@ -215,7 +226,8 @@ async function start() {
   const skirtGeometry = new THREE.BufferGeometry();
   skirtGeometry.setAttribute('position', new THREE.Float32BufferAttribute(skirtVertices, 3));
   skirtGeometry.computeVertexNormals();
-  scene.add(new THREE.Mesh(skirtGeometry, material(0x8a8063, { side: THREE.DoubleSide })));
+  const skirt = new THREE.Mesh(skirtGeometry, material(0x8a8063, { side: THREE.DoubleSide }));
+  scene.add(skirt);
 
   function surfaceGeometry(sourceGeometry, elevation, fixedHeight = null) {
     const position = sourceGeometry.attributes.position;
@@ -314,6 +326,7 @@ async function start() {
   flatPolygon(easternField, material(0xb7ad7b));
   flatPolygon(livestockFields[0].outline, material(0xb5bc8d));
   flatPolygon(churchyard, material(0xb4bf94), 0.09);
+  flatPolygon(tenementGarden, material(0xb5bc8d));
   const pondSurfaces = [];
   const pondPolygons = ponds.map((pond) => pond.map(([x, y]) => mapPoint(x, y)));
   for (const [index, pond] of ponds.entries()) {
@@ -324,7 +337,7 @@ async function start() {
         pond,
         material(0x7eaaa5, { roughness: 0.4, side: THREE.DoubleSide }),
         0.08,
-        mappedGround,
+        waterFeatures,
         index === 0 || index >= 3 ? null : waterLevel
       )
     );
@@ -959,10 +972,15 @@ async function start() {
         box(part, l + 0.08, height * 0.32, w + 0.08, 0, height * 0.16, 0, stone);
         box(part, 1.15, 3.1, 1.15, -l * 0.24, height + w * 0.43, 0, brick);
         group.userData.chimneys++;
+        const groundWindowCentre = height / 3;
+        const upperWindowCentre = height + w * 0.46 * 0.32;
         for (const side of [-1, 1]) {
-          for (const level of [height * 0.25, height * 0.73]) {
-            for (const x of [-l * 0.3, l * 0.3]) windowPanel(part, x, level, side * (w / 2 + 0.09));
-          }
+          for (const x of [-l * 0.3, l * 0.3]) windowPanel(part, x, groundWindowCentre, side * (w / 2 + 0.09));
+          const gableEnd = new THREE.Group();
+          gableEnd.position.x = side * (l / 2 + 0.09);
+          gableEnd.rotation.y = (side * Math.PI) / 2;
+          for (const level of [groundWindowCentre, upperWindowCentre]) windowPanel(gableEnd, 0, level, 0.02);
+          part.add(gableEnd);
         }
         const entry = new THREE.Group();
         entry.position.set(0, 0, -w / 2 - 0.65);
@@ -1367,7 +1385,7 @@ async function start() {
         x > bounds.min.x - radius && x < bounds.max.x + radius && z > bounds.min.z - radius && z < bounds.max.z + radius
     ) ||
     pondPolygons.some(
-      (polygon, index) => !(field === 'cross-road-ducks' && index === 3) && withinField(polygon, x, z)
+      (polygon, index) => !(field === 'cross-road-ducks' && index === 0) && withinField(polygon, x, z)
     ) ||
     treeCentres.some(([tx, tz]) => Math.hypot(tx - x, tz - z) < radius + 0.3);
   const herds = createLivestock(animalBlocked);
@@ -2014,7 +2032,10 @@ async function start() {
   window.addEventListener('blur', () => movementKeys.clear());
   host.addEventListener('blur', () => movementKeys.clear());
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) movementKeys.clear();
+    if (document.hidden) {
+      movementKeys.clear();
+      if (arSession) void stopAR();
+    }
   });
   controls.addEventListener('change', render);
   const resize = new ResizeObserver(() => {
@@ -2032,8 +2053,306 @@ async function start() {
     if (rideMode === 'rider' || flightState !== 'idle') setView(activeView);
     mapPlane.visible = event.target.checked;
     mappedGround.visible = !mapPlane.visible;
+    waterFeatures.visible = !mapPlane.visible;
     labels.visible = !mapPlane.visible && !views[activeView].place;
     render();
+  });
+  const arStartButton = document.getElementById('ar-start');
+  const arStartStatus = document.getElementById('ar-start-status');
+  const arOverlay = document.getElementById('ar-overlay');
+  const arLiveStatus = document.getElementById('ar-live-status');
+  if (window.isSecureContext && navigator.mediaDevices?.getUserMedia && navigator.geolocation) {
+    const stopObservingCompass = observeCompassAvailability(window, () => {
+      document.getElementById('ar-controls').hidden = false;
+    });
+    window.addEventListener('pagehide', stopObservingCompass, { once: true });
+  }
+  let arSession = null;
+  const deviceEuler = new THREE.Euler(0, 0, 0, 'YXZ');
+  const deviceFix = new THREE.Quaternion(-Math.SQRT1_2, 0, 0, Math.SQRT1_2);
+  const screenAxis = new THREE.Vector3(0, 0, 1);
+  const screenFix = new THREE.Quaternion();
+
+  function setARFeaturesVisible(visible) {
+    landscape.visible = visible;
+    structures.visible = visible;
+    livestock.visible = visible;
+    waterFeatures.visible = visible;
+  }
+
+  function setARStatus(message) {
+    arLiveStatus.textContent = message;
+  }
+
+  function handleAROrientation(event) {
+    if (!arSession) return;
+    const alpha = compassHeading(event);
+    if (alpha === null) return;
+
+    const radians = Math.PI / 180;
+    const screenAngle = window.screen.orientation?.angle ?? 0;
+    deviceEuler.set(event.beta * radians, alpha * radians, -event.gamma * radians, 'YXZ');
+    camera.quaternion
+      .setFromEuler(deviceEuler)
+      .multiply(deviceFix)
+      .multiply(screenFix.setFromAxisAngle(screenAxis, (-screenAngle * Math.PI) / 180));
+    controls.target.copy(camera.position).addScaledVector(camera.getWorldDirection(new THREE.Vector3()), 50);
+    if (arSession.resolveOrientation) {
+      clearTimeout(arSession.orientationTimeout);
+      arSession.resolveOrientation();
+      arSession.resolveOrientation = null;
+      arSession.rejectOrientation = null;
+    }
+    arSession.orientationObserved = true;
+    render();
+  }
+
+  function updateARLocation(position) {
+    if (!arSession) return;
+    const { latitude, longitude, accuracy } = position.coords;
+    if (!Number.isFinite(accuracy) || accuracy > 30) {
+      setARFeaturesVisible(false);
+      setARStatus(`Waiting for GPS accuracy within 30 metres (current accuracy: ±${Math.round(accuracy)} m).`);
+      return;
+    }
+    const pixel = gpsToMapPixel(geoReference, latitude, longitude);
+    if (pixel.x < 0 || pixel.x > MAP.width || pixel.y < 0 || pixel.y > MAP.height) {
+      setARFeaturesVisible(false);
+      setARStatus(
+        'Your GPS position is outside the area covered by this historic map. Move into the mapped village to view the overlay.'
+      );
+      return;
+    }
+    const [x, z] = mapPoint(pixel.x, pixel.y);
+    camera.position.set(x, groundHeight(x, z) + 1.6, z);
+    setARFeaturesVisible(true);
+    setARStatus(
+      `Approximate AR alignment · GPS accuracy ±${Math.round(accuracy)} m · Historic map registration is not survey-grade.`
+    );
+    render();
+  }
+
+  function watchARLocation(session) {
+    return new Promise((resolve, reject) => {
+      session.resolveLocation = resolve;
+      session.rejectLocation = reject;
+      session.locationTimeout = setTimeout(() => {
+        if (!session.rejectLocation) return;
+        session.rejectLocation(new Error('Timed out waiting for a GPS location. Check location access and try again.'));
+        session.rejectLocation = null;
+      }, 20000);
+      session.watchId = navigator.geolocation.watchPosition(
+        (position) => {
+          updateARLocation(position);
+          if (session.resolveLocation) {
+            clearTimeout(session.locationTimeout);
+            session.resolveLocation(position);
+            session.resolveLocation = null;
+            session.rejectLocation = null;
+          }
+        },
+        (error) => {
+          const message =
+            error.code === 1
+              ? 'Location permission is required for the AR view.'
+              : `GPS location is unavailable: ${error.message}`;
+          if (session.rejectLocation) {
+            clearTimeout(session.locationTimeout);
+            session.rejectLocation(new Error(message));
+            session.rejectLocation = null;
+          } else setARStatus(message);
+        },
+        { enableHighAccuracy: true, maximumAge: 1000, timeout: 15000 }
+      );
+    });
+  }
+
+  async function stopAR() {
+    const session = arSession;
+    if (!session) return;
+    arSession = null;
+    clearTimeout(session.locationTimeout);
+    clearTimeout(session.orientationTimeout);
+    if (session.watchId !== null) navigator.geolocation.clearWatch(session.watchId);
+    window.removeEventListener('deviceorientation', handleAROrientation);
+    window.removeEventListener('deviceorientationabsolute', handleAROrientation);
+    if (session.stream) session.stream.getTracks().forEach((track) => track.stop());
+    arVideo.pause();
+    arVideo.srcObject = null;
+    if (session.rejectLocation) {
+      session.rejectLocation(new Error('The AR view was closed.'));
+      session.rejectLocation = null;
+    }
+    if (session.rejectOrientation) {
+      session.rejectOrientation(new Error('The AR view was closed.'));
+      session.rejectOrientation = null;
+    }
+    camera.position.copy(session.cameraPosition);
+    camera.quaternion.copy(session.cameraQuaternion);
+    camera.fov = session.cameraFov;
+    camera.updateProjectionMatrix();
+    controls.target.copy(session.cameraTarget);
+    controls.enabled = session.controlsEnabled;
+    renderer.setClearAlpha(session.clearAlpha);
+    [
+      [ground, session.groundVisible],
+      [base, session.baseVisible],
+      [skirt, session.skirtVisible],
+      [mappedGround, session.mappedGroundVisible],
+      [waterFeatures, session.waterFeaturesVisible],
+      [mapPlane, session.mapPlaneVisible],
+      [landscape, session.landscapeVisible],
+      [structures, session.structuresVisible],
+      [labels, session.labelsVisible],
+      [livestock, session.livestockVisible]
+    ].forEach(([object, visible]) => (object.visible = visible));
+    renderer.domElement.style.pointerEvents = '';
+    document.body.classList.remove('ar-active');
+    arOverlay.hidden = true;
+    arStartButton.disabled = false;
+    host.setAttribute('aria-label', 'Interactive 3D reconstruction of Ilmer');
+    if (document.fullscreenElement) {
+      try {
+        await document.exitFullscreen();
+      } catch {
+        arStartStatus.textContent = 'AR ended, but the browser could not exit full-screen mode.';
+      }
+    }
+    render();
+  }
+
+  async function startAR() {
+    if (arSession) return;
+    arStartStatus.textContent = '';
+    if (!window.isSecureContext) {
+      arStartStatus.textContent = 'Camera AR requires a secure HTTPS connection.';
+      return;
+    }
+    if (!navigator.mediaDevices?.getUserMedia || !navigator.geolocation || !window.DeviceOrientationEvent) {
+      arStartStatus.textContent = 'This browser needs camera, GPS location and device-compass support for AR.';
+      return;
+    }
+
+    const orientationApi = window.DeviceOrientationEvent;
+    const session = {
+      cameraPosition: camera.position.clone(),
+      cameraQuaternion: camera.quaternion.clone(),
+      cameraTarget: controls.target.clone(),
+      cameraFov: camera.fov,
+      controlsEnabled: controls.enabled,
+      clearAlpha: renderer.getClearAlpha(),
+      groundVisible: ground.visible,
+      baseVisible: base.visible,
+      skirtVisible: skirt.visible,
+      mappedGroundVisible: mappedGround.visible,
+      mapPlaneVisible: mapPlane.visible,
+      waterFeaturesVisible: waterFeatures.visible,
+      landscapeVisible: landscape.visible,
+      structuresVisible: structures.visible,
+      labelsVisible: labels.visible,
+      livestockVisible: livestock.visible,
+      watchId: null,
+      stream: null,
+      fullscreenActive: false,
+      resolveLocation: null,
+      rejectLocation: null,
+      resolveOrientation: null,
+      rejectOrientation: null,
+      orientationObserved: false,
+      locationTimeout: null,
+      orientationTimeout: null
+    };
+    arSession = session;
+    arStartButton.disabled = true;
+    arOverlay.hidden = false;
+    document.body.classList.add('ar-active');
+    host.setAttribute('aria-label', 'Augmented reality view of the 1839 Ilmer reconstruction');
+    controls.enabled = false;
+    ground.visible = false;
+    base.visible = false;
+    skirt.visible = false;
+    mappedGround.visible = false;
+    mapPlane.visible = false;
+    labels.visible = false;
+    setARFeaturesVisible(false);
+    renderer.setClearAlpha(0);
+    renderer.domElement.style.pointerEvents = 'none';
+    camera.fov = 65;
+    camera.updateProjectionMatrix();
+    setARStatus('Allow camera, location and compass access to start the AR view.');
+    render();
+
+    try {
+      const stage = host.closest('.reconstruction-stage');
+      let orientationPermission = Promise.resolve('granted');
+      if (typeof orientationApi.requestPermission === 'function')
+        orientationPermission = orientationApi.requestPermission();
+      window.addEventListener('deviceorientation', handleAROrientation);
+      window.addEventListener('deviceorientationabsolute', handleAROrientation);
+      if (stage?.requestFullscreen) {
+        void stage.requestFullscreen().then(
+          () => {
+            if (arSession === session) session.fullscreenActive = document.fullscreenElement === stage;
+            else if (document.fullscreenElement === stage) {
+              void document.exitFullscreen().catch(() => {
+                arStartStatus.textContent = 'AR ended, but the browser could not exit full-screen mode.';
+              });
+            }
+          },
+          () => {
+            if (arSession === session)
+              setARStatus('Browser full-screen was denied; the AR view is using the full window.');
+          }
+        );
+      }
+      const permission = await orientationPermission;
+      if (arSession !== session) return;
+      if (permission !== 'granted') {
+        document.getElementById('ar-controls').hidden = true;
+        throw new Error('Compass permission is required for the AR view.');
+      }
+      const orientationReady = new Promise((resolve, reject) => {
+        if (session.orientationObserved) resolve();
+        else {
+          session.resolveOrientation = resolve;
+          session.rejectOrientation = reject;
+          session.orientationTimeout = setTimeout(() => {
+            document.getElementById('ar-controls').hidden = true;
+            session.rejectOrientation?.(
+              new Error('A compass heading is unavailable. Enable device motion and compass access, then try again.')
+            );
+            session.rejectOrientation = null;
+          }, 15000);
+        }
+      });
+      const streamReady = navigator.mediaDevices
+        .getUserMedia({ audio: false, video: { facingMode: { ideal: 'environment' } } })
+        .then(async (stream) => {
+          session.stream = stream;
+          if (arSession !== session) {
+            stream.getTracks().forEach((track) => track.stop());
+            return stream;
+          }
+          arVideo.srcObject = stream;
+          await arVideo.play();
+          return stream;
+        });
+      const locationReady = watchARLocation(session);
+      const [stream] = await Promise.all([streamReady, locationReady, orientationReady]);
+      if (!stream.getVideoTracks().length) throw new Error('No camera video track is available for AR.');
+      if (arSession === session) render();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Camera AR could not start.';
+      const wasActive = arSession === session;
+      await stopAR();
+      if (wasActive) arStartStatus.textContent = message;
+    }
+  }
+
+  arStartButton.addEventListener('click', startAR);
+  document.getElementById('ar-exit').addEventListener('click', () => void stopAR());
+  document.addEventListener('fullscreenchange', () => {
+    if (arSession?.fullscreenActive && !document.fullscreenElement) void stopAR();
   });
   const raycaster = new THREE.Raycaster();
   let pointerStart = null;

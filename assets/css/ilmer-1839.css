@@ -192,3 +192,83 @@
     flex: 1 0 40%;
   }
 }
+#ar-controls[hidden],
+#village-scene .ar-video,
+#ar-overlay[hidden] {
+  display: none;
+}
+#ar-overlay:not([hidden]) {
+  display: flex;
+}
+body.ar-active {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+body.ar-active .reconstruction > :not(.reconstruction-stage) {
+  display: none;
+}
+body.ar-active .reconstruction-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  border: 0;
+  border-radius: 0;
+  background: #000;
+}
+body.ar-active #village-scene,
+body.ar-active #village-scene:fullscreen {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 0;
+  background: transparent;
+}
+body.ar-active #village-scene .ar-video {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+body.ar-active #village-scene canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+body.ar-active .scene-caption {
+  display: none;
+}
+body.ar-active #ar-overlay:not([hidden]) {
+  position: absolute;
+  inset: auto max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom))
+    max(16px, env(safe-area-inset-left));
+  z-index: 3;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px;
+  border-radius: 6px;
+  color: #fff;
+  background: rgb(25 31 29 / 78%);
+  font:
+    14px/1.5 system-ui,
+    sans-serif;
+}
+#ar-live-status {
+  margin: 0;
+}
+#ar-exit {
+  flex: 0 0 auto;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  padding: 10px 16px;
+  color: #1b2926;
+  background: #fffdf4;
+  font:
+    600 14px system-ui,
+    sans-serif;
+}

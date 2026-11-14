@@ -69,7 +69,7 @@ export const places = {
     tag: '65 · Vicarage',
     title: 'The Old Vicarage',
     description:
-      'Beside the church along the road, the Old Vicarage is modeled as a two-storey brick and stone house with windows on both floors, a pitched roof, chimney and lower projecting entrance, informed by the supplied photograph and correction. Plot 65 records the vicarage in 1839. Hidden elevations, exact material distribution and dimensions remain interpreted; the smaller outbuilding is wood boarded.'
+      'Beside the church along the road, the Old Vicarage is modeled as a two-storey brick and stone house with ground-floor windows on its long elevations and ground-floor and upstairs windows on its gable ends, a pitched roof, chimney and lower projecting entrance, informed by the supplied photograph and correction. Plot 65 records the vicarage in 1839. Hidden elevations, exact material distribution and dimensions remain interpreted; the smaller outbuilding is wood boarded.'
   },
   cottages: {
     tag: '41a · Site of two Cottages & Gardens',
@@ -1488,25 +1488,6 @@ export const ponds = [
     [967, 854]
   ],
   [
-    [861, 280],
-    [870, 266],
-    [881, 253],
-    [895, 248],
-    [904, 247],
-    [915, 259],
-    [922, 274],
-    [925, 291],
-    [930, 302],
-    [929, 312],
-    [919, 322],
-    [907, 330],
-    [896, 327],
-    [884, 324],
-    [873, 315],
-    [866, 302],
-    [862, 291]
-  ],
-  [
     [860, 298],
     [851, 298],
     [849, 305],
@@ -1541,4 +1522,24 @@ export const ponds = [
     [944, 341],
     [946, 335]
   ]
+];
+
+export const tenementGarden = [
+  [861, 280],
+  [870, 266],
+  [881, 253],
+  [895, 248],
+  [904, 247],
+  [915, 259],
+  [922, 274],
+  [925, 291],
+  [930, 302],
+  [929, 312],
+  [919, 322],
+  [907, 330],
+  [896, 327],
+  [884, 324],
+  [873, 315],
+  [866, 302],
+  [862, 291]
 ];

@@ -4,6 +4,6 @@ node_modules
 .lighthouseci
 pour-reports
 reports
-.claude
+.claude/settings.local.json
 notes.md
 ilmer_brs_references_vs_ilmer_org.md
