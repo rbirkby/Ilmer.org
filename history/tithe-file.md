@@ -291,9 +291,11 @@ _[11.]_ Illmire is a small Parish in the Vale of Aylesbury – a short distance 
 
 _The Arable Land_ is all very heavy working "Wheat and Bean" Land requiring great labour but growing good crops both as to quantity and quality when well farmed the system generally adopted being a 4 field
 
-_The Grass Land_ is used principally in the Butter Dairy a very large quantity being made in the District for the London Market[^2] – there are some pastures exceedingly well adapted for this purpose – indeed the proportion of inferior Land is very small
+_The Grass Land_ is used principally in the Butter Dairy a very large quantity being made in the District[^3] for the London Market[^2] – there are some pastures exceedingly well adapted for this purpose – indeed the proportion of inferior Land is very small
 
 [^2]: ['Aylesbury Butter' and the decline of the Bucks butter industry](https://www.bahs.org.uk/AGHR/PDFS/ARTICLES/35n1a5.pdf)
+
+[^3]: [Board of Agriculture survey of Buckinghamshire, 1810](https://archive.org/details/bub_gb_mQjpGm3t6x8C/page/n337/mode/2up?q=butter)
 
 ---
 
