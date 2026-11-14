@@ -4,12 +4,15 @@ title: 'Tithe File of Ilmer'
 description: 'The tithe file of Ilmer'
 tags: [history]
 scrollAllTables: true
+lightbox: true
 ancestorCrumb2Source: { label: 'Fields and Farming', url: '/history/fields-farming/' }
 ---
 
 _**source**: TNA [IR 18/13382](https://discovery.nationalarchives.gov.uk/details/r/C3247004) Tithe File for the parish of Illmire, Bucks_
 
-At a Meeting of the Land Owners and Tithe Owners within the parish of Illmire in the County of Buckingham duly convened and held at the Church in Illmire aforesaid on Monday the 17th day of September 1838 for the purpose of making an agreement for the general Commutation of Tithes within the limits of the said Parish pursuant to the Provisions of the Act of Parliament passed in the sixth and seventh years of the Reign of his late Majesty William the fourth entitled An Act for the Commutation of Tithes in England and Wales
+At a Meeting of the Land Owners and Tithe Owners within the parish of Illmire in the County of Buckingham duly convened and held at the Church in Illmire aforesaid on Monday the 17th day of September 1838 for the purpose of making an agreement for the general Commutation of Tithes within the limits of the said Parish pursuant to the Provisions of the Act of Parliament[^1] passed in the sixth and seventh years of the Reign of his late Majesty William the fourth entitled An Act for the Commutation of Tithes in England and Wales
+
+[^1]: [Tithe Act, 1836](https://www.legislation.gov.uk/ukpga/Will4/6-7/71/contents/enacted)
 
 Land Owners and Tithe Owners present
 
@@ -19,6 +22,9 @@ The Reverend William Edwards Partridge Clerk Vicar by the said Joseph Rose his A
 John Tapping Trustee of Church Land
 
 Mr Grace was elected Chairman who thereupon proceeded by means of the Poor Rate to ascertain the Interest of the Land Owners and Tithe Owners present in person or by Agent which amounted to the whole of such Interests respectively
+
+![](/images/tithe-notice-bucks-herald-25-aug-1838.avif#right)
+Bucks Herald, 25th August 1838
 
 The Notice for convening the Meeting was then produced signed by the said James Grace as Agent for the said Moreton John Edward Frewen which appeared to have been affixed by John Eggleton junr on the principal outer Door of the Church within the said Parish on the twenty second day of August last and three Newspapers were produced in which the said Notice was inserted Vizt The Bucks Herald of the twenty fifth day of August last and of the first and eighth days of September instant
 
@@ -224,7 +230,7 @@ _[1.]_ The Notice was dated August 21st 1838 and was affixed on the Church door 
 
 _[2.]_ The Meeting was held in the Parish Church on the 17th September
 
-_[3.]_ In the Buckinghamshire Herald of December the 1st and 8th
+_[3.]_ In the Buckinghamshire Herald of December [sic] the 1st and 8th
 
 _[4.]_ Mr Grace – the Agent for — Frewen Esquire was Chairman – it was first adjourned to 18th October 1838 at the White Hart Aylesbury
 to 8th January 39 @ the White Hart Aylesbury
@@ -239,11 +245,11 @@ when the Agreement was executed —
 | Deduct Assessment on Houses and other property not titheable                                                                               |          |        |        |        |        |        |
 | Ditto Assessment on the Tithes                                                                                                             |       95 |        |        |        |        |        |
 | Deduct Amount of Two last Items from Total Assessment, leaving the Net Assessment on Titheable Lands                                       |          |        |        |    774 |     15 |        |
-| **6.** Interest of Parties who signed the Notice ; viz.<br>Land-owners - - - -<br>or<br>Tithe-owners                                       |          |        |        |        |        |        |
+| **6.** Interest of Parties who signed the Notice ; viz.<br>Land-owners <br>or<br>Tithe-owners                                              |          |        |        |        |        |        |
 | **7.** State the number of Land-owners in the Parish, and how many of them have signed the Agreement?                                      |          |        |        |        |        |        |
 | **8.** Interest of Land-owners who have signed the Agreement                                                                               |          |        |        |        |        |        |
-| **9.** Total Interest of Tithe-owners -<br>Great - -<br>Small                                                                              |          |        |        |        |        |        |
-| Interest of Tithe-owners who have signed the Agreement - - -<br>Great - -<br>Small                                                         |          |        |        |        |        |        |
+| **9.** Total Interest of Tithe-owners <br>Great <br>Small                                                                                  |          |        |        |        |        |        |
+| Interest of Tithe-owners who have signed the Agreement <br>Great <br>Small                                                                 |          |        |        |        |        |        |
 | If any of the Tithe-owners are also Land-owners, state the Assessment on their Lands, and whether it is included in the Two-thirds or not. |          |        |        |        |        |        |
 
 _[Pencil note written diagonally at bottom left:]_
@@ -285,7 +291,9 @@ _[11.]_ Illmire is a small Parish in the Vale of Aylesbury – a short distance 
 
 _The Arable Land_ is all very heavy working "Wheat and Bean" Land requiring great labour but growing good crops both as to quantity and quality when well farmed the system generally adopted being a 4 field
 
-_The Grass Land_ is used principally in the Butter Dairy a very large quantity being made in the District for the London Market – there are some pastures exceedingly well adapted for this purpose – indeed the proportion of inferior Land is very small
+_The Grass Land_ is used principally in the Butter Dairy a very large quantity being made in the District for the London Market[^2] – there are some pastures exceedingly well adapted for this purpose – indeed the proportion of inferior Land is very small
+
+[^2]: ['Aylesbury Butter' and the decline of the Bucks butter industry](https://www.bahs.org.uk/AGHR/PDFS/ARTICLES/35n1a5.pdf)
 
 ---
 
