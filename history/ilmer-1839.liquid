@@ -1,0 +1,63 @@
+---
+layout: reconstruction
+title: Ilmer in 1839
+description: Explore a three-dimensional interpretation of Ilmer's 1839 tithe map.
+permalink: /history/ilmer-1839/index.html
+---
+<div class="reconstruction-heading">
+  <div>
+    <a class="reconstruction-back" href="/history/fields-farming/">&larr; Fields &amp; farming</a>
+    <p class="reconstruction-eyebrow">A village, reconstructed &middot; Buckinghamshire</p>
+    <h1>Ilmer <span>in 1839</span></h1>
+    <p>Step into the tithe map. Explore the church, farmyards and lanes of a small farming village.</p>
+  </div>
+  <span class="reconstruction-seal">1839<br><small>TITHE SURVEY</small></span>
+</div>
+<div class="reconstruction-toolbar" role="group" aria-label="Reconstruction views">
+  <button type="button" data-view="village" aria-pressed="true">Village view</button>
+  <button type="button" data-view="church" aria-pressed="false">St Peter's</button>
+  <button type="button" data-view="barns" aria-pressed="false">Upper Farm barns</button>
+  <button type="button" data-view="middle" aria-pressed="false">Middle Farm</button>
+  <button type="button" data-view="lower" aria-pressed="false">Lower Farm</button>
+  <button type="button" data-view="cottages" aria-pressed="false">Two Cottages &amp; Gardens</button>
+  <button type="button" data-view="tenements" aria-pressed="false">Three Tenements &amp; Gardens</button>
+  <button type="button" data-view="vicarage" aria-pressed="false">Old Vicarage</button>
+  <button type="button" data-view="plan" aria-pressed="false">Overhead plan</button>
+  <label><input id="map-layer" type="checkbox"> Original map</label>
+  <label>Controls
+    <select id="navigation-mode">
+      <option value="orbit">Look around</option>
+      <option value="fly">Fly freely</option>
+    </select>
+  </label>
+</div>
+<div id="free-flight-controls" class="reconstruction-toolbar journey-controls" role="group" aria-label="Hold to fly" hidden>
+  <button type="button" data-fly-key="w">Forward</button>
+  <button type="button" data-fly-key="s">Back</button>
+  <button type="button" data-fly-key="a">Left</button>
+  <button type="button" data-fly-key="d">Right</button>
+  <button type="button" data-fly-key="e">Up</button>
+  <button type="button" data-fly-key="q">Down</button>
+  <span>Drag to look. Hold a direction to move.</span>
+</div>
+<div class="reconstruction-toolbar journey-controls" role="group" aria-label="Horse and cart journey">
+  <button type="button" id="ride-pause" aria-pressed="false" hidden disabled>Pause cart journey</button>
+  <span id="ride-sound-status" role="status"></span>
+  <span id="ride-status" role="status"></span>
+</div>
+<div class="reconstruction-toolbar journey-controls" role="group" aria-label="Roof-height flying tour">
+  <button type="button" id="flight-toggle" aria-pressed="false" disabled>Historic Tour</button>
+  <span id="flight-status" role="status"></span>
+</div>
+<div class="reconstruction-stage">
+  <div id="village-scene" tabindex="0" role="region" aria-label="Interactive 3D reconstruction of Ilmer" aria-describedby="scene-help" aria-keyshortcuts="C Escape">
+    <p id="scene-status" role="status">Loading the village&hellip;</p>
+  </div>
+  <p class="scene-caption">ILMER &middot; 1839 <span>Historical interpretation, not a measured survey</span></p>
+</div>
+<p id="scene-help" class="scene-help">Drag to orbit &middot; Scroll or pinch to zoom &middot; Right-drag or two fingers to pan. Double-click or double-tap the horse and cart to ride; choose a view or press Escape to leave. Keyboard: C rides or pauses the cart, arrows orbit, +/&minus; zoom, R resets the view.</p>
+<noscript><p>The interactive model requires JavaScript. Visit <a href="/history/fields-farming/">Fields &amp; farming</a> for the tithe apportionment.</p></noscript>
+<script type="importmap">
+{"imports":{"three":"/assets/vendor/three/three.module.js"}}
+</script>
+<script type="module" src="{{ '/assets/js/ilmer-1839.js' | cacheBust }}"></script>

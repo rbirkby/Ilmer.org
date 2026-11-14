@@ -23,6 +23,8 @@ By 1839, when the Tithe map was created, the field layout had stabilised into a 
 
 - [Tithe apportionment file](/history/tithe-file) for Ilmer following the Tithe Commutation Act of 1836.
 
+[Explore Ilmer in 1839 in 3D](/history/ilmer-1839/) - an interactive reconstruction of the village map crop, distinguishing map and photographic evidence from inferred architecture and landscape.
+
 In the tables below, A. R. P. are Acres, Roods and Perches. A rood is ¼ of an acre and there are 40 perches to a rood
 
 #### MORETON, JOHN EDWd FREWEN
