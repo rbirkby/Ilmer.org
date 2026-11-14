@@ -50,9 +50,9 @@ function checkImageExists(p: unknown): boolean {
   if (!isString(p)) return false;
   // Skip external URLs
   if (/^https?:\/\//i.test(p)) return true;
-  // Treat leading '/' as site-root (project-relative)
+  // Site-root assets are sourced from public/, which Eleventy copies to the site root.
   const rel = p.replace(/^\//, '');
-  const full = path.join(projectRoot, rel);
+  const full = path.join(projectRoot, 'public', rel);
   try {
     return fs.existsSync(full);
   } catch {

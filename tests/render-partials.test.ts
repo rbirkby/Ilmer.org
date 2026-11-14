@@ -53,7 +53,7 @@ test('marriage summaries render separate bride and groom medians', async () => {
   assert.match(html, /Brides<\/dt>\s*<dd>22 years<\/dd>/);
 });
 
-for (const layout of ['404', 'home', 'post', 'timeline', 'will', 'archive', 'parish-hub']) {
+for (const layout of ['404', 'home', 'post', 'timeline', 'will', 'archive', 'parish-hub', 'reconstruction']) {
   test(`${layout} passes page metadata and asset flags to the isolated head`, async () => {
     const source = readFileSync(new URL(`${layout}.liquid`, includes), 'utf8');
     const headCall = source.match(/\{% render "head"[\s\S]*?%\}/)?.[0];

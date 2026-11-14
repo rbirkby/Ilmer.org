@@ -1517,7 +1517,7 @@ async function start() {
   label('Three Tenements & Gardens', 970, 296);
   label('Old Vicarage', 1037, 552);
 
-  const mapTexture = await new THREE.TextureLoader().loadAsync('/images/ilmer-1839/tithe-map.png');
+  const mapTexture = await new THREE.TextureLoader().loadAsync('/images/ilmer-1839/tithe-map.avif');
   mapTexture.colorSpace = THREE.SRGBColorSpace;
   const mapGeometry = groundGeometry.clone();
   for (let i = 0; i < mapGeometry.attributes.position.count; i++) {

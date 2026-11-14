@@ -18,10 +18,6 @@
   gap: 24px;
   margin-bottom: 24px;
 }
-.reconstruction-back {
-  color: var(--accent);
-  font-size: 14px;
-}
 .reconstruction-eyebrow {
   font:
     11px/1.7 system-ui,

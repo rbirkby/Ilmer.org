@@ -1,6 +1,23 @@
-{% render "head", content: content, layout: "reconstruction", site: site, url: url, title: title, description: description, tags: tags %}
+{% render "head"
+  , content: content
+  , lightbox: lightbox
+  , layout: "reconstruction"
+  , script: script
+  , site: site
+  , url: url
+  , title: title
+  , description: description
+  , tags: tags
+  , image: image %}
 {% render "site-header" %}
 <main id="reconstruction" class="reconstruction">
+  {% render "breadcrumb.liquid"
+    , ancestorCrumb1: ancestorCrumb1
+    , ancestorCrumb2: ancestorCrumb2
+    , breadcrumbUseDate: breadcrumbUseDate
+    , page: page
+    , title: title %}
+
   {{ content }}
 </main>
 {% render "footer" %}

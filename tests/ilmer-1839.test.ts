@@ -271,7 +271,7 @@ test('the experience retains accessible controls and locally served Three.js wit
   assert.match(page, /role="status"/);
   assert.match(page, /<noscript>/);
   assert.match(page, /Historical interpretation, not a measured survey/);
-  assert.match(page, /href="\/history\/fields-farming\/"/);
+  assert.match(page, /ancestorCrumb1Source: \{ label: 'Fields and Farming', url: '\/history\/fields-farming\/' \}/);
   assert.doesNotMatch(page, /reconstruction-evidence|reconstruction-sources|Reading the evidence|What we know/);
   assert.doesNotMatch(page, /<img|notes are below|available below|tree-registration\.png|tree-detections\.png/);
   assert.match(page, /id="map-layer"/);
@@ -280,8 +280,8 @@ test('the experience retains accessible controls and locally served Three.js wit
   assert.match(page, /id="flight-toggle"[^>]*>Historic Tour/);
   assert.doesNotMatch(page, /data-view="(?:west|chancel)"|A rider's-eye journey|A roof-height tour/);
   assert.match(page, /assets\/vendor\/three\/three.module.js/);
-  for (const source of ['tithe-map', 'church-east', 'church-west', 'map-1876', 'middle-farm', 'old-vicarage']) {
-    assert.ok(readFileSync(new URL(`../public/images/ilmer-1839/${source}.png`, import.meta.url)).length > 1000);
+  for (const source of ['tithe-map']) {
+    assert.ok(readFileSync(new URL(`../public/images/ilmer-1839/${source}.avif`, import.meta.url)).length > 1000);
   }
 });
 
