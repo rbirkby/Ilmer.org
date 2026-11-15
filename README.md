@@ -129,6 +129,8 @@ and several small barns have attached low volumes. Middle Farm's main block is
 narrowed to the actual red body rather than filling its western recess; its long
 outbuilding gains the northern cross-wing and side projections. The eastern
 Lower Farm building is a narrow main block with a projecting side bay.
+All Lower Farm outbuildings, including the side bay, have thatched roofs;
+the stone farmhouse retains its tiled roof.
 The cottage L-plan, simple tenement ranges, church porch and existing Vicarage
 entrance were checked too. The church's whole nave/chancel/porch plan is shifted
 and narrowed into its red outline without moving the doorway to another side

@@ -10,6 +10,7 @@ import {
   CHURCH_PORCH_SIDE,
   CHURCH_PLAN,
   mapPoint,
+  buildingRoofCovering,
   timberPlinthHeight,
   spacedWindowCentres,
   places,
@@ -591,7 +592,7 @@ test('the corrected houses override boarded farm architecture without invented s
   assert.match(vicarage, /const groundWindowCentre = height \/ 3/);
   assert.match(vicarage, /const upperWindowCentre = height \+ roofRise \* 0\.32/);
   assert.match(scene, /const roofRise = w \* \(vicarage \? 0\.75 : tudor \? 0\.65 : 0\.46\)/);
-  assert.match(scene, /thatched \? thatch : roof/);
+  assert.match(scene, /buildingRoofCovering\(building\.place, building\.architecture\) === 'thatch' \? thatch : roof/);
   assert.match(vicarage, /windowPanel\(part, x, groundWindowCentre, side \* \(w \/ 2 \+ 0\.09\)\)/);
   assert.match(
     vicarage,
@@ -625,20 +626,29 @@ test('the corrected houses override boarded farm architecture without invented s
   assert.equal(buildings.filter((building) => building.place === 'lower' && !building.architecture).length, 5);
 });
 
+test('Lower Farm outbuildings are thatched while its house and other non-Tudor buildings retain tiled roofs', () => {
+  const outbuildings = buildings.filter((building) => building.place === 'lower' && !building.architecture);
+  const farmhouse = buildings.find((building) => building.place === 'lower' && building.architecture === 'stone-house');
+  assert.equal(outbuildings.length, 5);
+  assert.ok(outbuildings.every((building) => buildingRoofCovering(building.place, building.architecture) === 'thatch'));
+  assert.ok(outbuildings.some((building) => building.projections?.length));
+  assert.ok(farmhouse);
+  assert.equal(buildingRoofCovering(farmhouse.place, farmhouse.architecture), 'tile');
+  assert.equal(buildingRoofCovering('middle', 'tudor'), 'thatch');
+  assert.equal(buildingRoofCovering('barns', undefined), 'tile');
+});
+
 test('Upper Farm residence roofs are thatched without changing other stone houses or the barns', () => {
-  const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
-  const selection = scene.slice(scene.indexOf('const thatched ='), scene.indexOf('group.userData.dwelling ='));
   for (const [place, architecture, expected] of [
-    ['barns', 'stone-house', true],
-    ['lower', 'stone-house', false],
-    ['barns', undefined, false],
-    ['middle', 'tudor', true],
-    ['vicarage', 'vicarage', true]
+    ['barns', 'stone-house', 'thatch'],
+    ['lower', 'stone-house', 'tile'],
+    ['barns', undefined, 'tile'],
+    ['middle', 'tudor', 'thatch'],
+    ['vicarage', 'vicarage', 'thatch']
   ] as const) {
     const building = buildings.find((building) => building.place === place && building.architecture === architecture)!;
-    assert.equal(runInNewContext(`${selection}\nthatched;`, { building }), expected, `${place}: ${architecture}`);
+    assert.equal(buildingRoofCovering(building.place, building.architecture), expected, `${place}: ${architecture}`);
   }
-  assert.match(scene, /const covering = thatched \? thatch : roof/);
   assert.match(places.barns.description, /thatch on the main roof and attached lean-to/);
 });
 
