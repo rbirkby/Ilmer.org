@@ -6,6 +6,10 @@ export function mapPoint(x, y) {
   return [(x - MAP.width / 2) * MAP.scale, (y - MAP.height / 2) * MAP.scale];
 }
 
+export function buildingRoofCovering(place, architecture) {
+  return architecture === 'tudor' || (place === 'lower' && !architecture) ? 'thatch' : 'tile';
+}
+
 export function timberPlinthHeight(length, width) {
   return Math.max(length, width) < 40 ? 0 : 0.6096;
 }
@@ -63,7 +67,7 @@ export const places = {
     tag: '49 · Lower Farm',
     title: 'Lower Farm',
     description:
-      'Plot 49 is Lower Farm Homestead & Orchard in the apportionment. The central building in the southern row is modeled in stone with two storeys, a brick chimney and abundant climbing ivy following the supplied corrections. Small wooden barns are boarded down to the ground; larger ranges retain brick grumplings. Ivy coverage, roof divisions, hidden elevations and exact heights remain interpreted.'
+      'Plot 49 is Lower Farm Homestead & Orchard in the apportionment. The central building in the southern row is modeled in stone with two storeys, a brick chimney and abundant climbing ivy following the supplied corrections. The boarded farm outbuildings have thatched roofs; the farmhouse retains its tiled roof. Small wooden barns are boarded down to the ground; larger ranges retain brick grumplings. Ivy coverage, roof divisions, hidden elevations and exact heights remain interpreted.'
   },
   vicarage: {
     tag: '65 · Vicarage',

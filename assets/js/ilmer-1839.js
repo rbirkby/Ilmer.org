@@ -3,6 +3,7 @@ import {
   CHURCH_PORCH_SIDE,
   CHURCH_PLAN,
   mapPoint,
+  buildingRoofCovering,
   timberPlinthHeight,
   footprintEvidence,
   spacedWindowCentres,
@@ -915,6 +916,7 @@ async function start() {
     group.userData.groundBoarded = 0;
     group.userData.ivyLeavesByWall = [];
     group.userData.projections = [];
+    const covering = buildingRoofCovering(building.place, building.architecture) === 'thatch' ? thatch : roof;
     for (const [partIndex, [x, y, length, width, angle, height]] of building.parts.entries()) {
       const part = new THREE.Group();
       const [wx, wz] = mapPoint(x, y);
@@ -945,7 +947,7 @@ async function start() {
         height,
         tudor ? plaster : vicarage ? brick : stoneHouse ? stone : timber,
         tudor ? w * 0.65 : w * 0.46,
-        tudor ? thatch : roof
+        covering
       );
       group.userData.roofs.push(shell.roofMesh.material === thatch ? 'thatch' : 'tile');
       if (!vicarage && !dwelling)
@@ -1053,7 +1055,6 @@ async function start() {
       const shell = new THREE.Mesh(walls, wallMaterial);
       shell.castShadow = shell.receiveShadow = true;
       part.add(shell);
-      const covering = building.architecture === 'tudor' ? thatch : roof;
       const pitch = Math.atan(0.7 / w) * fall;
       const coveringMesh = box(
         part,
@@ -1073,7 +1074,11 @@ async function start() {
         box(part, 0.95, doorHeight, 0.14, 0, doorHeight / 2, face + fall * 0.06, frameMaterial);
       }
       group.add(part);
-      group.userData.projections.push({ outline: [x, y, length, width, angle], roof: 'inferred lean-to' });
+      group.userData.projections.push({
+        outline: [x, y, length, width, angle],
+        roof: 'inferred lean-to',
+        covering: covering === thatch ? 'thatch' : 'tile'
+      });
     }
     structures.add(group);
     selectable.push(group);

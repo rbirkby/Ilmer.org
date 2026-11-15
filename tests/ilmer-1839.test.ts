@@ -9,6 +9,7 @@ import {
   CHURCH_PORCH_SIDE,
   CHURCH_PLAN,
   mapPoint,
+  buildingRoofCovering,
   timberPlinthHeight,
   spacedWindowCentres,
   places,
@@ -511,6 +512,18 @@ test('the corrected houses override boarded farm architecture without invented s
   assert.equal(lowerHouse.storeys, 2);
   assert.deepEqual(lowerHouse.parts, [[1468, 644, 38, 19, -4, 7]]);
   assert.equal(buildings.filter((building) => building.place === 'lower' && !building.architecture).length, 5);
+});
+
+test('Lower Farm outbuildings are thatched while its house and other non-Tudor buildings retain tiled roofs', () => {
+  const outbuildings = buildings.filter((building) => building.place === 'lower' && !building.architecture);
+  const farmhouse = buildings.find((building) => building.place === 'lower' && building.architecture === 'stone-house');
+  assert.equal(outbuildings.length, 5);
+  assert.ok(outbuildings.every((building) => buildingRoofCovering(building.place, building.architecture) === 'thatch'));
+  assert.ok(outbuildings.some((building) => building.projections?.length));
+  assert.ok(farmhouse);
+  assert.equal(buildingRoofCovering(farmhouse.place, farmhouse.architecture), 'tile');
+  assert.equal(buildingRoofCovering('middle', 'tudor'), 'thatch');
+  assert.equal(buildingRoofCovering('barns', undefined), 'tile');
 });
 
 test('mapped projecting wings are not flattened back into the main rectangular blocks', () => {
