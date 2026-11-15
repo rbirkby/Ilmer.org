@@ -28,18 +28,24 @@ are used in the browser and are not uploaded by the site. Alignment is
 approximate: the historic-map registration and phone GPS are not survey-grade.
 AR controls stay hidden without a usable compass heading, except on touch devices
 that require a tap to request compass permission.
+Trees and hedges are hidden in AR and restored on exit.
 The reconstruction import map content-hashes its helper modules as well as the
 entry script, preventing older cached helpers from breaking startup after an
 update. Module-loading failures display an error instead of leaving the loading message.
 The church's east chancel has an east-facing window following the supplied
 correction; its frame and glazing arrangement are illustrative. The sagging
 roof, slipped tiles and cracked masonry still indicate the chancel's poor repair.
+A masonry-filled arched doorway with a pale surround marks the church's south
+wall facing Upper Farm, opposite the porch. Its infill uses the same stone material
+and aligned courses as the nave wall. Its dimensions and surround are interpreted.
 The Old Vicarage has ground-floor windows on both long elevations and ground-floor
 and upstairs windows on its gable ends; the projecting entrance remains between
 the front window bays. Its 1.5-metre ground-floor windows are centred 2.0 metres
 above local ground (sills at 1.25 metres, heads at 2.75 metres); the 1.5-metre
-roof-space windows span 6.05–7.55 metres above ground, centred at 6.80 metres
-just above the 6-metre eaves. These heights are model interpretations, not
+roof-space windows span 6.56–8.06 metres above ground, centred at 7.31 metres
+above the 6-metre eaves. The roof is steeply pitched (about 51 degrees including
+its overhang) and thatched, with the chimney raised to clear the ridge.
+These heights and the pitch are model interpretations, not
 surveyed elevations.
 Two Cottages & Gardens and Three Tenements & Gardens retain their mapped
 footprints and boarding, with domestic-sized framed doors, thresholds and windows
@@ -61,7 +67,7 @@ historical correction; the individual stems and extent of coverage are illustrat
 The optional horse-and-cart journey follows the existing connected road
 centrelines inside the traced 1839 road from the map's left edge, past the church to Lower Farm and the
 opposite edge. Horse and cart sample the same measured terrain as the roads.
-Double-click or double-tap the horse or cart to enter the ride. With the scene
+Click or tap the horse or cart once to enter the ride. With the scene
 focused, C enters, pauses or resumes it. A pause/resume control appears only
 while riding; Escape or any place view returns to exploration.
 Hidden tabs pause the journey. The cart,
@@ -104,10 +110,17 @@ with body clearance from the boundary. Paths are checked against the rendered
 roads, building bounds, ponds and tree trunks; feet sample the measured terrain.
 These animated animals and their numbers are illustrative, not an 1839 census.
 The large detached Upper Farm building beside its pond is a stone house, with
-a domestic door, corner-clear framed windows and a chimney. Its storey count is
+a domestic door, corner-clear framed windows, a chimney and thatched main and
+lean-to roofs. Its storey count is
 not established by the map.
+The middle of Upper Farm's three joined barns is a taller, tithe-barn-like volume:
+its modeled eaves are 11 metres above its foundation, twice the adjoining barns'
+5.5 metres. The three footprints and neighbouring heights are unchanged.
+These heights interpret the supplied correction rather than surveyed elevations.
 Middle Farm has a visibly solid 0.8-unit thatch layer with rounded eaves and a
-single taller chimney centred on the main roof ridge. These thicknesses, heights
+single taller chimney centred on the main roof ridge. Its main house has three
+storeys: two below the eaves and a third in the roof space, with a window on each
+gable end. The lower attached wing retains its existing height. These thicknesses, heights
 and concealed elevations remain interpretations of the supplied corrections.
 Every mapped red building footprint has been reviewed against the original crop.
 The compound Upper Farm ranges retain their steps and projecting wings; the

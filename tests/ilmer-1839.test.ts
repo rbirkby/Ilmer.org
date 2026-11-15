@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { runInNewContext } from 'node:vm';
 import { Liquid } from 'liquidjs';
 import { createCacheBustFilter } from '../plugins/cache-bust.ts';
 import {
@@ -207,12 +208,76 @@ test('cart journey controls remain separate from the existing place and map cont
   assert.match(page, /id="ride-pause"[^>]*hidden disabled/);
   assert.doesNotMatch(page, /id="ride-toggle"|id="ride-stop"|Ride by horse|Leave cart/);
   assert.doesNotMatch(page, /id="ride-sound"|Mute ride sounds|Enable ride sounds/);
-  assert.match(page, /Double-click or double-tap the horse and cart/);
+  assert.match(page, /Click or tap the horse and cart/);
   assert.match(page, /id="ride-status" role="status"/);
   assert.doesNotMatch(page, /id="village-cart"/);
   const script = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
   assert.doesNotMatch(script, /villageCart|name === 'village'.*startVillageCart/);
   assert.doesNotMatch(script, /Riding past the church and Lower Farm, turning back at each end/);
+});
+
+test('one primary click or tap rides the cart, but drags, secondary pointers and cancelled gestures do not', () => {
+  const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const handlers = scene.slice(
+    scene.indexOf("renderer.domElement.addEventListener('pointerdown'"),
+    scene.indexOf("host.addEventListener('keydown'")
+  );
+  const target = new EventTarget();
+  let rides = 0;
+  runInNewContext(`let pointerStart = null; let flyDrag = null;\n${handlers}`, {
+    renderer: { domElement: target },
+    freeFlightAvailable: () => false,
+    pointAtScene: () => {},
+    rideMode: 'village',
+    pointsAtCart: () => true,
+    startCartRide: () => rides++
+  });
+  const emit = (type: string, values: object = {}) =>
+    target.dispatchEvent(
+      Object.assign(new Event(type, { cancelable: true }), {
+        clientX: 20,
+        clientY: 20,
+        button: 0,
+        isPrimary: true,
+        ...values
+      })
+    );
+  emit('pointerdown');
+  emit('pointerup', { clientX: 40 });
+  emit('pointerdown');
+  emit('pointercancel');
+  emit('pointerup');
+  emit('pointerdown', { button: 2 });
+  emit('pointerup', { button: 2 });
+  emit('pointerdown', { isPrimary: false });
+  emit('pointerup', { isPrimary: false });
+  assert.equal(rides, 0);
+  for (const pointerType of ['mouse', 'touch']) {
+    emit('pointerdown', { pointerType });
+    emit('pointerup', { pointerType });
+  }
+  assert.equal(rides, 2);
+  assert.doesNotMatch(scene, /lastCartTap|addEventListener\('dblclick'/);
+});
+
+test('AR keeps trees and hedges hidden when GPS enables the remaining features', () => {
+  const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const visibility = scene.slice(scene.indexOf('function setARFeaturesVisible'), scene.indexOf('function setARStatus'));
+  const landscape = { visible: true };
+  const structures = { visible: false };
+  const livestock = { visible: false };
+  const waterFeatures = { visible: false };
+  runInNewContext(`${visibility}\nsetARFeaturesVisible(false); setARFeaturesVisible(true);`, {
+    landscape,
+    structures,
+    livestock,
+    waterFeatures
+  });
+  assert.equal(landscape.visible, false);
+  assert.equal(structures.visible, true);
+  assert.equal(livestock.visible, true);
+  assert.equal(waterFeatures.visible, true);
+  assert.match(scene, /\[landscape, session\.landscapeVisible\]/);
 });
 
 test('map coordinate transform preserves the crop aspect and downward pixel direction', () => {
@@ -235,6 +300,23 @@ test('all traced building ranges have valid positions, dimensions and evidence n
   assert.equal(buildings.filter((building) => building.place === 'barns').length, 9);
   assert.match(places.church.description, /photographs do not establish/);
   assert.match(places.barns.description, /conjectural/);
+});
+
+test('the middle Upper Farm barn has double-height eaves without changing the three joined footprints', () => {
+  const range = buildings.find((building) => building.place === 'barns' && building.parts.length === 3)!;
+  assert.deepEqual(
+    range.parts.map((part) => part.slice(0, 5)),
+    [
+      [813, 522, 90, 21, -67],
+      [767, 536, 63, 23, 21],
+      [735, 545, 56, 18, -60]
+    ]
+  );
+  const [first, middle, last] = range.parts.map((part) => part[5]);
+  assert.equal(first, 5.5);
+  assert.equal(last, first);
+  assert.equal(middle, first * 2);
+  assert.match(places.barns.description, /middle of the three joined barns.*double-height/);
 });
 
 test('landscape traces stay within the supplied map crop', () => {
@@ -347,6 +429,32 @@ test('the church entrance is opposite the original side and dated road evidence 
   // The old diagonal through the churchyard is no longer a road.
   assert.ok(!lanes.flat().some(([x, y]) => x === 913 && y === 538));
   assert.ok(lanes.filter((lane) => lane.some(([x, y]) => x === 1088 && y === 513)).length >= 3);
+});
+
+test('the blocked church doorway is masonry-filled on the wall opposite the porch', () => {
+  assert.match(places.church.description, /blocked-up arched doorway on the south wall facing Upper Farm/);
+  const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  assert.match(scene, /blockedDoorway\.position\.set\(-0\.5, 0\.05, -CHURCH_PORCH_SIDE \* 3\.62\)/);
+  assert.match(scene, /if \(CHURCH_PORCH_SIDE > 0\) blockedDoorway\.rotation\.y = Math\.PI/);
+  assert.match(scene, /new THREE\.Mesh\(blockedInfillGeometry, stone\)/);
+  const coordinates: number[][] = [];
+  const geometry = {
+    attributes: {
+      position: { count: 2, getX: (i: number) => [-0.85, 0.85][i], getY: (i: number) => [0, 3.2][i] },
+      uv: { setXY: (i: number, x: number, y: number) => (coordinates[i] = [x, y]) }
+    }
+  };
+  const mapping = scene.slice(scene.indexOf('const blockedInfillGeometry'), scene.indexOf('const blockedInfill ='));
+  runInNewContext(mapping, {
+    door: { geometry: { clone: () => geometry } },
+    blockedDoorway: { position: { x: -0.5, y: 0.05 } },
+    CHURCH_PORCH_SIDE
+  });
+  assert.ok(Math.abs(coordinates[0][0] - (-0.85 - 0.5 + 11.5 / 2) / 11.5) < 1e-10);
+  assert.ok(Math.abs(coordinates[0][1] - 0.05 / 6.1) < 1e-10);
+  assert.ok(Math.abs(coordinates[1][0] - coordinates[0][0] - 1.7 / 11.5) < 1e-10);
+  assert.ok(Math.abs(coordinates[1][1] - coordinates[0][1] - 3.2 / 6.1) < 1e-10);
+  assert.match(scene, /church\.add\(blockedDoorway\)/);
 });
 
 test('cart and horse paths stay inside the traced, variable-width tithe-road surface in both directions', () => {
@@ -482,7 +590,9 @@ test('the corrected houses override boarded farm architecture without invented s
   const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
   const vicarage = scene.slice(scene.indexOf('} else if (vicarage) {'), scene.indexOf('} else if (stoneHouse) {'));
   assert.match(vicarage, /const groundWindowCentre = height \/ 3/);
-  assert.match(vicarage, /const upperWindowCentre = height \+ w \* 0\.46 \* 0\.32/);
+  assert.match(vicarage, /const upperWindowCentre = height \+ roofRise \* 0\.32/);
+  assert.match(scene, /const roofRise = w \* \(vicarage \? 0\.75 : tudor \? 0\.65 : 0\.46\)/);
+  assert.match(scene, /buildingRoofCovering\(building\.place, building\.architecture\) === 'thatch' \? thatch : roof/);
   assert.match(vicarage, /windowPanel\(part, x, groundWindowCentre, side \* \(w \/ 2 \+ 0\.09\)\)/);
   assert.match(
     vicarage,
@@ -490,12 +600,14 @@ test('the corrected houses override boarded farm architecture without invented s
   );
   const vicaragePart = buildings.find((building) => building.architecture === 'vicarage')!.parts[0];
   const [, , , windowWidth, , eavesHeight] = vicaragePart;
-  const gableRise = windowWidth * MAP.scale * 0.46;
+  const gableRise = windowWidth * MAP.scale * 0.75;
   const groundWindowCentre = eavesHeight / 3;
   const upperWindowCentre = eavesHeight + gableRise * 0.32;
   assert.equal(groundWindowCentre, 2);
   assert.equal(groundWindowCentre - 0.75, 1.25);
   assert.equal(groundWindowCentre + 0.75, 2.75);
+  const pitch = (Math.atan2(gableRise, (windowWidth * MAP.scale) / 2 + 0.55) * 180) / Math.PI;
+  assert.ok(pitch > 50 && pitch < 55);
   assert.ok(upperWindowCentre - 0.75 > eavesHeight);
   assert.ok(upperWindowCentre + 0.75 < eavesHeight + gableRise);
   const upperHouse = buildings.find(
@@ -524,6 +636,38 @@ test('Lower Farm outbuildings are thatched while its house and other non-Tudor b
   assert.equal(buildingRoofCovering(farmhouse.place, farmhouse.architecture), 'tile');
   assert.equal(buildingRoofCovering('middle', 'tudor'), 'thatch');
   assert.equal(buildingRoofCovering('barns', undefined), 'tile');
+});
+
+test('Upper Farm residence roofs are thatched without changing other stone houses or the barns', () => {
+  for (const [place, architecture, expected] of [
+    ['barns', 'stone-house', 'thatch'],
+    ['lower', 'stone-house', 'tile'],
+    ['barns', undefined, 'tile'],
+    ['middle', 'tudor', 'thatch'],
+    ['vicarage', 'vicarage', 'thatch']
+  ] as const) {
+    const building = buildings.find((building) => building.place === place && building.architecture === architecture)!;
+    assert.equal(buildingRoofCovering(building.place, building.architecture), expected, `${place}: ${architecture}`);
+  }
+  assert.match(places.barns.description, /thatch on the main roof and attached lean-to/);
+});
+
+test('Middle Farm has two wall storeys and a third in the main roof with gable-end windows', () => {
+  const middle = buildings.find((building) => building.architecture === 'tudor')!;
+  assert.equal(middle.storeys, 3);
+  assert.match(places.middle.description, /three storeys.*uppermost storey in the roof space/);
+  const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const tudor = scene.slice(scene.indexOf('if (tudor) {'), scene.indexOf('} else if (vicarage) {'));
+  assert.match(tudor, /if \(partIndex === 0\)/);
+  assert.match(tudor, /if \(building\.storeys === 3\)/);
+  assert.match(tudor, /for \(const side of \[-1, 1\]\)/);
+  assert.match(tudor, /windowPanel\(gableEnd, 0, height \+ roofRise \* 0\.35, 0\.02, 1\.7, 1\.5\)/);
+  const [, , , width, , eaves] = middle.parts[0];
+  const rise = width * MAP.scale * 0.65;
+  const centre = eaves + rise * 0.35;
+  assert.ok(centre - 0.86 > eaves);
+  const undersideAtWindowEdge = eaves + rise * (1 - 0.96 / ((width * MAP.scale) / 2 + 0.55)) - 0.8;
+  assert.ok(centre + 0.86 < undersideAtWindowEdge);
 });
 
 test('mapped projecting wings are not flattened back into the main rectangular blocks', () => {
