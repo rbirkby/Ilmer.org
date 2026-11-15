@@ -8,6 +8,7 @@ description: Prepare and review image changes for Ilmer.org. Use whenever adding
 ## Requirements
 
 - Encode every new or modified raster image as genuine AVIF with an `.avif` extension. Renaming another format is not conversion.
+- Remove embedded EXIF metadata from every new or modified image, including camera/lens details and settings, GPS coordinates and altitude, and capture/digitisation/modification dates and times. Remove equivalent camera, location and date fields in XMP, IPTC and other embedded metadata too.
 - Normally keep each image strictly below **200,000 bytes (200 KB)**.
 - Images from 200,000 to 999,999 bytes require a concrete reason, such as preserving readable map labels or historical document text, after attempting further optimisation. Report the reason and exact size.
 - Images of **1,000,000 bytes (1 MB) or more** are exceptional: stop and obtain explicit user approval for that specific file, size and justification before including it in a commit.
@@ -47,11 +48,19 @@ magick identify /absolute/temporary/path/candidate.avif
 The fallback dimensions and quality above are starting points, not required settings, and quality scales are encoder-specific. Regardless of encoder, for each candidate:
 
 1. Resize to the smallest dimensions that meet the real viewing requirement, allowing for high-density displays where appropriate. Never upscale needlessly.
-2. Remove unnecessary metadata, retaining any required attribution in the existing content or provenance mechanism. Preserve correct colour appearance when removing profiles.
+2. Apply EXIF orientation to the pixels before stripping metadata. Remove all EXIF, including camera/lens make, model, serial numbers, exposure settings, GPS coordinates/altitude and date/time fields; also remove equivalent fields in XMP, IPTC and other embedded metadata. Retain required attribution in the existing content or provenance mechanism, not in private camera metadata. Preserve correct colour appearance, retaining a necessary colour profile or converting colours appropriately before removing it. Do not assume conversion or Squoosh export strips metadata.
 3. Adjust AVIF quality and dimensions iteratively until below 200,000 bytes where practical. Encode each candidate from the original, not from an already lossy intermediate.
 4. Inspect the decoded image at its intended display size and any required zoom level. Check text, map labels, fine detail, orientation, colours and transparency; a byte-count pass alone is insufficient.
 5. Measure the final file's exact byte count. Follow the exception requirements above rather than silently accepting an oversized result.
 6. Copy only the chosen, validated AVIF into the appropriate existing asset directory.
+
+Inspect the final exported file's embedded metadata locally, for example with an already available ExifTool:
+
+```sh
+exiftool -G1 -a -s -EXIF:all -XMP:all -IPTC:all /absolute/temporary/path/candidate.avif
+```
+
+Confirm there is no EXIF block and no remaining embedded camera settings, GPS/location or date/time metadata. Filesystem creation/modification times are not embedded EXIF and need not be changed. Verify again after any tool rewrites the image; a `-strip` option alone is not evidence that the final file is clean. If no suitable metadata inspection tool is available, report the blocker and obtain approval before installing tooling; do not claim metadata removal was verified.
 
 If no suitable encoder is available, report the blocker and obtain approval before installing tooling. Do not substitute another format or pretend optimisation succeeded.
 
@@ -75,7 +84,7 @@ If no suitable encoder is available, report the blocker and obtain approval befo
    git diff --cached --name-status
    ```
 
-2. Review every added or modified image in the proposed changes, including assets outside `public/images/`. Verify genuine AVIF encoding, successful decoding, exact bytes and visual quality.
+2. Review every added or modified image in the proposed changes, including assets outside `public/images/`. Verify genuine AVIF encoding, successful decoding, exact bytes, visual quality and the absence of EXIF and equivalent embedded camera, GPS and date/time metadata.
 3. For each added image, identify its actual consuming page, component or direct link. Search maintained sources, excluding generated output and dependencies, then trace indirect references where necessary. If no real use exists, leave it out of the commit; remove only task-created unused files.
 4. When site assets or references change, run:
 
@@ -87,4 +96,4 @@ If no suitable encoder is available, report the blocker and obtain approval befo
    Inspect the affected rendered page or application as well, including CSS backgrounds and JavaScript-loaded images that a link checker may miss. Verify the served image URL resolves and displays correctly.
 
 5. Review the final diff and staged file list. If committing was requested, stage only explicitly intended paths, not a blanket `git add .`.
-6. Report final image paths, exact byte sizes, actual consumers, validation results and any approved exceptions. Do not claim automatic enforcement: this skill guides agent work; it is not a CI check or commit hook.
+6. Report final image paths, exact byte sizes, actual consumers, validation results (including the metadata inspection tool and result) and any approved exceptions. Do not claim automatic enforcement: this skill guides agent work; it is not a CI check or commit hook.

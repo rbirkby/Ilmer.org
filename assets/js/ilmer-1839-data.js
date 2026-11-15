@@ -45,19 +45,19 @@ export const places = {
     tag: '66 (1839) / 55 (1876) · Churchyard',
     title: "St Peter's Church",
     description:
-      'The church is plot 66 in 1839 and location 55 in 1876. It has stone walls, a wood-boarded bell turret, the corrected opposite-side entrance, a half-hipped west roof and a west window. The deteriorated east chancel retains its covering, with roof sag, slipped tiles and cracked masonry. Exact decay and dimensions are interpreted; the photographs do not establish the precise 1839 fabric.'
+      'The church is plot 66 in 1839 and location 55 in 1876. It has stone walls, a wood-boarded bell turret, the corrected opposite-side entrance, a blocked-up arched doorway on the south wall facing Upper Farm, a half-hipped west roof and a west window. The deteriorated east chancel retains its covering, with roof sag, slipped tiles and cracked masonry. Exact decay and dimensions are interpreted; the photographs do not establish the precise 1839 fabric.'
   },
   barns: {
     tag: 'A1 · Upper Farm',
     title: 'Upper Farm barns',
     description:
-      'The angular ranges and detached buildings follow the A1 footprints. The large detached building beside the pond is a stone house, following the supplied correction, with domestic openings and a chimney. The apportionment calls A1 and A2 Upper Farm Homestead & Orchard. Opening positions, storey arrangement, roofs and heights are conjectural, not recorded elevations; other farm buildings remain timber boarded.'
+      'The angular ranges and detached buildings follow the A1 footprints. The middle of the three joined barns is modeled as a double-height, tithe-barn-like volume, following the supplied correction. The large detached building beside the pond is a stone house, following the supplied corrections, with domestic openings, a chimney and thatch on the main roof and attached lean-to. The apportionment calls A1 and A2 Upper Farm Homestead & Orchard. Opening positions, storey arrangement, roofs and heights are conjectural, not recorded elevations; other farm buildings remain timber boarded.'
   },
   middle: {
     tag: '1 · Middle Farm',
     title: 'Middle Farm',
     description:
-      'The main house follows the supplied Middle Farm photograph: exposed dark timber framing, light infill panels, two storeys and mullioned windows. Its roof is thatched as directed, with thick eaves and a rounded ridge. Its 1839 footprint is retained; framing arrangement, hidden elevations and heights are interpreted. Detached farm buildings are wood boarded.'
+      'The main house follows the supplied Middle Farm photograph: exposed dark timber framing, light infill panels and three storeys, with the uppermost storey in the roof space and windows on both gable ends. Its roof is thatched as directed, with thick eaves and a rounded ridge. Its 1839 footprint is retained; framing arrangement, hidden elevations and heights are interpreted. Detached farm buildings are wood boarded.'
   },
   lower: {
     tag: '49 · Lower Farm',
@@ -69,7 +69,7 @@ export const places = {
     tag: '65 · Vicarage',
     title: 'The Old Vicarage',
     description:
-      'Beside the church along the road, the Old Vicarage is modeled as a two-storey brick and stone house with ground-floor windows on its long elevations and ground-floor and upstairs windows on its gable ends, a pitched roof, chimney and lower projecting entrance, informed by the supplied photograph and correction. Plot 65 records the vicarage in 1839. Hidden elevations, exact material distribution and dimensions remain interpreted; the smaller outbuilding is wood boarded.'
+      'Beside the church along the road, the Old Vicarage is modeled as a two-storey brick and stone house with ground-floor windows on its long elevations and ground-floor and upstairs windows on its gable ends, a steeply pitched thatched roof, chimney and lower projecting entrance, informed by the supplied photograph and corrections. Plot 65 records the vicarage in 1839. Hidden elevations, exact material distribution and dimensions remain interpreted; the smaller outbuilding is wood boarded.'
   },
   cottages: {
     tag: '41a · Site of two Cottages & Gardens',
@@ -105,7 +105,7 @@ export const buildings = [
     place: 'barns',
     parts: [
       [813, 522, 90, 21, -67, 5.5],
-      [767, 536, 63, 23, 21, 5.5],
+      [767, 536, 63, 23, 21, 11],
       [735, 545, 56, 18, -60, 5.5]
     ],
     projections: [[784, 561, 12, 14, 22, 3.2, 1]]
@@ -132,6 +132,7 @@ export const buildings = [
   {
     place: 'middle',
     architecture: 'tudor',
+    storeys: 3,
     parts: [
       [1156, 619, 42, 40, -5, 8],
       [1127, 625, 17, 17, -5, 5]

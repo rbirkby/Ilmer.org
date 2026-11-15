@@ -908,6 +908,10 @@ async function start() {
     group.userData.chimneys = 0;
     const dwelling =
       building.place === 'cottages' || building.place === 'tenements' || building.architecture === 'stone-house';
+    const thatched =
+      building.architecture === 'tudor' ||
+      building.architecture === 'vicarage' ||
+      (building.place === 'barns' && building.architecture === 'stone-house');
     group.userData.dwelling = dwelling;
     group.userData.frontDoors = dwelling ? (building.frontDoors ?? 1) : 0;
     group.userData.roofs = [];
@@ -938,14 +942,15 @@ async function start() {
       const tudor = building.architecture === 'tudor';
       const vicarage = building.architecture === 'vicarage';
       const stoneHouse = building.architecture === 'stone-house';
+      const roofRise = w * (vicarage ? 0.75 : tudor ? 0.65 : 0.46);
       const shell = gable(
         part,
         l,
         w,
         height,
         tudor ? plaster : vicarage ? brick : stoneHouse ? stone : timber,
-        tudor ? w * 0.65 : w * 0.46,
-        tudor ? thatch : roof
+        roofRise,
+        thatched ? thatch : roof
       );
       group.userData.roofs.push(shell.roofMesh.material === thatch ? 'thatch' : 'tile');
       if (!vicarage && !dwelling)
@@ -962,7 +967,16 @@ async function start() {
       if (tudor) {
         tudorFacade(part, l, w, height);
         if (partIndex === 0) {
-          const ridge = height + w * 0.65;
+          if (building.storeys === 3) {
+            for (const side of [-1, 1]) {
+              const gableEnd = new THREE.Group();
+              gableEnd.position.x = side * (l / 2 + 0.09);
+              gableEnd.rotation.y = (side * Math.PI) / 2;
+              windowPanel(gableEnd, 0, height + roofRise * 0.35, 0.02, 1.7, 1.5);
+              part.add(gableEnd);
+            }
+          }
+          const ridge = height + roofRise;
           box(part, 1.15, 4.8, 1.15, 0, ridge + 1.6, 0, brick);
           box(part, 1.35, 0.16, 1.35, 0, ridge + 4.08, 0, brick);
           for (const x of [-0.28, 0.28]) box(part, 0.25, 0.22, 0.35, x, ridge + 4.25, 0, dark);
@@ -970,10 +984,10 @@ async function start() {
         }
       } else if (vicarage) {
         box(part, l + 0.08, height * 0.32, w + 0.08, 0, height * 0.16, 0, stone);
-        box(part, 1.15, 3.1, 1.15, -l * 0.24, height + w * 0.43, 0, brick);
+        box(part, 1.15, 3.1, 1.15, -l * 0.24, height + roofRise + 0.7, 0, brick);
         group.userData.chimneys++;
         const groundWindowCentre = height / 3;
-        const upperWindowCentre = height + w * 0.46 * 0.32;
+        const upperWindowCentre = height + roofRise * 0.32;
         for (const side of [-1, 1]) {
           for (const x of [-l * 0.3, l * 0.3]) windowPanel(part, x, groundWindowCentre, side * (w / 2 + 0.09));
           const gableEnd = new THREE.Group();
@@ -986,7 +1000,7 @@ async function start() {
         entry.position.set(0, 0, -w / 2 - 0.65);
         box(entry, l * 0.5, 2.8, 1.7, 0, 1.4, 0, stone);
         box(entry, 1.5, 2.6, 0.1, 0, 1.3, -0.91, dark);
-        const canopy = box(entry, l * 0.6, 0.18, 2.3, 0, 3, -0.15, roof);
+        const canopy = box(entry, l * 0.6, 0.45, 2.3, 0, 3, -0.15, thatch);
         canopy.rotation.x = 0.14;
         part.add(entry);
       } else if (stoneHouse) {
@@ -1053,7 +1067,7 @@ async function start() {
       const shell = new THREE.Mesh(walls, wallMaterial);
       shell.castShadow = shell.receiveShadow = true;
       part.add(shell);
-      const covering = building.architecture === 'tudor' ? thatch : roof;
+      const covering = thatched ? thatch : roof;
       const pitch = Math.atan(0.7 / w) * fall;
       const coveringMesh = box(
         part,
@@ -1122,6 +1136,25 @@ async function start() {
   door.position.x = -1.57;
   porch.add(door);
   church.add(porch);
+  const blockedDoorway = new THREE.Group();
+  blockedDoorway.position.set(-0.5, 0.05, -CHURCH_PORCH_SIDE * 3.62);
+  if (CHURCH_PORCH_SIDE > 0) blockedDoorway.rotation.y = Math.PI;
+  const blockedSurround = new THREE.Mesh(door.geometry, whiteboard);
+  blockedSurround.scale.set(1.16, 1.05, 1);
+  blockedDoorway.add(blockedSurround);
+  const blockedInfillGeometry = door.geometry.clone();
+  const { position: infillPosition, uv: infillUV } = blockedInfillGeometry.attributes;
+  for (let i = 0; i < infillPosition.count; i++) {
+    infillUV.setXY(
+      i,
+      (infillPosition.getX(i) - CHURCH_PORCH_SIDE * blockedDoorway.position.x + 11.5 / 2) / 11.5,
+      (infillPosition.getY(i) + blockedDoorway.position.y) / 6.1
+    );
+  }
+  const blockedInfill = new THREE.Mesh(blockedInfillGeometry, stone);
+  blockedInfill.position.z = 0.02;
+  blockedDoorway.add(blockedInfill);
+  church.add(blockedDoorway);
   const turret = new THREE.Group();
   turret.position.set(-2.4, 8.5, 0);
   box(turret, 3.8, 5.8, 4, 0, 2.9, 0, whiteboard);
@@ -2074,7 +2107,7 @@ async function start() {
   const screenFix = new THREE.Quaternion();
 
   function setARFeaturesVisible(visible) {
-    landscape.visible = visible;
+    landscape.visible = false;
     structures.visible = visible;
     livestock.visible = visible;
     waterFeatures.visible = visible;
@@ -2357,7 +2390,6 @@ async function start() {
   const raycaster = new THREE.Raycaster();
   let pointerStart = null;
   let flyDrag = null;
-  let lastCartTap = null;
   function pointAtScene(event) {
     const rect = renderer.domElement.getBoundingClientRect();
     raycaster.setFromCamera(
@@ -2377,15 +2409,11 @@ async function start() {
     const buildingHit = raycaster.intersectObjects(selectable, true)[0];
     return cart.visible && distances.length > 0 && (!buildingHit || Math.min(...distances) < buildingHit.distance);
   }
-  renderer.domElement.addEventListener('dblclick', (event) => {
-    if (rideMode === 'rider') return;
-    pointAtScene(event);
-    if (pointsAtCart()) {
-      startCartRide();
-      event.preventDefault();
-    }
-  });
   renderer.domElement.addEventListener('pointerdown', (event) => {
+    if (event.button !== 0 || !event.isPrimary) {
+      pointerStart = null;
+      return;
+    }
     pointerStart = [event.clientX, event.clientY];
     if (freeFlightAvailable()) {
       host.focus({ preventScroll: true });
@@ -2403,25 +2431,24 @@ async function start() {
   for (const type of ['pointerup', 'pointercancel', 'lostpointercapture'])
     renderer.domElement.addEventListener(type, () => {
       flyDrag = null;
+      if (type !== 'pointerup') pointerStart = null;
     });
   renderer.domElement.addEventListener('pointerup', (event) => {
-    if (!pointerStart || Math.hypot(event.clientX - pointerStart[0], event.clientY - pointerStart[1]) > 6) return;
+    const start = pointerStart;
     pointerStart = null;
+    if (
+      !start ||
+      event.button !== 0 ||
+      !event.isPrimary ||
+      Math.hypot(event.clientX - start[0], event.clientY - start[1]) > 6
+    )
+      return;
     pointAtScene(event);
     if (rideMode !== 'rider' && pointsAtCart()) {
-      const now = performance.now();
-      if (
-        lastCartTap &&
-        now - lastCartTap.time < 450 &&
-        Math.hypot(event.clientX - lastCartTap.x, event.clientY - lastCartTap.y) < 30
-      ) {
-        lastCartTap = null;
-        startCartRide();
-        event.preventDefault();
-      } else lastCartTap = { time: now, x: event.clientX, y: event.clientY };
+      startCartRide();
+      event.preventDefault();
       return;
     }
-    lastCartTap = null;
     const hit = raycaster.intersectObjects(selectable, true)[0];
     if (hit) {
       let group = hit.object;
@@ -2581,6 +2608,7 @@ async function start() {
     drawCalls: renderer.info.render.calls,
     porchSide: CHURCH_PORCH_SIDE,
     porchWorld: porch.getWorldPosition(new THREE.Vector3()).toArray(),
+    blockedDoorwayWorld: blockedDoorway.getWorldPosition(new THREE.Vector3()).toArray(),
     roadEvidence,
     roadPolygons,
     hedges: { boundaries: fieldBoundaries, evidence: boundaryEvidence, maxAlignmentError: maxHedgeAlignmentError },
