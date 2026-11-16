@@ -770,7 +770,7 @@ export const LEASE_FARMS = [
     // at the same width as Lower Farm's, so it is assumed to share its scale
     metresPerPixel: LOWER_SCALE,
     anchor: [225, 1350],
-    origin: [-640, -160],
+    origin: [-700, -190],
     lanes: [
       [
         [330, 30],

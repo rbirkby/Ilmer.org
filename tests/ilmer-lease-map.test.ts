@@ -56,3 +56,31 @@ test('scaled field areas stay close to the schedule overall', () => {
     assert.ok(Math.abs(traced - scheduled) / scheduled < 0.01, `${f.name}: ${traced} vs ${scheduled}`);
   }
 });
+
+type Pt = readonly [number, number];
+const side = (p: Pt, q: Pt, r: Pt) => Math.sign((q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]));
+const edgesCross = (a: Pt, b: Pt, c: Pt, d: Pt) =>
+  side(a, b, c) * side(a, b, d) < 0 && side(c, d, a) * side(c, d, b) < 0;
+const contains = (poly: Pt[], [x, y]: Pt) => {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i];
+    const [xj, yj] = poly[j];
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+};
+const overlaps = (p: Pt[], q: Pt[]) =>
+  p.some((a, i) => q.some((c, j) => edgesCross(a, p[(i + 1) % p.length], c, q[(j + 1) % q.length]))) ||
+  contains(q, p[0]) ||
+  contains(p, q[0]);
+
+test('fields of different farms do not overlap once placed on the map', () => {
+  const placed = LEASE_FARMS.flatMap((f) =>
+    f.fields
+      .filter((x) => x.points.length)
+      .map((x) => ({ id: `${f.id} ${x.no}`, farm: f.id, pts: x.points.map((p) => planToMetres(f, p)) }))
+  );
+  for (const a of placed)
+    for (const b of placed) if (a.farm < b.farm) assert.ok(!overlaps(a.pts, b.pts), `${a.id} overlaps ${b.id}`);
+});

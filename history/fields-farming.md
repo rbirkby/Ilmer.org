@@ -24,6 +24,9 @@ The leases of Lower Farm, Middle Farm and Coldharbour Farm each came with a sket
 The map below combines the three plans. Each plan has been turned so that north is up, using the north arrows drawn on the Lower Farm and Middle Farm plans, and scaled to the acreages in the schedules. The Coldharbour Farm plan has no north arrow, so it is shown as drawn. The plans are sketches rather than surveys, so the field shapes are schematic and the positions of the three farms relative to each other are approximate. The Middle Farm schedule has not been found, so its fields are shown by number only.
 
 <ilmer-lease-map></ilmer-lease-map>
+<script type="importmap">
+{ "imports": { "/assets/js/ilmer-lease-fields-data.js": "{{ '/assets/js/ilmer-lease-fields-data.js' | cacheBust }}" } }
+</script>
 <script type="module" src="{{ '/assets/js/ilmer-lease-map.js' | cacheBust }}"></script>
 
 #### Lower Farm schedule

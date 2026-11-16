@@ -154,7 +154,8 @@ export class IlmerLeaseMap extends HTMLElement {
     this.#draw(/** @type {HTMLElement} */ (root.querySelector('.legend')));
     this.#bindControls(root);
     this.#bindPanZoom();
-    new ResizeObserver(() => this.#updateScale()).observe(this.#stage);
+    // label sizes and the scale bar depend on the on-screen size of the map
+    new ResizeObserver(() => this.#setView(this.#view)).observe(this.#stage);
   }
 
   /** @param {HTMLElement} legend */
@@ -190,7 +191,7 @@ export class IlmerLeaseMap extends HTMLElement {
       const drawn = farm.fields.filter((f) => f.points.length);
       details.innerHTML = `
         <summary>
-          <label><input type="checkbox" checked aria-label="Show ${escapeHtml(farm.name)}">
+          <label><input type="checkbox" checked data-farm="${farm.id}" aria-label="Show ${escapeHtml(farm.name)}">
           <span class="swatch" style="background:${farm.color}"></span>${escapeHtml(farm.name)}</label>
           <span class="total">${farm.total ? formatArp(farm.total) : `${drawn.length} fields`}</span>
         </summary><ul></ul>`;
@@ -251,6 +252,7 @@ export class IlmerLeaseMap extends HTMLElement {
         item.addEventListener('mouseenter', () => poly.classList.add('active'));
         item.addEventListener('mouseleave', () => key !== this.#selected && poly.classList.remove('active'));
         item.addEventListener('click', () => {
+          this.#showFarm(farm.id);
           this.#select(key);
           this.#zoomTo(pts);
         });
@@ -263,6 +265,16 @@ export class IlmerLeaseMap extends HTMLElement {
     const y = Math.min(...ys) - PAD;
     this.#home = { x, y, w: Math.max(...xs) + PAD - x, h: Math.max(...ys) + PAD - y };
     this.#setView({ ...this.#home });
+  }
+
+  /** Turn a farm back on if its checkbox was cleared. @param {string} id */
+  #showFarm(id) {
+    const box = /** @type {HTMLInputElement | null | undefined} */ (
+      this.shadowRoot?.querySelector(`input[data-farm="${id}"]`)
+    );
+    if (!box || box.checked) return;
+    box.checked = true;
+    box.dispatchEvent(new Event('change'));
   }
 
   /** @param {ShadowRoot} root */
@@ -301,7 +313,7 @@ export class IlmerLeaseMap extends HTMLElement {
     });
     const end = (/** @type {PointerEvent} */ e) => {
       if (!drag || e.pointerId !== drag.id) return;
-      if (drag.moved) {
+      if (drag.moved && e.type === 'pointerup') {
         // swallow the click that ends a drag so it does not select a field
         this.#stage.addEventListener('click', (c) => c.stopPropagation(), { capture: true, once: true });
       }
