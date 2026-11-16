@@ -17,6 +17,58 @@ According to [Lipscomb](https://archive.org/details/historyantiquiti01lips/page/
 {%- endfor -%}
 </ul>
 
+### Lease plans
+
+The leases of Lower Farm, Middle Farm and Coldharbour Farm each came with a sketch plan of the fields let and a schedule of their names and areas. The field numbers run in one sequence across all three plans, so they appear to have been copied from a single estate map, but they are not the numbers used on the 1839 Tithe map.
+
+The map below combines the three plans. Each plan has been turned so that north is up, using the north arrows drawn on the Lower Farm and Middle Farm plans, and scaled to the acreages in the schedules. The Coldharbour Farm plan has no north arrow, so it is shown as drawn. The plans are sketches rather than surveys, so the field shapes are schematic and the positions of the three farms relative to each other are approximate. The Middle Farm schedule has not been found, so its fields are shown by number only.
+
+<ilmer-lease-map></ilmer-lease-map>
+<script type="module" src="{{ '/assets/js/ilmer-lease-map.js' | cacheBust }}"></script>
+
+#### Lower Farm schedule
+
+The letters after each name are m for meadow, p for pasture and a for arable. The fields add up to 127a 2r 6p, 20 perches less than the total written on the schedule. Little mead (20) and the open field land are not drawn on the plan.
+
+| No  | Contents             | Use |       A |     R |      P |
+| :-: | :------------------- | :-: | ------: | ----: | -----: |
+| 11  | Picked mead          |  m  |       6 |     1 |      0 |
+| 12  | Long mead            |  m  |       9 |     0 |      0 |
+| 19  | Cole harbour         |  a  |       9 |     0 |      8 |
+| 20  | Little mead          |  m  |       1 |     1 |     12 |
+| 35  | Old orchard          |  p  |       2 |     0 |     28 |
+| 44  | House and yard       |     |       0 |     1 |     33 |
+| 45  | Orchard              |  p  |       0 |     1 |     18 |
+| 46  | Old Marys            |  p  |       0 |     3 |     24 |
+| 47  | Monks close          |  p  |       2 |     1 |      8 |
+| 48  | Old Joes close       |  p  |       2 |     0 |     20 |
+| 50  | Hogs piece           |  a  |       8 |     2 |     14 |
+| 51  | Sheep ground         |  p  |      11 |     3 |      8 |
+| 58  | Old Joes             |  a  |       7 |     1 |     10 |
+| 59  | Middle close         |  a  |      10 |     0 |      2 |
+| 60  | Home close           |  a  |       6 |     2 |      0 |
+| 61  | Upper Plat           |  p  |       0 |     3 |      4 |
+| 62  | Lower Plat           |  p  |       2 |     0 |     10 |
+| 63  | Green Iliner Highway |  p  |       6 |     2 |     12 |
+| 64  | Little meadow        |  m  |       1 |     0 |      8 |
+| 65  | Great meadow         |  m  |      16 |     2 |     13 |
+| 66  | Green Iliner         |  m  |      18 |     1 |     35 |
+|     | Open field land      |     |       3 |     3 |     19 |
+|     | **Total**            |     | **127** | **2** | **26** |
+
+#### Coldharbour Farm schedule
+
+| No  | Contents    |      A |     R |      P |
+| :-: | :---------- | -----: | ----: | -----: |
+| 16  | House &c    |      0 |     2 |     35 |
+| 10  | Far Meadow  |      1 |     2 |     20 |
+| 14  | Far Ground  |      6 |     3 |     30 |
+| 15  | Home Ground |      6 |     1 |      0 |
+| 18  | Backside    |      0 |     3 |     26 |
+|     | **Total**   | **16** | **1** | **33** |
+
+These fields add up to 16a 1r 31p, 2 perches less than the written total.
+
 ### Tithe Map
 
 By 1839, when the Tithe map was created, the field layout had stabilised into a pattern still visible in the landscape today, though some smaller fields have subsequently been consolidated.
