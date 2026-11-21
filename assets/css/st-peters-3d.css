@@ -30,15 +30,32 @@
   background: radial-gradient(ellipse at center, rgb(0 0 0 / 0%) 58%, rgb(12 10 8 / 34%) 100%);
 }
 
-.st-peters-stage:fullscreen {
+.st-peters-stage:fullscreen,
+.st-peters-stage:-webkit-full-screen,
+.st-peters-stage.is-pseudo-fullscreen {
   border: 0;
   border-radius: 0;
   background: #1a212b;
 }
 
-.st-peters-stage:fullscreen #church-scene {
+.st-peters-stage.is-pseudo-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100dvh;
+  margin: 0;
+}
+
+.st-peters-stage:fullscreen #church-scene,
+.st-peters-stage:-webkit-full-screen #church-scene,
+.st-peters-stage.is-pseudo-fullscreen #church-scene {
   height: 100dvh;
   min-height: 0;
+}
+
+body.st-peters-fs-lock {
+  overflow: hidden;
 }
 
 /* Top-Right Overlay Controls (Lighting + Orbit/Doors/Cutaway/Fullscreen) */
@@ -137,7 +154,13 @@
   display: block;
 }
 
-.st-peters-icon-btn svg[hidden] {
+.st-peters-icon-btn svg[hidden],
+.st-peters-icon-btn[hidden],
+.st-peters-pill[hidden] {
+  display: none;
+}
+
+.st-peters-presets-toggle {
   display: none;
 }
 
@@ -255,10 +278,23 @@
 
   .st-peters-preset-bar {
     position: static;
-    width: 100%;
-    max-width: none;
+    width: auto;
+    max-width: 100%;
     box-sizing: border-box;
     pointer-events: auto;
+    justify-content: center;
+  }
+
+  .st-peters-preset-bar.is-expanded {
+    width: 100%;
+  }
+
+  .st-peters-presets-toggle {
+    display: inline-block;
+  }
+
+  .st-peters-preset-bar:not(.is-expanded) [data-preset] {
+    display: none;
   }
 
   .st-peters-miniplan {

@@ -199,12 +199,30 @@ if (stage) {
     if (hint) hint.hidden = !isWalk;
   }
 
+  const presetBar = document.getElementById('preset-bar');
+  const presetsToggleBtn = document.getElementById('btn-presets-toggle');
+
+  function setPresetsExpanded(expanded) {
+    if (!presetBar || !presetsToggleBtn) return;
+    presetBar.classList.toggle('is-expanded', expanded);
+    presetsToggleBtn.setAttribute('aria-expanded', String(expanded));
+    const activeBtn = document.querySelector(`[data-preset="${state.activePreset}"]`);
+    const activeLabel = activeBtn ? activeBtn.textContent.trim() : 'Select';
+    presetsToggleBtn.textContent = `Views: ${activeLabel} ${expanded ? '▴' : '▾'}`;
+  }
+
+  presetsToggleBtn?.addEventListener('click', () => {
+    const isExp = presetBar?.classList.contains('is-expanded');
+    setPresetsExpanded(!isExp);
+  });
+
   function selectPreset(key) {
     if (!CAMERA_PRESETS[key]) return;
     state.activePreset = key;
     document.querySelectorAll('[data-preset]').forEach((b) => {
       b.setAttribute('aria-pressed', String(b.dataset.preset === key));
     });
+    setPresetsExpanded(false);
     controller.goToPreset(key, (meta) => {
       setCutaway(Boolean(meta.cutaway));
       if (meta.doorsOpen) setDoorsOpen(true);
@@ -234,6 +252,7 @@ if (stage) {
     document.querySelectorAll('[data-preset]').forEach((b) => {
       b.setAttribute('aria-pressed', 'false');
     });
+    setPresetsExpanded(false);
     setWalkMode(false);
     setCutaway(false);
     controller.startTour(CHURCH_TOUR_WAYPOINTS, {
@@ -249,6 +268,7 @@ if (stage) {
           document.querySelectorAll('[data-preset]').forEach((b) => {
             b.setAttribute('aria-pressed', String(b.dataset.preset === 'exterior-nw'));
           });
+          setPresetsExpanded(false);
         }
       }
     });
@@ -342,29 +362,85 @@ if (stage) {
 
   const stageWrapper = stage.closest('.reconstruction-stage') || stage;
   const fsBtn = document.getElementById('btn-fullscreen');
+  let isPseudoFullscreen = false;
+
+  function getNativeFullscreenElement() {
+    return document.fullscreenElement || document.webkitFullscreenElement || null;
+  }
+
+  function syncFullscreenUI() {
+    if (!fsBtn) return;
+    const isFs = getNativeFullscreenElement() === stageWrapper || isPseudoFullscreen;
+    fsBtn.setAttribute('aria-pressed', String(isFs));
+    const label = isFs ? 'Exit fullscreen' : 'Enter fullscreen';
+    fsBtn.setAttribute('aria-label', label);
+    fsBtn.title = label;
+    const fsEnterIcon = fsBtn.querySelector('[data-icon="fs-enter"]');
+    const fsExitIcon = fsBtn.querySelector('[data-icon="fs-exit"]');
+    fsEnterIcon?.toggleAttribute('hidden', isFs);
+    fsExitIcon?.toggleAttribute('hidden', !isFs);
+  }
+
+  function setPseudoFullscreen(enabled) {
+    isPseudoFullscreen = Boolean(enabled);
+    stageWrapper.classList.toggle('is-pseudo-fullscreen', isPseudoFullscreen);
+    document.body.classList.toggle('st-peters-fs-lock', isPseudoFullscreen);
+    syncFullscreenUI();
+    handleResize();
+  }
+
   if (fsBtn) {
-    if (!document.fullscreenEnabled) {
-      fsBtn.hidden = true;
-    } else {
-      fsBtn.addEventListener('click', () => {
-        if (document.fullscreenElement) {
-          document.exitFullscreen().catch(() => {});
-        } else {
-          stageWrapper.requestFullscreen().catch(() => {});
+    const canNativeFs = Boolean(
+      (document.fullscreenEnabled && stageWrapper.requestFullscreen) ||
+      (document.webkitFullscreenEnabled && stageWrapper.webkitRequestFullscreen)
+    );
+
+    fsBtn.addEventListener('click', () => {
+      const nativeEl = getNativeFullscreenElement();
+      if (nativeEl || isPseudoFullscreen) {
+        if (nativeEl) {
+          const exitFn = document.exitFullscreen || document.webkitExitFullscreen;
+          if (exitFn) exitFn.call(document).catch?.(() => setPseudoFullscreen(false));
         }
-      });
-      const fsEnterIcon = fsBtn.querySelector('[data-icon="fs-enter"]');
-      const fsExitIcon = fsBtn.querySelector('[data-icon="fs-exit"]');
-      document.addEventListener('fullscreenchange', () => {
-        const isFs = document.fullscreenElement === stageWrapper;
-        fsBtn.setAttribute('aria-pressed', String(isFs));
-        const label = isFs ? 'Exit fullscreen' : 'Enter fullscreen';
-        fsBtn.setAttribute('aria-label', label);
-        fsBtn.title = label;
-        fsEnterIcon?.toggleAttribute('hidden', isFs);
-        fsExitIcon?.toggleAttribute('hidden', !isFs);
-      });
-    }
+        if (isPseudoFullscreen) {
+          setPseudoFullscreen(false);
+        }
+        return;
+      }
+
+      if (canNativeFs) {
+        const reqFn = stageWrapper.requestFullscreen || stageWrapper.webkitRequestFullscreen;
+        const fallbackTimer = window.setTimeout(() => {
+          if (!getNativeFullscreenElement() && !isPseudoFullscreen) {
+            setPseudoFullscreen(true);
+          }
+        }, 120);
+        try {
+          const res = reqFn.call(stageWrapper);
+          if (res && typeof res.then === 'function') {
+            res.then(
+              () => {
+                window.clearTimeout(fallbackTimer);
+                if (!getNativeFullscreenElement()) setPseudoFullscreen(true);
+              },
+              () => {
+                window.clearTimeout(fallbackTimer);
+                setPseudoFullscreen(true);
+              }
+            );
+          }
+        } catch {
+          window.clearTimeout(fallbackTimer);
+          setPseudoFullscreen(true);
+        }
+      } else {
+        // Fallback for iPhone Safari where native Fullscreen API is unavailable on non-video elements
+        setPseudoFullscreen(true);
+      }
+    });
+
+    document.addEventListener('fullscreenchange', syncFullscreenUI);
+    document.addEventListener('webkitfullscreenchange', syncFullscreenUI);
   }
 
   // Interactive Floor Plan minimap hotspots
@@ -451,6 +527,7 @@ if (stage) {
     else if (e.code === 'KeyF') setWalkMode(controller.getMode() !== 'walk');
     else if (e.code === 'KeyM') setSoundMuted(!churchAudio.isMuted());
     else if (e.code === 'KeyT') toggleChurchTour();
+    else if (e.code === 'Escape' && isPseudoFullscreen) setPseudoFullscreen(false);
     else if (e.code === 'Escape' && controller.isTouring()) controller.stopTour(false);
     else if (e.code === 'KeyR') selectPreset('exterior-nw');
   });
