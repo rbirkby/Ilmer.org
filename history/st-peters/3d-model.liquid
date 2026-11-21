@@ -1,0 +1,160 @@
+---
+layout: reconstruction
+title: "St Peter's Church in 3D"
+description: "Explore an interactive three-dimensional model of the exterior and interior of St Peter's Church, Ilmer."
+tags: [church, history]
+image: images/VicarageChurch.avif
+ancestorCrumb1Source: { label: "St Peter's Church", url: '/history/st-peters/' }
+permalink: /history/st-peters/3d-model/index.html
+---
+<div class="reconstruction-heading">
+  <div>
+    <p class="reconstruction-eyebrow">Exterior &amp; interior &middot; Buckinghamshire</p>
+    <h1>St Peter's Church <span>in 3D</span></h1>
+    <p>Explore Ilmer's 12th-century parish church inside and out &mdash; from the oak-shingled broach spire and North Porch to the medieval rood screen, wagon-ribbed chancel and timber belfry.</p>
+  </div>
+  <span class="reconstruction-seal">3D<br><small>CHURCH MODEL</small></span>
+</div>
+
+<div class="reconstruction-stage st-peters-stage">
+  <div
+    id="church-scene"
+    tabindex="0"
+    role="region"
+    aria-label="Interactive 3D model of St Peter's Church, Ilmer"
+    aria-describedby="scene-help"
+    aria-keyshortcuts="C F M O R T"
+  >
+    <p id="scene-status" role="status">Loading St Peter's Church&hellip;</p>
+
+    <div class="st-peters-top-controls" role="toolbar" aria-label="Scene controls">
+      <div class="st-peters-control-group" role="group" aria-label="Lighting mood">
+        <button type="button" class="st-peters-pill" data-lighting="autumn" aria-pressed="true">Autumn Sun</button>
+        <button type="button" class="st-peters-pill" data-lighting="golden" aria-pressed="false">Golden Hour</button>
+        <button type="button" class="st-peters-pill" data-lighting="evensong" aria-pressed="false">Evensong</button>
+      </div>
+      <div class="st-peters-control-group" role="group" aria-label="Exploration toggles">
+        <button type="button" class="st-peters-pill" id="btn-walk" aria-pressed="false" title="Toggle First-Person Walk (F)">Mode: Orbit</button>
+        <button type="button" class="st-peters-pill" id="btn-doors" aria-pressed="false" title="Open or close North Porch doors (O)">Doors: Closed</button>
+        <button type="button" class="st-peters-pill" id="btn-cutaway" aria-pressed="false" title="Toggle Roof Cutaway (C)">Roof Cutaway</button>
+        <button type="button" class="st-peters-pill st-peters-icon-btn" id="btn-sound" aria-pressed="false" aria-label="Mute church organ music" title="Mute church organ music (M)">
+          <svg data-icon="sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+          </svg>
+          <svg data-icon="sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+            <line x1="22" y1="9" x2="16" y2="15" />
+            <line x1="16" y1="9" x2="22" y2="15" />
+          </svg>
+        </button>
+        <button type="button" class="st-peters-pill st-peters-icon-btn" id="btn-fullscreen" aria-pressed="false" aria-label="Enter fullscreen" title="Enter fullscreen">
+          <svg data-icon="fs-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+            <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+            <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+            <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+          </svg>
+          <svg data-icon="fs-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+            <path d="M4 14h3a2 2 0 0 1 2 2v3" />
+            <path d="M20 10h-3a2 2 0 0 1-2-2V5" />
+            <path d="M9 5v3a2 2 0 0 1-2 2H4" />
+            <path d="M15 19v-3a2 2 0 0 1 2-2h3" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="st-peters-bottom-stack">
+      <div id="walk-hint" class="st-peters-walk-hint" hidden>
+        Walk Mode: <strong>W A S D</strong> / Arrows to move &middot; Drag to look &middot; Press <strong>F</strong> for Orbit
+      </div>
+
+      <div id="tour-banner" class="st-peters-walk-hint" role="status" aria-live="polite" hidden></div>
+
+      <nav class="st-peters-preset-bar" aria-label="Church viewpoints">
+        <button type="button" class="st-peters-pill" id="btn-tour" aria-pressed="false" title="Start or stop guided Church Tour (T)">Church Tour</button>
+        <button type="button" class="st-peters-pill" data-preset="exterior-nw" aria-pressed="true">Exterior NW</button>
+        <button type="button" class="st-peters-pill" data-preset="exterior-north" aria-pressed="false">North Elevation</button>
+        <button type="button" class="st-peters-pill" data-preset="exterior-south" aria-pressed="false">South Elevation</button>
+        <button type="button" class="st-peters-pill" data-preset="exterior-east" aria-pressed="false">East Gable</button>
+        <button type="button" class="st-peters-pill" data-preset="north-porch" aria-pressed="false">North Porch</button>
+        <button type="button" class="st-peters-pill" data-preset="nave-east" aria-pressed="false">Nave &rarr; Chancel</button>
+        <button type="button" class="st-peters-pill" data-preset="chancel-altar" aria-pressed="false">Chancel &amp; Altar</button>
+        <button type="button" class="st-peters-pill" data-preset="south-wall" aria-pressed="false">Sower &amp; Plaques</button>
+        <button type="button" class="st-peters-pill" data-preset="north-wall" aria-pressed="false">Jaques Window</button>
+        <button type="button" class="st-peters-pill" data-preset="nave-west" aria-pressed="false">Nave &rarr; Tower</button>
+        <button type="button" class="st-peters-pill" data-preset="west-belfry" aria-pressed="false">Belfry &amp; Vestry</button>
+        <button type="button" class="st-peters-pill" data-preset="cutaway-plan" aria-pressed="false">Floorplan Cutaway</button>
+      </nav>
+    </div>
+
+    <aside class="st-peters-miniplan" aria-label="Interactive church floorplan map">
+      <div class="st-peters-miniplan-title">Floor Plan</div>
+      <svg class="st-peters-miniplan-svg" viewBox="0 0 120 170" aria-hidden="true">
+        <g stroke="#c8bfb0" stroke-width="1.2" fill="none" transform="rotate(45 19 14)">
+          <line x1="28" y1="14" x2="10" y2="14" />
+          <polyline points="15,10 10,14 15,18" />
+        </g>
+        <text x="23" y="10" class="st-peters-miniplan-label" font-size="6.5">N</text>
+
+        <rect class="st-peters-miniplan-room" x="48" y="25" width="32" height="44" data-plan-jump="chancel-altar" />
+        <text x="64" y="48" class="st-peters-miniplan-label" font-size="5.4">CHANCEL</text>
+
+        <rect class="st-peters-miniplan-room" x="42" y="69" width="44" height="48" data-plan-jump="nave-east" />
+        <text x="64" y="96" class="st-peters-miniplan-label">NAVE</text>
+
+        <rect class="st-peters-miniplan-room" x="26" y="96" width="16" height="20" data-plan-jump="north-porch" />
+        <text x="34" y="108" class="st-peters-miniplan-label" font-size="4.2">PORCH</text>
+
+        <rect class="st-peters-miniplan-room" x="42" y="117" width="44" height="26" data-plan-jump="west-belfry" />
+        <text x="64" y="133" class="st-peters-miniplan-label" font-size="6">TOWER</text>
+
+        <text x="49" y="79" class="st-peters-miniplan-label st-peters-miniplan-accent" font-size="6">P</text>
+        <text x="77" y="79" class="st-peters-miniplan-label st-peters-miniplan-accent" font-size="6">L</text>
+        <circle cx="64" cy="117" r="3" fill="none" stroke="#d8aa54" stroke-width="1.2" />
+
+        <g id="miniplan-camera" transform="translate(64, 92)">
+          <polygon points="0,0 -8,-18 8,-18" fill="rgba(216,170,84,0.38)" />
+          <circle cx="0" cy="0" r="3.4" fill="#ffe19c" stroke="#181614" stroke-width="1.2" />
+        </g>
+      </svg>
+    </aside>
+  </div>
+</div>
+
+<p id="scene-help" class="scene-help">Drag to orbit &middot; Scroll or pinch to zoom &middot; Right-drag to pan &middot; Click any gravestone to read its inscription &middot; Click rooms on the Floor Plan to jump inside. Keyboard: <strong>T</strong> starts Church Tour, <strong>F</strong> toggles Walk mode (WASD/Arrows), <strong>O</strong> opens the North Porch doors, <strong>C</strong> toggles Roof Cutaway, <strong>M</strong> mutes organ music, <strong>R</strong> resets the view.</p>
+
+<noscript><p>The interactive 3D model requires JavaScript. Visit <a href="/history/church/">St Peter's Church History</a> to read about the church.</p></noscript>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "/assets/vendor/three/three.module.js",
+    "/assets/js/st-peters-3d/dimensions.js": "{{ '/assets/js/st-peters-3d/dimensions.js' | cacheBust }}",
+    "/assets/js/st-peters-3d/memorials-data.js": "{{ '/assets/js/st-peters-3d/memorials-data.js' | cacheBust }}",
+    "/assets/js/st-peters-3d/stained-glass.js": "{{ '/assets/js/st-peters-3d/stained-glass.js' | cacheBust }}",
+    "/assets/js/st-peters-3d/plaques.js": "{{ '/assets/js/st-peters-3d/plaques.js' | cacheBust }}",
+    "/assets/js/st-peters-3d/textures.js": "{{ '/assets/js/st-peters-3d/textures.js' | cacheBust }}",
+    "/assets/js/st-peters-3d/architecture.js": "{{ '/assets/js/st-peters-3d/architecture.js' | cacheBust }}",
+    "/assets/js/st-peters-3d/interior.js": "{{ '/assets/js/st-peters-3d/interior.js' | cacheBust }}",
+    "/assets/js/st-peters-3d/churchyard.js": "{{ '/assets/js/st-peters-3d/churchyard.js' | cacheBust }}",
+    "/assets/js/st-peters-3d/atmosphere.js": "{{ '/assets/js/st-peters-3d/atmosphere.js' | cacheBust }}",
+    "/assets/js/st-peters-3d/audio.js": "{{ '/assets/js/st-peters-3d/audio.js' | cacheBust }}",
+    "/assets/js/st-peters-3d/controls.js": "{{ '/assets/js/st-peters-3d/controls.js' | cacheBust }}"
+  }
+}
+</script>
+<script type="module">
+  import("{{ '/assets/js/st-peters-3d/main.js' | cacheBust }}").catch((error) => {
+    console.error("St Peter's 3D reconstruction modules could not load:", error);
+    const scene = document.getElementById('church-scene');
+    if (scene) scene.dataset.state = 'error';
+    const status = document.getElementById('scene-status');
+    if (status) {
+      status.hidden = false;
+      status.textContent = 'The 3D view could not load its JavaScript modules. Please reload the page and check your connection.';
+    }
+  });
+</script>

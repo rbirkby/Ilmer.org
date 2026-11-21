@@ -1,0 +1,274 @@
+#church-scene {
+  --hud-glass: rgb(24 22 20 / 72%);
+  --hud-border: rgb(235 222 202 / 22%);
+  --hud-text: #f5efe6;
+  --hud-muted: #c8bfb0;
+  --hud-accent: #d8aa54;
+  --hud-accent-bg: rgb(216 170 84 / 22%);
+  position: relative;
+  height: min(76vh, 780px);
+  min-height: 520px;
+  width: 100%;
+  touch-action: none;
+  background: #1a212b;
+  overflow: hidden;
+}
+
+#church-scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Subtle cinematic edge vignette framing the 3D stage */
+#church-scene::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(ellipse at center, rgb(0 0 0 / 0%) 58%, rgb(12 10 8 / 34%) 100%);
+}
+
+.st-peters-stage:fullscreen {
+  border: 0;
+  border-radius: 0;
+  background: #1a212b;
+}
+
+.st-peters-stage:fullscreen #church-scene {
+  height: 100dvh;
+  min-height: 0;
+}
+
+/* Top-Right Overlay Controls (Lighting + Orbit/Doors/Cutaway/Fullscreen) */
+.st-peters-top-controls {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: calc(100% - 28px);
+}
+
+.st-peters-control-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 10px;
+  background: var(--hud-glass);
+  border: 1px solid var(--hud-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Bottom-Left Overlay Viewpoint Bar */
+.st-peters-preset-bar {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  right: 152px;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--hud-glass);
+  border: 1px solid var(--hud-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  max-width: 780px;
+}
+
+/* Frosted Pill Buttons */
+.st-peters-pill {
+  appearance: none;
+  border: 1px solid transparent;
+  background: rgb(255 255 255 / 6%);
+  color: var(--hud-text);
+  font:
+    500 12px/1.2 -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  padding: 6px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease;
+  white-space: nowrap;
+}
+
+.st-peters-pill:hover {
+  background: rgb(255 255 255 / 15%);
+}
+
+.st-peters-pill[aria-pressed='true'] {
+  background: var(--hud-accent-bg);
+  border-color: var(--hud-accent);
+  color: #ffe5ad;
+}
+
+.st-peters-pill:focus-visible {
+  outline: 2px solid var(--hud-accent);
+  outline-offset: 2px;
+}
+
+.st-peters-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+}
+
+.st-peters-icon-btn svg {
+  width: 15px;
+  height: 15px;
+  display: block;
+}
+
+.st-peters-icon-btn svg[hidden] {
+  display: none;
+}
+
+/* Walk Mode & Guided Church Tour Banner (top-left so it never overlaps top-right controls) */
+.st-peters-walk-hint {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 6;
+  max-width: calc(100% - 28px);
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgb(24 22 20 / 84%);
+  border: 1px solid var(--hud-accent);
+  font:
+    12px/1.4 system-ui,
+    sans-serif;
+  color: #ffe8b8;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.st-peters-walk-hint[hidden] {
+  display: none;
+}
+
+/* Bottom-Right 1974 Sketch Plan Minimap */
+.st-peters-miniplan {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 5;
+  width: 126px;
+  padding: 8px 8px 6px;
+  border-radius: 12px;
+  background: var(--hud-glass);
+  border: 1px solid var(--hud-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  text-align: center;
+  color: var(--hud-text);
+}
+
+.st-peters-miniplan-title {
+  font:
+    600 9.5px/1.3 Georgia,
+    serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hud-muted);
+  margin: 0 0 4px;
+}
+
+.st-peters-miniplan-svg {
+  width: 108px;
+  height: 152px;
+  display: block;
+  margin: 0 auto;
+}
+
+.st-peters-miniplan-room {
+  fill: rgb(235 222 202 / 12%);
+  stroke: #e4d6be;
+  stroke-width: 2;
+  cursor: pointer;
+  transition: fill 0.15s ease;
+}
+
+.st-peters-miniplan-room:hover {
+  fill: rgb(216 170 84 / 36%);
+}
+
+.st-peters-miniplan-label {
+  fill: #e8decb;
+  font-size: 7px;
+  font-family: Georgia, serif;
+  pointer-events: none;
+  text-anchor: middle;
+}
+
+.st-peters-miniplan-accent {
+  fill: var(--hud-accent);
+}
+
+@media (max-width: 800px) {
+  #church-scene {
+    min-height: 440px;
+    height: 64vh;
+  }
+
+  .st-peters-top-controls {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    max-width: none;
+    justify-content: flex-start;
+  }
+
+  .st-peters-bottom-stack {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+  }
+
+  .st-peters-preset-bar {
+    position: static;
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    pointer-events: auto;
+  }
+
+  .st-peters-miniplan {
+    display: none;
+  }
+
+  .st-peters-walk-hint {
+    position: static;
+    white-space: normal;
+    text-align: center;
+    max-width: 100%;
+  }
+}

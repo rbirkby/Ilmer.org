@@ -26,6 +26,9 @@
   {% case layout %}
     {% when 'reconstruction' %}
       <link rel="stylesheet" href="{{ '/assets/css/ilmer-1839.css' | cacheBust }}" media="all">
+      {% if content contains 'id="church-scene"' %}
+        <link rel="stylesheet" href="{{ '/assets/css/st-peters-3d.css' | cacheBust }}" media="all">
+      {% endif %}
     {% when 'home' %}
       <link rel="stylesheet" href="{{ '/assets/css/home.css' | cacheBust }}" media="all">
     {% when 'will' %}
