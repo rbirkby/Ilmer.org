@@ -206,7 +206,10 @@ export function findAnimatedObjects(roots, exercise, settle) {
   const moved = new Set();
   const checkpoint = () => {
     for (const [o, [p, q, s, v]] of snap) {
-      if (!moved.has(o) && (!o.position.equals(p) || !o.quaternion.equals(q) || !o.scale.equals(s) || o.visible !== v)) {
+      if (
+        !moved.has(o) &&
+        (!o.position.equals(p) || !o.quaternion.equals(q) || !o.scale.equals(s) || o.visible !== v)
+      ) {
         moved.add(o);
       }
     }
