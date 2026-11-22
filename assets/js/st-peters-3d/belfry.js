@@ -499,6 +499,7 @@ function buildHungBell(bell, { pitHalf, wheelX, wheelR, headX }, mats) {
   hub.rotation.z = Math.PI / 2;
   wheel.add(hub);
   wheel.position.x = wheelX;
+  wheel.userData.era = 'today'; // in 1900 the bells hung dead and were chimed by hammers
   wheel.traverse((o) => {
     if (o.isMesh) o.castShadow = true;
   });
@@ -650,6 +651,7 @@ export function buildBellChamber(mats) {
     const to = new THREE.Vector3(hx, T.belfryCeilingY, hz);
     const belfryRope = buildTwistedRope(0, 0.012, ropeMat, new THREE.LineCurve3(from, to));
     belfryRope.userData.ringsBells = true;
+    belfryRope.userData.era = 'today';
     frame.add(belfryRope);
     // Garter: the rope's last quarter-turn in the wheel's groove, from the bottom of the sole round to its North side
     const garterPts = [];
@@ -659,11 +661,45 @@ export function buildBellChamber(mats) {
         new THREE.Vector3(wx, axleY - (wheelR + 0.006) * Math.sin(a), axleZ - (wheelR + 0.006) * Math.cos(a))
       );
     }
-    frame.add(buildTwistedRope(0, 0.012, ropeMat, new THREE.CatmullRomCurve3(garterPts.reverse())));
+    const garter = buildTwistedRope(0, 0.012, ropeMat, new THREE.CatmullRomCurve3(garterPts.reverse()));
+    garter.userData.era = 'today';
+    frame.add(garter);
     // Wooden rope guide on the floor
     const ropeAtFloor = from.clone().lerp(to, (from.y - floorTop) / (from.y - to.y));
     const guide = box(0.12, 0.05, 0.12, board, ropeAtFloor.x, floorTop + 0.025, ropeAtFloor.z);
+    guide.userData.era = 'today';
     frame.add(guide);
+
+    // 1900: an Ellacombe chiming hammer on the South side of the bell, pivoted on a bracket off the frame, with its
+    // cord running down through the floor to the chiming frame in the vestry
+    const hammerG = new THREE.Group();
+    hammerG.userData.era = '1900';
+    hammerG.visible = false;
+    const bellX = pitCx + bellOffset;
+    const bowY = axleY - 0.085 - D * 0.62; // sound bow, just above the lip
+    const bowZ = axleZ + D * 0.5;
+    const pivot = new THREE.Group();
+    pivot.position.set(bellX, bowY + 0.32, bowZ + 0.1);
+    const shank = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.32, 8), mats.iron);
+    shank.position.y = -0.16;
+    pivot.add(shank);
+    const head = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.09, 12), mats.iron);
+    head.rotation.x = Math.PI / 2;
+    head.position.set(0, -0.32, -0.035);
+    pivot.add(head);
+    const tailArm = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.02, 0.16), mats.iron);
+    tailArm.position.set(0, 0, 0.08);
+    pivot.add(tailArm);
+    hammerG.add(pivot);
+    const bracket = box(0.05, 0.05, 0.22, mats.iron, bellX, bowY + 0.32, bowZ + 0.1 + 0.05);
+    hammerG.add(bracket);
+    const post = box(0.1, top - (bowY + 0.32) + 0.1, 0.1, oak, bellX, (top + bowY + 0.32) * 0.5, bowZ + 0.27);
+    hammerG.add(post);
+    const cordTop = new THREE.Vector3(bellX, bowY + 0.32, bowZ + 0.1 + 0.16);
+    const cordFoot = new THREE.Vector3(bellX, floorTop, bowZ + 0.26);
+    hammerG.add(buildTwistedRope(0, 0.006, ropeMat, new THREE.LineCurve3(cordTop, cordFoot)));
+    frame.add(hammerG);
+    hung.userData.hammer = pivot;
   });
 
   return { shell: g, frame };
@@ -691,6 +727,9 @@ function swingAngle(tau) {
   return SWING_AMPLITUDE * env * Math.sin((Math.PI * tau) / SWING_HALF);
 }
 
+const CHIME_GAP = 0.55; // seconds between hammer blows when chiming
+const HAMMER_LIFT = 0.12; // seconds for the hammer to swing in and strike
+
 export function createBellRinger(frame) {
   const hung = [];
   frame.traverse((o) => {
@@ -699,8 +738,53 @@ export function createBellRinger(frame) {
   // Rounds run from the treble down to the tenor
   hung.sort((a, b) => a.userData.bell.number - b.userData.bell.number);
   let startedAt = null;
+  let mode = 'swing'; // 'swing' (today) or 'chime' (1900: hammers on bells hung dead)
+  let chimes = []; // [{ hung, at }] hammer blows of the current chime, times relative to startedAt
+
+  function chime(now) {
+    if (startedAt !== null) return [];
+    startedAt = now;
+    // Two rounds, treble to tenor, then the tenor tolled once more to finish
+    chimes = [];
+    const order = [...hung, ...hung, hung[hung.length - 1]];
+    order.forEach((h, i) => chimes.push({ hung: h, at: i * CHIME_GAP + (i >= hung.length * 2 ? CHIME_GAP : 0) }));
+    return chimes.map((c) => ({ bell: c.hung.userData.bell, delay: c.at + HAMMER_LIFT }));
+  }
+
+  function updateChime(now) {
+    const t = now - startedAt;
+    hung.forEach((h) => {
+      // Hammer swings in towards the bell, strikes, and falls back away from it
+      let a = 0;
+      for (const c of chimes) {
+        if (c.hung !== h) continue;
+        const u = t - c.at;
+        if (u >= 0 && u < HAMMER_LIFT) a = Math.max(a, smooth01(u / HAMMER_LIFT));
+        else if (u >= HAMMER_LIFT && u < HAMMER_LIFT + 0.25) a = Math.max(a, 1 - smooth01((u - HAMMER_LIFT) / 0.25));
+      }
+      if (h.userData.hammer) h.userData.hammer.rotation.x = -0.3 + a * 0.36;
+    });
+    const end = chimes.length ? chimes[chimes.length - 1].at + 1 : 0;
+    if (t > end) {
+      hung.forEach((h) => {
+        if (h.userData.hammer) h.userData.hammer.rotation.x = -0.3;
+      });
+      startedAt = null;
+    }
+  }
+
+  function setMode(m) {
+    mode = m;
+    startedAt = null;
+    hung.forEach((h) => {
+      h.rotation.x = 0;
+      h.userData.clapper.rotation.x = 0;
+      if (h.userData.hammer) h.userData.hammer.rotation.x = -0.3;
+    });
+  }
 
   function ring(now) {
+    if (mode === 'chime') return chime(now);
     if (startedAt !== null && now - startedAt < RING_LENGTH + STRIKE_GAP * 2) return [];
     startedAt = now;
     const strikes = [];
@@ -714,6 +798,10 @@ export function createBellRinger(frame) {
 
   function update(now) {
     if (startedAt === null) return;
+    if (mode === 'chime') {
+      updateChime(now);
+      return;
+    }
     const t = now - startedAt;
     hung.forEach((h, i) => {
       const tau = t - i * STRIKE_GAP;
@@ -733,7 +821,8 @@ export function createBellRinger(frame) {
     }
   }
 
-  return { ring, update, isRinging: () => startedAt !== null, bells: hung };
+  setMode('swing');
+  return { ring, update, setMode, isRinging: () => startedAt !== null, bells: hung };
 }
 
 // Strike tone of each bell: nominal frequency in Hz. The ring is untuned medieval and Jacobean work, so these are

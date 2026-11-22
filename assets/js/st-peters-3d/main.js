@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { createMaterials } from '/assets/js/st-peters-3d/textures.js';
+import { createMaterials, createPlainGlazingMaterial } from '/assets/js/st-peters-3d/textures.js';
 import { buildArchitecture } from '/assets/js/st-peters-3d/architecture.js';
 import { buildInterior } from '/assets/js/st-peters-3d/interior.js';
 import { buildChurchyard, createSkyDome } from '/assets/js/st-peters-3d/churchyard.js';
@@ -63,7 +63,7 @@ if (stage) {
   // Build Church, Churchyard & Cinematic Stained-Glass Atmosphere
   const mats = createMaterials(renderer);
   const { wallsGroup, roofGroup, doorPivots } = buildArchitecture(mats);
-  const { interiorGroup, ceilingGroup, chandelierLights, causticMesh, candleEffect, organAnimator } =
+  const { interiorGroup, ceilingGroup, chandelierLights, oilLights, causticMesh, candleEffect, organAnimator } =
     buildInterior(mats);
   const { group: churchyardGroup, christmasEffect, memorialGroups } = buildChurchyard(mats);
   const atmosphere = buildAtmosphere();
@@ -87,6 +87,7 @@ if (stage) {
     gateAnim: 0,
     mainDoorAnim: 0,
     lighting: 'autumn',
+    era: 'today',
     activePreset: 'exterior-nw',
     ringBellsAt: null // elapsed time at which the tour sets the bells ringing
   };
@@ -162,6 +163,11 @@ if (stage) {
     scene.fog.color.setHex(m.fogColor);
     renderer.toneMappingExposure = m.exposure;
 
+    // 1900 paraffin lamps: dimmer & warmer than today's electric pendants
+    oilLights.forEach((lt) => {
+      lt.userData.baseIntensity ??= lt.intensity;
+      lt.intensity = lt.userData.baseIntensity * m.chandelierScale;
+    });
     chandelierLights.forEach((lt, idx) => {
       // Last light is the soft sanctuary highlight; the rest are pendant lamps
       lt.intensity = (idx === chandelierLights.length - 1 ? 1.35 : 1.75) * m.chandelierScale;
@@ -172,6 +178,7 @@ if (stage) {
     mats.glassNorthNave.emissiveIntensity = m.glassGlow * 0.95;
     mats.glassClear.emissiveIntensity = m.glassGlow * 0.65;
     causticMesh.material.opacity = m.causticOp;
+    syncPlainGlass();
     atmosphere.setMood(moodKey);
     candleEffect.setMood(moodKey);
     if (christmasEffect) christmasEffect.setMood(moodKey);
@@ -179,6 +186,51 @@ if (stage) {
     document.querySelectorAll('[data-lighting]').forEach((btn) => {
       btn.setAttribute('aria-pressed', String(btn.dataset.lighting === moodKey));
     });
+  }
+
+  // Today / 1900: objects tagged userData.era = 'today' or '1900' show only in their own era. In 1900 the
+  // stained-glass windows are plainly glazed, the West end is half-hipped (its hip clips the clay roof slopes),
+  // and the bells are chimed by hammers rather than swung.
+  const eraObjects = [];
+  const stainedGlass = [];
+  const halfHipClipped = [];
+  scene.traverse((o) => {
+    if (o.userData.era) eraObjects.push(o);
+    if (o.userData.clipIn1900) halfHipClipped.push(o);
+    if (o.userData.stainedGlass) {
+      o.userData.stainedMat = o.material;
+      stainedGlass.push(o);
+    }
+  });
+  const halfHipClip = roofGroup.userData.halfHipClipPlane;
+  mats.clayRoof.clipShadows = true;
+
+  function syncPlainGlass() {
+    for (const g of stainedGlass) {
+      if (g.material !== g.userData.stainedMat) {
+        g.material.emissiveIntensity = g.userData.stainedMat.emissiveIntensity * 0.75;
+      }
+    }
+  }
+
+  function setEra(era) {
+    state.era = era;
+    for (const o of eraObjects) o.visible = o.userData.era === era;
+    for (const g of stainedGlass) {
+      g.material = era === '1900' ? createPlainGlazingMaterial(g.userData.stainedMat) : g.userData.stainedMat;
+    }
+    syncPlainGlass();
+    for (const mat of [mats.clayRoof, ...halfHipClipped.map((o) => o.material)]) {
+      mat.clippingPlanes = era === '1900' && halfHipClip ? [halfHipClip] : [];
+      mat.needsUpdate = true;
+    }
+    bellRinger.setMode(era === '1900' ? 'chime' : 'swing');
+    for (const part of bellRopeParts) part.position.y = part.userData.bellRope.baseY;
+    const btn = document.getElementById('btn-era');
+    if (btn) {
+      btn.setAttribute('aria-pressed', String(era === '1900'));
+      btn.textContent = era === '1900' ? 'Year: 1900' : 'Year: Today';
+    }
   }
 
   function setCutaway(enabled) {
@@ -317,6 +369,10 @@ if (stage) {
 
   document.querySelectorAll('[data-lighting]').forEach((btn) => {
     btn.addEventListener('click', () => applyLighting(btn.dataset.lighting));
+  });
+
+  document.getElementById('btn-era')?.addEventListener('click', () => {
+    setEra(state.era === '1900' ? 'today' : '1900');
   });
 
   document.getElementById('btn-cutaway')?.addEventListener('click', () => {
@@ -536,6 +592,11 @@ if (stage) {
   let downTime = 0;
   let pointerActive = false;
 
+  function isShown(obj) {
+    for (let cur = obj; cur; cur = cur.parent) if (!cur.visible) return false;
+    return true;
+  }
+
   function findMemorialGroup(obj) {
     let cur = obj;
     while (cur) {
@@ -551,9 +612,11 @@ if (stage) {
     pointerNdc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
     pointerNdc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
     raycaster.setFromCamera(pointerNdc, camera);
-    const hits = raycaster.intersectObjects(pickRoots, true);
-    if (hits.length === 0) return null;
-    return findMemorialGroup(hits[0].object) || findBell(hits[0].object);
+    // Raycasting ignores visibility: skip whatever is hidden (other era, cutaway roof...), but keep invisible
+    // click targets whose parent is shown
+    const hit = raycaster.intersectObjects(pickRoots, true).find((h) => isShown(h.object.parent));
+    if (!hit) return null;
+    return findMemorialGroup(hit.object) || findBell(hit.object);
   }
 
   function focusMemorial(memorialGroup) {
@@ -610,6 +673,7 @@ if (stage) {
     else if (e.code === 'Escape' && isPseudoFullscreen) setPseudoFullscreen(false);
     else if (e.code === 'Escape' && controller.isTouring()) controller.stopTour(false);
     else if (e.code === 'KeyR') selectPreset('exterior-nw');
+    else if (e.code === 'KeyY') setEra(state.era === '1900' ? 'today' : '1900');
   });
 
   // ResizeObserver keeps canvas sharp in both embedded and fullscreen modes
@@ -646,6 +710,7 @@ if (stage) {
     );
   }
 
+  setEra('today');
   applyLighting('autumn');
   if (statusEl) statusEl.hidden = true;
   stage.dataset.state = 'ready';

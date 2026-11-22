@@ -263,6 +263,8 @@ function buildWindowInsert(spec, mats) {
   else if (spec.type === 'wilson-stained') glassMat = mats.glassWilson;
 
   const glassMesh = new THREE.Mesh(glassGeo, glassMat);
+  // None of the stained glass was there in 1900: main.js swaps in plain glazing for that era
+  if (glassMat !== mats.glassClear) glassMesh.userData.stainedGlass = true;
   group.add(glassMesh);
 
   // Outer chamfered stone surround / dripstone hood mould
@@ -358,6 +360,151 @@ function buildRWP(height, mats) {
     collar.position.set(0, cy, 0.09);
     g.add(collar);
   });
+  return g;
+}
+
+// Ordnance Survey cut benchmark carved into the West face (-X) of a corner quoin: a horizontal bar with a broad arrow
+// beneath it pointing up to the bar, and a drilled hole at its North end. Returns a replacement quoin box whose
+// West face is finely subdivided and pushed in along V-cut grooves, darkened towards the bottom of each cut.
+// (u, v) on that face: u runs along +Z from the face centre, v up from the stone's centre.
+function buildBenchmarkQuoin(qx, qy, qz, mat, mark) {
+  const geo = new THREE.BoxGeometry(qx, qy, qz, 1, Math.round(qy / 0.0015), Math.round(qz / 0.0015));
+  const segs = [
+    [mark.u - 0.065, mark.v, mark.u + 0.065, mark.v], // bar
+    [mark.u, mark.v - 0.018, mark.u, mark.v - 0.11], // arrow shaft
+    [mark.u, mark.v - 0.018, mark.u - 0.04, mark.v - 0.1], // arrow legs
+    [mark.u, mark.v - 0.018, mark.u + 0.04, mark.v - 0.1]
+  ];
+  const holeU = mark.u - 0.078;
+  const segDist = (u, v, [u0, v0, u1, v1]) => {
+    const du = u1 - u0;
+    const dv = v1 - v0;
+    const t = Math.min(1, Math.max(0, ((u - u0) * du + (v - v0) * dv) / (du * du + dv * dv)));
+    return Math.hypot(u - (u0 + du * t), v - (v0 + dv * t));
+  };
+  const halfW = 0.0065; // 13mm wide V-cuts
+  const cutDepth = 0.0075;
+  const depthAt = (u, v) => {
+    let d = 0;
+    for (const sg of segs) {
+      const r = segDist(u, v, sg);
+      if (r < halfW) d = Math.max(d, cutDepth * (1 - r / halfW));
+    }
+    const rh = Math.hypot(u - holeU, v - mark.v);
+    if (rh < 0.013) d = Math.max(d, 0.03 * Math.min(1, (0.013 - rh) / 0.003)); // drilled hole, steep sides
+    return d;
+  };
+  const pos = geo.attributes.position;
+  const colors = new Float32Array(pos.count * 3).fill(1);
+  for (let k = 0; k < pos.count; k++) {
+    if (pos.getX(k) > -qx * 0.5 + 1e-6) continue;
+    const d = depthAt(pos.getZ(k), pos.getY(k));
+    if (d <= 0) continue;
+    pos.setX(k, pos.getX(k) + d);
+    const shade = 1 - 0.45 * Math.min(1, d / cutDepth);
+    colors.set([shade, shade * 0.97, shade * 0.93], k * 3);
+  }
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  geo.computeVertexNormals();
+  const carvedMat = mat.clone();
+  carvedMat.vertexColors = true;
+  const q = new THREE.Mesh(geo, carvedMat);
+  q.castShadow = true;
+  q.receiveShadow = true;
+  return q;
+}
+
+// Stove chimney (1900 era only): a pale cylindrical flue pipe rising through the South roof slope just above the
+// wall head, with a lead flashing collar where it meets the tiles and a conical rain cap on top
+function buildStoveChimney(x, N, mats) {
+  const g = new THREE.Group();
+  g.userData.era = '1900';
+  g.visible = false;
+  const pale = new THREE.MeshStandardMaterial({ color: 0xb9b6ae, roughness: 0.55, metalness: 0.45 });
+  const zc = N.zSouthInt + 0.2;
+  const run = N.zSouthExt + N.overhang;
+  const roofRise = (N.ridgeY - N.eavesY) / run;
+  const roofTopAt = (z) => N.eavesY + roofRise * (run - z) + 0.17; // tile surface (buildPitchedRoof slab top)
+  const baseY = N.eavesY;
+  const topY = roofTopAt(zc) + 0.95;
+  const pipeR = 0.09;
+  const pipe = new THREE.Mesh(new THREE.CylinderGeometry(pipeR, pipeR, topY - baseY, 20), pale);
+  pipe.position.set(x, (baseY + topY) * 0.5, zc);
+  pipe.castShadow = true;
+  pipe.receiveShadow = true;
+  g.add(pipe);
+  // Socket joints along the exposed length
+  [0.35, 0.7].forEach((t) => {
+    const y = roofTopAt(zc) + (topY - roofTopAt(zc)) * t;
+    const joint = new THREE.Mesh(new THREE.CylinderGeometry(pipeR + 0.012, pipeR + 0.012, 0.05, 20), pale);
+    joint.position.set(x, y, zc);
+    g.add(joint);
+  });
+  // Lead flashing collar sloping with the roof
+  const collar = new THREE.Mesh(new THREE.CylinderGeometry(pipeR + 0.03, pipeR + 0.1, 0.1, 20), mats.stoneCapDark);
+  collar.position.set(x, roofTopAt(zc) + 0.03, zc);
+  collar.rotation.x = Math.atan(roofRise) * 0.5;
+  g.add(collar);
+  // Conical rain cap on three short stays
+  const cap = new THREE.Mesh(new THREE.ConeGeometry(pipeR * 2.1, 0.13, 20), pale);
+  cap.position.set(x, topY + 0.12, zc);
+  cap.castShadow = true;
+  g.add(cap);
+  for (let k = 0; k < 3; k++) {
+    const a = (k / 3) * Math.PI * 2;
+    const stay = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.09, 0.012), pale);
+    stay.position.set(x + Math.cos(a) * pipeR * 0.9, topY + 0.03, zc + Math.sin(a) * pipeR * 0.9);
+    g.add(stay);
+  }
+  return g;
+}
+
+// The West end's half hip as it was before the 1909 rebuild ('1900' era): a tiled hip slab rising from the old gable
+// head at y = halfHipY to the ridge, stopping at the belfry's West wall. While it shows, main.js clips the clay
+// roof slopes and ridge (mats.clayRoof) along the hip's plane, stored here as userData.clipPlane.
+function buildHalfHip(N, halfHipY, mats) {
+  const g = new THREE.Group();
+  g.userData.era = '1900';
+  g.visible = false;
+  const thick = 0.14;
+  const run = N.zSouthExt + N.overhang;
+  const rise = N.ridgeY - N.eavesY;
+  const k = rise / run; // the hip is pitched like the main slopes
+  const lift = thick * 0.45 + thick * 0.5 * Math.hypot(1, k); // slab top above the slope line (buildPitchedRoof)
+  const xe = N.xWestExt - 0.12; // eaves of the hip oversail the wall head
+  const ye = halfHipY + lift - 0.12 * k;
+  const yTop = N.ridgeY + lift;
+  const zb = run * (1 - (ye - lift - N.eavesY) / rise); // where the hip's eave meets the side slopes
+  const L = ((yTop - ye) / k) * Math.hypot(1, k);
+  const shape = new THREE.Shape();
+  shape.moveTo(0, -zb);
+  shape.lineTo(L, 0);
+  shape.lineTo(0, zb);
+  shape.closePath();
+  const geo = new THREE.ExtrudeGeometry(shape, { depth: thick, bevelEnabled: false });
+  const t = new THREE.Vector3(1, k, 0).normalize();
+  const n = new THREE.Vector3(k, -1, 0).normalize(); // into the roof (East & down)
+  geo.applyMatrix4(new THREE.Matrix4().makeBasis(t, new THREE.Vector3(0, 0, 1), n).setPosition(xe, ye, 0));
+  applyBoxUVs(geo, 0.52);
+  const hipMat = mats.clayRoof.clone();
+  hipMat.clippingPlanes = [new THREE.Plane(new THREE.Vector3(-1, 0, 0), DIM.tower.xCenter - DIM.tower.size * 0.5)];
+  hipMat.clipShadows = true;
+  const hip = new THREE.Mesh(geo, hipMat);
+  hip.castShadow = true;
+  hip.receiveShadow = true;
+  g.add(hip);
+  // Hip-ridge capping tiles along the two hip edges
+  const apex = new THREE.Vector3(xe, ye, 0).addScaledVector(t, L);
+  [-1, 1].forEach((side) => {
+    const foot = new THREE.Vector3(xe, ye, side * zb);
+    const len = foot.distanceTo(apex);
+    const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, len, 8), hipMat);
+    cap.position.copy(foot).lerp(apex, 0.5);
+    cap.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), apex.clone().sub(foot).normalize());
+    cap.castShadow = true;
+    g.add(cap);
+  });
+  g.userData.clipPlane = new THREE.Plane().setFromNormalAndCoplanarPoint(n, new THREE.Vector3(xe, ye, 0));
   return g;
 }
 
@@ -613,6 +760,7 @@ function buildCompositeWall({
   innerMesh.castShadow = true;
   innerMesh.receiveShadow = true;
   group.add(innerMesh);
+  group.userData.innerMesh = innerMesh;
 
   return group;
 }
@@ -813,6 +961,7 @@ function buildTowerAndSpire(mats) {
 
     winG.position.set(t.xCenter, t.eavesY - 0.88, sideZ * (hs + 0.02));
     if (sideZ < 0) winG.rotation.y = Math.PI;
+    winG.userData.era = 'today'; // in 1900 a single small louvre in the West wall instead
     g.add(winG);
   });
 
@@ -832,6 +981,7 @@ function buildTowerAndSpire(mats) {
     }
     winG.position.set(t.xCenter + sideX * (hs + 0.02), t.eavesY - 0.76, t.zCenter);
     winG.rotation.y = sideX > 0 ? Math.PI / 2 : -Math.PI / 2;
+    winG.userData.era = 'today'; // in 1900 a single small louvre in the West wall instead
     g.add(winG);
   });
 
@@ -920,22 +1070,123 @@ function buildTowerAndSpire(mats) {
   spireGeo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
   spireGeo.computeVertexNormals();
 
+  // The broach spire was added after 1900 ('today' era); before it the belfry had a low shingled pyramid cap
+  // ('1900' era) with an iron finial. main.js shows one or the other.
+  const spireG = new THREE.Group();
+  spireG.userData.era = 'today';
+  g.add(spireG);
+  // 1900 (photo c. 1900): a low pitched roof, its ridge running East-West with weatherboarded gables at each end
+  const capG = new THREE.Group();
+  capG.userData.era = '1900';
+  capG.visible = false;
+  const rise = 0.62;
+  const roofY0 = t.eavesY + 0.06;
+  const halfSpan = corniceSize * 0.5 + 0.04;
+  const slopeLen = Math.hypot(halfSpan, rise);
+  const pitch = Math.atan2(rise, halfSpan);
+  const roofLen = s + 0.36; // oversails the gables as a short barge
+  [-1, 1].forEach((side) => {
+    const slab = new THREE.Mesh(new THREE.BoxGeometry(roofLen, 0.06, slopeLen), mats.shingles);
+    slab.position.set(t.xCenter, roofY0 + rise * 0.5 + 0.03, t.zCenter + side * halfSpan * 0.5);
+    slab.rotation.x = side * pitch;
+    slab.castShadow = true;
+    slab.receiveShadow = true;
+    capG.add(slab);
+  });
+  const ridge = new THREE.Mesh(new THREE.BoxGeometry(roofLen, 0.06, 0.1), mats.darkOak);
+  ridge.position.set(t.xCenter, roofY0 + rise + 0.05, t.zCenter);
+  capG.add(ridge);
+  // Gable triangles above the cornice, boarded like the walls below, with plain barge boards
+  [-1, 1].forEach((sideX) => {
+    const tri = new THREE.Shape();
+    tri.moveTo(-hsBox, 0);
+    tri.lineTo(hsBox, 0);
+    tri.lineTo(0, rise);
+    tri.closePath();
+    const triGeo = new THREE.ExtrudeGeometry(tri, { depth: wallT, bevelEnabled: false });
+    triGeo.translate(0, 0, -wallT * 0.5);
+    applyBoxUVs(triGeo, 0.42);
+    const gable = new THREE.Mesh(triGeo, mats.weatherboard);
+    gable.rotation.y = Math.PI / 2;
+    gable.position.set(t.xCenter + sideX * (hsBox - wallT * 0.5), roofY0, t.zCenter);
+    gable.castShadow = true;
+    capG.add(gable);
+    [-1, 1].forEach((side) => {
+      const barge = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.12, slopeLen + 0.06), mats.weatherboard);
+      barge.position.set(
+        t.xCenter + sideX * (roofLen * 0.5 - 0.015),
+        roofY0 + rise * 0.5,
+        t.zCenter + side * halfSpan * 0.5
+      );
+      barge.rotation.x = side * pitch;
+      capG.add(barge);
+    });
+  });
+  // Today's louvred openings were boarded over: weatherboard infill shaped to each hole
+  [
+    [0, true],
+    [Math.PI, true],
+    [Math.PI / 2, false],
+    [-Math.PI / 2, false]
+  ].forEach(([rotY, northSouth]) => {
+    const fill = new THREE.Shape();
+    openings[0](northSouth).forEach(([x, y], i) => (i === 0 ? fill.moveTo(x, y) : fill.lineTo(x, y)));
+    fill.closePath();
+    const geo = new THREE.ExtrudeGeometry(fill, { depth: wallT, bevelEnabled: false });
+    if (!northSouth) geo.scale((s - 2 * wallT) / s, 1, 1);
+    geo.translate(0, 0, hsBox - wallT);
+    applyBoxUVs(geo, 0.42);
+    const m = new THREE.Mesh(geo, mats.weatherboard);
+    m.rotation.y = rotY;
+    m.position.set(t.xCenter, 0, t.zCenter);
+    capG.add(m);
+  });
+  // A single small louvre high in the West gable wall, off-centre towards the North (photo)
+  {
+    const lw = 0.46;
+    const lh = 0.36;
+    const louvre = new THREE.Group();
+    const back = new THREE.Mesh(new THREE.PlaneGeometry(lw, lh), new THREE.MeshBasicMaterial({ color: 0x0d0b09 }));
+    back.position.z = 0.002;
+    louvre.add(back);
+    [
+      [lw + 0.08, 0.05, 0, (lh + 0.05) * 0.5],
+      [lw + 0.08, 0.05, 0, -(lh + 0.05) * 0.5],
+      [0.05, lh, (lw + 0.05) * 0.5, 0],
+      [0.05, lh, -(lw + 0.05) * 0.5, 0]
+    ].forEach(([w, h, x, y]) => {
+      const f = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.05), mats.weatherboard);
+      f.position.set(x, y, 0.02);
+      louvre.add(f);
+    });
+    for (let i = 0; i < 5; i++) {
+      const slat = new THREE.Mesh(new THREE.BoxGeometry(lw, 0.045, 0.06), mats.weatherboard);
+      slat.position.set(0, -lh * 0.5 + 0.04 + i * 0.07, 0.025);
+      slat.rotation.x = 0.5;
+      louvre.add(slat);
+    }
+    louvre.rotation.y = -Math.PI / 2;
+    louvre.position.set(t.xCenter - hsBox - 0.003, t.eavesY - 0.62, t.zCenter - 0.55);
+    capG.add(louvre);
+  }
+  g.add(capG);
+
   const spire = new THREE.Mesh(spireGeo, mats.shingles);
   spire.position.set(t.xCenter, 0, t.zCenter);
   spire.castShadow = true;
   spire.receiveShadow = true;
-  g.add(spire);
+  spireG.add(spire);
 
   // Spire top mushroom dome cap, 4-leg wrought-iron base bracket, tall lightning spindle & pierced swallowtail banner weathervane
   const domeRim = new THREE.Mesh(new THREE.CylinderGeometry(0.118, 0.092, 0.036, 16), mats.iron);
   domeRim.position.set(t.xCenter, tipY + 0.01, t.zCenter);
-  g.add(domeRim);
+  spireG.add(domeRim);
 
   const domeCap = new THREE.Mesh(new THREE.SphereGeometry(0.126, 16, 12), mats.ashlar);
   domeCap.scale.set(1.0, 0.56, 1.0);
   domeCap.position.set(t.xCenter, tipY + 0.042, t.zCenter);
   domeCap.castShadow = true;
-  g.add(domeCap);
+  spireG.add(domeCap);
 
   // 4 angled wrought-iron support legs rising from the dome cap to the spindle collar
   for (let i = 0; i < 4; i++) {
@@ -944,18 +1195,18 @@ function buildTowerAndSpire(mats) {
     leg.position.set(t.xCenter + Math.cos(a) * 0.028, tipY + 0.165, t.zCenter + Math.sin(a) * 0.028);
     leg.rotation.z = Math.cos(a) * 0.24;
     leg.rotation.x = -Math.sin(a) * 0.24;
-    g.add(leg);
+    spireG.add(leg);
   }
   const spindleCollar = new THREE.Mesh(new THREE.SphereGeometry(0.02, 10, 8), mats.iron);
   spindleCollar.scale.set(1.0, 0.75, 1.0);
   spindleCollar.position.set(t.xCenter, tipY + 0.27, t.zCenter);
-  g.add(spindleCollar);
+  spireG.add(spindleCollar);
 
   // Tall slender vertical spindle continuing above the weathervane as a sharp lightning spike
   const rodH = t.finialTopY - tipY + 0.08;
   const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.0055, 0.013, rodH, 8), mats.iron);
   rod.position.set(t.xCenter, tipY + rodH * 0.5 + 0.02, t.zCenter);
-  g.add(rod);
+  spireG.add(rod);
 
   // Pierced verdigris-copper swallowtail banner weathervane (matching user close-up photo)
   const vaneShape = new THREE.Shape();
@@ -1012,7 +1263,7 @@ function buildTowerAndSpire(mats) {
   vane.position.set(t.xCenter, tipY + 0.68, t.zCenter);
   vane.rotation.y = 0.25;
   vane.castShadow = true;
-  g.add(vane);
+  spireG.add(vane);
 
   return g;
 }
@@ -1152,6 +1403,7 @@ export function buildArchitecture(mats) {
   const westUpperMesh = new THREE.Mesh(westUpperGeo, mats.stoneWallWestUpper);
   westUpperMesh.castShadow = true;
   westUpperMesh.receiveShadow = true;
+  westUpperMesh.userData.era = 'today'; // 1909 rebuild: in 1900 the gable was half-hipped above y = 4.42
   westWall.add(westUpperMesh);
 
   // Subtle pale dressed limestone apex triangle & South-verge shoulder stone visible in west-gable.jpg
@@ -1166,6 +1418,7 @@ export function buildArchitecture(mats) {
   apexGeo.translate(0, 0, -0.008);
   applyBoxUVs(apexGeo, 0.7);
   const apexStone = new THREE.Mesh(apexGeo, mats.ashlarWarm);
+  apexStone.userData.era = 'today'; // 1909 rebuild: in 1900 the gable was half-hipped above y = 4.42
   westWall.add(apexStone);
 
   const slopeHalfZ = (y) => N.zSouthExt * (1 - (y - N.eavesY) / (N.ridgeY - N.eavesY));
@@ -1181,20 +1434,31 @@ export function buildArchitecture(mats) {
   shoulderGeo.translate(0, 0, -0.008);
   applyBoxUVs(shoulderGeo, 0.7);
   const shoulderStone = new THREE.Mesh(shoulderGeo, mats.ashlarWarm);
+  shoulderStone.userData.era = 'today'; // 1909 rebuild: in 1900 the gable was half-hipped above y = 4.42
   westWall.add(shoulderStone);
+
+  // In 1900 the plaster inner leaf stopped under the half hip too: main.js clips it along the hip's plane
+  const westInner = westWall.userData.innerMesh;
+  westInner.material = westInner.material.clone();
+  westInner.material.clipShadows = true;
+  westInner.userData.clipIn1900 = true;
 
   westWall.rotation.y = Math.PI / 2;
   westWall.position.set(N.xWestExt, 0, 0);
   wallsGroup.add(westWall);
-  wallsGroup.add(
-    buildGableCoping({
-      xPos: N.xWestExt + 0.14,
-      zHalf: N.zSouthExt,
-      eavesY: N.eavesY,
-      ridgeY: N.ridgeY,
-      mats
-    })
-  );
+  const westCoping = buildGableCoping({
+    xPos: N.xWestExt + 0.14,
+    zHalf: N.zSouthExt,
+    eavesY: N.eavesY,
+    ridgeY: N.ridgeY,
+    mats
+  });
+  westCoping.userData.era = 'today';
+  wallsGroup.add(westCoping);
+  // 1900: the West end was half-hipped (jerkinhead): a tiled hip from the old wall head up to the ridge
+  const halfHip = buildHalfHip(N, halfHipY, mats);
+  roofGroup.add(halfHip);
+  roofGroup.userData.halfHipClipPlane = halfHip.userData.clipPlane;
 
   // -------------------------------------------------------
   // 4. NAVE EAST GABLE / CHANCEL ARCH WALL (x: 3.20 to 3.55)
@@ -1422,14 +1686,17 @@ export function buildArchitecture(mats) {
   wallsGroup.add(eastCross);
 
   // Corner ashlar quoins on East & West corners (projecting uniformly 1.8cm proud of both exterior faces)
-  const addCornerQuoins = (cornerX, cornerZ, sx, sz, height) => {
+  const addCornerQuoins = (cornerX, cornerZ, sx, sz, height, carved = null) => {
     const count = Math.floor(height / 0.34);
     const proud = 0.018;
     for (let i = 0; i < count; i++) {
       const longX = i % 2 === 0;
       const qx = longX ? 0.36 : 0.22;
       const qz = longX ? 0.22 : 0.36;
-      const q = new THREE.Mesh(new THREE.BoxGeometry(qx, 0.3, qz), mats.ashlar);
+      const q =
+        carved?.index === i
+          ? buildBenchmarkQuoin(qx, 0.3, qz, mats.ashlar, carved.mark)
+          : new THREE.Mesh(new THREE.BoxGeometry(qx, 0.3, qz), mats.ashlar);
       q.position.set(cornerX + sx * (proud - qx * 0.5), 0.18 + i * 0.34, cornerZ + sz * (proud - qz * 0.5));
       q.castShadow = true;
       q.receiveShadow = true;
@@ -1438,7 +1705,9 @@ export function buildArchitecture(mats) {
   };
   addCornerQuoins(C.xEastExt, C.zNorthExt, 1, -1, C.eavesY - 0.1);
   addCornerQuoins(C.xEastExt, C.zSouthExt, 1, 1, C.eavesY - 0.1);
-  addCornerQuoins(N.xWestExt, N.zNorthExt, -1, -1, N.eavesY - 0.1);
+  // The West face of the second quoin up at the NW corner carries an Ordnance Survey cut benchmark, its bar about
+  // 60cm above the ground and its drilled hole towards the corner
+  addCornerQuoins(N.xWestExt, N.zNorthExt, -1, -1, N.eavesY - 0.1, { index: 1, mark: { u: -0.02, v: 0.08 } });
   addCornerQuoins(N.xWestExt, N.zSouthExt, -1, 1, N.eavesY - 0.1);
 
   // B6: 1860 Commemoration stone tablet set into lower NE Chancel wall (IMG_3930 / B6.md)
@@ -1534,9 +1803,11 @@ export function buildArchitecture(mats) {
   // Hanging iron porch lantern above outer arch apex (IMG_3928)
   const lantern = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.05, 0.22, 6), mats.iron);
   lantern.position.set(P.xCenter, P.outerArchApexY + 0.24, P.zNorthExt - 0.1);
+  lantern.userData.era = 'today'; // electric: no porch light in 1900
   porchGroup.add(lantern);
   const lanternBulb = new THREE.Mesh(new THREE.SphereGeometry(0.055, 8, 8), mats.glassShade);
   lanternBulb.position.set(P.xCenter, P.outerArchApexY + 0.22, P.zNorthExt - 0.1);
+  lanternBulb.userData.era = 'today';
   porchGroup.add(lanternBulb);
 
   // Grey-painted Double Gothic Wooden Picket Gates inside Porch arch (IMG_3928, IMG_3935)
@@ -1755,6 +2026,7 @@ export function buildArchitecture(mats) {
     b.position.set(x, 0, z + (rotY === 0 ? -0.02 : 0.02));
     b.rotation.y = rotY;
     wallsGroup.add(b);
+    return b;
   };
   // North-West bay buttress (IMG_3928)
   addButtress(-5.45, N.zNorthExt, Math.PI, 0.68, 0.72, 2.72);
@@ -1763,7 +2035,8 @@ export function buildArchitecture(mats) {
 
   // South side buttresses (facing +Z, IMG_3932, IMG_3933, IMG_3934)
   // SW corner buttress
-  addButtress(-7.22, N.zSouthExt, 0, 0.78, 0.92, 2.95);
+  // SW corner buttress: added after 1900, so hidden in the 1900 view
+  addButtress(-7.22, N.zSouthExt, 0, 0.78, 0.92, 2.95).userData.era = 'today';
   // West-mid South buttress
   addButtress(-5.25, N.zSouthExt, 0, 0.74, 0.85, 2.85);
   // Mid-South buttress (just West of Sower window)
@@ -1821,6 +2094,10 @@ export function buildArchitecture(mats) {
     mats
   });
   roofGroup.add(chancelRoof);
+
+  // 1900: chimney for the nave stove's flue, rising through the South roof slope just above the wall
+  // head in line with the stove (x = -2.25); the flue runs up inside the South wall from the stove pipe
+  roofGroup.add(buildStoveChimney(-2.25, N, mats));
 
   // Weatherboarded Bell-Turret & Oak-Shingled Broach Spire
   const towerSpire = buildTowerAndSpire(mats);

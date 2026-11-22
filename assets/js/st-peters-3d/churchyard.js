@@ -1114,6 +1114,7 @@ export function buildChurchyard(mats) {
   const bench = buildGardenBench(mats);
   bench.position.set(DIM.nave.xWestExt - 0.65, 0, -1.55);
   bench.rotation.y = -Math.PI / 2;
+  bench.userData.era = 'today';
   g.add(bench);
 
   // 4. All 49 Plotted Churchyard Gravestones & Memorials with Carved Inscriptions
@@ -1131,6 +1132,7 @@ export function buildChurchyard(mats) {
       id: m.id,
       ...getMemorialCameraOffsets(m)
     };
+    monument.userData.era = 'today'; // the churchyard had no gravestones in 1900
     g.add(monument);
     memorialGroups.push(monument);
 
@@ -1144,6 +1146,7 @@ export function buildChurchyard(mats) {
       const side = new THREE.Vector3(0, 0, 2.4).applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
       const fwd = new THREE.Vector3(0.15, 0, 0).applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
       memBench.position.set(x + side.x + fwd.x, 0, z + side.z + fwd.z);
+      memBench.userData.era = 'today';
       g.add(memBench);
     }
   });
@@ -1179,6 +1182,7 @@ export function buildChurchyard(mats) {
   if (isChristmasSeason(new Date(), searchStr)) {
     christmasEffect = buildChristmasTree(mats);
     christmasEffect.group.position.set(-0.2, 0, -4.55);
+    christmasEffect.group.userData.era = 'today'; // electric fairy lights
     g.add(christmasEffect.group);
   }
 

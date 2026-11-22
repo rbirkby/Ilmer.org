@@ -1967,3 +1967,84 @@ export function createMaterials(renderer) {
     })
   };
 }
+
+// Plain leaded glazing in place of a stained-glass window (the church before its stained glass, c. 1900). The
+// window's own stained texture is reworked: the stone tracery and surround painted on it stay, while all its glass,
+// painted figures and leading included, becomes faintly green-tinted clear quarry glass behind diamond lead cames.
+const plainGlazingCache = new Map();
+export function createPlainGlazingMaterial(stainedMat) {
+  let mat = plainGlazingCache.get(stainedMat);
+  if (mat) return mat;
+  const img = stainedMat.map.image;
+  const w = img.width;
+  const h = img.height;
+  const c = document.createElement('canvas');
+  c.width = w;
+  c.height = h;
+  const ctx = c.getContext('2d', { willReadFrequently: true });
+  ctx.drawImage(img, 0, 0);
+  const data = ctx.getImageData(0, 0, w, h);
+  const px = data.data;
+  const step = w / 9; // nine quarries across the window
+  const leadHalf = Math.max(1.5, w / 360);
+  const rand = mulberry32(1900);
+  const mottle = new Float32Array(64 * 64).map(() => rand() * 0.06 - 0.03);
+  // Stone is greyish and mid-toned. Thin grey painted lines on the glass can match that too, so a pixel counts as
+  // stone only where most of its neighbourhood does (summed-area table over the raw stone mask)
+  const sat = new Uint32Array((w + 1) * (h + 1));
+  for (let y = 0; y < h; y++) {
+    let row = 0;
+    for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * 4;
+      const r = px[i];
+      const g = px[i + 1];
+      const b = px[i + 2];
+      const chroma = (Math.max(r, g, b) - Math.min(r, g, b)) / 255;
+      const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      row += chroma < 0.16 && lum > 0.3 && lum < 0.74 ? 1 : 0;
+      sat[(y + 1) * (w + 1) + x + 1] = sat[y * (w + 1) + x + 1] + row;
+    }
+  }
+  const rad = Math.max(3, Math.round(w / 128));
+  const isStone = (x, y) => {
+    const x0 = Math.max(0, x - rad);
+    const y0 = Math.max(0, y - rad);
+    const x1 = Math.min(w, x + rad + 1);
+    const y1 = Math.min(h, y + rad + 1);
+    const n = sat[y1 * (w + 1) + x1] - sat[y0 * (w + 1) + x1] - sat[y1 * (w + 1) + x0] + sat[y0 * (w + 1) + x0];
+    return n > (x1 - x0) * (y1 - y0) * 0.72;
+  };
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * 4;
+      // Keep only the stone (tracery & surround). Everything else, coloured or pale glass, painted detail and the
+      // old leads alike, becomes plain quarry glazing.
+      if (isStone(x, y)) continue;
+      // Diamond quarries: lead lines along both diagonals
+      const a = (x + y * 0.62) % step;
+      const d = (x - y * 0.62 + h * 4) % step;
+      const onLead = Math.min(a, step - a) < leadHalf || Math.min(d, step - d) < leadHalf;
+      if (onLead) {
+        px[i] = 40;
+        px[i + 1] = 42;
+        px[i + 2] = 44;
+        continue;
+      }
+      const m = mottle[((y >> 5) & 63) * 64 + ((x >> 5) & 63)];
+      const v = 0.86 + m + (1 - y / h) * 0.06;
+      px[i] = Math.round(220 * v);
+      px[i + 1] = Math.round(234 * v);
+      px[i + 2] = Math.round(226 * v);
+    }
+  }
+  ctx.putImageData(data, 0, 0);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = stainedMat.map.anisotropy;
+  mat = stainedMat.clone();
+  mat.map = tex;
+  mat.emissiveMap = tex;
+  mat.emissiveIntensity = stainedMat.emissiveIntensity * 0.75;
+  plainGlazingCache.set(stainedMat, mat);
+  return mat;
+}

@@ -62,6 +62,10 @@ function buildPew(length, mats, { includeKneelers = true } = {}) {
 
   // Needlepoint hassocks hanging by a cord loop from brass hooks on the back of the pew (IMG_3949 & IMG_3950)
   if (includeKneelers) {
+    // Kept in their own group so a pew can lose them when the pew behind it is gone (main.js eras)
+    const kneelersG = new THREE.Group();
+    g.add(kneelersG);
+    g.userData.kneelers = kneelersG;
     const kg = getKneelerGeometries();
     const kCount = length >= 1.8 ? 4 : Math.max(2, Math.floor(length / 0.52)); // four on each long pew
     const backX = -seatD * 0.5 - 0.004; // rear face of the lower back board
@@ -71,14 +75,14 @@ function buildPew(length, mats, { includeKneelers = true } = {}) {
       // Brass screw hook: a short stem out of the back board turning up into a hook
       const stem = new THREE.Mesh(kg.stem, mats.brass);
       stem.position.set(backX - 0.012, hookY, kz);
-      g.add(stem);
+      kneelersG.add(stem);
       const hook = new THREE.Mesh(kg.hook, mats.brass);
       hook.position.set(backX - 0.024, hookY + 0.012, kz);
-      g.add(hook);
+      kneelersG.add(hook);
       // Cord loop over the hook, down to the hassock's top edge
       const loop = new THREE.Mesh(kg.loop, mats.kneelerCord);
       loop.position.set(backX - 0.03, hookY - 0.045, kz);
-      g.add(loop);
+      kneelersG.add(loop);
       const kneeler = new THREE.Mesh(kg.body, mats.kneelerFabric);
       const topY = hookY - 0.085;
       kneeler.position.set(backX - 0.066, topY - kg.height * 0.5, kz);
@@ -86,7 +90,7 @@ function buildPew(length, mats, { includeKneelers = true } = {}) {
       kneeler.rotation.y = (((i * 7) % 5) - 2) * 0.03;
       kneeler.castShadow = true;
       kneeler.receiveShadow = true;
-      g.add(kneeler);
+      kneelersG.add(kneeler);
     }
   }
 
@@ -1311,7 +1315,14 @@ function buildRoodScreen(mats) {
     hymnG.add(rail);
   }
   hymnG.position.set(xPos - 0.13, baseY + 1.84, southMaxZ - 0.16);
+  hymnG.userData.era = 'today';
   g.add(hymnG);
+  // 1900: the harmonium stood in front of the South end standard, so the board hung nearer the screen's centre
+  const hymn1900 = hymnG.clone();
+  hymn1900.userData.era = '1900';
+  hymn1900.visible = false;
+  hymn1900.position.z = 1.2;
+  g.add(hymn1900);
 
   return g;
 }
@@ -2191,7 +2202,10 @@ function buildWestTowerInterior(mats, ceilingGroup) {
   });
 
   capSolidMasonry(belfryCeil); // the boarded tower ceiling is solid when the tour camera rises through it
+  // 1900: the bells were chimed, not swung, so no ringing ropes (an Ellacombe chiming frame instead, below)
+  bellRopes.userData.era = 'today';
   g.add(bellRopes);
+  g.add(buildChimingFrame(mats, floorY));
   ceilingGroup.add(belfryCeil);
 
   // 2. Cream-plastered Vestry Partition Wall (x = -5.18, height = 2.25m, central doorway, IMG_3941, 3942)
@@ -2224,6 +2238,7 @@ function buildWestTowerInterior(mats, ceilingGroup) {
   );
   vCarpet.position.set(N.xWestInt + vestryLen * 0.5, floorY + 0.008, 0);
   vCarpet.receiveShadow = true;
+  vCarpet.userData.era = 'today'; // no carpet in 1900
   g.add(vCarpet);
 
   // Vestry table with royal-purple pleated cloth, stacked blue hymn books & mirror (IMG_3944)
@@ -2285,9 +2300,11 @@ function buildWestTowerInterior(mats, ceilingGroup) {
   // Electrical Meter Board on SW wall (marked "Meters" on 1974 plan & seen in IMG_3945!)
   const meterPanel = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.72, 0.62), mats.medOak);
   meterPanel.position.set(N.xWestInt + 0.04, floorY + 1.55, 1.85);
+  meterPanel.userData.era = 'today'; // electrical consumer unit
   g.add(meterPanel);
   const meterBox = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.26, 0.22), mats.wax);
   meterBox.position.set(N.xWestInt + 0.1, floorY + 1.48, 1.82);
+  meterBox.userData.era = 'today'; // electrical consumer unit
   g.add(meterBox);
 
   // Detailed British 2kg CO2 Fire Extinguisher beside vestry doorway + wall ID sign (IMG_3942)
@@ -2409,6 +2426,7 @@ function buildWestTowerInterior(mats, ceilingGroup) {
 
   extG.position.set(pX + 0.14, floorY, -0.72);
   extG.rotation.y = Math.PI * 0.42; // Front label, squeeze levers & black CO2 horn facing out toward Nave/Organ
+  extG.userData.era = 'today';
   g.add(extG);
 
   // Small UK CO2 fire-extinguisher wall sign mounted right above it on the vestry partition (IMG_3942)
@@ -2436,6 +2454,7 @@ function buildWestTowerInterior(mats, ceilingGroup) {
   );
   signMesh.rotation.y = Math.PI / 2;
   signMesh.position.set(pX + 0.046, floorY + 0.78, -0.74);
+  signMesh.userData.era = 'today';
   g.add(signMesh);
 
   // 9-litre water extinguisher on the other (South, left-hand) side of the vestry doorway: all red, with a red
@@ -2443,6 +2462,7 @@ function buildWestTowerInterior(mats, ceilingGroup) {
   const waterG = buildWaterExtinguisher();
   waterG.position.set(pX + 0.16, floorY, 0.72);
   waterG.rotation.y = Math.PI * 0.58; // label & hose facing out toward the nave
+  waterG.userData.era = 'today';
   g.add(waterG);
 
   // Matching water-extinguisher ID sign above it on the partition
@@ -2470,6 +2490,7 @@ function buildWestTowerInterior(mats, ceilingGroup) {
   );
   wSign.rotation.y = Math.PI / 2;
   wSign.position.set(pX + 0.046, floorY + 0.86, 0.74);
+  wSign.userData.era = 'today';
   g.add(wSign);
 
   return g;
@@ -2480,6 +2501,7 @@ export function buildInterior(mats) {
   const interiorGroup = new THREE.Group();
   const ceilingGroup = new THREE.Group();
   const chandelierLights = [];
+  const oilLights = []; // 1900 paraffin lamps (main.js)
 
   const N = DIM.nave;
   const C = DIM.chancel;
@@ -2548,6 +2570,7 @@ export function buildInterior(mats) {
     const r = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, 0.018, w), mats.carpetGold);
     r.position.set((x0 + x1) * 0.5, y + 0.01, 0);
     r.receiveShadow = true;
+    r.userData.era = 'today'; // no carpet in 1900
     interiorGroup.add(r);
   };
   addRunner(2.55, 3.22, DIM.naveFloorY, 1.28);
@@ -2560,6 +2583,7 @@ export function buildInterior(mats) {
     const strip = new THREE.Mesh(new THREE.BoxGeometry(dwarfFaceX - 2.55, 0.018, z1 - z0), mats.carpetGold);
     strip.position.set((2.55 + dwarfFaceX) * 0.5, DIM.naveFloorY + 0.01, side * (z0 + z1) * 0.5);
     strip.receiveShadow = true;
+    strip.userData.era = 'today';
     interiorGroup.add(strip);
   });
   addRunner(C.xWestInt - 0.021, 6.26, DIM.chancelFloorY); // wraps over the riser's top edge
@@ -2573,6 +2597,7 @@ export function buildInterior(mats) {
   ].forEach(([rx, y0, y1, rw]) => {
     const riser = new THREE.Mesh(new THREE.BoxGeometry(0.02, y1 - y0, rw), mats.carpetGold);
     riser.position.set(rx, (y0 + y1) * 0.5, 0);
+    riser.userData.era = 'today';
     interiorGroup.add(riser);
   });
 
@@ -2663,6 +2688,7 @@ export function buildInterior(mats) {
       a.matrix.makeBasis(across, upSlope, intoRoom);
       a.matrix.setPosition(centre.clone().setX(x));
       a.matrix.decompose(a.position, a.quaternion, a.scale);
+      a.userData.era = 'today'; // the angels came after 1900
       ceilingGroup.add(a);
     });
 
@@ -2693,6 +2719,7 @@ export function buildInterior(mats) {
       h.matrix.makeBasis(nAcross, nUp, nInto);
       h.matrix.setPosition(nCentre.clone().setX(x));
       h.matrix.decompose(h.position, h.quaternion, h.scale);
+      h.userData.era = 'today';
       ceilingGroup.add(h);
     });
   }
@@ -2746,6 +2773,7 @@ export function buildInterior(mats) {
     const surf = new THREE.Vector3(C.xWestInt + 0.04, C.eavesY + Math.sin(a) * soffitRise, -Math.cos(a) * soffitR);
     const inward = new THREE.Vector3(0, -Math.sin(a) * soffitR, Math.cos(a) * soffitRise).normalize();
     const spot = buildCeilingSpotlight(altarAim, surf, inward);
+    spot.userData.era = 'today'; // electric
     ceilingGroup.add(spot);
   });
 
@@ -3338,6 +3366,7 @@ export function buildInterior(mats) {
   const chancelExt = buildWaterExtinguisher();
   chancelExt.position.set(5.05, DIM.chancelFloorY, C.zSouthInt - 0.12);
   chancelExt.rotation.y = Math.PI + 0.35; // label towards the chancel aisle and the nave
+  chancelExt.userData.era = 'today';
   interiorGroup.add(chancelExt);
   interiorGroup.add(deskG);
 
@@ -3533,6 +3562,7 @@ export function buildInterior(mats) {
   pulpitLamp.scale.setScalar(0.85);
   pulpitLamp.position.set(0.05, plinthH + parapetH + 0.0225, -(apothem - wallT * 0.5));
   pulpitLamp.rotation.y = -Math.PI / 2 - 0.35; // arm reaches in over the pulpit towards the desk
+  pulpitLamp.userData.era = 'today'; // electric
   pulpitG.add(pulpitLamp);
   pulpitG.position.set(2.26, nfY, -1.92);
   pulpitG.updateMatrixWorld(true);
@@ -3566,8 +3596,9 @@ export function buildInterior(mats) {
   // North block: 6 rows between the Pulpit & the North Doorway (the rearmost stops at the door's East jamb)
   const northFront = 1.4;
   const northBack = -1.57;
+  // Hassocks hang on a pew's back for the row behind, so the rearmost pew of each block has none
   for (let k = 0; k < 6; k++) {
-    const pew = buildPew(1.86, mats);
+    const pew = buildPew(1.86, mats, { includeKneelers: k < 5 });
     pew.position.set(northFront + ((northBack - northFront) * k) / 5, nfY, -1.52);
     interiorGroup.add(pew);
   }
@@ -3578,8 +3609,13 @@ export function buildInterior(mats) {
   const southPitch = 0.685;
   for (let k = 0; k < 11; k++) {
     const narrow = k >= 7;
-    const pew = buildPew(narrow ? 1.2 : 1.86, mats);
+    const pew = buildPew(narrow ? 1.2 : 1.86, mats, { includeKneelers: k < 10 });
     pew.position.set(southFront - k * southPitch, nfY, narrow ? 1.62 : 1.52);
+    // In 1900 the Tortoise stove stood where the seventh pew is now, in line with the Roll of Honour
+    // and the front pew gave way to the harmonium against the South wall by the rood screen
+    if (k === 6 || k === 0) pew.userData.era = 'today';
+    // ...so in 1900 the pew in front of the stove had no pew behind it for its hassocks
+    if (k === 5) pew.userData.kneelers.userData.era = 'today';
     interiorGroup.add(pew);
   }
 
@@ -3857,10 +3893,20 @@ export function buildInterior(mats) {
   const lamp = buildAnglepoiseLamp();
   lamp.position.set(0.04, 1.24, 0.36);
   lamp.rotation.y = Math.PI;
+  lamp.userData.era = 'today'; // electric
   organG.add(lamp);
   organG.position.set(-4.32, nfY, -1.72);
   organG.rotation.y = 0;
+  organG.userData.era = 'today'; // in 1900 a pedal harmonium at the front of the nave instead
   interiorGroup.add(organG);
+
+  // 1900: pedal harmonium at the front of the nave against the South wall, beside the rood screen, facing North
+  const harmonium = buildHarmonium(mats);
+  markEra1900(harmonium.group);
+  harmonium.group.position.set(2.42, nfY, N.zSouthInt - 0.27);
+  harmonium.group.rotation.y = Math.PI;
+  interiorGroup.add(harmonium.group);
+  let treadlePhase = 0;
 
   // Organ animator: while the voluntary plays the tambour rolls open and the keys and pedals follow the notes;
   // when it stops they come to rest and the tambour rolls shut. `notes` is { manual: Set, pedal: Set } of MIDI.
@@ -3884,19 +3930,38 @@ export function buildInterior(mats) {
         key.angle += (target - key.angle) * k;
         key.pivot.rotation.z = key.angle;
       });
+      // The harmonium (1900) plays the manual part, its treadles pumping in turn while it sounds
+      harmonium.keys.forEach((key, midi) => {
+        const target = playing && notes?.manual.has(midi) ? -0.06 : 0;
+        key.angle += (target - key.angle) * k;
+        key.pivot.rotation.x = key.angle;
+      });
+      if (playing) treadlePhase += dt * 4.2;
+      harmonium.treadles.forEach((t, i) => {
+        const pump = playing ? 0.5 + 0.5 * Math.sin(treadlePhase + i * Math.PI) : 0.5;
+        t.rotation.x = -0.18 - pump * 0.22;
+      });
     }
   };
 
   // Pew in front (East) of the organ, facing the altar, with the open visitor book & a pen lying on its cushion
+  // 1900: a pew stood where the organ is now
+  const organPew = buildPew(1.3, mats, { includeKneelers: false });
+  organPew.position.set(-4.1, nfY, -1.6);
+  markEra1900(organPew);
+  interiorGroup.add(organPew);
   const visitorPew = buildPew(1.3, mats, { includeKneelers: false });
   visitorPew.position.set(-3.3, nfY, -1.6);
   interiorGroup.add(visitorPew);
-  interiorGroup.add(buildVisitorBook(mats, -3.27, nfY + 0.518, -1.9));
+  const visitorBook = buildVisitorBook(mats, -3.27, nfY + 0.518, -1.9);
+  visitorBook.userData.era = 'today'; // no visitor book in 1900
+  interiorGroup.add(visitorBook);
 
   // Hinged iron donation plate with two coin slots, a keyhole & a taped 'Donations' label, on the North wall right (East) of the door, above the front pew
   const donation = buildDonationPlate(mats);
   donation.scale.setScalar(0.7);
   donation.position.set(-1.45, nfY + 0.95, N.zNorthInt); // clear of the door jamb
+  donation.userData.era = 'today';
   interiorGroup.add(donation);
 
   // -------------------------------------------------------
@@ -3916,13 +3981,32 @@ export function buildInterior(mats) {
   ].forEach(([cx, topY, drop, intensity]) => {
     const ch = buildChandelier(drop, mats, intensity);
     ch.group.position.set(cx, topY, 0);
+    ch.group.userData.era = 'today'; // electric
     ceilingGroup.add(ch.group);
     chandelierLights.push(ch.light);
+    // 1900: the same wrought-iron saddle hung the other way up, its three ends chained to the ceiling and a
+    // single paraffin lamp in the central ring
+    const oil = buildOilPendant(drop, mats);
+    oil.group.position.set(cx, topY, 0);
+    ceilingGroup.add(oil.group);
+    oilLights.push(oil.light);
   });
+
+  // 1900: two paraffin wall lamps on the North wall between the doorway and Window 6
+  [-1.2, -0.35].forEach((x) => {
+    const wl = buildOilWallLamp(mats);
+    wl.group.position.set(x, nfY + 1.95, N.zNorthInt);
+    interiorGroup.add(wl.group);
+    oilLights.push(wl.light);
+  });
+
+  // 1900: Tortoise slow-combustion stove South of the aisle, its flue out of the back, up the wall & into it
+  interiorGroup.add(buildTortoiseStove(mats, -2.25, nfY, 1.02, N.zSouthInt));
 
   // Soft Sanctuary highlight light so altar frontal & reredos glow warmly
   const sanctuaryLight = new THREE.PointLight(0xffe7c2, 1.35, 7.5, 1.6);
   sanctuaryLight.position.set(7.65, 2.85, 0);
+  sanctuaryLight.userData.era = 'today'; // electric
   interiorGroup.add(sanctuaryLight);
   chandelierLights.push(sanctuaryLight);
 
@@ -3939,15 +4023,18 @@ export function buildInterior(mats) {
   rollFace.rotation.y = Math.PI;
   rollG.add(rollFace);
   rollG.position.set(-2.32, 2.08, N.zSouthInt - 0.022);
+  rollG.userData.era = 'today'; // after the Great War
   interiorGroup.add(rollG);
 
   // Small iron shelf & brackets beneath the Roll of Honour
   const poppyShelf = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.025, 0.14), mats.iron);
   poppyShelf.position.set(-2.32, 1.5, N.zSouthInt - 0.07);
+  poppyShelf.userData.era = 'today';
   interiorGroup.add(poppyShelf);
   [-0.2, 0.2].forEach((bx) => {
     const br = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.12, 0.025), mats.iron);
     br.position.set(-2.32 + bx, 1.44, N.zSouthInt - 0.02);
+    br.userData.era = 'today';
     interiorGroup.add(br);
   });
 
@@ -3976,6 +4063,7 @@ export function buildInterior(mats) {
     wreathG.add(center);
   }
   wreathG.position.set(-2.32, 1.7, N.zSouthInt - 0.075);
+  wreathG.userData.era = 'today';
   interiorGroup.add(wreathG);
 
   // A7: Carved Oak Memorial Plaque to Robert Harold Attenborough on SE Nave Wall (to the left/East of Sower Window)
@@ -3991,6 +4079,7 @@ export function buildInterior(mats) {
   attenFace.rotation.y = Math.PI;
   attenG.add(attenFace);
   attenG.position.set(1.88, 1.85, N.zSouthInt - 0.02);
+  attenG.userData.era = 'today';
   interiorGroup.add(attenG);
 
   // A4: Framed List of Donors for Mrs Jaques's Memorial Window on North Nave Wall (next to Jaques Window A3)
@@ -4017,11 +4106,13 @@ export function buildInterior(mats) {
   donorsG.add(topRail, botRail, leftRail, rightRail, backBoard, donorsArt);
   donorsG.scale.set(0.5, 0.5, 1); // half size
   donorsG.position.set(-0.08, 1.92, N.zNorthInt + 0.02); // just west of the Jaques window reveal
+  donorsG.userData.era = 'today';
   interiorGroup.add(donorsG);
 
   // Rainbow Stained-Glass Sunlight Caustic projected onto the North Nave Wall (IMG_3949!)
   const causticMesh = new THREE.Mesh(new THREE.PlaneGeometry(1.75, 1.45), mats.causticDecal);
   causticMesh.position.set(-0.65, 1.28, N.zNorthInt + 0.025);
+  causticMesh.userData.era = 'today'; // stained-glass colour on the wall
   interiorGroup.add(causticMesh);
 
   let candleLightScale = 0.88;
@@ -4065,7 +4156,7 @@ export function buildInterior(mats) {
     }
   };
 
-  return { interiorGroup, ceilingGroup, chandelierLights, causticMesh, candleEffect, organAnimator };
+  return { interiorGroup, ceilingGroup, chandelierLights, oilLights, causticMesh, candleEffect, organAnimator };
 }
 
 /**
@@ -4399,4 +4490,681 @@ function buildLecternDesk(oak, baseY) {
   ledge.position.set(x1 + 0.012, baseY + backH + 0.03, 0);
   g.add(ledge);
   return g;
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// The church c. 1900 ('1900' era: hidden until main.js switches eras)
+// ---------------------------------------------------------------------------------------------------------------
+
+function markEra1900(obj) {
+  obj.userData.era = '1900';
+  obj.visible = false;
+  return obj;
+}
+
+// Brass paraffin lamp: a round font with its burner, a tall glass chimney and a flame. Origin at the font's base.
+let oilLampAssets = null;
+function getOilLampAssets() {
+  if (oilLampAssets) return oilLampAssets;
+  const fontProfile = [
+    [0.0, 0.0],
+    [0.03, 0.0],
+    [0.05, 0.012],
+    [0.085, 0.04],
+    [0.098, 0.07],
+    [0.09, 0.1],
+    [0.06, 0.122],
+    [0.026, 0.13],
+    [0.024, 0.15]
+  ].map(([r, y]) => new THREE.Vector2(r, y));
+  const chimneyProfile = [
+    [0.024, 0.0],
+    [0.026, 0.02],
+    [0.042, 0.06],
+    [0.042, 0.085],
+    [0.024, 0.13],
+    [0.022, 0.25]
+  ].map(([r, y]) => new THREE.Vector2(r, y));
+  oilLampAssets = {
+    fontGeo: new THREE.LatheGeometry(fontProfile, 28),
+    chimneyGeo: new THREE.LatheGeometry(chimneyProfile, 24),
+    burnerGeo: new THREE.CylinderGeometry(0.03, 0.034, 0.03, 16),
+    flameGeo: new THREE.SphereGeometry(0.014, 10, 8).scale(1, 2.2, 1),
+    chimneyMat: new THREE.MeshStandardMaterial({
+      color: 0xf4f1e8,
+      roughness: 0.05,
+      transparent: true,
+      opacity: 0.32,
+      side: THREE.DoubleSide,
+      depthWrite: false
+    }),
+    flameMat: new THREE.MeshBasicMaterial({ color: 0xffc46a })
+  };
+  return oilLampAssets;
+}
+
+function buildParaffinLamp(mats) {
+  const a = getOilLampAssets();
+  const g = new THREE.Group();
+  const font = new THREE.Mesh(a.fontGeo, mats.brass);
+  font.castShadow = true;
+  g.add(font);
+  const burner = new THREE.Mesh(a.burnerGeo, mats.brass);
+  burner.position.y = 0.165;
+  g.add(burner);
+  const flame = new THREE.Mesh(a.flameGeo, a.flameMat);
+  flame.position.y = 0.205;
+  g.add(flame);
+  const chimney = new THREE.Mesh(a.chimneyGeo, a.chimneyMat);
+  chimney.position.y = 0.18;
+  g.add(chimney);
+  return g;
+}
+
+// The nave & chancel pendants as they were lit by paraffin: the same three-armed wrought-iron saddle turned the
+// other way up, its three arm ends chained to the ceiling rose and a single lamp standing in the central ring
+function buildOilPendant(dropHeight, mats) {
+  const g = markEra1900(new THREE.Group());
+  const geo = getPendantGeometries();
+  const ringY = -dropHeight + 0.35; // the lamp stands above the ring, so the ring hangs a little higher
+
+  const rose = new THREE.Mesh(geo.roseGeo, mats.iron);
+  rose.position.y = -0.0175;
+  g.add(rose);
+  const hook = new THREE.Mesh(geo.hookGeo, mats.iron);
+  hook.position.y = -0.05;
+  g.add(hook);
+
+  // Saddle: ring, bosses and the three scrolled arms with their fleurs-de-lys, then turned upside down
+  const saddle = new THREE.Group();
+  saddle.add(new THREE.Mesh(geo.ringGeo, mats.iron));
+  const tips = [];
+  for (let i = 0; i < 3; i++) {
+    const ang = (i * Math.PI * 2) / 3 + Math.PI / 6;
+    const midAng = ang + Math.PI / 3;
+    const boss = new THREE.Mesh(geo.bossGeo, mats.iron);
+    boss.position.set(Math.cos(midAng) * 0.15, -0.005, Math.sin(midAng) * 0.15);
+    boss.rotation.y = -midAng;
+    saddle.add(boss);
+    const arm = new THREE.Group();
+    arm.add(new THREE.Mesh(geo.armGeo, mats.iron));
+    arm.add(new THREE.Mesh(geo.upperScrollGeo, mats.iron));
+    arm.add(new THREE.Mesh(geo.underScrollGeo, mats.iron));
+    const ringFleur = new THREE.Mesh(geo.fleurGeo, mats.iron);
+    ringFleur.position.set(0.185, 0.022, 0);
+    ringFleur.rotation.z = -0.42;
+    ringFleur.scale.setScalar(0.78);
+    arm.add(ringFleur);
+    const crestFleur = new THREE.Mesh(geo.fleurGeo, mats.iron);
+    crestFleur.position.set(0.345, 0.078, 0);
+    crestFleur.rotation.z = -0.12;
+    arm.add(crestFleur);
+    arm.rotation.y = -ang;
+    saddle.add(arm);
+    // Arm end (0.456, -0.02) in the saddle; turned over (rotation.x = PI) that is (x, +0.02, -z)
+    tips.push(new THREE.Vector3(Math.cos(ang) * 0.456, ringY + 0.02, -Math.sin(ang) * 0.456));
+  }
+  saddle.rotation.x = Math.PI;
+  saddle.position.y = ringY;
+  g.add(saddle);
+
+  // Small eye on each upturned arm end, and a chain from the rose down to it
+  const chainRuns = tips.map((tip) => {
+    const eye = new THREE.Mesh(geo.hookGeo, mats.iron);
+    eye.position.copy(tip).setY(tip.y + 0.012);
+    eye.rotation.y = Math.atan2(tip.z, tip.x);
+    g.add(eye);
+    return [new THREE.Vector3(tip.x * 0.035, -0.06, tip.z * 0.035), tip.clone().setY(tip.y + 0.024)];
+  });
+  const linkPitch = 0.024;
+  const counts = chainRuns.map(([a, b]) => Math.max(2, Math.floor(a.distanceTo(b) / linkPitch)));
+  const chain = new THREE.InstancedMesh(
+    geo.linkGeo,
+    mats.iron,
+    counts.reduce((n, c) => n + c, 0)
+  );
+  const up = new THREE.Vector3(0, 1, 0);
+  const m = new THREE.Matrix4();
+  const p = new THREE.Vector3();
+  const one = new THREE.Vector3(1, 1, 1);
+  let li = 0;
+  chainRuns.forEach(([a, b], r) => {
+    const alignQ = new THREE.Quaternion().setFromUnitVectors(up, b.clone().sub(a).normalize());
+    for (let k = 0; k < counts[r]; k++) {
+      p.lerpVectors(a, b, (k + 0.5) / counts[r]);
+      const q = alignQ.clone().multiply(new THREE.Quaternion().setFromAxisAngle(up, k % 2 ? Math.PI / 2 : 0));
+      chain.setMatrixAt(li++, m.compose(p, q, one));
+    }
+  });
+  chain.instanceMatrix.needsUpdate = true;
+  g.add(chain);
+
+  // The lamp's font sits down in the ring
+  const lamp = buildParaffinLamp(mats);
+  lamp.position.y = ringY - 0.06;
+  lamp.scale.setScalar(1.15);
+  g.add(lamp);
+  const finial = new THREE.Mesh(new THREE.SphereGeometry(0.018, 10, 8), mats.brass);
+  finial.position.y = ringY - 0.075;
+  g.add(finial);
+
+  const light = new THREE.PointLight(0xffb866, 1.2, 8.5, 1.8);
+  light.position.y = ringY + 0.3;
+  g.add(light);
+  return { group: g, light };
+}
+
+// Paraffin bracket lamp on a wall (faces +Z, back on the wall at z = 0): iron back plate with a silvered
+// reflector, a scrolled arm and a ring holding the lamp
+function buildOilWallLamp(mats) {
+  const g = markEra1900(new THREE.Group());
+  const plate = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.22, 0.012), mats.iron);
+  plate.position.set(0, 0.02, 0.006);
+  g.add(plate);
+  const reflector = new THREE.Mesh(
+    new THREE.CircleGeometry(0.1, 28),
+    new THREE.MeshStandardMaterial({ color: 0xe8e6e0, metalness: 0.9, roughness: 0.18 })
+  );
+  reflector.position.set(0, 0.2, 0.016);
+  g.add(reflector);
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(0.1, 0.006, 6, 28), mats.brass);
+  rim.position.set(0, 0.2, 0.016);
+  g.add(rim);
+  const armCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0, -0.06, 0.012),
+    new THREE.Vector3(0, -0.07, 0.08),
+    new THREE.Vector3(0, -0.035, 0.15),
+    new THREE.Vector3(0, -0.005, 0.19)
+  ]);
+  g.add(new THREE.Mesh(new THREE.TubeGeometry(armCurve, 24, 0.008, 6, false), mats.iron));
+  const curl = new THREE.Mesh(new THREE.TorusGeometry(0.025, 0.005, 6, 16, Math.PI * 1.5), mats.iron);
+  curl.rotation.y = Math.PI / 2;
+  curl.position.set(0, -0.085, 0.05);
+  g.add(curl);
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.07, 0.008, 8, 24), mats.iron);
+  ring.rotation.x = Math.PI / 2;
+  ring.position.set(0, 0, 0.19);
+  g.add(ring);
+  const lamp = buildParaffinLamp(mats);
+  lamp.position.set(0, -0.04, 0.19);
+  g.add(lamp);
+  const light = new THREE.PointLight(0xffb866, 0.7, 5, 1.8);
+  light.position.set(0, 0.2, 0.25);
+  g.add(light);
+  return { group: g, light };
+}
+
+// Octagonal cast-iron 'Tortoise' slow-combustion stove (Charles Portway & Son, Halstead), its feed door facing the
+// aisle (-Z). The flue leaves the back, rises to three-quarters of the way up the South wall and turns into it.
+function buildTortoiseStove(mats, x, floorY, z, wallZ) {
+  const g = markEra1900(new THREE.Group());
+  const ironBlack = new THREE.MeshStandardMaterial({ color: 0x1c1c1e, roughness: 0.5, metalness: 0.55 });
+  const add = (mesh, px, py, pz) => {
+    mesh.position.set(px, py, pz);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    g.add(mesh);
+    return mesh;
+  };
+  const oct = (r0, r1, h) => {
+    const geo = new THREE.CylinderGeometry(r1, r0, h, 8);
+    geo.rotateY(Math.PI / 8); // flat faces to the cardinal directions
+    return geo;
+  };
+  const flat = (f) => f / Math.cos(Math.PI / 8); // circumradius for a given centre-to-face distance
+  // Stepped, moulded base; panelled octagonal body; heavy moulded cornice; small raised collar on top
+  add(new THREE.Mesh(oct(flat(0.29), flat(0.285), 0.06), ironBlack), x, floorY + 0.03, z);
+  add(new THREE.Mesh(oct(flat(0.27), flat(0.25), 0.1), ironBlack), x, floorY + 0.11, z);
+  add(new THREE.Mesh(oct(flat(0.25), flat(0.235), 0.05), ironBlack), x, floorY + 0.185, z);
+  add(new THREE.Mesh(oct(flat(0.22), flat(0.22), 0.66), ironBlack), x, floorY + 0.54, z);
+  add(new THREE.Mesh(oct(flat(0.235), flat(0.25), 0.05), ironBlack), x, floorY + 0.895, z);
+  add(new THREE.Mesh(oct(flat(0.27), flat(0.27), 0.08), ironBlack), x, floorY + 0.96, z);
+  add(new THREE.Mesh(oct(flat(0.27), flat(0.25), 0.03), ironBlack), x, floorY + 1.015, z);
+  add(new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.07, 0.14), ironBlack), x, floorY + 1.065, z + 0.04);
+  add(new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.02, 0.1), ironBlack), x, floorY + 1.11, z + 0.04);
+
+  // Cast relief panels on the eight faces: a climbing scroll of linked foliate roundels on the four square
+  // faces, a grid of square rosette tiles on the four corner faces (from the maker's catalogue drawing)
+  const panelMap = (kind) => {
+    const c = document.createElement('canvas');
+    c.width = 64;
+    c.height = 256;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, 64, 256);
+    ctx.strokeStyle = '#fff';
+    ctx.fillStyle = '#fff';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(3, 3, 58, 250);
+    if (kind === 'scroll') {
+      ctx.beginPath();
+      ctx.moveTo(32, 8);
+      ctx.lineTo(32, 248);
+      ctx.stroke();
+      for (let k = 0; k < 3; k++) {
+        const cy = 46 + k * 82;
+        ctx.beginPath();
+        ctx.arc(32, cy, 24, 0, Math.PI * 2);
+        ctx.stroke();
+        // Three-leaf sprig inside each roundel, and curling tendrils between them
+        [-1, 1].forEach((sd) => {
+          ctx.beginPath();
+          ctx.ellipse(32 + sd * 9, cy - 4, 8, 4, sd * -0.6, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(32 + sd * 14, cy + 34, 6, 0, Math.PI * 1.5);
+          ctx.stroke();
+        });
+        ctx.beginPath();
+        ctx.ellipse(32, cy - 12, 4, 8, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    } else {
+      for (let r = 0; r < 7; r++) {
+        for (let q = 0; q < 2; q++) {
+          const tx = 8 + q * 25;
+          const ty = 9 + r * 35;
+          ctx.strokeRect(tx, ty, 22, 30);
+          ctx.beginPath();
+          ctx.arc(tx + 11, ty + 15, 6, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(tx + 11, ty + 15, 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+    const t = new THREE.CanvasTexture(c);
+    return t;
+  };
+  const panelMats = {};
+  ['scroll', 'tiles'].forEach((kind) => {
+    const bump = panelMap(kind);
+    panelMats[kind] = new THREE.MeshStandardMaterial({
+      color: 0x1c1c1e,
+      roughness: 0.45,
+      metalness: 0.55,
+      bumpMap: bump,
+      bumpScale: 3,
+      emissive: 0x2c2c2e,
+      emissiveMap: bump,
+      emissiveIntensity: 0.6
+    });
+  });
+  const faceW = 2 * 0.22 * Math.tan(Math.PI / 8);
+  for (let i = 0; i < 8; i++) {
+    const a = (i * Math.PI) / 4; // outward normal angle from +Z
+    const p = new THREE.Mesh(
+      new THREE.PlaneGeometry(faceW - 0.025, 0.58),
+      i % 2 === 0 ? panelMats.scroll : panelMats.tiles
+    );
+    p.position.set(x + Math.sin(a) * 0.2215, floorY + 0.54, z + Math.cos(a) * 0.2215);
+    p.rotation.y = a;
+    g.add(p);
+  }
+
+  // Hinged maker's plate ('Tortoise Stove') hanging on a front corner face near the bottom
+  const c = document.createElement('canvas');
+  c.width = 128;
+  c.height = 96;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#2a2a2c';
+  ctx.fillRect(0, 0, 128, 96);
+  ctx.strokeStyle = '#77777a';
+  ctx.lineWidth = 4;
+  ctx.strokeRect(4, 4, 120, 88);
+  ctx.fillStyle = '#8a8a8e';
+  ctx.textAlign = 'center';
+  ctx.font = 'italic bold 30px Georgia, serif';
+  ctx.fillText('Tortoise', 64, 44);
+  ctx.fillText('Stove', 64, 78);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  const plateA = Math.PI * 0.75; // front corner face, towards the aisle (-Z) and the font (-X)
+  const makerPlate = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.1, 0.008), [
+    ironBlack,
+    ironBlack,
+    ironBlack,
+    ironBlack,
+    new THREE.MeshStandardMaterial({ map: tex, roughness: 0.5, metalness: 0.5 }),
+    ironBlack
+  ]);
+  makerPlate.position.set(x + Math.sin(plateA) * 0.235, floorY + 0.36, z + Math.cos(plateA) * 0.235);
+  makerPlate.rotation.y = plateA;
+  makerPlate.rotation.x = -0.08;
+  makerPlate.castShadow = true;
+  g.add(makerPlate);
+  const hinge = add(new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.1, 8), ironBlack), 0, 0, 0);
+  hinge.position.set(x + Math.sin(plateA) * 0.232, floorY + 0.41, z + Math.cos(plateA) * 0.232);
+  hinge.rotation.z = Math.PI / 2;
+  hinge.rotation.y = plateA;
+
+  // Flue pipe: out of the back, an elbow, straight up, then a 45-degree bend running diagonally up to enter the
+  // wall at three-quarters of its height
+  const pipeR = 0.065;
+  const outY = floorY + 0.58;
+  const riseZ = z + 0.48;
+  const topY = floorY + DIM.nave.eavesY * 0.75;
+  const pipe = (a, b) => {
+    const len = a.distanceTo(b);
+    const m = add(new THREE.Mesh(new THREE.CylinderGeometry(pipeR, pipeR, len, 16, 1, true), ironBlack), 0, 0, 0);
+    m.position.copy(a).lerp(b, 0.5);
+    m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
+  };
+  const elbow = (p) => add(new THREE.Mesh(new THREE.SphereGeometry(pipeR * 1.05, 16, 12), ironBlack), p.x, p.y, p.z);
+  const p0 = new THREE.Vector3(x, outY, z + 0.2);
+  const p1 = new THREE.Vector3(x, outY, riseZ);
+  const p2 = new THREE.Vector3(x, topY - (wallZ - riseZ), riseZ);
+  const p3 = new THREE.Vector3(x, topY + 0.01, wallZ + 0.01);
+  pipe(p0, p1);
+  elbow(p1);
+  pipe(p1, p2);
+  elbow(p2);
+  pipe(p2, p3);
+  // Collars at the pipe joints and a round cast-iron soot door plate where the flue enters the wall
+  [0.35, 0.62, 0.88].forEach((t) => {
+    const col = add(
+      new THREE.Mesh(new THREE.CylinderGeometry(pipeR * 1.12, pipeR * 1.12, 0.03, 16), ironBlack),
+      0,
+      0,
+      0
+    );
+    col.position.copy(p1).lerp(p2, t);
+  });
+  const plate = add(
+    new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.13, 0.015, 20), ironBlack),
+    x,
+    p3.y,
+    wallZ - 0.006
+  );
+  plate.rotation.x = Math.PI / 2;
+  // Iron wall stays holding the riser
+  [0.45, 0.85].forEach((t) => {
+    const stay = add(new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.012, wallZ - riseZ), ironBlack), 0, 0, 0);
+    stay.position.set(x, outY + (p2.y - outY) * t, (riseZ + wallZ) * 0.5);
+  });
+  return g;
+}
+
+// Ellacombe-style chiming frame on the vestry's West wall: a ringer pulls the three cords in turn, each lifting a
+// hammer against its hanging bell above (belfry.js). Clicking it chimes the bells (main.js).
+function buildChimingFrame(mats, floorY) {
+  const g = markEra1900(new THREE.Group());
+  g.userData.ringsBells = true;
+  const x = DIM.nave.xWestInt + 0.03;
+  const zc = -1.75;
+  const y0 = floorY + 0.95;
+  const y1 = floorY + 2.15;
+  const board = new THREE.Mesh(new THREE.BoxGeometry(0.03, y1 - y0, 0.46), mats.medOak);
+  board.position.set(x, (y0 + y1) * 0.5, zc);
+  g.add(board);
+  [y0 + 0.04, y1 - 0.05].forEach((ry) => {
+    const rail = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.07, 0.5), mats.darkOak);
+    rail.position.set(x + 0.035, ry, zc);
+    g.add(rail);
+  });
+  const cordMat = createRopeMaterial();
+  const ceilingY = DIM.tower.belfryCeilingY;
+  [-0.14, 0, 0.14].forEach((dz, i) => {
+    const cz = zc + dz;
+    // Cord from its hook on the bottom rail, over a brass pulley on the top rail and up through the ceiling
+    const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, ceilingY - y0 - 0.08, 6), cordMat);
+    cord.position.set(x + 0.085, (ceilingY + y0 + 0.08) * 0.5, cz);
+    g.add(cord);
+    const hook = new THREE.Mesh(new THREE.TorusGeometry(0.012, 0.003, 6, 12), mats.brass);
+    hook.position.set(x + 0.085, y0 + 0.07, cz);
+    hook.rotation.y = Math.PI / 2;
+    g.add(hook);
+    const pulley = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.012, 14), mats.brass);
+    pulley.rotation.x = Math.PI / 2;
+    pulley.position.set(x + 0.085, y1 - 0.05, cz);
+    g.add(pulley);
+    // Number plate above each cord (1 treble, 2, 3 tenor)
+    const nc = document.createElement('canvas');
+    nc.width = 64;
+    nc.height = 64;
+    const nctx = nc.getContext('2d');
+    nctx.fillStyle = '#d8c48a';
+    nctx.fillRect(0, 0, 64, 64);
+    nctx.fillStyle = '#2a2018';
+    nctx.font = 'bold 44px Georgia, serif';
+    nctx.textAlign = 'center';
+    nctx.fillText(String(i + 1), 32, 48);
+    const nt = new THREE.CanvasTexture(nc);
+    nt.colorSpace = THREE.SRGBColorSpace;
+    const num = new THREE.Mesh(new THREE.PlaneGeometry(0.05, 0.05), new THREE.MeshStandardMaterial({ map: nt }));
+    num.rotation.y = Math.PI / 2;
+    num.position.set(x + 0.016, y1 - 0.15, cz);
+    g.add(num);
+  });
+  // An invisible block over the frame takes the clicks
+  const hit = new THREE.Mesh(new THREE.BoxGeometry(0.25, y1 - y0, 0.5), mats.medOak);
+  hit.position.set(x + 0.1, (y0 + y1) * 0.5, zc);
+  hit.visible = false;
+  g.add(hit);
+  return g;
+}
+
+// Fretwork panel texture: pierced oak lattice over a dark red cloth backing
+function createFretworkTexture(kind) {
+  const c = document.createElement('canvas');
+  c.width = 256;
+  c.height = 128;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#5a1e18';
+  ctx.fillRect(0, 0, 256, 128);
+  ctx.strokeStyle = '#a8743e';
+  ctx.lineWidth = 7;
+  if (kind === 'arches') {
+    // A row of round-headed openings (the frieze under the cornice)
+    ctx.fillStyle = '#a8743e';
+    ctx.fillRect(0, 0, 256, 128);
+    ctx.fillStyle = '#1a120c';
+    for (let i = 0; i < 8; i++) {
+      const cx = 16 + i * 32;
+      ctx.beginPath();
+      ctx.moveTo(cx - 10, 118);
+      ctx.lineTo(cx - 10, 50);
+      ctx.arc(cx, 50, 10, Math.PI, 0);
+      ctx.lineTo(cx + 10, 118);
+      ctx.fill();
+    }
+  } else {
+    // Diagonal trellis with small rosettes
+    for (let k = -128; k < 256 + 128; k += 26) {
+      ctx.beginPath();
+      ctx.moveTo(k, 0);
+      ctx.lineTo(k + 128, 128);
+      ctx.moveTo(k, 128);
+      ctx.lineTo(k + 128, 0);
+      ctx.stroke();
+    }
+    ctx.lineWidth = 10;
+    ctx.strokeRect(5, 5, 246, 118);
+  }
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
+// Victorian oak pedal harmonium (American-style parlour reed organ, c. 1890) with its keys on pivots so they can
+// follow the music; front faces +Z. Returns { group, keys: Map(midi -> { pivot, angle }), treadles }.
+function buildHarmonium(mats) {
+  const g = new THREE.Group();
+  const oak = mats.medOak;
+  const dark = mats.darkOak;
+  const add = (geo, mat, x, y, z, parent = g) => {
+    const m = new THREE.Mesh(geo, mat);
+    m.position.set(x, y, z);
+    m.castShadow = true;
+    m.receiveShadow = true;
+    parent.add(m);
+    return m;
+  };
+  const W = 1.16;
+  const zBack = -0.25;
+  // Back, sides & plinth
+  add(new THREE.BoxGeometry(W, 2.0, 0.03), oak, 0, 1.0, zBack + 0.015);
+  [-1, 1].forEach((s) => {
+    add(new THREE.BoxGeometry(0.06, 0.98, 0.46), oak, s * (W * 0.5 - 0.03), 0.49, -0.02);
+    // Turned front legs with block feet and a scrolled bracket under the key bed
+    add(new THREE.BoxGeometry(0.1, 0.09, 0.1), dark, s * (W * 0.5 - 0.06), 0.045, 0.2);
+    const leg = add(new THREE.CylinderGeometry(0.03, 0.036, 0.56, 12), oak, s * (W * 0.5 - 0.06), 0.37, 0.2);
+    leg.scale.set(1, 1, 1);
+    [0.16, 0.36, 0.56].forEach((y) =>
+      add(new THREE.TorusGeometry(0.036, 0.008, 6, 14), oak, s * (W * 0.5 - 0.06), y, 0.2).rotateX(Math.PI / 2)
+    );
+    const bracket = add(new THREE.TorusGeometry(0.06, 0.012, 6, 12, Math.PI / 2), oak, s * (W * 0.5 - 0.06), 0.6, 0.2);
+    bracket.rotation.y = s > 0 ? Math.PI / 2 : -Math.PI / 2;
+  });
+  add(new THREE.BoxGeometry(W, 0.06, 0.48), dark, 0, 0.03, -0.01);
+  // Bellows box behind the kneehole, under the key bed
+  add(new THREE.BoxGeometry(W - 0.14, 0.5, 0.2), oak, 0, 0.42, -0.14);
+  // Key bed with a fretwork rail across its front
+  add(new THREE.BoxGeometry(W, 0.07, 0.52), oak, 0, 0.705, 0.0);
+  const fret = new THREE.MeshStandardMaterial({ map: createFretworkTexture('trellis'), roughness: 0.7 });
+  add(new THREE.PlaneGeometry(W - 0.2, 0.06), fret, 0, 0.705, 0.261);
+  // Scrolled key cheeks
+  [-1, 1].forEach((s) => {
+    const cheek = add(new THREE.BoxGeometry(0.06, 0.16, 0.42), oak, s * (W * 0.5 - 0.06), 0.82, 0.03);
+    cheek.castShadow = true;
+    add(new THREE.CylinderGeometry(0.05, 0.05, 0.06, 14), oak, s * (W * 0.5 - 0.06), 0.84, 0.22).rotateZ(Math.PI / 2);
+  });
+  // Five-octave keyboard, C (MIDI 36) to C (96), keys pivoted at their back ends; low notes at -X (player's left)
+  const keys = new Map();
+  const isSharp = (m) => [1, 3, 6, 8, 10].includes(m % 12);
+  let naturals = 0;
+  for (let m = 36; m <= 96; m++) if (!isSharp(m)) naturals++;
+  const span = W - 0.2;
+  const kW = span / naturals;
+  const natGeo = new THREE.BoxGeometry(kW - 0.0016, 0.018, 0.14);
+  natGeo.translate(0, 0.009, 0.07);
+  const sharpGeo = new THREE.BoxGeometry(kW * 0.55, 0.014, 0.085);
+  sharpGeo.translate(0, 0.025, 0.0425);
+  const ebony = new THREE.MeshStandardMaterial({ color: 0x15110e, roughness: 0.35 });
+  let nIdx = 0;
+  for (let m = 36; m <= 96; m++) {
+    const sharp = isSharp(m);
+    const x = -span * 0.5 + (sharp ? nIdx * kW : (nIdx + 0.5) * kW);
+    if (!sharp) nIdx++;
+    const pivot = new THREE.Group();
+    pivot.position.set(x, 0.74, 0.1);
+    const key = new THREE.Mesh(sharp ? sharpGeo : natGeo, sharp ? ebony : mats.wax);
+    pivot.add(key);
+    g.add(pivot);
+    keys.set(m, { pivot, angle: 0 });
+  }
+  // Stop rail with a row of round white stop knobs
+  add(new THREE.BoxGeometry(W - 0.14, 0.07, 0.1), oak, 0, 0.8, 0.05);
+  const knobGeo = new THREE.CylinderGeometry(0.011, 0.011, 0.012, 12).rotateX(Math.PI / 2);
+  for (let i = 0; i < 11; i++) add(knobGeo, mats.wax, -0.3 + i * 0.06, 0.805, 0.106);
+  // Upper case over the action, with a moulded top
+  add(new THREE.BoxGeometry(W - 0.06, 0.2, 0.32), oak, 0, 0.935, -0.08);
+  add(new THREE.BoxGeometry(W + 0.04, 0.035, 0.38), dark, 0, 1.05, -0.07);
+  // Music desk: a raised panel with an inlaid oval, flanked by fretwork panels, a small crest on top
+  const desk = new THREE.Group();
+  desk.position.set(0, 1.07, 0.02);
+  desk.rotation.x = -0.12;
+  g.add(desk);
+  add(new THREE.BoxGeometry(0.5, 0.26, 0.03), oak, 0, 0.13, 0, desk);
+  const oval = add(new THREE.CircleGeometry(0.1, 32), mats.warmOak, 0, 0.13, 0.016, desk);
+  oval.scale.set(1.8, 0.75, 1);
+  add(new THREE.BoxGeometry(0.5, 0.025, 0.06), dark, 0, 0.0, 0.03, desk); // ledge
+  [-1, 1].forEach((s) => {
+    add(new THREE.BoxGeometry(0.16, 0.2, 0.025), oak, s * 0.37, 0.1, -0.02, desk);
+    add(new THREE.PlaneGeometry(0.13, 0.16), fret, s * 0.37, 0.1, -0.006, desk);
+  });
+  add(new THREE.ConeGeometry(0.05, 0.06, 3), oak, 0, 0.29, 0, desk);
+  // Superstructure: side posts, shelf, central bevelled mirror between turned columns, frieze, cornice & pediment
+  [-1, 1].forEach((s) => {
+    add(new THREE.BoxGeometry(0.08, 0.92, 0.12), oak, s * (W * 0.5 - 0.06), 1.52, -0.18);
+    add(new THREE.BoxGeometry(0.3, 0.6, 0.012), dark, s * 0.36, 1.62, -0.212);
+  });
+  add(new THREE.BoxGeometry(W - 0.1, 0.03, 0.18), oak, 0, 1.33, -0.15);
+  const mirror = add(
+    new THREE.PlaneGeometry(0.3, 0.38),
+    new THREE.MeshStandardMaterial({ color: 0xc8ccd0, metalness: 0.95, roughness: 0.06 }),
+    0,
+    1.6,
+    -0.205
+  );
+  mirror.castShadow = false;
+  [-1, 1].forEach((s) => {
+    add(new THREE.CylinderGeometry(0.022, 0.026, 0.5, 12), oak, s * 0.19, 1.6, -0.18);
+    add(new THREE.BoxGeometry(0.06, 0.04, 0.06), oak, s * 0.19, 1.37, -0.18);
+    add(new THREE.BoxGeometry(0.06, 0.04, 0.06), oak, s * 0.19, 1.85, -0.18);
+  });
+  add(new THREE.BoxGeometry(0.42, 0.03, 0.1), oak, 0, 1.39, -0.19); // mirror shelf
+  const frieze = new THREE.MeshStandardMaterial({ map: createFretworkTexture('arches'), roughness: 0.7 });
+  add(new THREE.BoxGeometry(W, 0.16, 0.08), oak, 0, 1.96, -0.2);
+  add(new THREE.PlaneGeometry(0.42, 0.13), frieze, 0, 1.96, -0.159);
+  add(new THREE.BoxGeometry(W + 0.08, 0.05, 0.2), dark, 0, 2.065, -0.17);
+  // Carved scrolled pediment crest
+  const crest = new THREE.Shape();
+  crest.moveTo(-0.5, 0);
+  crest.bezierCurveTo(-0.42, 0.06, -0.3, 0.04, -0.22, 0.1);
+  crest.bezierCurveTo(-0.14, 0.16, -0.08, 0.2, 0, 0.24);
+  crest.bezierCurveTo(0.08, 0.2, 0.14, 0.16, 0.22, 0.1);
+  crest.bezierCurveTo(0.3, 0.04, 0.42, 0.06, 0.5, 0);
+  crest.closePath();
+  const crestGeo = new THREE.ExtrudeGeometry(crest, {
+    depth: 0.04,
+    bevelEnabled: true,
+    bevelThickness: 0.008,
+    bevelSize: 0.008,
+    bevelSegments: 2
+  });
+  add(crestGeo, oak, 0, 2.09, -0.2);
+  // Two treadles, carpeted with a lyre pattern, hinged at their heels
+  const tc = document.createElement('canvas');
+  tc.width = 64;
+  tc.height = 128;
+  const tctx = tc.getContext('2d');
+  tctx.fillStyle = '#6a1820';
+  tctx.fillRect(0, 0, 64, 128);
+  tctx.strokeStyle = '#d6b87a';
+  tctx.lineWidth = 3;
+  tctx.strokeRect(5, 5, 54, 118);
+  tctx.beginPath();
+  tctx.moveTo(18, 100);
+  tctx.bezierCurveTo(4, 70, 14, 34, 24, 30);
+  tctx.moveTo(46, 100);
+  tctx.bezierCurveTo(60, 70, 50, 34, 40, 30);
+  tctx.moveTo(18, 100);
+  tctx.lineTo(46, 100);
+  for (let i = 0; i < 4; i++) {
+    tctx.moveTo(26 + i * 4, 98);
+    tctx.lineTo(26 + i * 4, 40);
+  }
+  tctx.stroke();
+  const tTex = new THREE.CanvasTexture(tc);
+  tTex.colorSpace = THREE.SRGBColorSpace;
+  const tMat = new THREE.MeshStandardMaterial({ map: tTex, roughness: 0.9 });
+  const treadles = [-1, 1].map((s) => {
+    const hinge = new THREE.Group();
+    hinge.position.set(s * 0.13, 0.07, -0.02);
+    const plate = new THREE.Mesh(new THREE.BoxGeometry(0.17, 0.02, 0.3), dark);
+    plate.position.z = 0.15;
+    hinge.add(plate);
+    const carpet = new THREE.Mesh(new THREE.PlaneGeometry(0.15, 0.28), tMat);
+    carpet.rotation.x = -Math.PI / 2;
+    carpet.position.set(0, 0.011, 0.15);
+    hinge.add(carpet);
+    hinge.rotation.x = -0.32;
+    g.add(hinge);
+    return hinge;
+  });
+  // Round adjustable stool in front
+  const stool = new THREE.Group();
+  stool.position.set(0, 0, 0.62);
+  add(new THREE.CylinderGeometry(0.17, 0.17, 0.05, 20), dark, 0, 0.5, 0, stool);
+  add(new THREE.CylinderGeometry(0.03, 0.04, 0.42, 10), oak, 0, 0.27, 0, stool);
+  for (let k = 0; k < 3; k++) {
+    const a = (k / 3) * Math.PI * 2;
+    const foot = add(new THREE.BoxGeometry(0.035, 0.035, 0.24), oak, Math.sin(a) * 0.1, 0.06, Math.cos(a) * 0.1, stool);
+    foot.rotation.y = a;
+    foot.rotation.x = -0.25;
+  }
+  g.add(stool);
+  return { group: g, keys, treadles };
 }
