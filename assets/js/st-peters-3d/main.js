@@ -5,6 +5,7 @@ import { buildInterior } from '/assets/js/st-peters-3d/interior.js';
 import { buildChurchyard, createSkyDome } from '/assets/js/st-peters-3d/churchyard.js';
 import { buildAtmosphere } from '/assets/js/st-peters-3d/atmosphere.js';
 import { createChurchAudio } from '/assets/js/st-peters-3d/audio.js';
+import '/assets/js/st-peters-3d/walk-joystick.js';
 import { BELL_NOMINAL_HZ, createBellRinger } from '/assets/js/st-peters-3d/belfry.js';
 import { CHURCH_TOUR_WAYPOINTS, DIM } from '/assets/js/st-peters-3d/dimensions.js';
 import { CAMERA_PRESETS, createCameraController } from '/assets/js/st-peters-3d/controls.js';
@@ -62,7 +63,8 @@ if (stage) {
   // Build Church, Churchyard & Cinematic Stained-Glass Atmosphere
   const mats = createMaterials(renderer);
   const { wallsGroup, roofGroup, doorPivots } = buildArchitecture(mats);
-  const { interiorGroup, ceilingGroup, chandelierLights, causticMesh, candleEffect } = buildInterior(mats);
+  const { interiorGroup, ceilingGroup, chandelierLights, causticMesh, candleEffect, organAnimator } =
+    buildInterior(mats);
   const { group: churchyardGroup, christmasEffect, memorialGroups } = buildChurchyard(mats);
   const atmosphere = buildAtmosphere();
 
@@ -204,12 +206,20 @@ if (stage) {
     if (isWalk) setDoorsOpen(true);
     const btn = document.getElementById('btn-walk');
     const hint = document.getElementById('walk-hint');
+    const joystick = document.getElementById('walk-joystick');
     if (btn) {
       btn.setAttribute('aria-pressed', String(isWalk));
       btn.textContent = isWalk ? 'Mode: Walk' : 'Mode: Orbit';
     }
     if (hint) hint.hidden = !isWalk;
+    // On-screen thumb stick for touch screens (CSS only shows it where the main pointer is coarse)
+    if (joystick) joystick.hidden = !isWalk;
+    if (!isWalk) controller.setMoveInput(0, 0);
   }
+
+  document.getElementById('walk-joystick')?.addEventListener('joystickmove', (e) => {
+    controller.setMoveInput(e.detail.x, e.detail.y);
+  });
 
   const presetBar = document.getElementById('preset-bar');
   const presetsToggleBtn = document.getElementById('btn-presets-toggle');
@@ -669,6 +679,8 @@ if (stage) {
     updateBells();
     controller.update(dt);
     churchAudio.updateSpatial(camera.position, state.doorsOpen);
+    // Console follows the organ voluntary: tambour open and keys/pedals moving only while it plays
+    organAnimator.update(dt, churchAudio.isRunning(), churchAudio.getSoundingNotes());
     updateMiniPlan();
     renderer.render(scene, camera);
   }

@@ -153,6 +153,8 @@ export function createChurchAudio() {
   let targetGain = 0.075;
   let targetCutoff = 680;
   const activeNodes = new Set();
+  // Notes scheduled on the audio clock, so the organ console can show what is sounding: { midi, start, end, pedal }
+  let scheduledNotes = [];
 
   const BEAT_SEC = 0.92; // Slow, peaceful ~65 BPM voluntary
 
@@ -295,17 +297,22 @@ export function createChurchAudio() {
 
       // Deep 16' pedal bass
       playPipeNote(midiToHz(bar.pedal), nextBarTime, barDur * 0.96, 0.22, { isPedal: true });
+      scheduledNotes.push({ midi: bar.pedal, start: nextBarTime, end: nextBarTime + barDur * 0.96, pedal: true });
 
       // Warm 8' inner manual harmony
       for (const midi of bar.chord) {
         playPipeNote(midiToHz(midi), nextBarTime, barDur * 0.95, 0.11);
+        scheduledNotes.push({ midi, start: nextBarTime, end: nextBarTime + barDur * 0.95, pedal: false });
       }
 
       // Gentle singing diapason/flute melody
       for (const [beatOff, lenBeats, midi] of bar.melody) {
-        playPipeNote(midiToHz(midi), nextBarTime + beatOff * BEAT_SEC, lenBeats * BEAT_SEC * 0.94, 0.145, {
+        const t0 = nextBarTime + beatOff * BEAT_SEC;
+        const len = lenBeats * BEAT_SEC * 0.94;
+        playPipeNote(midiToHz(midi), t0, len, 0.145, {
           isMelody: true
         });
+        scheduledNotes.push({ midi, start: t0, end: t0 + len, pedal: false });
       }
 
       nextBarTime += barDur;
@@ -361,9 +368,23 @@ export function createChurchAudio() {
     ]);
   }
 
+  // MIDI notes sounding right now, split into manual and pedal, for animating the console
+  function getSoundingNotes() {
+    const manual = new Set();
+    const pedal = new Set();
+    if (!context || muted || context.state !== 'running') return { manual, pedal };
+    const now = context.currentTime;
+    scheduledNotes = scheduledNotes.filter((n) => n.end > now);
+    for (const n of scheduledNotes) {
+      if (n.start <= now) (n.pedal ? pedal : manual).add(n.midi);
+    }
+    return { manual, pedal };
+  }
+
   function setMuted(isMuted) {
     muted = Boolean(isMuted);
     if (muted) {
+      scheduledNotes = [];
       if (timer) {
         clearInterval(timer);
         timer = null;
@@ -468,6 +489,7 @@ export function createChurchAudio() {
     isMuted: () => muted,
     isRunning: () => context?.state === 'running' && !muted,
     updateSpatial,
+    getSoundingNotes,
     playBell
   };
 }

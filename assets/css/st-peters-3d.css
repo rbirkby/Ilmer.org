@@ -191,6 +191,38 @@ body.st-peters-fs-lock {
   display: none;
 }
 
+/* Keyboard instructions for mouse & keyboard users; touch instructions and the walk joystick for touch screens */
+.st-peters-touch-only {
+  display: none;
+}
+
+.st-peters-joystick {
+  position: absolute;
+  left: 16px;
+  bottom: 64px;
+  z-index: 7;
+  display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .st-peters-kbd-only {
+    display: none;
+  }
+
+  .st-peters-touch-only {
+    display: inline;
+  }
+
+  .st-peters-joystick:not([hidden]) {
+    display: block;
+  }
+
+  /* Sit the joystick above the walk hint and views bar so it never covers them */
+  .st-peters-joystick {
+    bottom: 132px;
+  }
+}
+
 /* Bottom-Right 1974 Sketch Plan Minimap */
 .st-peters-miniplan {
   position: absolute;

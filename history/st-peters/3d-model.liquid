@@ -68,7 +68,8 @@ permalink: /history/st-peters/3d-model/index.html
 
     <div class="st-peters-bottom-stack">
       <div id="walk-hint" class="st-peters-walk-hint" hidden>
-        Walk Mode: <strong>W A S D</strong> / Arrows to move &middot; Drag to look &middot; Press <strong>F</strong> for Orbit
+        <span class="st-peters-kbd-only">Walk Mode: <strong>W A S D</strong> / Arrows to move &middot; Drag to look &middot; Press <strong>F</strong> for Orbit</span>
+        <span class="st-peters-touch-only">Joystick to walk &middot; Drag to look around</span>
       </div>
 
       <div id="tour-banner" class="st-peters-walk-hint" role="status" aria-live="polite" hidden></div>
@@ -91,6 +92,8 @@ permalink: /history/st-peters/3d-model/index.html
         <button type="button" class="st-peters-pill" data-preset="cutaway-plan" aria-pressed="false">Floorplan Cutaway</button>
       </nav>
     </div>
+
+    <st-walk-joystick id="walk-joystick" class="st-peters-joystick" hidden></st-walk-joystick>
 
     <aside class="st-peters-miniplan" aria-label="Interactive church floorplan map">
       <div class="st-peters-miniplan-title">Floor Plan</div>
@@ -126,7 +129,10 @@ permalink: /history/st-peters/3d-model/index.html
   </div>
 </div>
 
-<p id="scene-help" class="scene-help">Drag to orbit &middot; Scroll or pinch to zoom &middot; Right-drag to pan &middot; Click any gravestone to read its inscription &middot; Click rooms on the Floor Plan to jump inside. Keyboard: <strong>T</strong> starts Church Tour, <strong>F</strong> toggles Walk mode (WASD/Arrows), <strong>O</strong> opens the North Porch doors, <strong>C</strong> toggles Roof Cutaway, <strong>M</strong> mutes organ music, <strong>R</strong> resets the view.</p>
+<p id="scene-help" class="scene-help">
+  <span class="st-peters-kbd-only">Drag to orbit &middot; Scroll or pinch to zoom &middot; Right-drag to pan &middot; Click any gravestone to read its inscription &middot; Click rooms on the Floor Plan to jump inside. Keyboard: <strong>T</strong> starts Church Tour, <strong>F</strong> toggles Walk mode (WASD/Arrows), <strong>O</strong> opens the North Porch doors, <strong>C</strong> toggles Roof Cutaway, <strong>M</strong> mutes organ music, <strong>R</strong> resets the view.</span>
+  <span class="st-peters-touch-only">Drag to orbit &middot; Pinch to zoom &middot; Drag with two fingers to pan &middot; Tap any gravestone to read its inscription &middot; Pick a view from <strong>Views</strong> or take the <strong>Church Tour</strong>. To walk around, tap <strong>Mode: Orbit</strong> to switch to Walk, then use the joystick to move and drag anywhere else to look around.</span>
+</p>
 
 <noscript><p>The interactive 3D model requires JavaScript. Visit <a href="/history/church/">St Peter's Church History</a> to read about the church.</p></noscript>
 
@@ -145,7 +151,8 @@ permalink: /history/st-peters/3d-model/index.html
     "/assets/js/st-peters-3d/churchyard.js": "{{ '/assets/js/st-peters-3d/churchyard.js' | cacheBust }}",
     "/assets/js/st-peters-3d/atmosphere.js": "{{ '/assets/js/st-peters-3d/atmosphere.js' | cacheBust }}",
     "/assets/js/st-peters-3d/audio.js": "{{ '/assets/js/st-peters-3d/audio.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/controls.js": "{{ '/assets/js/st-peters-3d/controls.js' | cacheBust }}"
+    "/assets/js/st-peters-3d/controls.js": "{{ '/assets/js/st-peters-3d/controls.js' | cacheBust }}",
+    "/assets/js/st-peters-3d/walk-joystick.js": "{{ '/assets/js/st-peters-3d/walk-joystick.js' | cacheBust }}"
   }
 }
 </script>

@@ -126,6 +126,9 @@ export function createCameraController(camera, domElement) {
   let yaw = 0;
   let pitch = 0;
   let draggingLook = false;
+  let lookPointerId = null;
+  // Analog walk input from the on-screen joystick (x: right, y: forward, each -1..1)
+  const stick = { x: 0, y: 0 };
   let lastMouseX = 0;
   let lastMouseY = 0;
 
@@ -312,8 +315,10 @@ export function createCameraController(camera, domElement) {
   });
 
   domElement.addEventListener('pointerdown', (e) => {
-    if (mode === 'walk' && e.button === 0) {
+    // Only one pointer steers the view, so a thumb on the joystick doesn't also turn the head
+    if (mode === 'walk' && e.button === 0 && !draggingLook) {
       draggingLook = true;
+      lookPointerId = e.pointerId;
       lastMouseX = e.clientX;
       lastMouseY = e.clientY;
     }
@@ -328,7 +333,7 @@ export function createCameraController(camera, domElement) {
     { passive: true }
   );
   window.addEventListener('pointermove', (e) => {
-    if (!draggingLook || mode !== 'walk') return;
+    if (!draggingLook || mode !== 'walk' || e.pointerId !== lookPointerId) return;
     const dx = e.clientX - lastMouseX;
     const dy = e.clientY - lastMouseY;
     lastMouseX = e.clientX;
@@ -336,9 +341,13 @@ export function createCameraController(camera, domElement) {
     yaw -= dx * 0.0038;
     pitch = THREE.MathUtils.clamp(pitch - dy * 0.0034, -1.25, 1.25);
   });
-  window.addEventListener('pointerup', () => {
+  const endLook = (e) => {
+    if (e.pointerId !== lookPointerId) return;
     draggingLook = false;
-  });
+    lookPointerId = null;
+  };
+  window.addEventListener('pointerup', endLook);
+  window.addEventListener('pointercancel', endLook);
 
   function update(dt) {
     if (tour) {
@@ -424,6 +433,13 @@ export function createCameraController(camera, domElement) {
       if (keys.has('KeyS') || keys.has('ArrowDown')) camera.position.addScaledVector(forward, -moveSpeed);
       if (keys.has('KeyD') || keys.has('ArrowRight')) camera.position.addScaledVector(right, moveSpeed);
       if (keys.has('KeyA') || keys.has('ArrowLeft')) camera.position.addScaledVector(right, -moveSpeed);
+      // Joystick: walking pace for most of its travel, quickening towards a stride near the rim
+      const push = Math.hypot(stick.x, stick.y);
+      if (push > 0.08) {
+        const pace = (push > 0.9 ? 4.2 : 2.8) * dt;
+        camera.position.addScaledVector(forward, stick.y * pace);
+        camera.position.addScaledVector(right, stick.x * pace);
+      }
 
       camera.position.x = THREE.MathUtils.clamp(camera.position.x, -26, 26);
       camera.position.z = THREE.MathUtils.clamp(camera.position.z, -24, 24);
@@ -461,6 +477,10 @@ export function createCameraController(camera, domElement) {
     startTour,
     stopTour,
     isTouring: () => Boolean(tour),
+    setMoveInput(x, y) {
+      stick.x = x;
+      stick.y = y;
+    },
     update
   };
 }

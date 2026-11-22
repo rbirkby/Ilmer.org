@@ -3717,29 +3717,63 @@ export function buildInterior(mats) {
   const keyBed = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.03, 1.16), mats.medOak);
   keyBed.position.set(-0.45, 0.825, 0);
   organG.add(keyBed);
-  const oKeys = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.03, 0.92), mats.wax);
-  oKeys.position.set(-0.44, 0.855, 0);
-  organG.add(oKeys);
+  // Five-octave manual, C (MIDI 36) to C (96). Each key hangs from a pivot at its back end so it can dip when
+  // played; the player sits at -X, so low notes (their left) are at +Z
+  const isSharpMidi = (m) => [1, 3, 6, 8, 10].includes(m % 12);
+  const manualKeys = new Map();
+  const naturalsBefore = (lo, m) => {
+    let n = 0;
+    for (let k = lo; k < m; k++) if (!isSharpMidi(k)) n++;
+    return n;
+  };
+  {
+    const lo = 36;
+    const hi = 96;
+    const span = 0.92;
+    const kW = span / naturalsBefore(lo, hi + 1);
+    const pivotX = -0.39;
+    const bedTop = 0.84;
+    const natKeyGeo = new THREE.BoxGeometry(0.15, 0.02, kW - 0.0016);
+    natKeyGeo.translate(-0.075, 0.01, 0);
+    const sharpKeyGeo = new THREE.BoxGeometry(0.095, 0.014, kW * 0.55);
+    sharpKeyGeo.translate(-0.0475, 0.02 + 0.007, 0);
+    const ebony = new THREE.MeshStandardMaterial({ color: 0x15110e, roughness: 0.35 });
+    for (let m = lo; m <= hi; m++) {
+      const sharp = isSharpMidi(m);
+      const z = span * 0.5 - naturalsBefore(lo, m) * kW - (sharp ? 0 : kW * 0.5);
+      const pivot = new THREE.Group();
+      pivot.position.set(pivotX, bedTop, z);
+      const key = new THREE.Mesh(sharp ? sharpKeyGeo : natKeyGeo, sharp ? ebony : mats.wax);
+      key.castShadow = !sharp;
+      pivot.add(key);
+      organG.add(pivot);
+      manualKeys.set(m, { pivot, angle: 0 });
+    }
+  }
 
   // Roll-top (tambour) fall drawn down over the keyboard: a quarter-round of narrow oak slats running in
   // curved grooves in the two shaped cheeks, with a moulded lip on the bottom slat to lift it by
   const arcC = new THREE.Vector2(-0.34, 0.875); // centre of the quarter-round, against the case front
   const arcR = 0.24;
   const slats = 16;
+  // The slats and lip turn together about the arc centre: opening rolls them up and back into the case
+  const tambour = new THREE.Group();
+  tambour.position.set(arcC.x, arcC.y, 0);
+  organG.add(tambour);
   for (let k = 0; k < slats; k++) {
     const a0 = Math.PI / 2 + (k / slats) * (Math.PI / 2);
     const a1 = Math.PI / 2 + ((k + 1) / slats) * (Math.PI / 2);
     const am = (a0 + a1) * 0.5;
     const slat = new THREE.Mesh(new THREE.BoxGeometry(arcR * (a1 - a0) - 0.002, 0.012, 0.98), mats.warmOak);
-    slat.position.set(arcC.x + Math.cos(am) * arcR, arcC.y + Math.sin(am) * arcR, 0);
+    slat.position.set(Math.cos(am) * arcR, Math.sin(am) * arcR, 0);
     slat.rotation.z = am - Math.PI / 2;
     slat.castShadow = true;
-    organG.add(slat);
+    tambour.add(slat);
   }
   const lip = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.98, 10), mats.darkOak);
   lip.rotation.x = Math.PI / 2;
-  lip.position.set(arcC.x - arcR - 0.004, arcC.y + 0.006, 0);
-  organG.add(lip);
+  lip.position.set(-arcR - 0.004, 0.006, 0);
+  tambour.add(lip);
   const cheekShape = new THREE.Shape();
   cheekShape.moveTo(0, 0);
   cheekShape.lineTo(0, arcR + 0.03);
@@ -3786,22 +3820,36 @@ export function buildInterior(mats) {
   const pedalWood = new THREE.MeshStandardMaterial({ color: 0xc9a574, roughness: 0.6 });
   const pedalCap = new THREE.MeshStandardMaterial({ color: 0x1d1712, roughness: 0.5 });
   const hasSharpAfter = [true, true, false, true, true, true, false]; // C D E F G A B
+  // Pedals hinge at the bench end (x = -0.72) so their toes, under the case, dip when played. Compass C (MIDI 36)
+  // to G (67); each entry keeps its pivot for the organ animator
+  const pedalKeys = new Map();
+  const naturalSteps = [0, 2, 4, 5, 7, 9, 11];
+  const pedalHingeX = -0.72;
   for (let n = 0; n < 19; n++) {
     // Player sits at -X, so their left (low notes) is +Z
     const z = naturalSpan * 0.5 - (n + 0.5) * nW;
+    const midi = 36 + Math.floor(n / 7) * 12 + naturalSteps[n % 7];
+    const natPivot = new THREE.Group();
+    natPivot.position.set(pedalHingeX, 0.044, z);
     const nat = new THREE.Mesh(natGeo, pedalWood);
-    nat.position.set(-0.44, 0.044, z);
+    nat.position.set(-0.44 - pedalHingeX, 0, 0);
     nat.castShadow = true;
     nat.receiveShadow = true;
-    pedalFrame.add(nat);
+    natPivot.add(nat);
+    pedalFrame.add(natPivot);
+    pedalKeys.set(midi, { pivot: natPivot, angle: 0 });
     if (n < 18 && hasSharpAfter[n % 7]) {
+      const sharpPivot = new THREE.Group();
+      sharpPivot.position.set(pedalHingeX, 0.073, z - nW * 0.5);
       const sharp = new THREE.Mesh(sharpGeo, pedalWood);
-      sharp.position.set(-0.22, 0.073, z - nW * 0.5);
+      sharp.position.set(-0.22 - pedalHingeX, 0, 0);
       sharp.castShadow = true;
-      pedalFrame.add(sharp);
+      sharpPivot.add(sharp);
       const cap = new THREE.Mesh(capGeo, pedalCap);
-      cap.position.set(-0.22, 0.092, z - nW * 0.5);
-      pedalFrame.add(cap);
+      cap.position.set(-0.22 - pedalHingeX, 0.019, 0);
+      sharpPivot.add(cap);
+      pedalFrame.add(sharpPivot);
+      pedalKeys.set(midi + 1, { pivot: sharpPivot, angle: 0 });
     }
   }
   organG.add(pedalFrame);
@@ -3814,6 +3862,31 @@ export function buildInterior(mats) {
   organG.rotation.y = 0;
   interiorGroup.add(organG);
 
+  // Organ animator: while the voluntary plays the tambour rolls open and the keys and pedals follow the notes;
+  // when it stops they come to rest and the tambour rolls shut. `notes` is { manual: Set, pedal: Set } of MIDI.
+  let tambourOpen = 0;
+  const organAnimator = {
+    update(dt, playing, notes) {
+      const openTarget = playing ? 1 : 0;
+      const step = dt / 1.4; // ~1.4s to roll fully open or shut
+      tambourOpen += Math.max(-step, Math.min(step, openTarget - tambourOpen));
+      const eased = tambourOpen * tambourOpen * (3 - 2 * tambourOpen);
+      // A little past a quarter turn so the lifting lip tucks inside the case
+      tambour.rotation.z = -eased * (Math.PI / 2 + 0.1);
+      const k = Math.min(1, dt * 28);
+      manualKeys.forEach((key, midi) => {
+        const target = playing && notes?.manual.has(midi) ? 0.055 : 0;
+        key.angle += (target - key.angle) * k;
+        key.pivot.rotation.z = key.angle;
+      });
+      pedalKeys.forEach((key, midi) => {
+        const target = playing && notes?.pedal.has(midi) ? -0.032 : 0;
+        key.angle += (target - key.angle) * k;
+        key.pivot.rotation.z = key.angle;
+      });
+    }
+  };
+
   // Pew in front (East) of the organ, facing the altar, with the open visitor book & a pen lying on its cushion
   const visitorPew = buildPew(1.3, mats, { includeKneelers: false });
   visitorPew.position.set(-3.3, nfY, -1.6);
@@ -3823,7 +3896,7 @@ export function buildInterior(mats) {
   // Hinged iron donation plate with two coin slots, a keyhole & a taped 'Donations' label, on the North wall right (East) of the door, above the front pew
   const donation = buildDonationPlate(mats);
   donation.scale.setScalar(0.7);
-  donation.position.set(-1.6, nfY + 0.95, N.zNorthInt);
+  donation.position.set(-1.45, nfY + 0.95, N.zNorthInt); // clear of the door jamb
   interiorGroup.add(donation);
 
   // -------------------------------------------------------
@@ -3992,7 +4065,7 @@ export function buildInterior(mats) {
     }
   };
 
-  return { interiorGroup, ceilingGroup, chandelierLights, causticMesh, candleEffect };
+  return { interiorGroup, ceilingGroup, chandelierLights, causticMesh, candleEffect, organAnimator };
 }
 
 /**
