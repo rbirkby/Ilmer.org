@@ -29,7 +29,7 @@ export default defineConfig({
       ORIGIN: bindings.text(local ? 'http://localhost:8787' : 'https://poppy.ilmer.org'),
       SITE_URL: bindings.text('https://www.ilmer.org'),
       LOCAL_DEV: bindings.text(local ? 'true' : 'false'),
-      MODEL: bindings.text(process.env.ILMER_POPPY_MODEL ?? '@cf/zai-org/glm-5.3-flash'),
+      MODEL: bindings.text(process.env.ILMER_POPPY_MODEL ?? '@cf/qwen/qwen3.8-27b'),
       DAILY_PROMPT_LIMIT: bindings.text(process.env.ILMER_POPPY_DAILY_PROMPT_LIMIT ?? '500'),
       AGENTS: bindings.durableObject({ worker, exportName: 'HistoryAgent' }),
       CLIENTS: bindings.durableObject({ worker, exportName: 'PoppyClient' }),
