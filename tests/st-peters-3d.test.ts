@@ -54,7 +54,8 @@ test("every St Peter's 3D module imported by the page exists and is cache-busted
     }
   }
 
-  assert.equal(seen.size, 12);
+  assert.equal(seen.size, 13);
+  assert.ok(seen.has('/assets/js/st-peters-3d/belfry.js'));
   assert.ok(seen.has('/assets/js/st-peters-3d/stained-glass.js'));
   assert.ok(seen.has('/assets/js/st-peters-3d/plaques.js'));
 
@@ -128,7 +129,7 @@ test('church acoustics are louder and clearer inside the church than outside in 
   );
 });
 
-test('guided Church Tour visits exterior and interior, stays above ground, and opens doors before entering', () => {
+test('guided Church Tour visits exterior and interior, stays above ground, and opens the doors in view as it enters', () => {
   assert.ok(CHURCH_TOUR_WAYPOINTS.length >= 10);
 
   let firstInteriorIdx = -1;
@@ -136,9 +137,9 @@ test('guided Church Tour visits exterior and interior, stays above ground, and o
   CHURCH_TOUR_WAYPOINTS.forEach((wp, idx) => {
     const [x, y, z] = wp.pos;
     assert.ok(y >= getSurfaceY(x, z) + 0.35, `tour waypoint "${wp.label}" should stay above ground/floor`);
-    const { inside } = computeChurchAcoustics({ x, y, z }, wp.doorsOpen);
+    const { inside } = computeChurchAcoustics({ x, y, z }, wp.doorsOpen === true);
     if (inside && firstInteriorIdx === -1) firstInteriorIdx = idx;
-    if (!inside && wp.doorsOpen && (wp.hold ?? 0) >= 1.0 && doorOpenHoldIdx === -1) {
+    if (!inside && wp.doorsOpen === 'approach' && (wp.hold ?? 0) >= 1.0 && doorOpenHoldIdx === -1) {
       doorOpenHoldIdx = idx;
     }
   });
@@ -146,9 +147,33 @@ test('guided Church Tour visits exterior and interior, stays above ground, and o
   assert.ok(firstInteriorIdx > 0, 'tour should visit exterior before entering the church');
   assert.ok(
     doorOpenHoldIdx >= 0 && doorOpenHoldIdx < firstInteriorIdx,
-    'tour should open the North Porch doors and pause before entering the church'
+    'tour should slow at the North Porch, with the doors set to open as the camera approaches'
   );
-  for (let i = doorOpenHoldIdx; i <= firstInteriorIdx; i++) {
-    assert.equal(CHURCH_TOUR_WAYPOINTS[i].doorsOpen, true);
+  for (let i = 0; i < doorOpenHoldIdx; i++) {
+    assert.equal(CHURCH_TOUR_WAYPOINTS[i].doorsOpen, false, 'doors stay shut until the camera reaches the porch');
   }
+  for (let i = doorOpenHoldIdx; i < firstInteriorIdx; i++) {
+    assert.equal(CHURCH_TOUR_WAYPOINTS[i].doorsOpen, 'approach');
+  }
+  assert.equal(CHURCH_TOUR_WAYPOINTS[firstInteriorIdx].doorsOpen, true);
+});
+
+test('the belfry hangs the three inscribed bells recorded by Cocks, and the tour climbs up to see them', () => {
+  const src = readFileSync(new URL('assets/js/st-peters-3d/belfry.js', root), 'utf8');
+  for (const text of [
+    'HENRI KNIGHT MADE MEE ANO 1618',
+    'gloria in excelsis deo 1586',
+    'Sancta Margareta Ora Pro Nobis W H'
+  ]) {
+    assert.ok(src.includes(text), `belfry.js should inscribe "${text}"`);
+  }
+  for (const inches of ['30.75', '34', '37'])
+    assert.match(src, new RegExp(`diameterIn: ${inches.replace('.', '\\.')},`));
+
+  const { size, xCenter, zCenter, baseY, eavesY } = DIM.tower;
+  const inBelfry = CHURCH_TOUR_WAYPOINTS.filter(({ pos: [x, y, z] }) => {
+    return Math.abs(x - xCenter) < size / 2 && Math.abs(z - zCenter) < size / 2 && y > baseY && y < eavesY;
+  });
+  assert.ok(inBelfry.length >= 1, 'the tour should include a view inside the bell chamber');
+  assert.ok(CHURCH_TOUR_WAYPOINTS.some((wp) => /Bells/.test(wp.label)));
 });

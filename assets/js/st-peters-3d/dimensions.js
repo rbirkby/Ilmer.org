@@ -104,15 +104,15 @@ export const DIM = {
       apexY: 2.45,
       type: 'lancet'
     },
-    // 3: Chancel South West low-side tiny lancet
+    // 3: Chancel South West slim lancet (Richard James Wilson memorial glass with the RAF badge)
     w3: {
       wall: 'chancel-south',
       x: 4.55,
-      sillY: 1.18,
+      sillY: 0.98,
       width: 0.36,
-      springY: 1.66,
-      apexY: 1.9,
-      type: 'lancet-small'
+      springY: 2.2,
+      apexY: 2.46,
+      type: 'wilson-stained'
     },
     // 4: Nave South "Sower" Window (2-light pointed gothic, vivid stained glass)
     w4: {
@@ -293,7 +293,7 @@ export const CHURCH_TOUR_WAYPOINTS = [
     target: [2.6, 2.6, -2.4],
     duration: 2.8,
     hold: 0.3,
-    doorsOpen: true,
+    doorsOpen: false,
     cutaway: false
   },
   {
@@ -301,8 +301,10 @@ export const CHURCH_TOUR_WAYPOINTS = [
     pos: [-2.35, 1.72, -8.8],
     target: [-2.35, 1.58, -2.8],
     duration: 2.8,
-    hold: 1.5, // Doors are open well in advance as the camera glides smoothly along the porch path
-    doorsOpen: true,
+    hold: 1.5,
+    // 'approach': the gates, then the inner door, stay shut until the camera is a few strides away and
+    // swing open in view as it glides through the porch
+    doorsOpen: 'approach',
     cutaway: false
   },
   {
@@ -311,7 +313,7 @@ export const CHURCH_TOUR_WAYPOINTS = [
     target: [-2.35, 1.6, 0.4],
     duration: 2.2,
     hold: 0.2,
-    doorsOpen: true,
+    doorsOpen: 'approach',
     cutaway: false
   },
   {
@@ -383,6 +385,42 @@ export const CHURCH_TOUR_WAYPOINTS = [
     target: [-5.8, 1.75, -0.3],
     duration: 2.4,
     hold: 0.6,
+    doorsOpen: true,
+    cutaway: false
+  },
+  {
+    label: 'Bell Ropes & the Belfry Hatch',
+    pos: [-4.45, 1.66, 0.85],
+    target: [-5.27, 4.45, -0.2],
+    duration: 2.2,
+    hold: 0.5,
+    doorsOpen: true,
+    cutaway: false
+  },
+  {
+    label: 'The Three Bells',
+    pos: [-6.45, 7.6, 1.2],
+    target: [-4.9, 5.5, -0.5],
+    duration: 2.8,
+    hold: 1.6,
+    doorsOpen: true,
+    cutaway: false
+  },
+  {
+    label: 'Tenor & Second in the Lower Frame',
+    pos: [-4.1, 6.3, 1.25],
+    target: [-5.6, 5.5, -0.6],
+    duration: 2.4,
+    hold: 1.4,
+    doorsOpen: true,
+    cutaway: false
+  },
+  {
+    label: 'Back Down to the Nave',
+    pos: [-1.95, 1.7, 0.05],
+    target: [-2.35, 1.6, -3.0],
+    duration: 2.8,
+    hold: 0.2,
     doorsOpen: true,
     cutaway: false
   },

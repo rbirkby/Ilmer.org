@@ -1,14 +1,14 @@
 import * as THREE from 'three';
 import {
   createAttenboroughPlaqueMaps,
-  createChancelCarvingMaps,
   createJaquesDonorsTexture,
   createRollOfHonourMaps
 } from '/assets/js/st-peters-3d/plaques.js';
 import {
   createEastStainedGlassTexture,
   createJaquesStainedGlassTexture,
-  createSowerStainedGlassTexture
+  createSowerStainedGlassTexture,
+  createWilsonStainedGlassTexture
 } from '/assets/js/st-peters-3d/stained-glass.js';
 
 // Deterministic seeded PRNG so textures look identical and crisp every reload
@@ -757,6 +757,97 @@ function createOakMaps(variant, maxAniso) {
   };
 }
 
+// 9b. Diamond Oak Parquetry (Glastonbury sanctuary chair back panel, chancel-chair photo)
+// Each lozenge is split into four triangles whose grain runs parallel to alternate edges, with fine dark joints.
+function createParquetryMaps(maxAniso) {
+  const w = 384;
+  const h = 512;
+  const col = makeCanvas(w, h);
+  const bmp = makeCanvas(w, h);
+  const ctx = col.getContext('2d');
+  const bctx = bmp.getContext('2d');
+  const rand = mulberry32(4417);
+
+  const cols = 3.5; // lozenges across the panel
+  const dw = w / cols;
+  const dh = dw; // square-on-point lozenges
+  const tones = ['#5a3a22', '#4a2e1a', '#674328', '#3f2716'];
+
+  ctx.fillStyle = '#4a301c';
+  ctx.fillRect(0, 0, w, h);
+  bctx.fillStyle = '#808080';
+  bctx.fillRect(0, 0, w, h);
+
+  const drawTri = (pts, tone, grainAng) => {
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(pts[0][0], pts[0][1]);
+    ctx.lineTo(pts[1][0], pts[1][1]);
+    ctx.lineTo(pts[2][0], pts[2][1]);
+    ctx.closePath();
+    ctx.fillStyle = tone;
+    ctx.fill();
+    ctx.clip();
+    // Grain streaks parallel to one lozenge edge
+    const cx = (pts[0][0] + pts[1][0] + pts[2][0]) / 3;
+    const cy = (pts[0][1] + pts[1][1] + pts[2][1]) / 3;
+    ctx.translate(cx, cy);
+    ctx.rotate(grainAng);
+    for (let i = 0; i < 22; i++) {
+      const y = -dw * 0.6 + rand() * dw * 1.2;
+      ctx.fillStyle = rand() > 0.5 ? 'rgba(140,96,56,0.22)' : 'rgba(20,12,6,0.25)';
+      ctx.fillRect(-dw, y, dw * 2, 0.6 + rand() * 1.6);
+    }
+    ctx.restore();
+  };
+
+  const edgeAng = Math.atan2(dh * 0.5, dw * 0.5);
+  for (let r = -1; r <= Math.ceil(h / dh) + 1; r++) {
+    for (let c = -1; c <= Math.ceil(cols) + 1; c++) {
+      // Staggered lozenge grid: centres on a half-offset lattice
+      for (const off of [0, 0.5]) {
+        const cx = (c + off) * dw + dw * 0.25;
+        const cy = (r + off) * dh;
+        const top = [cx, cy - dh * 0.5];
+        const right = [cx + dw * 0.5, cy];
+        const bot = [cx, cy + dh * 0.5];
+        const left = [cx - dw * 0.5, cy];
+        const mid = [cx, cy];
+        const t0 = Math.floor(rand() * tones.length);
+        drawTri([mid, top, right], tones[t0], -edgeAng);
+        drawTri([mid, right, bot], tones[(t0 + 1) % 4], edgeAng);
+        drawTri([mid, bot, left], tones[(t0 + 2) % 4], -edgeAng);
+        drawTri([mid, left, top], tones[(t0 + 3) % 4], edgeAng);
+
+        // Inlay joints (colour + bump grooves)
+        for (const [g, style, lw] of [
+          [ctx, 'rgba(22,13,7,0.85)', 1.6],
+          [bctx, 'rgba(40,40,40,0.9)', 2.2]
+        ]) {
+          g.strokeStyle = style;
+          g.lineWidth = lw;
+          g.beginPath();
+          g.moveTo(top[0], top[1]);
+          g.lineTo(right[0], right[1]);
+          g.lineTo(bot[0], bot[1]);
+          g.lineTo(left[0], left[1]);
+          g.closePath();
+          g.moveTo(top[0], top[1]);
+          g.lineTo(bot[0], bot[1]);
+          g.moveTo(left[0], left[1]);
+          g.lineTo(right[0], right[1]);
+          g.stroke();
+        }
+      }
+    }
+  }
+
+  return {
+    map: finishTexture(col, { srgb: true, maxAniso }),
+    bumpMap: finishTexture(bmp, { srgb: false, maxAniso })
+  };
+}
+
 // 10. Stained Glass & Diamond Leaded Glass Textures
 function createWindowGlassTexture(kind, maxAniso) {
   const w = 256;
@@ -983,6 +1074,240 @@ function createLaceClothTexture(maxAniso) {
     }
   }
   return finishTexture(c, { repeatX: 3, repeatY: 1, srgb: true, maxAniso });
+}
+
+// Plain navy woven cloth for the hanging hassocks: one colour with no motif, just a fine twill weave and slight
+// fibre mottling so the cushion still reads as fabric (diffuse + bump)
+function createKneelerFabricMaps(maxAniso) {
+  const [r0, g0, b0] = [44, 58, 96];
+  const w = 256;
+  const c = makeCanvas(w, w);
+  const ctx = c.getContext('2d');
+  const b = makeCanvas(w, w);
+  const bctx = b.getContext('2d');
+  const rng = mulberry32(410);
+  const img = ctx.createImageData(w, w);
+  const bimg = bctx.createImageData(w, w);
+  for (let y = 0; y < w; y++) {
+    for (let x = 0; x < w; x++) {
+      // 2/1 twill: diagonal ribs every 3px, with the warp & weft threads alternating across them
+      const rib = (x + y) % 3 === 0 ? 0.82 : 1;
+      const thread = (x % 2 === 0) !== (y % 2 === 0) ? 1.04 : 0.96;
+      const k = rib * thread * (0.92 + rng() * 0.14);
+      const i = (y * w + x) * 4;
+      img.data[i] = Math.min(255, r0 * k);
+      img.data[i + 1] = Math.min(255, g0 * k);
+      img.data[i + 2] = Math.min(255, b0 * k);
+      img.data[i + 3] = 255;
+      const h = Math.min(255, 150 * rib * thread + rng() * 40);
+      bimg.data[i] = bimg.data[i + 1] = bimg.data[i + 2] = h;
+      bimg.data[i + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  bctx.putImageData(bimg, 0, 0);
+  return {
+    map: finishTexture(c, { srgb: true, maxAniso }),
+    bumpMap: finishTexture(b, { srgb: false, maxAniso })
+  };
+}
+
+// Churchyard path: grey-brown stable-block pavers with a raised diamond-chequer face, laid in courses running
+// along the path with staggered joints; wide soil joints sprouting grass & weeds; the lawn spilling over both edges.
+// One tile spans 1.8m of path (u, repeats along it) by its full 1.48m width (v). (diffuse + bump)
+function createPathPaverMaps(maxAniso) {
+  const pxPerM = 640;
+  const W = Math.round(1.8 * pxPerM);
+  const H = Math.round(1.48 * pxPerM);
+  const c = makeCanvas(W, H);
+  const ctx = c.getContext('2d');
+  const b = makeCanvas(W, H);
+  const bctx = b.getContext('2d');
+  const rng = mulberry32(1866);
+  const courses = 7;
+  const courseH = H / courses;
+  const joint = 9;
+  const diamond = 15; // chequer pitch, ~2.3cm
+
+  // Joint soil everywhere first
+  ctx.fillStyle = '#3e3529';
+  ctx.fillRect(0, 0, W, H);
+  bctx.fillStyle = '#000';
+  bctx.fillRect(0, 0, W, H);
+
+  const blocks = [];
+  for (let k = 0; k < courses; k++) {
+    const n = Math.round(1.8 / 0.36);
+    const raw = Array.from({ length: n }, () => 0.8 + rng() * 0.4);
+    const sum = raw.reduce((a, v) => a + v, 0);
+    let x = rng() * W;
+    for (const r of raw) {
+      const len = (r / sum) * W;
+      blocks.push({ x0: x, x1: x + len, y0: k * courseH, y1: (k + 1) * courseH });
+      x += len;
+    }
+  }
+  // Draw each block (and its wrapped copy) inset by half a joint
+  const drawBlock = (bl, dx) => {
+    const x0 = bl.x0 + dx + joint * 0.5 + (rng() - 0.5) * 2;
+    const x1 = bl.x1 + dx - joint * 0.5 + (rng() - 0.5) * 2;
+    const y0 = bl.y0 + joint * 0.5 + (rng() - 0.5) * 2;
+    const y1 = bl.y1 - joint * 0.5 + (rng() - 0.5) * 2;
+    if (x1 < 0 || x0 > W) return;
+    const tone = 0.88 + bl.tone * 0.24;
+    const base = [134 * tone, 126 * tone, 118 * tone];
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x0, y0, x1 - x0, y1 - y0);
+    ctx.clip();
+    ctx.fillStyle = `rgb(${base[0] * 0.72},${base[1] * 0.72},${base[2] * 0.72})`;
+    ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+    bctx.save();
+    bctx.beginPath();
+    bctx.rect(x0, y0, x1 - x0, y1 - y0);
+    bctx.clip();
+    bctx.fillStyle = '#5a5a5a';
+    bctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+    // Raised diamonds: lit upper-left facets, shaded lower-right, grooves between
+    const hd = diamond * 0.5 - 1.6;
+    for (let gy = y0 - diamond; gy < y1 + diamond; gy += diamond * 0.5) {
+      const row = Math.round((gy - y0) / (diamond * 0.5));
+      for (let gx = x0 - diamond + (row % 2) * diamond * 0.5; gx < x1 + diamond; gx += diamond) {
+        const v = 0.9 + bl.rng() * 0.2;
+        ctx.fillStyle = `rgb(${base[0] * 1.12 * v},${base[1] * 1.12 * v},${base[2] * 1.1 * v})`;
+        ctx.beginPath();
+        ctx.moveTo(gx, gy - hd);
+        ctx.lineTo(gx - hd, gy);
+        ctx.lineTo(gx, gy);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = `rgb(${base[0] * 1.0 * v},${base[1] * 1.0 * v},${base[2] * v})`;
+        ctx.beginPath();
+        ctx.moveTo(gx, gy - hd);
+        ctx.lineTo(gx + hd, gy);
+        ctx.lineTo(gx, gy);
+        ctx.lineTo(gx - hd, gy);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = `rgb(${base[0] * 0.86 * v},${base[1] * 0.86 * v},${base[2] * 0.86 * v})`;
+        ctx.beginPath();
+        ctx.moveTo(gx - hd, gy);
+        ctx.lineTo(gx, gy + hd);
+        ctx.lineTo(gx + hd, gy);
+        ctx.closePath();
+        ctx.fill();
+        bctx.fillStyle = '#e8e8e8';
+        bctx.beginPath();
+        bctx.moveTo(gx, gy - hd);
+        bctx.lineTo(gx + hd, gy);
+        bctx.lineTo(gx, gy + hd);
+        bctx.lineTo(gx - hd, gy);
+        bctx.closePath();
+        bctx.fill();
+      }
+    }
+    // Worn, darkened arrises & lichen speckle
+    const edge = ctx.createLinearGradient(x0, y0, x0, y1);
+    edge.addColorStop(0, 'rgba(30,26,22,0.35)');
+    edge.addColorStop(0.08, 'rgba(30,26,22,0)');
+    edge.addColorStop(0.92, 'rgba(30,26,22,0)');
+    edge.addColorStop(1, 'rgba(30,26,22,0.35)');
+    ctx.fillStyle = edge;
+    ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+    for (let i = 0; i < 40; i++) {
+      ctx.fillStyle = bl.rng() > 0.5 ? 'rgba(200,196,170,0.25)' : 'rgba(40,36,30,0.25)';
+      ctx.beginPath();
+      ctx.arc(x0 + bl.rng() * (x1 - x0), y0 + bl.rng() * (y1 - y0), 1 + bl.rng() * 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+    bctx.restore();
+  };
+  blocks.forEach((bl, i) => {
+    bl.tone = rng();
+    const seed = 900 + i;
+    for (const dx of [-W, 0, W]) {
+      bl.rng = mulberry32(seed);
+      drawBlock(bl, dx);
+    }
+  });
+
+  // Grass & little weeds sprouting from the joints
+  const tuft = (x, y, n, len, spread) => {
+    for (let i = 0; i < n; i++) {
+      const a = -Math.PI / 2 + (rng() - 0.5) * spread;
+      const l = len * (0.5 + rng() * 0.7);
+      ctx.strokeStyle = ['#6fa83e', '#8cc04c', '#4f8a30', '#a6c860'][Math.floor(rng() * 4)];
+      ctx.lineWidth = 1.4 + rng() * 1.4;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.quadraticCurveTo(
+        x + Math.cos(a) * l * 0.5,
+        y + Math.sin(a) * l * 0.4,
+        x + Math.cos(a) * l,
+        y + Math.sin(a) * l
+      );
+      ctx.stroke();
+      bctx.strokeStyle = 'rgba(160,160,160,0.6)';
+      bctx.lineWidth = 1.5;
+      bctx.beginPath();
+      bctx.moveTo(x, y);
+      bctx.lineTo(x + Math.cos(a) * l, y + Math.sin(a) * l);
+      bctx.stroke();
+    }
+  };
+  const rosette = (x, y, r) => {
+    for (let i = 0; i < 7; i++) {
+      const a = (i / 7) * Math.PI * 2 + rng();
+      ctx.fillStyle = ['#5f9a3a', '#78b048', '#4a8030'][i % 3];
+      ctx.beginPath();
+      ctx.ellipse(x + Math.cos(a) * r * 0.5, y + Math.sin(a) * r * 0.5, r * 0.6, r * 0.22, a, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  };
+  // Long joints between courses
+  for (let k = 1; k < courses; k++) {
+    const y = k * courseH;
+    for (let x = 0; x < W; x += 6 + rng() * 26) tuft(x, y + (rng() - 0.5) * 4, 2 + Math.floor(rng() * 3), 14, 2.4);
+  }
+  // Cross joints
+  for (const bl of blocks) {
+    const x = ((bl.x0 % W) + W) % W;
+    for (let y = bl.y0 + 6; y < bl.y1 - 6; y += 10 + rng() * 18) tuft(x, y, 2, 12, 2.6);
+  }
+  for (let i = 0; i < 26; i++) rosette(rng() * W, Math.round(rng() * courses) * courseH, 10 + rng() * 14);
+
+  // Lawn spilling over both edges of the path
+  for (const edgeY of [0, H]) {
+    const dir = edgeY === 0 ? 1 : -1;
+    ctx.fillStyle = '#4f8a30';
+    for (let x = -10; x < W + 10; x += 3) {
+      const reach = 10 + Math.abs(Math.sin(x * 0.013) * 22) + rng() * 16;
+      ctx.fillRect(x, edgeY === 0 ? 0 : H - reach * 0.4, 3, reach * 0.4);
+      if (dir < 0) tuft(x, H, 2, reach, 1.2);
+      if (dir > 0) {
+        // blades lean inward onto the path
+        ctx.strokeStyle = '#7ab044';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x + (rng() - 0.5) * 8, reach);
+        ctx.stroke();
+      } else {
+        ctx.strokeStyle = '#7ab044';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(x, H);
+        ctx.lineTo(x + (rng() - 0.5) * 8, H - reach);
+        ctx.stroke();
+      }
+    }
+  }
+
+  return {
+    map: finishTexture(c, { repeatX: 27.5 / 1.8, repeatY: 1, srgb: true, maxAniso }),
+    bumpMap: finishTexture(b, { repeatX: 27.5 / 1.8, repeatY: 1, srgb: false, maxAniso })
+  };
 }
 
 // 13. English Churchyard Grass
@@ -1296,14 +1621,19 @@ export function createMaterials(renderer) {
   const darkOakMaps = createOakMaps('dark', maxAniso);
   const warmOakMaps = createOakMaps('warm', maxAniso);
   const medOakMaps = createOakMaps('medium', maxAniso);
+  const parquetryMaps = createParquetryMaps(maxAniso);
+  const kneelerMaps = createKneelerFabricMaps(maxAniso);
   const grassMap = createGrassTexture(maxAniso);
   const gravePebbleMaps = createGravePebbleMaps(maxAniso);
+  const pathPaverMaps = createPathPaverMaps(maxAniso);
 
   // Procedurally painted stained glass windows matching St Peter's Church, Ilmer
   // A2: East / Altar stained glass window (Jesus calling Simon Peter & Andrew, 1909)
   const eastStainedGlassTex = createEastStainedGlassTexture(maxAniso);
   // A1: South Nave "Sower" stained glass window (Joseph Nuttgens 1991)
   const sowerStainedGlassTex = createSowerStainedGlassTexture(maxAniso);
+  // Window 3: chancel south-west lancet, Richard James Wilson memorial with the RAF badge
+  const wilsonStainedGlassTex = createWilsonStainedGlassTexture(maxAniso);
   // A3: North Nave "Jaques / Good Samaritan" stained glass window (J.E. Nuttgens 1933)
   const jaquesStainedGlassTex = createJaquesStainedGlassTexture(maxAniso);
 
@@ -1315,7 +1645,6 @@ export function createMaterials(renderer) {
   // Roll of Honour: Great War memorial stone tablet
   const rollOfHonourMaps = createRollOfHonourMaps(maxAniso);
   // Medieval clunch/limestone jamb carvings on Chancel North-West window (Crucifixion & St. Christopher)
-  const chancelCarvingMaps = createChancelCarvingMaps(maxAniso);
   // B6: Procedurally carved 1860 Commemoration stone tablet on exterior NE Chancel wall
   const dedication1860Maps = createDedicationStone1860Maps(maxAniso);
 
@@ -1416,6 +1745,12 @@ export function createMaterials(renderer) {
       bumpScale: 0.018,
       roughness: 0.46
     }),
+    parquetryOak: new THREE.MeshStandardMaterial({
+      map: parquetryMaps.map,
+      bumpMap: parquetryMaps.bumpMap,
+      bumpScale: 0.02,
+      roughness: 0.55
+    }),
     medOak: new THREE.MeshStandardMaterial({
       map: medOakMaps.map,
       bumpMap: medOakMaps.bumpMap,
@@ -1454,9 +1789,16 @@ export function createMaterials(renderer) {
       color: 0x9c1b2c,
       roughness: 0.85
     }),
-    kneelerBlue: new THREE.MeshStandardMaterial({
-      color: 0x2d3c47,
-      roughness: 0.88
+    // Plain navy cloth hassocks, all alike
+    kneelerFabric: new THREE.MeshStandardMaterial({
+      map: kneelerMaps.map,
+      bumpMap: kneelerMaps.bumpMap,
+      bumpScale: 0.6,
+      roughness: 0.95
+    }),
+    kneelerCord: new THREE.MeshStandardMaterial({
+      color: 0x8a7650,
+      roughness: 0.92
     }),
     purpleCloth: new THREE.MeshStandardMaterial({
       color: 0x4b1b94,
@@ -1499,6 +1841,13 @@ export function createMaterials(renderer) {
       color: 0x565a5e,
       roughness: 0.95
     }),
+    // Diamond-chequer paver footpath (path-paving photo)
+    pathPavers: new THREE.MeshStandardMaterial({
+      map: pathPaverMaps.map,
+      bumpMap: pathPaverMaps.bumpMap,
+      bumpScale: 2.2,
+      roughness: 0.9
+    }),
     gravePebbles: new THREE.MeshStandardMaterial({
       map: gravePebbleMaps.map,
       bumpMap: gravePebbleMaps.bumpMap,
@@ -1532,6 +1881,14 @@ export function createMaterials(renderer) {
       roughness: 0.24,
       side: THREE.DoubleSide
     }),
+    glassWilson: new THREE.MeshStandardMaterial({
+      map: wilsonStainedGlassTex,
+      emissiveMap: wilsonStainedGlassTex,
+      emissive: 0xffffff,
+      emissiveIntensity: 0.72,
+      roughness: 0.24,
+      side: THREE.DoubleSide
+    }),
     glassNorthNave: new THREE.MeshStandardMaterial({
       map: jaquesStainedGlassTex,
       emissiveMap: jaquesStainedGlassTex,
@@ -1556,18 +1913,6 @@ export function createMaterials(renderer) {
       bumpMap: rollOfHonourMaps.bumpMap,
       bumpScale: 0.02,
       roughness: 0.8
-    }),
-    crucifixionCarving: new THREE.MeshStandardMaterial({
-      map: chancelCarvingMaps.crucifixion.map,
-      bumpMap: chancelCarvingMaps.crucifixion.bumpMap,
-      bumpScale: 0.038,
-      roughness: 0.88
-    }),
-    stChristopherCarving: new THREE.MeshStandardMaterial({
-      map: chancelCarvingMaps.stChristopher.map,
-      bumpMap: chancelCarvingMaps.stChristopher.bumpMap,
-      bumpScale: 0.038,
-      roughness: 0.88
     }),
     // Opal-white frilled tulip glass shades of the nave pendant lamps
     opalGlass: new THREE.MeshStandardMaterial({

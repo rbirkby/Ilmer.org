@@ -290,16 +290,16 @@ export function buildAtmosphere() {
       colorC: 0xd8ecff,
       baseOpacity: 0.18
     },
-    // Window 3: Chancel South-West Low-Side Lancet (delicate shaft over the clergy stall)
+    // Window 3: Chancel South-West Wilson lancet (cool blue & lilac shaft over the clergy stall)
     {
-      origin: [W.w3.x, 1.54, C.zSouthInt + 0.05],
+      origin: [W.w3.x, (W.w3.sillY + W.w3.apexY) * 0.5, C.zSouthInt + 0.05],
       target: [W.w3.x - 0.55, 0.45, -0.35],
       startW: 0.36,
-      startH: 0.65,
+      startH: W.w3.apexY - W.w3.sillY - 0.2,
       endScale: 1.6,
-      colorA: 0xfff0cc,
-      colorB: 0xffe5b0,
-      colorC: 0xffeac2,
+      colorA: 0xd8dcff,
+      colorB: 0xe6d8f6,
+      colorC: 0xc8dcff,
       baseOpacity: 0.15
     },
     // Window 5: West Lancet (dramatic shaft filtering through the dark oak chevron belfry timbers!)

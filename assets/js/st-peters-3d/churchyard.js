@@ -277,7 +277,7 @@ function buildMemorial(spec, mats) {
     bed.receiveShadow = true;
 
     // Scatter a 3D layer of individual faceted small stones across the top of the kerb bed
-    const pebbleCount = 165;
+    const pebbleCount = Math.round(126 * innerLenX * innerWidZ); // ~126 chippings per square metre of bed
     const pebbles = new THREE.InstancedMesh(getGraveChippingGeometry(), mats.gravePebbles || stoneMat, pebbleCount);
     let seed = hashSeed(`${spec.id}-pebbles`) || 17;
     const rand = () => {
@@ -396,8 +396,8 @@ function buildMemorial(spec, mats) {
 
   switch (spec.kind) {
     case 'celtic-cross-chains': {
-      // C11: Celtic cross on stepped plinth surrounded by kerbs, corner posts & iron chains
-      addKerbs(2.05, 1.05);
+      // C11: Celtic cross on stepped plinth inside a square kerb surround, corner posts & iron chains
+      addKerbs(2.05, 2.05);
       const crossG = new THREE.Group();
       const step1 = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.24, 0.68), stoneMat);
       step1.position.y = 0.12;
@@ -434,10 +434,10 @@ function buildMemorial(spec, mats) {
 
       // 4 high corner stone posts & sagging catenary wrought-iron link chains
       const corners = [
-        [-0.68, -0.52],
-        [1.38, -0.52],
-        [1.38, 0.52],
-        [-0.68, 0.52]
+        [-0.68, -1.03],
+        [1.38, -1.03],
+        [1.38, 1.03],
+        [-0.68, 1.03]
       ];
       corners.forEach(([px, pz]) => {
         const post = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.52, 0.14), stoneMat);
@@ -1096,16 +1096,19 @@ export function buildChurchyard(mats) {
   ground.receiveShadow = true;
   g.add(ground);
 
-  // 2. Churchyard Gravel Footpath (matching the survey plan: straight E-W path along North side + spur to North Porch)
-  const mainPath = new THREE.Mesh(new THREE.BoxGeometry(27.5, 0.03, 1.48), mats.gravelPath);
+  // 2. Churchyard footpath of diamond-chequer pavers (survey plan: straight E-W path along the North side, its
+  //    South edge running right up to the North Porch, so no separate spur is needed)
+  const mainPath = new THREE.Mesh(new THREE.BoxGeometry(27.5, 0.03, 1.48), [
+    mats.gravelPath,
+    mats.gravelPath,
+    mats.pathPavers,
+    mats.gravelPath,
+    mats.gravelPath,
+    mats.gravelPath
+  ]);
   mainPath.position.set(-1.1, 0.015, -6.22);
   mainPath.receiveShadow = true;
   g.add(mainPath);
-
-  const porchSpur = new THREE.Mesh(new THREE.BoxGeometry(1.62, 0.03, 1.25), mats.gravelPath);
-  porchSpur.position.set(DIM.porch.xCenter, 0.015, DIM.porch.zNorthExt - 0.35);
-  porchSpur.receiveShadow = true;
-  g.add(porchSpur);
 
   // 3. Weathered wooden garden bench beside West gable wall (IMG_3928 & IMG_3934)
   const bench = buildGardenBench(mats);

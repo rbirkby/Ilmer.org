@@ -5,7 +5,7 @@ import { buildInterior } from '/assets/js/st-peters-3d/interior.js';
 import { buildChurchyard, createSkyDome } from '/assets/js/st-peters-3d/churchyard.js';
 import { buildAtmosphere } from '/assets/js/st-peters-3d/atmosphere.js';
 import { createChurchAudio } from '/assets/js/st-peters-3d/audio.js';
-import { CHURCH_TOUR_WAYPOINTS } from '/assets/js/st-peters-3d/dimensions.js';
+import { CHURCH_TOUR_WAYPOINTS, DIM } from '/assets/js/st-peters-3d/dimensions.js';
 import { CAMERA_PRESETS, createCameraController } from '/assets/js/st-peters-3d/controls.js';
 
 const stage = document.getElementById('church-scene');
@@ -40,13 +40,15 @@ if (stage) {
   const sunLight = new THREE.DirectionalLight(0xfff1d6, 2.5);
   sunLight.position.set(-16, 15, 20);
   sunLight.castShadow = true;
-  sunLight.shadow.mapSize.set(2048, 2048);
-  sunLight.shadow.camera.near = 2;
-  sunLight.shadow.camera.far = 65;
-  sunLight.shadow.camera.left = -22;
-  sunLight.shadow.camera.right = 22;
-  sunLight.shadow.camera.top = 22;
-  sunLight.shadow.camera.bottom = -16;
+  // The shadow box must take in the outermost churchyard trees (~27m out, up to 10.5m tall) and the ground their
+  // shadows fall on, or each shadow is sliced off along the box's edge. 4096 texels keep the old ~2cm per texel.
+  sunLight.shadow.mapSize.set(4096, 4096);
+  sunLight.shadow.camera.near = 1;
+  sunLight.shadow.camera.far = 95;
+  sunLight.shadow.camera.left = -40;
+  sunLight.shadow.camera.right = 40;
+  sunLight.shadow.camera.top = 40;
+  sunLight.shadow.camera.bottom = -40;
   sunLight.shadow.bias = -0.0005;
   sunLight.shadow.normalBias = 0.02;
   scene.add(sunLight);
@@ -75,7 +77,11 @@ if (stage) {
   const state = {
     cutaway: false,
     doorsOpen: false,
-    doorAnim: 0,
+    // On the tour the porch gates & the inner door stay shut until the camera nears each one, then swing open in view
+    doorsOnApproach: false,
+    gatesTriggered: false,
+    gateAnim: 0,
+    mainDoorAnim: 0,
     lighting: 'autumn',
     activePreset: 'exterior-nw'
   };
@@ -180,6 +186,8 @@ if (stage) {
 
   function setDoorsOpen(open) {
     state.doorsOpen = open;
+    state.doorsOnApproach = false;
+    if (!open) state.gatesTriggered = false;
     const btn = document.getElementById('btn-doors');
     if (btn) {
       btn.setAttribute('aria-pressed', String(open));
@@ -258,10 +266,14 @@ if (stage) {
     controller.startTour(CHURCH_TOUR_WAYPOINTS, {
       onStep(wp) {
         if (typeof wp.cutaway === 'boolean') setCutaway(wp.cutaway);
-        if (typeof wp.doorsOpen === 'boolean') setDoorsOpen(wp.doorsOpen);
+        if (wp.doorsOpen === 'approach') {
+          if (!state.doorsOpen) state.doorsOnApproach = true;
+        } else if (typeof wp.doorsOpen === 'boolean') setDoorsOpen(wp.doorsOpen);
         setTourUI(true, wp.label);
       },
       onEnd(completed) {
+        state.doorsOnApproach = false;
+        state.gatesTriggered = state.doorsOpen;
         setTourUI(false);
         if (completed) {
           state.activePreset = 'exterior-nw';
@@ -577,11 +589,20 @@ if (stage) {
     const dt = Math.min(clock.getDelta(), 0.05);
     elapsed += dt;
 
-    const targetDoor = state.doorsOpen ? 1 : 0;
-    state.doorAnim = THREE.MathUtils.lerp(state.doorAnim, targetDoor, Math.min(1, dt * 4.5));
-    if (doorPivots.gateLeft) doorPivots.gateLeft.rotation.y = state.doorAnim * 1.45;
-    if (doorPivots.gateRight) doorPivots.gateRight.rotation.y = -state.doorAnim * 1.45;
-    if (doorPivots.mainDoor) doorPivots.mainDoor.rotation.y = -state.doorAnim * 1.55;
+    // Tour approach: open the porch gates, then the inner door, once the camera is a few strides from each
+    if (state.doorsOnApproach && Math.abs(camera.position.x - DIM.porch.xCenter) < 2.5) {
+      const z = camera.position.z;
+      if (!state.gatesTriggered && z > DIM.porch.zNorthExt - 3.2) state.gatesTriggered = true;
+      if (z > DIM.porch.zSouth - 2.8) setDoorsOpen(true);
+    }
+    const approachRate = state.doorsOnApproach || state.gatesTriggered ? 2.4 : 4.5;
+    const gateTarget = state.doorsOpen || state.gatesTriggered ? 1 : 0;
+    const doorTarget = state.doorsOpen ? 1 : 0;
+    state.gateAnim = THREE.MathUtils.lerp(state.gateAnim, gateTarget, Math.min(1, dt * approachRate));
+    state.mainDoorAnim = THREE.MathUtils.lerp(state.mainDoorAnim, doorTarget, Math.min(1, dt * approachRate));
+    if (doorPivots.gateLeft) doorPivots.gateLeft.rotation.y = state.gateAnim * 1.45;
+    if (doorPivots.gateRight) doorPivots.gateRight.rotation.y = -state.gateAnim * 1.45;
+    if (doorPivots.mainDoor) doorPivots.mainDoor.rotation.y = -state.mainDoorAnim * 1.55;
     sky.material.uniforms.uTime.value = elapsed;
     atmosphere.update(elapsed);
     candleEffect.update(elapsed);
