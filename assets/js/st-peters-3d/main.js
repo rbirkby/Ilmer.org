@@ -5,6 +5,7 @@ import { buildInterior } from '/assets/js/st-peters-3d/interior.js';
 import { buildChurchyard, createSkyDome } from '/assets/js/st-peters-3d/churchyard.js';
 import { buildAtmosphere } from '/assets/js/st-peters-3d/atmosphere.js';
 import { createChurchAudio } from '/assets/js/st-peters-3d/audio.js';
+import { BELL_NOMINAL_HZ, createBellRinger } from '/assets/js/st-peters-3d/belfry.js';
 import { CHURCH_TOUR_WAYPOINTS, DIM } from '/assets/js/st-peters-3d/dimensions.js';
 import { CAMERA_PRESETS, createCameraController } from '/assets/js/st-peters-3d/controls.js';
 
@@ -21,6 +22,7 @@ if (stage) {
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.06;
   renderer.shadowMap.enabled = true;
+  renderer.localClippingEnabled = true; // the bell ropes' spare length is clipped at the ceiling
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   stage.prepend(renderer.domElement);
 
@@ -83,7 +85,8 @@ if (stage) {
     gateAnim: 0,
     mainDoorAnim: 0,
     lighting: 'autumn',
-    activePreset: 'exterior-nw'
+    activePreset: 'exterior-nw',
+    ringBellsAt: null // elapsed time at which the tour sets the bells ringing
   };
 
   const LIGHTING_MOODS = {
@@ -269,6 +272,7 @@ if (stage) {
         if (wp.doorsOpen === 'approach') {
           if (!state.doorsOpen) state.doorsOnApproach = true;
         } else if (typeof wp.doorsOpen === 'boolean') setDoorsOpen(wp.doorsOpen);
+        if (typeof wp.ringBells === 'number') state.ringBellsAt = elapsed + wp.ringBells;
         setTourUI(true, wp.label);
       },
       onEnd(completed) {
@@ -460,10 +464,62 @@ if (stage) {
     el.addEventListener('click', () => selectPreset(el.dataset.planJump));
   });
 
+  // The three bells: click one (or reach them on the tour) to swing-chime two rounds. Each wheel draws its rope
+  // up and lets it back as the bell swings, so the falls & tails in the vestry rise and drop in step.
+  const bellRinger = createBellRinger(wallsGroup);
+  const bellRopeParts = [];
+  const bellRopeGroups = [];
+  interiorGroup.traverse((o) => {
+    if (o.userData.bellRope) bellRopeParts.push(o);
+    if (o.userData.ringsBells) bellRopeGroups.push(o);
+  });
+  const towerCentre = new THREE.Vector3(
+    DIM.tower.xCenter,
+    (DIM.tower.baseY + DIM.tower.eavesY) * 0.5,
+    DIM.tower.zCenter
+  );
+
+  function ringBells() {
+    const ringStart = elapsed;
+    const strikes = bellRinger.ring(ringStart);
+    if (strikes.length === 0 || churchAudio.isMuted()) return;
+    // Louder up in the belfry, carrying well across the churchyard
+    const level = 0.32 / (1 + camera.position.distanceTo(towerCentre) / 9);
+    churchAudio.start().then((ok) => {
+      if (!ok) return;
+      const late = elapsed - ringStart;
+      strikes.forEach((s) => churchAudio.playBell(BELL_NOMINAL_HZ[s.bell.number], s.delay - late, level));
+    });
+  }
+
+  function updateBells() {
+    if (state.ringBellsAt !== null && elapsed >= state.ringBellsAt) {
+      state.ringBellsAt = null;
+      ringBells();
+    }
+    bellRinger.update(elapsed);
+    for (const h of bellRinger.bells) {
+      const rise = h.userData.wheelR * h.rotation.x; // rope drawn up through the ceiling as the wheel turns
+      for (const part of bellRopeParts) {
+        const r = part.userData.bellRope;
+        if (r.bell === h.userData.bell.name) part.position.y = r.baseY + rise;
+      }
+    }
+  }
+
+  function findBell(obj) {
+    let cur = obj;
+    while (cur) {
+      if ((cur.userData?.bell && cur.userData?.clapper) || cur.userData?.ringsBells) return cur;
+      cur = cur.parent;
+    }
+    return null;
+  }
+
   // Clickable gravestones & exterior memorial tablets: smooth zoom directly facing the carved inscription
   const raycaster = new THREE.Raycaster();
   const pointerNdc = new THREE.Vector2();
-  const pickRoots = [...memorialGroups, wallsGroup];
+  const pickRoots = [...memorialGroups, wallsGroup, ...bellRopeGroups];
   let downX = 0;
   let downY = 0;
   let downTime = 0;
@@ -486,7 +542,7 @@ if (stage) {
     raycaster.setFromCamera(pointerNdc, camera);
     const hits = raycaster.intersectObjects(pickRoots, true);
     if (hits.length === 0) return null;
-    return findMemorialGroup(hits[0].object);
+    return findMemorialGroup(hits[0].object) || findBell(hits[0].object);
   }
 
   function focusMemorial(memorialGroup) {
@@ -525,8 +581,9 @@ if (stage) {
     const dist = Math.hypot(e.clientX - downX, e.clientY - downY);
     const elapsedMs = performance.now() - downTime;
     if (dist >= 6 || elapsedMs >= 450) return;
-    const memorial = pickMemorialAtEvent(e);
-    if (memorial) focusMemorial(memorial);
+    const picked = pickMemorialAtEvent(e);
+    if (picked?.userData.bell || picked?.userData.ringsBells) ringBells();
+    else if (picked) focusMemorial(picked);
   });
 
   // Keyboard shortcuts
@@ -608,6 +665,7 @@ if (stage) {
     candleEffect.update(elapsed);
     if (christmasEffect) christmasEffect.update(elapsed);
 
+    updateBells();
     controller.update(dt);
     churchAudio.updateSpatial(camera.position, state.doorsOpen);
     updateMiniPlan();

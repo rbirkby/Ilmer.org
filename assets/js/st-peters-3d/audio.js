@@ -378,6 +378,81 @@ export function createChurchAudio() {
     }
   }
 
+  // Bells: their own bus straight to the speakers (they ring out of the open louvres, so the nave's stone
+  // muffling doesn't apply), with a touch of the stone reverb
+  let bellBus = null;
+  function ensureBellBus() {
+    if (bellBus || !context) return;
+    bellBus = context.createGain();
+    bellBus.gain.value = 1;
+    const wet = context.createGain();
+    wet.gain.value = 0.35;
+    const conv = context.createConvolver();
+    conv.buffer = buildStoneReverbIR(context);
+    bellBus.connect(context.destination);
+    bellBus.connect(conv);
+    conv.connect(wet);
+    wet.connect(context.destination);
+  }
+
+  // One blow of the clapper: a bell's partials relative to its nominal (hum, prime, tierce, quint, nominal,
+  // superquint, octave nominal), each with its own decay, plus a short metallic strike transient
+  const BELL_PARTIALS = [
+    { ratio: 0.25, gain: 0.32, decay: 7.0 },
+    { ratio: 0.5, gain: 0.42, decay: 4.5 },
+    { ratio: 0.6, gain: 0.5, decay: 3.4 },
+    { ratio: 0.75, gain: 0.16, decay: 2.2 },
+    { ratio: 1.0, gain: 0.6, decay: 2.6 },
+    { ratio: 1.5, gain: 0.22, decay: 1.2 },
+    { ratio: 2.0, gain: 0.14, decay: 0.9 },
+    { ratio: 2.66, gain: 0.07, decay: 0.5 }
+  ];
+  function playBell(nominalHz, delaySec = 0, level = 0.2) {
+    if (muted || !context || context.state !== 'running') return false;
+    ensureBellBus();
+    const t0 = context.currentTime + Math.max(0, delaySec);
+    const voice = context.createGain();
+    voice.gain.value = level;
+    voice.connect(bellBus);
+    let stopAt = t0;
+    BELL_PARTIALS.forEach((p, i) => {
+      // A pair of slightly detuned oscillators per partial gives the slow beating of a real casting
+      [-1, 1].forEach((side) => {
+        const osc = context.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.value = nominalHz * p.ratio * (1 + side * 0.0012 * (i + 1));
+        const g = context.createGain();
+        g.gain.setValueAtTime(0.0001, t0);
+        g.gain.linearRampToValueAtTime(p.gain * 0.5, t0 + 0.004);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + p.decay);
+        osc.connect(g);
+        g.connect(voice);
+        osc.start(t0);
+        osc.stop(t0 + p.decay + 0.05);
+        stopAt = Math.max(stopAt, t0 + p.decay + 0.05);
+      });
+    });
+    // Clang of iron on bronze
+    const len = Math.floor(context.sampleRate * 0.05);
+    const buf = context.createBuffer(1, len, context.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+    const noise = context.createBufferSource();
+    noise.buffer = buf;
+    const bp = context.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = nominalHz * 3;
+    bp.Q.value = 2;
+    const ng = context.createGain();
+    ng.gain.value = 0.25;
+    noise.connect(bp);
+    bp.connect(ng);
+    ng.connect(voice);
+    noise.start(t0);
+    window.setTimeout(() => voice.disconnect(), (stopAt - context.currentTime + 0.2) * 1000);
+    return true;
+  }
+
   function updateSpatial(cameraPos, doorsOpen) {
     const acoustics = computeChurchAcoustics(cameraPos, doorsOpen);
     targetGain = acoustics.gain;
@@ -392,6 +467,7 @@ export function createChurchAudio() {
     setMuted,
     isMuted: () => muted,
     isRunning: () => context?.state === 'running' && !muted,
-    updateSpatial
+    updateSpatial,
+    playBell
   };
 }

@@ -403,6 +403,8 @@ export const CHURCH_TOUR_WAYPOINTS = [
     target: [-4.9, 5.5, -0.5],
     duration: 2.8,
     hold: 1.6,
+    // Seconds after this leg begins to set the bells swinging, so they ring two rounds as the camera arrives
+    ringBells: 1.8,
     doorsOpen: true,
     cutaway: false
   },
@@ -410,8 +412,8 @@ export const CHURCH_TOUR_WAYPOINTS = [
     label: 'Tenor & Second in the Lower Frame',
     pos: [-4.1, 6.3, 1.25],
     target: [-5.6, 5.5, -0.6],
-    duration: 2.4,
-    hold: 1.4,
+    duration: 2.6,
+    hold: 1.8,
     doorsOpen: true,
     cutaway: false
   },

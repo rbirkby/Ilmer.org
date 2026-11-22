@@ -75,6 +75,14 @@ export const CAMERA_PRESETS = {
     cutaway: false,
     doorsOpen: false
   },
+  bells: {
+    label: 'The Bells',
+    group: 'Interior',
+    pos: [-6.45, 7.6, 1.2],
+    target: [-4.9, 5.5, -0.5],
+    cutaway: false,
+    doorsOpen: false
+  },
   'south-wall': {
     label: 'Sower & Plaques',
     group: 'Interior',

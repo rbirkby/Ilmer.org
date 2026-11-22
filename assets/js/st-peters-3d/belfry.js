@@ -38,6 +38,54 @@ export const ILMER_BELLS = [
 
 const IN = 0.0254;
 
+export function createRopeMaterial() {
+  return new THREE.MeshStandardMaterial({ color: 0xe0c995, roughness: 0.95, vertexColors: true });
+}
+
+// Three-strand hawser-laid bell rope: a cylinder whose radius dips into three helical grooves, with
+// vertex colours shading each strand round its crown and a fine streak of fibre along it.
+// Pass a curve to lay the rope along it (it is built straight, then each ring is carried onto the curve).
+export function buildTwistedRope(length, radius, material, curve = null) {
+  if (curve) length = curve.getLength();
+  const strands = 3;
+  const layLength = radius * 7; // one full twist of a strand
+  const radial = 18;
+  const rows = Math.max(8, Math.round(length / 0.004));
+  const geo = new THREE.CylinderGeometry(radius, radius, length, radial, rows, true);
+  const pos = geo.attributes.position;
+  const colors = new Float32Array(pos.count * 3);
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i);
+    const y = pos.getY(i);
+    const z = pos.getZ(i);
+    const theta = Math.atan2(z, x);
+    const phase = strands * theta - (2 * Math.PI * strands * y) / layLength;
+    const crown = Math.abs(Math.cos(phase / 2)); // 1 on a strand's crown, 0 in the groove between strands
+    const r = radius * (0.8 + 0.2 * Math.sqrt(crown));
+    pos.setX(i, Math.cos(theta) * r);
+    pos.setZ(i, Math.sin(theta) * r);
+    const fibre = 0.94 + 0.06 * Math.sin(phase * 7 + y * 900);
+    const shade = (0.55 + 0.45 * crown) * fibre;
+    colors[i * 3] = shade;
+    colors[i * 3 + 1] = shade * 0.97;
+    colors[i * 3 + 2] = shade * 0.9;
+  }
+  if (curve) {
+    // Cylinder rows run from y = +length/2 (row 0) down to -length/2 (row `rows`), so row i sits at u = i / rows
+    const frames = curve.computeFrenetFrames(rows, false);
+    const p = new THREE.Vector3();
+    for (let i = 0; i < pos.count; i++) {
+      const row = Math.round((length * 0.5 - pos.getY(i)) / (length / rows));
+      curve.getPointAt(row / rows, p);
+      p.addScaledVector(frames.normals[row], pos.getX(i)).addScaledVector(frames.binormals[row], pos.getZ(i));
+      pos.setXYZ(i, p.x, p.y, p.z);
+    }
+  }
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  geo.computeVertexNormals();
+  return new THREE.Mesh(geo, material);
+}
+
 function mulberry32(seed) {
   let a = seed >>> 0;
   return () => {
@@ -140,18 +188,18 @@ function createBellMaps(bell, circumferenceM) {
 
   // LatheGeometry runs v from the crown (v=0, the canvas's bottom row once flipped) to the inner crown (v=1)
   const rowY = (j) => H - j * ROW;
-  ctx.fillStyle = '#6b5434';
+  ctx.fillStyle = '#d6ad52'; // bright polished brass-gold
   ctx.fillRect(0, 0, W, H);
   bctx.fillStyle = '#808080';
   bctx.fillRect(0, 0, W, H);
-  for (let i = 0; i < 2600; i++) {
+  for (let i = 0; i < 400; i++) {
     const x = rng() * W;
     const y = rng() * H;
     const r = 2 + rng() * 14;
-    const green = rng() < 0.35;
+    const green = rng() < 0.2;
     ctx.fillStyle = green
-      ? `rgba(78,104,78,${0.15 + rng() * 0.25})`
-      : `rgba(${40 + rng() * 60},${30 + rng() * 40},${18 + rng() * 20},0.25)`;
+      ? `rgba(78,104,78,${0.06 + rng() * 0.12})`
+      : `rgba(${90 + rng() * 60},${60 + rng() * 40},${30 + rng() * 20},0.14)`;
     ctx.beginPath();
     ctx.ellipse(x, y, r, r * (0.4 + rng() * 0.6), rng() * Math.PI, 0, Math.PI * 2);
     ctx.fill();
@@ -160,7 +208,7 @@ function createBellMaps(bell, circumferenceM) {
   for (let i = 0; i < 160; i++) {
     const x = rng() * W;
     const y0 = rowY(BAND + 1);
-    ctx.fillStyle = `rgba(60,82,64,${0.08 + rng() * 0.12})`;
+    ctx.fillStyle = `rgba(60,82,64,${0.03 + rng() * 0.05})`;
     ctx.fillRect(x, rowY(12), 3 + rng() * 6, y0 - rowY(12));
   }
   // Inside of the bell: darker, unpolished
@@ -239,7 +287,7 @@ function createBellMaps(bell, circumferenceM) {
     }
     c.restore();
   };
-  paint(ctx, '#a88a55', 'rgba(30,20,10,0.75)');
+  paint(ctx, '#f4d98c', 'rgba(70,48,16,0.65)');
   paint(bctx, '#ffffff', null);
 
   const finish = (c, srgb) => {
@@ -250,6 +298,46 @@ function createBellMaps(bell, circumferenceM) {
   };
   void circumferenceM;
   return { map: finish(col, true), bumpMap: finish(bmp, false) };
+}
+
+// A small cube map of the bell chamber for the bronze to reflect: daylight through the louvres in bright bands on
+// the boarded walls, the pale ceiling above and the dark oak floor below. Shared by all three bells.
+let belfryEnvMap = null;
+function getBelfryEnvMap() {
+  if (belfryEnvMap) return belfryEnvMap;
+  const size = 128;
+  const face = (draw) => {
+    const c = document.createElement('canvas');
+    c.width = size;
+    c.height = size;
+    draw(c.getContext('2d'));
+    return c;
+  };
+  const wall = (ctx) => {
+    const g = ctx.createLinearGradient(0, 0, 0, size);
+    g.addColorStop(0, '#c9b89a');
+    g.addColorStop(0.55, '#7a6448');
+    g.addColorStop(1, '#3a2a1a');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, size, size);
+    // Louvre openings: bright slats of sky
+    for (let k = 0; k < 6; k++) {
+      ctx.fillStyle = 'rgba(235,240,250,0.85)';
+      ctx.fillRect(size * 0.34, size * (0.08 + k * 0.05), size * 0.32, size * 0.022);
+    }
+  };
+  const top = (ctx) => {
+    ctx.fillStyle = '#b8a88a';
+    ctx.fillRect(0, 0, size, size);
+  };
+  const bottom = (ctx) => {
+    ctx.fillStyle = '#3b2818';
+    ctx.fillRect(0, 0, size, size);
+  };
+  belfryEnvMap = new THREE.CubeTexture([face(wall), face(wall), face(top), face(bottom), face(wall), face(wall)]);
+  belfryEnvMap.colorSpace = THREE.SRGBColorSpace;
+  belfryEnvMap.needsUpdate = true;
+  return belfryEnvMap;
 }
 
 function buildBell(bell) {
@@ -263,8 +351,10 @@ function buildBell(bell) {
     map: maps.map,
     bumpMap: maps.bumpMap,
     bumpScale: 2.5,
-    metalness: 0.55,
-    roughness: 0.5,
+    metalness: 1.0,
+    roughness: 0.2,
+    envMap: getBelfryEnvMap(),
+    envMapIntensity: 1.5,
     side: THREE.DoubleSide
   });
   const g = new THREE.Group();
@@ -318,21 +408,29 @@ function buildHungBell(bell, { pitHalf, wheelX, wheelR, headX }, mats) {
     });
   });
 
-  // Clapper: staple in the crown, shaft, ball and flight
+  // Clapper: staple in the crown, shaft, ball and flight, in its own group pivoting on the staple so it can swing
   const clapperMat = mats.iron;
   const lipY = -crownDrop - height;
   const shaftTop = -crownDrop - 0.04;
   const ballY = lipY + D * 0.2;
+  const ballR = D * 0.065;
+  const clapper = new THREE.Group();
+  clapper.position.y = shaftTop;
   const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.018, shaftTop - ballY, 8), clapperMat);
-  shaft.position.y = (shaftTop + ballY) * 0.5;
-  g.add(shaft);
-  const ball = new THREE.Mesh(new THREE.SphereGeometry(D * 0.065, 16, 12), clapperMat);
+  shaft.position.y = (ballY - shaftTop) * 0.5;
+  clapper.add(shaft);
+  const ball = new THREE.Mesh(new THREE.SphereGeometry(ballR, 16, 12), clapperMat);
   ball.scale.y = 1.25;
-  ball.position.y = ballY;
-  g.add(ball);
+  ball.position.y = ballY - shaftTop;
+  clapper.add(ball);
   const flight = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.012, D * 0.22, 8), clapperMat);
-  flight.position.y = ballY - D * 0.15;
-  g.add(flight);
+  flight.position.y = ballY - D * 0.15 - shaftTop;
+  clapper.add(flight);
+  g.add(clapper);
+  g.userData.clapper = clapper;
+  // The angle (relative to the bell) at which the ball meets the sound bow: inner radius there is about 0.44 D
+  const armLen = shaftTop - ballY;
+  g.userData.strikeAngle = Math.asin(Math.min(0.95, (0.44 * D - ballR) / armLen));
 
   // Full wheel: sole, two shrouds, four spokes and a hub on the gudgeon
   const wheel = new THREE.Group();
@@ -466,7 +564,7 @@ export function buildBellChamber(mats) {
   upXs.forEach((fx) => frame.add(box(sideW, sideH, zS - zN - 0.04, oak, fx, upTop - sideH * 0.5, (zN + zS) * 0.5)));
 
   // --- The bells ---------------------------------------------------------------------------------------------
-  const ropeMat = new THREE.MeshStandardMaterial({ color: 0xd8c08a, roughness: 0.95 });
+  const ropeMat = createRopeMaterial();
   const hangs = [
     // [bell, pit between frame sides xa..xb, axle height, axle z, wheel side (+1 east / -1 west), wheel radius]
     [ILMER_BELLS[2], frameXs[0], frameXs[1], lowTop, -0.53, 1, 0.62],
@@ -495,6 +593,7 @@ export function buildBellChamber(mats) {
     const hung = buildHungBell(bell, { pitHalf, wheelX: wheelLocalX - bellOffset, wheelR, headX: -bellOffset }, mats);
     hung.position.set(pitCx + bellOffset, axleY, axleZ);
     hung.userData.bell = bell;
+    hung.userData.wheelR = wheelR;
     frame.add(hung);
     // Plummer blocks on the frame sides
     [xa, xb].forEach((bx) => frame.add(box(0.16, 0.08, 0.18, mats.iron, bx, top + 0.02, axleZ)));
@@ -504,17 +603,18 @@ export function buildBellChamber(mats) {
     const [hx, hz] = holes[bell.name];
     const from = new THREE.Vector3(wx, axleY, axleZ - wheelR);
     const to = new THREE.Vector3(hx, T.belfryCeilingY, hz);
-    const len = from.distanceTo(to);
-    const rope = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, len, 8), ropeMat);
-    rope.position.copy(from).add(to).multiplyScalar(0.5);
-    rope.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), to.clone().sub(from).normalize());
-    frame.add(rope);
-    // Garter: the rope's last turn round the sole, from the bottom of the wheel to its North side
-    const garter = new THREE.Mesh(new THREE.TorusGeometry(wheelR + 0.006, 0.012, 6, 24, Math.PI / 2), ropeMat);
-    garter.rotation.y = Math.PI / 2;
-    garter.rotation.x = Math.PI;
-    garter.position.set(wx, axleY, axleZ);
-    frame.add(garter);
+    const belfryRope = buildTwistedRope(0, 0.012, ropeMat, new THREE.LineCurve3(from, to));
+    belfryRope.userData.ringsBells = true;
+    frame.add(belfryRope);
+    // Garter: the rope's last quarter-turn in the wheel's groove, from the bottom of the sole round to its North side
+    const garterPts = [];
+    for (let k = 0; k <= 8; k++) {
+      const a = (k / 8) * (Math.PI / 2);
+      garterPts.push(
+        new THREE.Vector3(wx, axleY - (wheelR + 0.006) * Math.sin(a), axleZ - (wheelR + 0.006) * Math.cos(a))
+      );
+    }
+    frame.add(buildTwistedRope(0, 0.012, ropeMat, new THREE.CatmullRomCurve3(garterPts.reverse())));
     // Wooden rope guide on the floor
     const ropeAtFloor = from.clone().lerp(to, (from.y - floorTop) / (from.y - to.y));
     const guide = box(0.12, 0.05, 0.12, board, ropeAtFloor.x, floorTop + 0.025, ropeAtFloor.z);
@@ -523,3 +623,74 @@ export function buildBellChamber(mats) {
 
   return { shell: g, frame };
 }
+
+// Swing chiming: each bell is swung up on its wheel and the clapper strikes as the bell turns at the top of each
+// swing. ring() starts two rounds (treble, second, tenor; handstroke then backstroke), returning the strike times
+// so the caller can sound them; update(time) moves the bells. Times are in seconds on the caller's clock.
+const SWING_HALF = 0.9; // seconds per swing from one side to the other
+const SWING_AMPLITUDE = THREE.MathUtils.degToRad(78);
+const STRIKE_GAP = SWING_HALF / 3; // even spacing of the three bells within a round
+const CLAPPER_LAG = 0.2;
+const RING_LENGTH = 4 * SWING_HALF;
+
+function smooth01(x) {
+  const t = Math.min(1, Math.max(0, x));
+  return t * t * (3 - 2 * t);
+}
+
+// Swing angle of one bell, tau seconds after it was set going: builds up over a swing and a half, holds for the
+// two strokes (at 1.5 and 2.5 half-swings, the tops of the swing), then settles back to hang mouth down
+function swingAngle(tau) {
+  if (tau <= 0 || tau >= RING_LENGTH) return 0;
+  const env = smooth01(tau / (1.5 * SWING_HALF)) * (1 - smooth01((tau - 2.6 * SWING_HALF) / (1.4 * SWING_HALF)));
+  return SWING_AMPLITUDE * env * Math.sin((Math.PI * tau) / SWING_HALF);
+}
+
+export function createBellRinger(frame) {
+  const hung = [];
+  frame.traverse((o) => {
+    if (o.userData.bell && o.userData.clapper) hung.push(o);
+  });
+  // Rounds run from the treble down to the tenor
+  hung.sort((a, b) => a.userData.bell.number - b.userData.bell.number);
+  let startedAt = null;
+
+  function ring(now) {
+    if (startedAt !== null && now - startedAt < RING_LENGTH + STRIKE_GAP * 2) return [];
+    startedAt = now;
+    const strikes = [];
+    [1.5, 2.5].forEach((stroke) => {
+      hung.forEach((h, i) => {
+        strikes.push({ bell: h.userData.bell, delay: i * STRIKE_GAP + stroke * SWING_HALF + CLAPPER_LAG * 0.5 });
+      });
+    });
+    return strikes.sort((a, b) => a.delay - b.delay);
+  }
+
+  function update(now) {
+    if (startedAt === null) return;
+    const t = now - startedAt;
+    hung.forEach((h, i) => {
+      const tau = t - i * STRIKE_GAP;
+      const theta = swingAngle(tau);
+      h.rotation.x = theta;
+      // The clapper hangs back under gravity, lagging the bell, until the sound bow catches it
+      const clapperWorld = swingAngle(tau - CLAPPER_LAG) * 1.12;
+      const limit = h.userData.strikeAngle;
+      h.userData.clapper.rotation.x = THREE.MathUtils.clamp(clapperWorld - theta, -limit, limit);
+    });
+    if (t > RING_LENGTH + STRIKE_GAP * 2) {
+      hung.forEach((h) => {
+        h.rotation.x = 0;
+        h.userData.clapper.rotation.x = 0;
+      });
+      startedAt = null;
+    }
+  }
+
+  return { ring, update, isRinging: () => startedAt !== null, bells: hung };
+}
+
+// Strike tone of each bell: nominal frequency in Hz. The ring is untuned medieval and Jacobean work, so these are
+// representative of bells of these diameters rather than measured.
+export const BELL_NOMINAL_HZ = { 1: 830, 2: 740, 3: 660 };

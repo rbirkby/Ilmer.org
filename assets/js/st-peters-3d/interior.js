@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { DIM } from '/assets/js/st-peters-3d/dimensions.js';
 import { applyBoxUVs, capSolidMasonry } from '/assets/js/st-peters-3d/architecture.js';
 import { createCarvedAngelHeightMap } from '/assets/js/st-peters-3d/plaques.js';
+import { buildTwistedRope, createRopeMaterial } from '/assets/js/st-peters-3d/belfry.js';
 
 // Helper to create a warm varnished oak pew with scalloped ends, crimson seat cushion & blue kneelers
 function buildPew(length, mats, { includeKneelers = true } = {}) {
@@ -1173,50 +1174,6 @@ function buildRoodScreen(mats) {
   return g;
 }
 
-// Three-strand hawser-laid bell rope: a cylinder whose radius dips into three helical grooves, with
-// vertex colours shading each strand round its crown and a fine streak of fibre along it.
-// Pass a curve to lay the rope along it (it is built straight, then each ring is carried onto the curve).
-function buildTwistedRope(length, radius, material, curve = null) {
-  if (curve) length = curve.getLength();
-  const strands = 3;
-  const layLength = radius * 7; // one full twist of a strand
-  const radial = 18;
-  const rows = Math.max(8, Math.round(length / 0.004));
-  const geo = new THREE.CylinderGeometry(radius, radius, length, radial, rows, true);
-  const pos = geo.attributes.position;
-  const colors = new Float32Array(pos.count * 3);
-  for (let i = 0; i < pos.count; i++) {
-    const x = pos.getX(i);
-    const y = pos.getY(i);
-    const z = pos.getZ(i);
-    const theta = Math.atan2(z, x);
-    const phase = strands * theta - (2 * Math.PI * strands * y) / layLength;
-    const crown = Math.abs(Math.cos(phase / 2)); // 1 on a strand's crown, 0 in the groove between strands
-    const r = radius * (0.8 + 0.2 * Math.sqrt(crown));
-    pos.setX(i, Math.cos(theta) * r);
-    pos.setZ(i, Math.sin(theta) * r);
-    const fibre = 0.94 + 0.06 * Math.sin(phase * 7 + y * 900);
-    const shade = (0.55 + 0.45 * crown) * fibre;
-    colors[i * 3] = shade;
-    colors[i * 3 + 1] = shade * 0.97;
-    colors[i * 3 + 2] = shade * 0.9;
-  }
-  if (curve) {
-    // Cylinder rows run from y = +length/2 (row 0) down to -length/2 (row `rows`), so row i sits at u = i / rows
-    const frames = curve.computeFrenetFrames(rows, false);
-    const p = new THREE.Vector3();
-    for (let i = 0; i < pos.count; i++) {
-      const row = Math.round((length * 0.5 - pos.getY(i)) / (length / rows));
-      curve.getPointAt(row / rows, p);
-      p.addScaledVector(frames.normals[row], pos.getX(i)).addScaledVector(frames.binormals[row], pos.getZ(i));
-      pos.setXYZ(i, p.x, p.y, p.z);
-    }
-  }
-  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-  geo.computeVertexNormals();
-  return new THREE.Mesh(geo, material);
-}
-
 // Pierced (cut-out) carving: a plane subdivided every ~4mm and displaced by a height-field canvas (1px = 1mm),
 // with everything below a small height cut away through an alpha mask. Front faces +Z, back flat at z = 0.
 function buildPiercedCarving(canvas, depth, material) {
@@ -1412,6 +1369,100 @@ function buildGlastonburyChair(mats) {
   });
 
   return chair;
+}
+
+// A pile of cloth-bound hymn books, laid flat with their spines alternating side to side as they are stacked to
+// keep the pile level: blue boards overhanging a cream page block (its edges ruled with leaves), a rounded spine
+// with gilt bands, each book a little askew. Instanced, so the whole pile is four draw calls.
+function buildHymnBookPile(x, baseY, z, height) {
+  const g = new THREE.Group();
+  const rng = (() => {
+    let a = 3944;
+    return () => {
+      a = (Math.imul(a, 1664525) + 1013904223) >>> 0;
+      return a / 4294967296;
+    };
+  })();
+  const W = 0.135; // across, spine to fore-edge
+  const D = 0.2; // head to tail
+  const board = 0.0028;
+  const books = [];
+  let y = 0;
+  while (y < height - 0.02) {
+    const t = 0.026 + rng() * 0.008;
+    books.push({
+      y,
+      t,
+      side: books.length % 2 ? 1 : -1,
+      rot: (rng() - 0.5) * 0.12,
+      dx: (rng() - 0.5) * 0.014,
+      dz: (rng() - 0.5) * 0.014
+    });
+    y += t;
+  }
+  const pageCanvas = document.createElement('canvas');
+  pageCanvas.width = 64;
+  pageCanvas.height = 64;
+  const pctx = pageCanvas.getContext('2d');
+  pctx.fillStyle = '#ece2c8';
+  pctx.fillRect(0, 0, 64, 64);
+  for (let i = 0; i < 64; i += 2) {
+    pctx.fillStyle = `rgba(120,100,70,${0.12 + rng() * 0.12})`;
+    pctx.fillRect(0, i, 64, 1);
+  }
+  const pageTex = new THREE.CanvasTexture(pageCanvas);
+  pageTex.colorSpace = THREE.SRGBColorSpace;
+  const pageMat = new THREE.MeshStandardMaterial({ map: pageTex, roughness: 0.9 });
+  const clothMat = new THREE.MeshStandardMaterial({ color: 0x2c5688, roughness: 0.8 });
+  const giltMat = new THREE.MeshStandardMaterial({ color: 0xc9a24a, roughness: 0.35, metalness: 0.8 });
+
+  const n = books.length;
+  const boards = new THREE.InstancedMesh(new THREE.BoxGeometry(W, board, D), clothMat, n * 2);
+  const pages = new THREE.InstancedMesh(new THREE.BoxGeometry(W - 0.008, 1, D - 0.008), pageMat, n);
+  const spines = new THREE.InstancedMesh(
+    new THREE.CylinderGeometry(0.5, 0.5, D, 12, 1, false, 0, Math.PI),
+    clothMat,
+    n
+  );
+  const bands = new THREE.InstancedMesh(new THREE.BoxGeometry(0.003, 1, 0.006), giltMat, n * 2);
+  const m = new THREE.Matrix4();
+  const local = new THREE.Matrix4();
+  const q = new THREE.Quaternion();
+  const sc = new THREE.Vector3();
+  const pos = new THREE.Vector3();
+  books.forEach((b, i) => {
+    // Book frame: origin at the centre of the book's base, spine towards +side along x
+    const bookM = new THREE.Matrix4().compose(
+      new THREE.Vector3(x + b.dx, baseY + b.y, z + b.dz),
+      q.setFromAxisAngle(new THREE.Vector3(0, 1, 0), b.rot + (b.side > 0 ? 0 : Math.PI)),
+      new THREE.Vector3(1, 1, 1)
+    );
+    [board * 0.5, b.t - board * 0.5].forEach((by, k) => {
+      local.makeTranslation(0, by, 0);
+      boards.setMatrixAt(i * 2 + k, m.multiplyMatrices(bookM, local));
+    });
+    const pageH = b.t - board * 2;
+    local.compose(pos.set(-0.004, b.t * 0.5, 0), q.identity(), sc.set(1, pageH, 1));
+    pages.setMatrixAt(i, m.multiplyMatrices(bookM, local));
+    // Half-round spine along the book's length, bulging 6mm out past the boards' back edge
+    local.compose(
+      pos.set(W * 0.5 - 0.002, b.t * 0.5, 0),
+      q.setFromEuler(new THREE.Euler(Math.PI / 2, 0, 0)),
+      sc.set(0.016, 1, b.t)
+    );
+    spines.setMatrixAt(i, m.multiplyMatrices(bookM, local));
+    [-D * 0.36, D * 0.36].forEach((bz, k) => {
+      local.compose(pos.set(W * 0.5 + 0.0055, b.t * 0.5, bz), q.identity(), sc.set(1, b.t * 0.7, 1));
+      bands.setMatrixAt(i * 2 + k, m.multiplyMatrices(bookM, local));
+    });
+  });
+  [boards, pages, spines, bands].forEach((im) => {
+    im.instanceMatrix.needsUpdate = true;
+    im.castShadow = true;
+    im.receiveShadow = true;
+    g.add(im);
+  });
+  return g;
 }
 
 // Build the West Timber Tower Substructure, Diagonal Bracing, Coffered Belfry Ceiling & Vestry
@@ -1659,7 +1710,10 @@ function buildWestTowerInterior(mats, ceilingGroup) {
 
   // Three bell ropes drop through brass-bushed holes running in a slightly diagonal line down the North column
   // of coffers, one hole per panel (tower-base photo), and hang free, each ending in a whipped tail
-  const ropeMat = new THREE.MeshStandardMaterial({ color: 0xe0c995, roughness: 0.95, vertexColors: true });
+  const ropeMat = createRopeMaterial();
+  // Ropes & tails live with the interior, not the ceiling, so the floorplan cutaway shows them full length
+  const bellRopes = new THREE.Group();
+  bellRopes.userData.ringsBells = true; // clicking any rope rings the bells (main.js)
   const whippingMat = new THREE.MeshStandardMaterial({ color: 0x8a7a5c, roughness: 0.9 });
   const holeMat = new THREE.MeshBasicMaterial({ color: 0x0b0806 });
   const ropeEndY = floorY + 1.05;
@@ -1681,7 +1735,6 @@ function buildWestTowerInterior(mats, ceilingGroup) {
     hole.position.set(hx, deckY - 0.003, hz);
     belfryCeil.add(hole);
 
-    let rope;
     let tailX = hx;
     if (i === 0) {
       const pX = T.vestryPartitionX;
@@ -1700,25 +1753,39 @@ function buildWestTowerInterior(mats, ceilingGroup) {
           new THREE.Vector3(pX, overY, hz),
           new THREE.Vector3(pX - 0.05, overY - 0.004, hz),
           new THREE.Vector3(hangX, capTop - 0.06, hz),
-          new THREE.Vector3(hangX, capTop - 0.3, hz),
-          new THREE.Vector3(hangX, ropeEndY, hz)
+          new THREE.Vector3(hangX, capTop - 0.3, hz)
         ],
         false,
         'centripetal'
       );
-      rope = buildTwistedRope(0, ropeR, ropeMat, path);
-    } else {
-      const ropeLen = deckY - ropeEndY;
-      rope = buildTwistedRope(ropeLen, ropeR, ropeMat);
-      rope.position.set(hx, ropeEndY + ropeLen * 0.5, hz);
+      // The loop over the rail stays put (the rope slides over it); only the straight fall below it moves
+      bellRopes.add(buildTwistedRope(0, ropeR, ropeMat, path));
     }
-    belfryCeil.add(rope);
+    // The fall carries a metre of spare rope above the hole (or the rail), clipped away there, so when the bell
+    // swings main.js can slide the whole fall up and down without stretching its lay
+    const fallTop = i === 0 ? capTop - 0.3 : deckY;
+    const spare = 0.95;
+    const ropeLen = fallTop + spare - ropeEndY;
+    const fallMat = ropeMat.clone();
+    fallMat.clippingPlanes = [new THREE.Plane(new THREE.Vector3(0, -1, 0), fallTop)];
+    fallMat.clipShadows = true;
+    const rope = buildTwistedRope(ropeLen, ropeR, fallMat);
+    rope.position.set(tailX, ropeEndY + ropeLen * 0.5, hz);
     const tail = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.012, 0.05, 12), whippingMat);
     tail.position.set(tailX, ropeEndY + 0.01, hz);
-    belfryCeil.add(tail);
+    const bellName = ['Tenor', 'Treble', 'Second'][i];
+    rope.userData.bellRope = { bell: bellName, baseY: rope.position.y };
+    // A thin rope is hard to click: an invisible 5cm-radius sleeve over the visible fall takes the clicks
+    const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, ropeLen - spare, 6), ropeMat);
+    sleeve.position.y = -spare * 0.5;
+    sleeve.visible = false;
+    rope.add(sleeve);
+    tail.userData.bellRope = { bell: bellName, baseY: tail.position.y };
+    bellRopes.add(rope, tail);
   });
 
   capSolidMasonry(belfryCeil); // the boarded tower ceiling is solid when the tour camera rises through it
+  g.add(bellRopes);
   ceilingGroup.add(belfryCeil);
 
   // 2. Cream-plastered Vestry Partition Wall (x = -5.18, height = 2.25m, central doorway, IMG_3941, 3942)
@@ -1764,11 +1831,8 @@ function buildWestTowerInterior(mats, ceilingGroup) {
   purpleDrape.castShadow = true;
   g.add(purpleDrape);
 
-  // Tall stack of blue hymn books on vestry table (IMG_3944)
-  const bookBlueMat = new THREE.MeshStandardMaterial({ color: 0x366494, roughness: 0.75 });
-  const hymnStack = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.68, 0.22), bookBlueMat);
-  hymnStack.position.set(pX - 0.35, floorY + 1.14, -1.95);
-  g.add(hymnStack);
+  // Tall pile of blue hymn books on the vestry table (IMG_3944)
+  g.add(buildHymnBookPile(pX - 0.35, floorY + 0.805, -1.95, 0.68));
 
   // Tilted mirror on vestry table
   const mirrorFrame = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.46, 0.32), mats.iron);
