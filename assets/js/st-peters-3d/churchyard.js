@@ -1124,13 +1124,28 @@ export function buildChurchyard(mats) {
     monument.name = `memorial-${m.id}`;
     monument.position.set(x, 0, z);
     const subtleYaw = (((idx * 37) % 11) - 5) * 0.012;
-    monument.rotation.y = subtleYaw;
+    // Memorials face East by default; those turned towards the church face South (north side) or North (south side)
+    const churchYaw = z < 0 ? -Math.PI / 2 : Math.PI / 2;
+    monument.rotation.y = m.facesChurch ? churchYaw : subtleYaw;
     monument.userData.memorialFocus = {
       id: m.id,
       ...getMemorialCameraOffsets(m)
     };
     g.add(monument);
     memorialGroups.push(monument);
+
+    if (m.benchOnLeft) {
+      // Wooden bench to the memorial's left as you stand reading it, facing the same way as the inscription
+      const memBench = buildGardenBench(mats);
+      const yaw = monument.rotation.y;
+      // Bench faces local +z; turn it to face along the memorial's front (local +x)
+      memBench.rotation.y = yaw + Math.PI / 2;
+      // Reader looks along -front, so their left is the memorial's local +z
+      const side = new THREE.Vector3(0, 0, 2.4).applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
+      const fwd = new THREE.Vector3(0.15, 0, 0).applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
+      memBench.position.set(x + side.x + fwd.x, 0, z + side.z + fwd.z);
+      g.add(memBench);
+    }
   });
 
   // 5. Characteristic Clipped Yew Bushes & Perimeter Autumn/Winter Trees

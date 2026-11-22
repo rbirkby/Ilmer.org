@@ -161,7 +161,8 @@ if (stage) {
     renderer.toneMappingExposure = m.exposure;
 
     chandelierLights.forEach((lt, idx) => {
-      lt.intensity = (idx === 3 ? 1.35 : 1.75) * m.chandelierScale;
+      // Last light is the soft sanctuary highlight; the rest are pendant lamps
+      lt.intensity = (idx === chandelierLights.length - 1 ? 1.35 : 1.75) * m.chandelierScale;
     });
     mats.glassShade.emissiveIntensity = moodKey === 'evensong' ? 1.55 : 0.7;
     mats.glassEast.emissiveIntensity = m.glassGlow;

@@ -223,6 +223,8 @@ function buildCarvedFace(canvas, width, height, depth, marginL, marginR, materia
     colors[i * 3 + 2] = shade * 0.93;
   }
   geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  // Tile the stone texture at the same scale as the reveal faces around it, rather than stretching it once
+  for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * width * 0.45, uv.getY(i) * height * 0.45);
   geo.computeVertexNormals();
   const mesh = new THREE.Mesh(geo, material);
   mesh.castShadow = true;
@@ -379,6 +381,47 @@ function buildGableCross(scale, mats) {
   return g;
 }
 
+// Carved panels sunk into the two splayed jamb faces of an opening or recess, centred on u. Each jamb face runs
+// from (±outerHW, zOuter) at the back to (±innerHW, zInner) at the room face.
+function addCarvedJambPanels(group, u, outerHW, zOuter, innerHW, zInner, carved) {
+  const [y0, y1] = carved.y;
+  for (const jamb of carved.panels) {
+    const sx = jamb.side; // -1 = left (low u) jamb, +1 = right jamb
+    const po = new THREE.Vector3(u + sx * outerHW, 0, zOuter);
+    const pi = new THREE.Vector3(u + sx * innerHW, 0, zInner);
+    const along = pi.clone().sub(po);
+    const faceW = along.length();
+    along.normalize();
+    // Face normal points into the opening, away from the jamb's masonry
+    const normal = new THREE.Vector3(along.z, 0, -along.x).multiplyScalar(-sx);
+    const up = new THREE.Vector3(0, 1, 0);
+    const right = up.clone().cross(normal);
+    // Margins keep the sunk carving clear of the masonry corners at either edge of the face
+    const innerOnRight = right.dot(along) > 0;
+    const mOuter = 0.03;
+    const mInner = 0.06;
+    const panel = buildCarvedFace(
+      jamb.canvas,
+      faceW,
+      y1 - y0,
+      carved.depth,
+      innerOnRight ? mOuter : mInner,
+      innerOnRight ? mInner : mOuter,
+      jamb.material
+    );
+    panel.matrix.makeBasis(right, up, normal);
+    panel.matrix.setPosition(
+      po
+        .clone()
+        .add(pi)
+        .multiplyScalar(0.5)
+        .setY((y0 + y1) * 0.5)
+    );
+    panel.matrix.decompose(panel.position, panel.quaternion, panel.scale);
+    group.add(panel);
+  }
+}
+
 // Helper to build a two-layer pierced wall (outer limestone rubble + inner cream plaster + splayed window reveals)
 function buildCompositeWall({
   outlinePts,
@@ -387,7 +430,7 @@ function buildCompositeWall({
   outerMaterial = null,
   outerThick,
   innerThick,
-  openings = [], // [{ u, spec, isDoor, splayW, splayTop, splayBot, quoinSkipY }]
+  openings = [], // [{ u, spec, isDoor, splayW, splayTop, splayBot, quoinSkipY, carvedJambs, seat }]
   niches = [], // [{ u, spec, depth }]: recesses cut into the inner leaf only (e.g. the chancel piscina)
   mats
 }) {
@@ -409,8 +452,14 @@ function buildCompositeWall({
     const outerPts = sampleOpeningPoints(op.spec, 0, 0, 0);
     const innerPts = sampleOpeningPoints(op.spec, op.splayW ?? 0.22, op.splayTop ?? 0.2, op.splayBot ?? 0.04);
 
+    // A window with a stone seat beneath it: the glazing stays where it is, but the embrasure (its splayed jambs
+    // and the inner opening) is carried down to the seat, with a plain stone back below the glass
+    const seatY = op.seat?.y0 ?? null;
+    const dropSill = (pts) => (seatY === null ? pts : pts.map(([x, y], k) => (k < 2 ? [x, seatY] : [x, y])));
+    const carved = op.carvedJambs ?? op.seat?.carvedJambs ?? null;
+
     outerShape.holes.push(makeOpeningHole(op.u, outerPts));
-    innerShape.holes.push(makeOpeningHole(op.u, innerPts));
+    innerShape.holes.push(makeOpeningHole(op.u, dropSill(innerPts)));
 
     // Splayed plaster interior reveal connecting outer plane (z = outerThick) to inner face (z = outerThick + innerThick)
     const revealMat = op.isDoor ? mats.ashlarWarm : mats.plaster;
@@ -423,54 +472,45 @@ function buildCompositeWall({
     };
     const reveal = buildRevealTunnel(
       op.u,
-      liftFloor(outerPts),
+      liftFloor(dropSill(outerPts)),
       outerThick,
-      liftFloor(innerPts),
+      liftFloor(dropSill(innerPts)),
       zIn,
-      revealMat,
+      op.seat ? mats.ashlarWarm : revealMat,
       0.45,
-      op.carvedJambs?.y ?? null
+      carved?.y ?? null
     );
     group.add(reveal);
 
-    // Carved panels sunk into the splayed jamb faces (Window 7's medieval reliefs)
-    if (op.carvedJambs) {
-      const [y0, y1] = op.carvedJambs.y;
-      for (const jamb of op.carvedJambs.panels) {
-        const sx = jamb.side; // -1 = left (low u) jamb, +1 = right jamb
-        const po = new THREE.Vector3(op.u + sx * outerPts[1][0], 0, outerThick);
-        const pi = new THREE.Vector3(op.u + sx * innerPts[1][0], 0, zIn);
-        const along = pi.clone().sub(po);
-        const faceW = along.length();
-        along.normalize();
-        // Face normal points into the opening, away from the jamb's masonry
-        const normal = new THREE.Vector3(along.z, 0, -along.x).multiplyScalar(-sx);
-        const up = new THREE.Vector3(0, 1, 0);
-        const right = up.clone().cross(normal);
-        // Margins keep the sunk carving clear of the masonry corners at either edge of the face
-        const innerOnRight = right.dot(along) > 0;
-        const mOuter = 0.03;
-        const mInner = 0.06;
-        const panel = buildCarvedFace(
-          jamb.canvas,
-          faceW,
-          y1 - y0,
-          op.carvedJambs.depth,
-          innerOnRight ? mOuter : mInner,
-          innerOnRight ? mInner : mOuter,
-          jamb.material
-        );
-        panel.matrix.makeBasis(right, up, normal);
-        panel.matrix.setPosition(
-          po
-            .clone()
-            .add(pi)
-            .multiplyScalar(0.5)
-            .setY((y0 + y1) * 0.5)
-        );
-        panel.matrix.decompose(panel.position, panel.quaternion, panel.scale);
-        group.add(panel);
+    // Carved panels sunk into the splayed jamb faces
+    if (carved) {
+      addCarvedJambPanels(group, op.u, outerPts[1][0], outerThick, innerPts[1][0], zIn, carved);
+    }
+
+    if (op.seat) {
+      // Plain dressed stone filling the embrasure's back beneath the glass, down to the seat
+      const backW = outerPts[1][0] * 2;
+      const backGeo = new THREE.PlaneGeometry(backW, op.spec.sillY - seatY);
+      const backUV = backGeo.attributes.uv;
+      for (let i = 0; i < backUV.count; i++) {
+        backUV.setXY(i, backUV.getX(i) * backW * 0.45, backUV.getY(i) * (op.spec.sillY - seatY) * 0.45);
       }
+      const back = new THREE.Mesh(backGeo, mats.ashlarWarm);
+      back.position.set(op.u, (seatY + op.spec.sillY) * 0.5, outerThick + 0.002);
+      group.add(back);
+      // The seat: a dressed slab across the embrasure floor with a rounded nose just proud of the plaster
+      const seatT = 0.07;
+      const seatW = innerPts[1][0] * 2 + 0.06;
+      const seatD = innerThick + 0.05;
+      const seatSlab = new THREE.Mesh(new THREE.BoxGeometry(seatW, seatT, seatD), mats.ashlarWarm);
+      seatSlab.position.set(op.u, seatY - seatT * 0.5 + 0.002, outerThick + seatD * 0.5);
+      seatSlab.castShadow = true;
+      seatSlab.receiveShadow = true;
+      group.add(seatSlab);
+      const nose = new THREE.Mesh(new THREE.CylinderGeometry(seatT * 0.5, seatT * 0.5, seatW, 12), mats.ashlarWarm);
+      nose.rotation.z = Math.PI / 2;
+      nose.position.set(op.u, seatY - seatT * 0.5 + 0.002, zIn + 0.05);
+      group.add(nose);
     }
 
     // Outer stone jamb reveal (z = 0 to z = outerThick), inset 4mm so it lies just in front of the masonry's
@@ -486,10 +526,11 @@ function buildCompositeWall({
       group.add(winInsert);
 
       // Decorative pale limestone interior quoin blocks along splayed reveal edge (seen in IMG_3938, 3949, 3950)
-      const qH = (op.spec.topY ?? op.spec.springY) - op.spec.sillY;
+      const qBot = seatY ?? op.spec.sillY;
+      const qH = (op.spec.topY ?? op.spec.springY) - qBot;
       const qCount = Math.max(3, Math.round(qH / 0.34));
       for (let q = 0; q < qCount; q++) {
-        const qy = op.spec.sillY + (q + 0.5) * (qH / qCount);
+        const qy = qBot + (q + 0.5) * (qH / qCount);
         // Leave room for carved panels set into the jamb (e.g. Window 7's medieval reliefs)
         const qHalf = qH / qCount / 2;
         if (op.quoinSkipY && qy + qHalf > op.quoinSkipY[0] && qy - qHalf < op.quoinSkipY[1]) continue;
@@ -1201,14 +1242,21 @@ export function buildArchitecture(mats) {
   eastNaveOuter.receiveShadow = true;
   wallsGroup.add(eastNaveOuter);
 
+  // The plaster leaf is open right across to the nave's South wall below the chancel eaves: the rood screen runs on
+  // to meet that wall, with no return of the chancel arch wall beside it. Traced as one outline round the solid.
   const eastNaveInnerShape = new THREE.Shape();
   eastNaveInnerShape.moveTo(-N.zSouthInt, 0);
-  eastNaveInnerShape.lineTo(N.zSouthInt, 0);
+  eastNaveInnerShape.lineTo(-chancelLiningZ, 0);
+  eastNaveInnerShape.lineTo(-chancelLiningZ, C.eavesY);
+  for (let i = archSegs; i >= 0; i--) {
+    const a = (i / archSegs) * Math.PI;
+    eastNaveInnerShape.lineTo(Math.cos(a) * C.zSouthInt, C.eavesY + Math.sin(a) * 1.88);
+  }
+  eastNaveInnerShape.lineTo(N.zSouthInt, C.eavesY);
   eastNaveInnerShape.lineTo(N.zSouthInt, N.eavesY);
   eastNaveInnerShape.lineTo(0, N.ridgeY - 0.18);
   eastNaveInnerShape.lineTo(-N.zSouthInt, N.eavesY);
   eastNaveInnerShape.closePath();
-  eastNaveInnerShape.holes.push(chancelOpenHole);
 
   const eastNaveInnerGeo = new THREE.ExtrudeGeometry(eastNaveInnerShape, {
     depth: N.xEastExt - eastNaveOuterThick - N.xEastInt,
@@ -1229,7 +1277,9 @@ export function buildArchitecture(mats) {
   const chanOuterX1 = C.xEastExt - outerT;
 
   const chancelReliefs = createChancelReliefHeightMaps();
-  const reliefMat = new THREE.MeshStandardMaterial({ color: 0xe6dac0, roughness: 0.94, vertexColors: true });
+  // The reliefs are cut in the same warm dressed stone as the window surround they sit in
+  const reliefMat = mats.ashlarWarm.clone();
+  reliefMat.vertexColors = true;
   const chanNorthWall = buildCompositeWall({
     outerOutlinePts: [
       [chanOuterX0, 0],
@@ -1249,19 +1299,22 @@ export function buildArchitecture(mats) {
       {
         u: W.w7.x,
         spec: W.w7,
-        splayW: 0.22,
-        splayTop: 0.22,
+        splayW: 0.16,
+        splayTop: 0.16,
         splayBot: 0.04,
-        quoinSkipY: [1.19, 1.61],
-        // Medieval reliefs carved into the lower splayed jambs (close-up photographs; Taunt & Co. 3017/3018):
-        // the Crucifixion on the West jamb, St Christopher on the East jamb
-        carvedJambs: {
-          y: [1.19, 1.61],
-          depth: 0.026,
-          panels: [
-            { side: -1, canvas: chancelReliefs.crucifixion, material: reliefMat },
-            { side: 1, canvas: chancelReliefs.stChristopher, material: reliefMat }
-          ]
+        // A tall narrow lancet whose splayed stone embrasure runs down below the glass to a stone seat; the
+        // medieval reliefs are carved into the embrasure's jambs just above the seat (close-up photographs;
+        // Taunt & Co. 3017/3018): the Crucifixion on the West jamb, St Christopher on the East jamb
+        seat: {
+          y0: DIM.chancelFloorY + 0.48,
+          carvedJambs: {
+            y: [DIM.chancelFloorY + 0.6, DIM.chancelFloorY + 1.02],
+            depth: 0.026,
+            panels: [
+              { side: -1, canvas: chancelReliefs.crucifixion, material: reliefMat },
+              { side: 1, canvas: chancelReliefs.stChristopher, material: reliefMat }
+            ]
+          }
         }
       },
       { u: W.w8.x, spec: W.w8, splayW: 0.24, splayTop: 0.22, splayBot: 0.04 }
@@ -1282,17 +1335,19 @@ export function buildArchitecture(mats) {
       [-chanOuterX0, C.eavesY],
       [-chanOuterX1, C.eavesY]
     ],
+    // The plaster lining stops just behind the rood screen's South end, which now runs on to the nave's South wall
     innerOutlinePts: [
       [-C.xEastInt, 0],
-      [-C.xWestInt, 0],
-      [-C.xWestInt, C.eavesY],
+      [-(C.xWestInt + 0.2), 0],
+      [-(C.xWestInt + 0.2), C.eavesY],
       [-C.xEastInt, C.eavesY]
     ],
     outerThick: outerT,
     innerThick: chanInnerT,
     openings: [
       { u: -W.w3.x, spec: W.w3, splayW: 0.18, splayTop: 0.18, splayBot: 0.02 },
-      { u: -W.w2.x, spec: W.w2, splayW: 0.24, splayTop: 0.24, splayBot: 0.04 }
+      // Window 2, beside the piscina, also has a stone seat in its embrasure
+      { u: -W.w2.x, spec: W.w2, splayW: 0.24, splayTop: 0.24, splayBot: 0.04, seat: { y0: DIM.sanctuaryStep1Y + 0.44 } }
     ],
     // Piscina: small pointed niche with a drain bowl, between Window 2 and the altar
     niches: [

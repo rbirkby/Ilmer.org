@@ -9,6 +9,9 @@ export const CHURCHYARD_MEMORIALS = [
     col: 49,
     row: 22,
     kind: 'headstone',
+    // Turned to face the church, with a wooden bench beside it on its left
+    facesChurch: true,
+    benchOnLeft: true,
     stone: 'granite',
     inscription: [
       'In ever loving',

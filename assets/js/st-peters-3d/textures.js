@@ -1043,14 +1043,34 @@ function createAltarFrontalTexture(maxAniso) {
     ctx.fillRect(x, h - 16, 2, 16);
   }
 
-  // Central gold embroidered Latin cross
+  // Small central gold embroidered Latin cross, set low on the frontal above the fringe
   const cx = w * 0.5;
+  const top = 120;
+  const stemH = 90;
+  const stemW = 14;
+  const armW = 60;
+  const armY = top + 22;
   ctx.fillStyle = '#ebd06a';
-  ctx.fillRect(cx - 10, 42, 20, 145);
-  ctx.fillRect(cx - 46, 80, 92, 20);
+  ctx.fillRect(cx - stemW / 2, top, stemW, stemH);
+  ctx.fillRect(cx - armW / 2, armY, armW, stemW);
   ctx.strokeStyle = '#9e7d22';
-  ctx.lineWidth = 3;
-  ctx.strokeRect(cx - 10, 42, 20, 145);
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  // Outline the cross as one shape so the arms and stem read as a single embroidered piece
+  ctx.moveTo(cx - stemW / 2, top);
+  ctx.lineTo(cx + stemW / 2, top);
+  ctx.lineTo(cx + stemW / 2, armY);
+  ctx.lineTo(cx + armW / 2, armY);
+  ctx.lineTo(cx + armW / 2, armY + stemW);
+  ctx.lineTo(cx + stemW / 2, armY + stemW);
+  ctx.lineTo(cx + stemW / 2, top + stemH);
+  ctx.lineTo(cx - stemW / 2, top + stemH);
+  ctx.lineTo(cx - stemW / 2, armY + stemW);
+  ctx.lineTo(cx - armW / 2, armY + stemW);
+  ctx.lineTo(cx - armW / 2, armY);
+  ctx.lineTo(cx - stemW / 2, armY);
+  ctx.closePath();
+  ctx.stroke();
 
   return finishTexture(c, { srgb: true, maxAniso });
 }

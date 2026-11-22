@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { DIM } from '/assets/js/st-peters-3d/dimensions.js';
 import { applyBoxUVs, capSolidMasonry } from '/assets/js/st-peters-3d/architecture.js';
 import { createCarvedAngelHeightMap } from '/assets/js/st-peters-3d/plaques.js';
-import { buildTwistedRope, createRopeMaterial } from '/assets/js/st-peters-3d/belfry.js';
+import { buildSally, buildTwistedRope, createRopeMaterial } from '/assets/js/st-peters-3d/belfry.js';
 
 // Helper to create a warm varnished oak pew with scalloped ends, crimson seat cushion & blue kneelers
 function buildPew(length, mats, { includeKneelers = true } = {}) {
@@ -63,7 +63,7 @@ function buildPew(length, mats, { includeKneelers = true } = {}) {
   // Needlepoint hassocks hanging by a cord loop from brass hooks on the back of the pew (IMG_3949 & IMG_3950)
   if (includeKneelers) {
     const kg = getKneelerGeometries();
-    const kCount = Math.max(2, Math.floor(length / 0.52));
+    const kCount = length >= 1.8 ? 4 : Math.max(2, Math.floor(length / 0.52)); // four on each long pew
     const backX = -seatD * 0.5 - 0.004; // rear face of the lower back board
     for (let i = 0; i < kCount; i++) {
       const kz = -length * 0.36 + (i / Math.max(1, kCount - 1)) * (length * 0.72);
@@ -188,38 +188,176 @@ function buildVisitorBook(mats, x, y, z) {
 
 // Wall donation safe: a black-painted iron door plate in a slightly larger frame, hinged down its left edge,
 // with a coin slot across the top and a keyhole below (faces +Z, back on the wall at z = 0)
+// A white-enamelled anglepoise desk lamp: weighted round base, two parallel-arm sections with springs, and a
+// conical shade. Built so the arm reaches along +X with its shade tipped down; origin at the base's underside.
+function buildAnglepoiseLamp() {
+  const g = new THREE.Group();
+  const white = new THREE.MeshStandardMaterial({ color: 0xf2f0ea, roughness: 0.35, metalness: 0.05 });
+  const steel = new THREE.MeshStandardMaterial({ color: 0xb8bcc0, roughness: 0.35, metalness: 0.8 });
+  const add = (mesh) => {
+    mesh.castShadow = true;
+    g.add(mesh);
+    return mesh;
+  };
+  const base = add(new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.085, 0.03, 28), white));
+  base.position.y = 0.015;
+  const step = add(new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.06, 0.015, 24), white));
+  step.position.y = 0.037;
+  const knuckle = add(new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.04, 12), steel));
+  knuckle.rotation.x = Math.PI / 2;
+  knuckle.position.y = 0.058;
+
+  // An arm section of two parallel bars from a to b, with a coiled spring alongside
+  const arm = (a, b) => {
+    const d = b.clone().sub(a);
+    const len = d.length();
+    const mid = a.clone().add(b).multiplyScalar(0.5);
+    const ang = Math.atan2(d.y, d.x) - Math.PI / 2;
+    [-0.011, 0.011].forEach((z) => {
+      const bar = add(new THREE.Mesh(new THREE.BoxGeometry(0.008, len, 0.005), white));
+      bar.position.set(mid.x, mid.y, z);
+      bar.rotation.z = ang;
+    });
+    const springPts = [];
+    const turns = 22;
+    for (let i = 0; i <= turns * 8; i++) {
+      const t = i / (turns * 8);
+      const a2 = t * turns * Math.PI * 2;
+      springPts.push(new THREE.Vector3(Math.cos(a2) * 0.005, (t - 0.5) * len * 0.45, Math.sin(a2) * 0.005));
+    }
+    const spring = add(
+      new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(springPts), turns * 8, 0.0012, 4), steel)
+    );
+    spring.position.set(mid.x + Math.cos(ang) * 0.016, mid.y + Math.sin(ang) * 0.016, 0);
+    spring.rotation.z = ang;
+    const joint = add(new THREE.Mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.03, 12), steel));
+    joint.rotation.x = Math.PI / 2;
+    joint.position.copy(b);
+  };
+  const p0 = new THREE.Vector3(0, 0.058, 0);
+  const p1 = new THREE.Vector3(0.1, 0.33, 0); // elbow
+  const p2 = new THREE.Vector3(0.36, 0.38, 0); // wrist
+  arm(p0, p1);
+  arm(p1, p2);
+
+  // Conical shade hanging from the wrist, mouth tipped down & outwards
+  const shadeG = new THREE.Group();
+  const shade = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.022, 0.07, 0.12, 28, 1, true),
+    new THREE.MeshStandardMaterial({ color: 0xf2f0ea, roughness: 0.35, metalness: 0.05, side: THREE.DoubleSide })
+  );
+  shade.castShadow = true;
+  shade.position.y = -0.06;
+  shadeG.add(shade);
+  const cap = new THREE.Mesh(new THREE.SphereGeometry(0.024, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), white);
+  shadeG.add(cap);
+  const bulb = new THREE.Mesh(
+    new THREE.SphereGeometry(0.022, 16, 12),
+    new THREE.MeshStandardMaterial({ color: 0xfff6e0, emissive: 0xffe4b0, emissiveIntensity: 2.2, roughness: 0.3 })
+  );
+  bulb.position.y = -0.085;
+  shadeG.add(bulb);
+  // Switched on: a warm pool of light thrown down out of the shade, with a soft glow inside it
+  const spot = new THREE.SpotLight(0xffd8a0, 2.2, 2.2, 0.62, 0.55, 1.6);
+  spot.position.y = -0.07;
+  spot.target.position.set(0, -1, 0);
+  shadeG.add(spot, spot.target);
+  const glow = new THREE.PointLight(0xffd8a0, 0.12, 0.5, 2);
+  glow.position.y = -0.1;
+  shadeG.add(glow);
+  shadeG.position.copy(p2).add(new THREE.Vector3(0.02, -0.01, 0));
+  shadeG.rotation.z = 0.22; // mouth faces down, a little out along +X, over the keys
+  g.add(shadeG);
+  return g;
+}
+
 function buildDonationPlate(mats) {
+  // Landscape black iron plate: two coin slots along the top, keyhole on the left, hinged on the right, and a
+  // white paper "Donations" label taped across the middle
   const g = new THREE.Group();
   const paint = new THREE.MeshStandardMaterial({ color: 0x1c1d1f, roughness: 0.5, metalness: 0.6 });
   const dark = new THREE.MeshBasicMaterial({ color: 0x050505 });
-  const frame = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.3, 0.01), paint);
+  const W = 0.32;
+  const H = 0.21;
+  const frame = new THREE.Mesh(new THREE.BoxGeometry(W, H, 0.01), paint);
   frame.position.z = 0.005;
   g.add(frame);
-  const door = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.26, 0.012), paint);
+  const door = new THREE.Mesh(new THREE.BoxGeometry(W - 0.04, H - 0.04, 0.012), paint);
   door.position.z = 0.016;
   g.add(door);
-  // Coin slot (a dark recess in a raised lip) & keyhole
-  const lip = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.03, 0.006), paint);
-  lip.position.set(0, 0.075, 0.025);
-  g.add(lip);
-  const slot = new THREE.Mesh(new THREE.PlaneGeometry(0.085, 0.008), dark);
-  slot.position.set(0, 0.075, 0.0285);
-  g.add(slot);
-  const escutcheon = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.004, 16), mats.brass);
+  // Two coin slots, each a dark recess in a raised lip
+  [-0.065, 0.065].forEach((sx) => {
+    const lip = new THREE.Mesh(new THREE.BoxGeometry(0.095, 0.024, 0.006), paint);
+    lip.position.set(sx, 0.06, 0.025);
+    g.add(lip);
+    const slot = new THREE.Mesh(new THREE.PlaneGeometry(0.072, 0.007), dark);
+    slot.position.set(sx, 0.06, 0.0285);
+    g.add(slot);
+  });
+  // Keyhole on the left
+  const kx = -0.115;
+  const escutcheon = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, 0.004, 16), mats.brass);
   escutcheon.rotation.x = Math.PI / 2;
-  escutcheon.position.set(0.045, -0.04, 0.024);
+  escutcheon.position.set(kx, -0.005, 0.024);
   g.add(escutcheon);
-  const keyRound = new THREE.Mesh(new THREE.CircleGeometry(0.0055, 12), dark);
-  keyRound.position.set(0.045, -0.036, 0.0265);
+  const keyRound = new THREE.Mesh(new THREE.CircleGeometry(0.005, 12), dark);
+  keyRound.position.set(kx, -0.001, 0.0265);
   g.add(keyRound);
-  const keyStem = new THREE.Mesh(new THREE.PlaneGeometry(0.005, 0.012), dark);
-  keyStem.position.set(0.045, -0.045, 0.0265);
+  const keyStem = new THREE.Mesh(new THREE.PlaneGeometry(0.0045, 0.011), dark);
+  keyStem.position.set(kx, -0.01, 0.0265);
   g.add(keyStem);
-  // Two hinge knuckles down the left edge
-  [0.08, -0.08].forEach((hy) => {
-    const knuckle = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.05, 10), paint);
-    knuckle.position.set(-0.104, hy, 0.018);
+  // Two hinge knuckles on the right edge
+  [0.05, -0.05].forEach((hy) => {
+    const knuckle = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.04, 10), paint);
+    knuckle.position.set(W * 0.5 - 0.016, hy, 0.018);
     g.add(knuckle);
+  });
+  // Paper label with clear tape over each end
+  const c = document.createElement('canvas');
+  c.width = 512;
+  c.height = 128;
+  const ctx = c.getContext('2d');
+  // Lettered in gothic blackletter (UnifrakturMaguntia, OFL), redrawn into the texture once the font has loaded
+  const drawLabel = (family) => {
+    ctx.fillStyle = '#f6f4ee';
+    ctx.fillRect(0, 0, 512, 128);
+    ctx.fillStyle = '#1a1a1a';
+    ctx.font = `80px ${family}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Donations', 256, 66, 480);
+  };
+  drawLabel('serif');
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  if (typeof FontFace !== 'undefined') {
+    new FontFace('UnifrakturMaguntia', 'url(/assets/fonts/UnifrakturMaguntia.woff2)')
+      .load()
+      .then((font) => {
+        document.fonts.add(font);
+        drawLabel("'UnifrakturMaguntia', serif");
+        tex.needsUpdate = true;
+      })
+      .catch(() => {}); // keep the serif fallback
+  }
+  const label = new THREE.Mesh(
+    new THREE.PlaneGeometry(0.17, 0.0425),
+    new THREE.MeshStandardMaterial({ map: tex, roughness: 0.85 })
+  );
+  label.position.set(0.01, -0.022, 0.0228);
+  label.rotation.z = -0.015;
+  g.add(label);
+  const tapeMat = new THREE.MeshStandardMaterial({
+    color: 0xf2efe0,
+    roughness: 0.25,
+    transparent: true,
+    opacity: 0.45
+  });
+  [-1, 1].forEach((side) => {
+    const tape = new THREE.Mesh(new THREE.PlaneGeometry(0.03, 0.05), tapeMat);
+    tape.position.set(0.01 + side * 0.085, -0.022 + side * 0.001, 0.0232);
+    tape.rotation.z = side * 0.08;
+    g.add(tape);
   });
   return g;
 }
@@ -842,20 +980,6 @@ function buildFlowerArrangement(seed = 1) {
   return g;
 }
 
-// Build a simple carved wooden angel corbel (mounted on the nave wall plates in IMG_3937, 3950)
-function buildAngelCorbel(mats) {
-  const g = new THREE.Group();
-  const body = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.34, 0.14), mats.medOak);
-  g.add(body);
-  [-1, 1].forEach((s) => {
-    const wing = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.16, 0.05), mats.medOak);
-    wing.position.set(s * 0.18, 0.1, -0.03);
-    wing.rotation.z = s * 0.45;
-    g.add(wing);
-  });
-  return g;
-}
-
 // Helper to trace a miniature trefoil-headed vertical tracery cutout hole (CW winding)
 function createTrefoilLightHole(uL, uR, vBotL, vBotR, vTop, bottomCurveFn = null) {
   const path = new THREE.Path();
@@ -897,7 +1021,10 @@ function buildRoodScreen(mats) {
   const sillTopY = dwarfTopY + sillH;
   const beamBottomY = baseY + 2.44; // Underside of rood beam soffit (y = 2.54)
   const openHalfW = 0.61; // 1.22m wide central doorway opening
-  const maxZ = DIM.chancel.zSouthInt; // 2.00m
+  const maxZ = DIM.chancel.zSouthInt; // 2.00m: the North end, against the chancel arch wall
+  // The South end runs on past the chancel arch to meet the nave's South wall
+  const southMaxZ = DIM.nave.zSouthInt - 0.004;
+  const endZ = (side) => (side > 0 ? southMaxZ : maxZ);
   const postW = 0.12;
   const sideStart = openHalfW + postW; // 0.73m
   const sideEnd = maxZ - postW; // 1.88m
@@ -990,7 +1117,11 @@ function buildRoodScreen(mats) {
 
   // 1. Cream-plastered dwarf walls, dressed limestone jamb quoins, oak sill & 5-light side screens
   [-1, 1].forEach((side) => {
-    const segLen = maxZ - openHalfW;
+    const sideMaxZ = endZ(side);
+    const segLen = sideMaxZ - openHalfW;
+    // The screen is symmetrical: 5 identical lights each side of the doorway, framed at the chancel arch
+    const bays = bayCount;
+    const bayWs = bayW;
     const midZ = side * (openHalfW + segLen * 0.5);
 
     const dwarf = new THREE.Mesh(new THREE.BoxGeometry(0.36, dwarfH, segLen), mats.plaster);
@@ -1020,17 +1151,27 @@ function buildRoodScreen(mats) {
     // Heavy moulded inner doorway standard (runs to floor) & outer wall standard
     addMouldedStandard(side * (openHalfW + postW * 0.5), baseY, beamBottomY);
     addMouldedStandard(side * (maxZ - postW * 0.5), dwarfTopY, beamBottomY);
+    if (sideMaxZ > maxZ + 0.01) {
+      // South of the chancel arch the screen runs on to the nave wall as a plain boarded oak panel
+      const panelLen = sideMaxZ - maxZ;
+      const panel = new THREE.Mesh(new THREE.BoxGeometry(0.07, beamBottomY - sillTopY, panelLen), mats.darkOak);
+      panel.position.set(xPos, (sillTopY + beamBottomY) * 0.5, side * (maxZ + panelLen * 0.5));
+      panel.castShadow = true;
+      panel.receiveShadow = true;
+      g.add(panel);
+      addMouldedStandard(side * (sideMaxZ - postW * 0.5), dwarfTopY, beamBottomY);
+    }
 
-    // 4 slender chamfered intermediate mullions + 5 pierced Gothic tracery heads per side
-    for (let i = 1; i < bayCount; i++) {
-      const mz = side * (sideStart + i * bayW);
+    // Slender chamfered intermediate mullions + pierced Gothic tracery heads (5 lights each side)
+    for (let i = 1; i < bays; i++) {
+      const mz = side * (sideStart + i * bayWs);
       const mullion = new THREE.Mesh(mullionGeo, mats.darkOak);
       mullion.position.set(xPos, sillTopY, mz);
       mullion.castShadow = true;
       g.add(mullion);
     }
-    for (let i = 0; i < bayCount; i++) {
-      const cz = side * (sideStart + (i + 0.5) * bayW);
+    for (let i = 0; i < bays; i++) {
+      const cz = side * (sideStart + (i + 0.5) * bayWs);
       const head = new THREE.Mesh(sideHeadGeo, mats.darkOak);
       head.position.set(xPos, traceryY0, cz);
       head.castShadow = true;
@@ -1038,18 +1179,18 @@ function buildRoodScreen(mats) {
     }
   });
 
-  // Two small hymn books resting neatly on the North dwarf wall ledge (IMG_3939)
-  const blueBookMat = new THREE.MeshStandardMaterial({ color: 0x3b6894, roughness: 0.78 });
-  const hymnBook1 = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.032, 0.18), blueBookMat);
-  hymnBook1.position.set(xPos + 0.11, dwarfTopY + 0.016, -0.95);
-  hymnBook1.rotation.y = 0.06;
-  g.add(hymnBook1);
-  const hymnBook2 = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.024, 0.16), mats.wax);
-  hymnBook2.position.set(xPos + 0.11, dwarfTopY + 0.044, -0.96);
-  hymnBook2.rotation.y = -0.05;
-  g.add(hymnBook2);
+  // Two blue hymn books, like those in the vestry, resting on the North dwarf wall ledge (IMG_3939)
+  const ledgeBooks = buildHymnBookPile(0, 0, 0, 0, {
+    books: [
+      { t: 0.03, colour: 0x2c5688 },
+      { t: 0.028, colour: 0x2c5688 }
+    ],
+    seed: 3939
+  });
+  ledgeBooks.position.set(xPos + 0.11, sillTopY, -0.95);
+  g.add(ledgeBooks);
 
-  // 2. Central Doorway Depressed Four-Centered Tudor Arch + 6-Light Pierced Perpendicular Tracery Head (IMG_3937, 3940)
+  // 2. Central Doorway Depressed Four-Centered Tudor Arch + 8-Light Pierced Perpendicular Tracery Head (IMG_3937, 3940)
   const doorY0 = beamBottomY - 0.92; // y = 1.62
   const doorH = beamBottomY - doorY0; // 0.92m
   const archSpanHW = openHalfW + 0.005;
@@ -1070,8 +1211,8 @@ function buildRoodScreen(mats) {
   doorHeadShape.lineTo(-archSpanHW, doorH);
   doorHeadShape.closePath();
 
-  // 6 vertical Perpendicular trefoil-headed tracery lights above the central doorway arch (IMG_3937, 3940)
-  const doorLights = 6;
+  // 8 small trefoil-headed tracery lights above the central doorway arch (IMG_3937, 3940)
+  const doorLights = 8;
   const doorInnerSpan = (openHalfW - 0.032) * 2;
   const doorCellW = doorInnerSpan / doorLights;
   const doorLightGap = 0.014;
@@ -1113,21 +1254,22 @@ function buildRoodScreen(mats) {
   g.add(archRib);
 
   // 3. Heavy Stepped, Moulded & Crenellated (Battlemented) Rood Beam Cornice across full width (IMG_3939, 3940)
-  const fullW = maxZ * 2 + 0.08;
+  const fullW = maxZ + southMaxZ + 0.08;
+  const beamMidZ = (southMaxZ - maxZ) * 0.5;
   // Lower moulded soffit rail
   const soffitRail = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.055, fullW), mats.darkOak);
-  soffitRail.position.set(xPos, beamBottomY + 0.0275, 0);
+  soffitRail.position.set(xPos, beamBottomY + 0.0275, beamMidZ);
   soffitRail.castShadow = true;
   g.add(soffitRail);
 
   // Deep recessed cavetto / hollow frieze running across the beam
   const friezeY = beamBottomY + 0.112;
   const friezeCore = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.115, fullW - 0.02), mats.darkOak);
-  friezeCore.position.set(xPos, friezeY, 0);
+  friezeCore.position.set(xPos, friezeY, beamMidZ);
   g.add(friezeCore);
 
   // Subtle carved square oak bosses / paterae recessed along the hollow frieze
-  for (let bz = -maxZ + 0.18; bz <= maxZ - 0.18; bz += 0.28) {
+  for (let bz = -maxZ + 0.18; bz <= southMaxZ - 0.18; bz += 0.28) {
     [-0.072, 0.072].forEach((bx) => {
       const boss = new THREE.Mesh(new THREE.BoxGeometry(0.024, 0.056, 0.056), mats.darkOak);
       boss.position.set(xPos + bx, friezeY, bz);
@@ -1138,24 +1280,24 @@ function buildRoodScreen(mats) {
 
   // Projecting stepped cornice mouldings above the frieze
   const corniceLower = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.044, fullW + 0.02), mats.darkOak);
-  corniceLower.position.set(xPos, beamBottomY + 0.192, 0);
+  corniceLower.position.set(xPos, beamBottomY + 0.192, beamMidZ);
   corniceLower.castShadow = true;
   g.add(corniceLower);
 
   const corniceUpper = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.054, fullW + 0.04), mats.darkOak);
-  corniceUpper.position.set(xPos, beamBottomY + 0.241, 0);
+  corniceUpper.position.set(xPos, beamBottomY + 0.241, beamMidZ);
   corniceUpper.castShadow = true;
   g.add(corniceUpper);
 
   // Crisp battlemented (crenellated) oak merlons crowning the entire rood beam (IMG_3939, 3940)
-  for (let mz = -maxZ + 0.09; mz <= maxZ - 0.09; mz += 0.255) {
+  for (let mz = -maxZ + 0.09; mz <= southMaxZ - 0.09; mz += 0.255) {
     const merlon = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.062, 0.135), mats.darkOak);
     merlon.position.set(xPos, beamBottomY + 0.299, mz);
     merlon.castShadow = true;
     g.add(merlon);
   }
 
-  // 4. Arched Wooden Hymn Board mounted on the South Nave pier (IMG_3937)
+  // 4. Arched Wooden Hymn Board mounted on the screen's South end standard (IMG_3937)
   const hymnG = new THREE.Group();
   const hbBack = new THREE.Mesh(new THREE.BoxGeometry(0.036, 0.68, 0.3), mats.medOak);
   hymnG.add(hbBack);
@@ -1168,7 +1310,7 @@ function buildRoodScreen(mats) {
     rail.position.set(-0.008, -0.24 + r * 0.125, 0);
     hymnG.add(rail);
   }
-  hymnG.position.set(xPos - 0.13, baseY + 1.84, maxZ - 0.16);
+  hymnG.position.set(xPos - 0.13, baseY + 1.84, southMaxZ - 0.16);
   g.add(hymnG);
 
   return g;
@@ -1176,7 +1318,8 @@ function buildRoodScreen(mats) {
 
 // Pierced (cut-out) carving: a plane subdivided every ~4mm and displaced by a height-field canvas (1px = 1mm),
 // with everything below a small height cut away through an alpha mask. Front faces +Z, back flat at z = 0.
-function buildPiercedCarving(canvas, depth, material) {
+// A finer map (pxPerMm > 1) keeps small details crisp, since the softening blur works in pixels.
+function buildPiercedCarving(canvas, depth, material, pxPerMm = 1) {
   const cw = canvas.width;
   const ch = canvas.height;
   const px = canvas.getContext('2d').getImageData(0, 0, cw, ch).data;
@@ -1221,10 +1364,10 @@ function buildPiercedCarving(canvas, depth, material) {
   mctx.putImageData(img, 0, 0);
   const alphaMap = new THREE.CanvasTexture(mask);
 
-  const width = cw * 0.001;
-  const height = ch * 0.001;
-  const segX = Math.round(width / 0.004);
-  const segY = Math.round(height / 0.004);
+  const width = (cw * 0.001) / pxPerMm;
+  const height = (ch * 0.001) / pxPerMm;
+  const segX = Math.round((width / 0.004) * pxPerMm);
+  const segY = Math.round((height / 0.004) * pxPerMm);
   const geo = new THREE.PlaneGeometry(width, height, segX, segY);
   const pos = geo.attributes.position;
   const uv = geo.attributes.uv;
@@ -1371,13 +1514,163 @@ function buildGlastonburyChair(mats) {
   return chair;
 }
 
+// A large old leather-bound Bible lying closed: worn dark-brown leather boards with a blind-tooled border, a rounded
+// spine with raised bands, aged gilt page edges, brass corner pieces and a brass clasp across the fore-edge.
+// Spine along -X, origin at the centre of its base.
+function buildOldBible(mats) {
+  const g = new THREE.Group();
+  const W = 0.28; // spine to fore-edge
+  const D = 0.36; // head to tail
+  const H = 0.09;
+  const bt = 0.008; // board thickness
+
+  const cv = document.createElement('canvas');
+  cv.width = cv.height = 256;
+  const c = cv.getContext('2d');
+  c.fillStyle = '#3a2218';
+  c.fillRect(0, 0, 256, 256);
+  let a = 1611;
+  const rnd = () => {
+    a = (Math.imul(a, 1664525) + 1013904223) >>> 0;
+    return a / 4294967296;
+  };
+  for (let i = 0; i < 2600; i++) {
+    const l = rnd() < 0.5 ? 255 : 0;
+    c.fillStyle = `rgba(${l},${l * 0.85},${l * 0.7},${0.03 + rnd() * 0.05})`;
+    c.fillRect(rnd() * 256, rnd() * 256, 1 + rnd() * 5, 1 + rnd() * 3);
+  }
+  // rubbed, paler wear towards the edges and corners
+  const wear = c.createRadialGradient(128, 128, 60, 128, 128, 190);
+  wear.addColorStop(0, 'rgba(0,0,0,0)');
+  wear.addColorStop(1, 'rgba(150,105,70,0.35)');
+  c.fillStyle = wear;
+  c.fillRect(0, 0, 256, 256);
+  // Blind-tooled double border, and "HOLY BIBLE" embossed inside a six-pointed star with bulging, rounded points.
+  // The cover is taller than wide, so the emblem is drawn squashed vertically to come out true on the board.
+  const drawCover = (ctx, line, fill) => {
+    ctx.strokeStyle = line;
+    ctx.lineWidth = 3;
+    ctx.strokeRect(18, 18, 220, 220);
+    ctx.lineWidth = 2;
+    ctx.strokeRect(30, 30, 196, 196);
+    ctx.save();
+    ctx.translate(128, 128);
+    ctx.scale(1, W / D);
+    // Sharp tips joined by sides that bulge outwards, so the star looks puffed up
+    ctx.beginPath();
+    const tipR = 88;
+    const valleyR = 50;
+    const at = (ang, r) => [Math.cos(ang) * r, Math.sin(ang) * r];
+    for (let i = 0; i < 6; i++) {
+      const tipA = (i / 6) * Math.PI * 2 - Math.PI / 2;
+      const valA = tipA + Math.PI / 6;
+      const nextA = tipA + Math.PI / 3;
+      const [tx, ty] = at(tipA, tipR);
+      if (i === 0) ctx.moveTo(tx, ty);
+      const [c1x, c1y] = at(tipA + Math.PI / 12, 80);
+      const [vx, vy] = at(valA, valleyR);
+      ctx.quadraticCurveTo(c1x, c1y, vx, vy);
+      const [c2x, c2y] = at(nextA - Math.PI / 12, 80);
+      const [nx, ny] = at(nextA, tipR);
+      ctx.quadraticCurveTo(c2x, c2y, nx, ny);
+    }
+    ctx.closePath();
+    ctx.lineWidth = 4;
+    ctx.stroke();
+    ctx.fillStyle = fill;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = 'bold 30px Georgia, serif';
+    ctx.fillText('HOLY', 0, -20);
+    ctx.fillText('BIBLE', 0, 20);
+    ctx.restore();
+  };
+  // Colour: the tooling pressed dark into the leather, the lettering's faded gilt
+  drawCover(c, 'rgba(15,6,3,0.6)', 'rgba(176,138,72,0.85)');
+  const leatherTex = new THREE.CanvasTexture(cv);
+  leatherTex.colorSpace = THREE.SRGBColorSpace;
+  // Bump: the border lines and star outline pressed in, the letters raised
+  const bv = document.createElement('canvas');
+  bv.width = bv.height = 256;
+  const bc = bv.getContext('2d');
+  bc.fillStyle = '#808080';
+  bc.fillRect(0, 0, 256, 256);
+  drawCover(bc, '#303030', '#e0e0e0');
+  const bumpTex = new THREE.CanvasTexture(bv);
+  const leather = new THREE.MeshStandardMaterial({
+    map: leatherTex,
+    bumpMap: bumpTex,
+    bumpScale: 2.5,
+    roughness: 0.72
+  });
+  const plainLeather = new THREE.MeshStandardMaterial({ color: 0x3a2218, roughness: 0.75 });
+  const pageEdge = new THREE.MeshStandardMaterial({ color: 0xa8956a, roughness: 0.6, metalness: 0.2 });
+  const brass = mats.brass;
+
+  // Boards: textured on their outer faces only
+  const boardMats = [plainLeather, plainLeather, leather, leather, plainLeather, plainLeather];
+  [bt * 0.5, H - bt * 0.5].forEach((y) => {
+    const board = new THREE.Mesh(new THREE.BoxGeometry(W, bt, D), boardMats);
+    board.position.y = y;
+    board.castShadow = true;
+    board.receiveShadow = true;
+    g.add(board);
+  });
+  const pages = new THREE.Mesh(new THREE.BoxGeometry(W - 0.012, H - bt * 2, D - 0.014), pageEdge);
+  pages.position.set(0.004, H * 0.5, 0);
+  g.add(pages);
+  // Rounded spine with five raised bands
+  const spine = new THREE.Mesh(
+    new THREE.CylinderGeometry(H * 0.5, H * 0.5, D, 16, 1, false, Math.PI, Math.PI),
+    plainLeather
+  );
+  spine.rotation.x = Math.PI / 2;
+  spine.scale.set(0.35, 1, 1);
+  spine.position.set(-W * 0.5, H * 0.5, 0);
+  spine.castShadow = true;
+  g.add(spine);
+  for (let k = 0; k < 5; k++) {
+    const band = new THREE.Mesh(new THREE.TorusGeometry(H * 0.5, 0.0045, 6, 16, Math.PI), plainLeather);
+    band.rotation.set(0, 0, Math.PI / 2);
+    band.scale.set(1, 0.35, 1);
+    band.position.set(-W * 0.5, H * 0.5, -D * 0.33 + (k * D * 0.66) / 4);
+    g.add(band);
+  }
+  // Brass corner pieces on the fore-edge corners of the front board
+  [-1, 1].forEach((sz) => {
+    const corner = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.003, 0.045), brass);
+    corner.position.set(W * 0.5 - 0.021, H + 0.0015, sz * (D * 0.5 - 0.021));
+    g.add(corner);
+  });
+  // Clasp: a leather strap from the back board round the fore-edge, ending in a brass hasp over a pin on the front
+  const strapW = 0.04;
+  const strapBack = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.003, strapW), plainLeather);
+  strapBack.position.set(W * 0.5 - 0.02, -0.0015, 0);
+  g.add(strapBack);
+  const strapEdge = new THREE.Mesh(new THREE.BoxGeometry(0.004, H + 0.006, strapW), plainLeather);
+  strapEdge.position.set(W * 0.5 + 0.002, H * 0.5, 0);
+  g.add(strapEdge);
+  const hasp = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.004, strapW + 0.006), brass);
+  hasp.position.set(W * 0.5 - 0.026, H + 0.002, 0);
+  hasp.castShadow = true;
+  g.add(hasp);
+  const haspEdge = new THREE.Mesh(new THREE.BoxGeometry(0.006, 0.02, strapW + 0.006), brass);
+  haspEdge.position.set(W * 0.5 + 0.004, H - 0.006, 0);
+  g.add(haspEdge);
+  const catchPin = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.008, 0.008, 10), brass);
+  catchPin.position.set(W * 0.5 - 0.05, H + 0.006, 0);
+  g.add(catchPin);
+  return g;
+}
+
 // A pile of cloth-bound hymn books, laid flat with their spines alternating side to side as they are stacked to
 // keep the pile level: blue boards overhanging a cream page block (its edges ruled with leaves), a rounded spine
 // with gilt bands, each book a little askew. Instanced, so the whole pile is four draw calls.
-function buildHymnBookPile(x, baseY, z, height) {
+// `books` optionally fixes the pile instead: [{ t, colour }] from the bottom up, each with its own cloth colour.
+function buildHymnBookPile(x, baseY, z, height, { books: spec = null, seed = 3944 } = {}) {
   const g = new THREE.Group();
   const rng = (() => {
-    let a = 3944;
+    let a = seed;
     return () => {
       a = (Math.imul(a, 1664525) + 1013904223) >>> 0;
       return a / 4294967296;
@@ -1388,8 +1681,8 @@ function buildHymnBookPile(x, baseY, z, height) {
   const board = 0.0028;
   const books = [];
   let y = 0;
-  while (y < height - 0.02) {
-    const t = 0.026 + rng() * 0.008;
+  while (spec ? books.length < spec.length : y < height - 0.02) {
+    const t = spec ? spec[books.length].t : 0.026 + rng() * 0.008;
     books.push({
       y,
       t,
@@ -1456,6 +1749,16 @@ function buildHymnBookPile(x, baseY, z, height) {
       bands.setMatrixAt(i * 2 + k, m.multiplyMatrices(bookM, local));
     });
   });
+  if (spec) {
+    const c = new THREE.Color();
+    clothMat.color.set(0xffffff);
+    spec.forEach((b, i) => {
+      c.set(b.colour);
+      boards.setColorAt(i * 2, c);
+      boards.setColorAt(i * 2 + 1, c);
+      spines.setColorAt(i, c);
+    });
+  }
   [boards, pages, spines, bands].forEach((im) => {
     im.instanceMatrix.needsUpdate = true;
     im.castShadow = true;
@@ -1463,6 +1766,104 @@ function buildHymnBookPile(x, baseY, z, height) {
     g.add(im);
   });
   return g;
+}
+
+// UK 9-litre water fire extinguisher: all red with a red WATER band on its label, black hose down the side to a
+// clipped nozzle. Origin at the centre of its base; label faces +Z.
+function buildWaterExtinguisher() {
+  const waterG = new THREE.Group();
+  const extRedMat = new THREE.MeshStandardMaterial({ color: 0xc8161d, roughness: 0.24, metalness: 0.28 });
+  const extBlackMat = new THREE.MeshStandardMaterial({ color: 0x1a1c1f, roughness: 0.55, metalness: 0.15 });
+  const extMetalMat = new THREE.MeshStandardMaterial({ color: 0xbec4ca, roughness: 0.3, metalness: 0.85 });
+  const extPinMat = new THREE.MeshStandardMaterial({ color: 0xf0c420, roughness: 0.42, metalness: 0.25 });
+  const wR = 0.085;
+  const wH = 0.5;
+  const wTank = new THREE.Mesh(
+    new THREE.LatheGeometry(
+      [
+        new THREE.Vector2(0, 0),
+        new THREE.Vector2(wR - 0.004, 0),
+        new THREE.Vector2(wR, 0.012),
+        new THREE.Vector2(wR, wH - 0.05),
+        new THREE.Vector2(wR * 0.9, wH - 0.02),
+        new THREE.Vector2(wR * 0.6, wH),
+        new THREE.Vector2(0.024, wH + 0.012),
+        new THREE.Vector2(0.024, wH + 0.03),
+        new THREE.Vector2(0, wH + 0.03)
+      ],
+      24
+    ),
+    extRedMat
+  );
+  wTank.castShadow = true;
+  wTank.receiveShadow = true;
+  waterG.add(wTank);
+  const wBase = new THREE.Mesh(new THREE.CylinderGeometry(wR + 0.0015, wR + 0.0025, 0.02, 24), extBlackMat);
+  wBase.position.y = 0.01;
+  waterG.add(wBase);
+  const wCanvas = document.createElement('canvas');
+  wCanvas.width = 256;
+  wCanvas.height = 256;
+  const wctx = wCanvas.getContext('2d');
+  wctx.fillStyle = '#f4f2ec';
+  wctx.fillRect(0, 0, 256, 256);
+  wctx.fillStyle = '#c8161d';
+  wctx.fillRect(0, 10, 256, 70);
+  wctx.fillStyle = '#ffffff';
+  wctx.font = 'bold 40px sans-serif';
+  wctx.textAlign = 'center';
+  wctx.fillText('WATER', 128, 60);
+  wctx.fillStyle = '#1c1c1e';
+  wctx.font = 'bold 16px sans-serif';
+  wctx.fillText('FIRE EXTINGUISHER', 128, 108);
+  wctx.fillStyle = '#44464a';
+  for (let i = 0; i < 4; i++) wctx.fillRect(34, 124 + i * 14, 188, 5);
+  wctx.fillStyle = '#c8161d';
+  wctx.fillRect(100, 192, 56, 40);
+  wctx.fillStyle = '#ffffff';
+  wctx.font = 'bold 28px sans-serif';
+  wctx.fillText('A', 128, 224);
+  const wTex = new THREE.CanvasTexture(wCanvas);
+  wTex.colorSpace = THREE.SRGBColorSpace;
+  const wLabel = new THREE.Mesh(
+    new THREE.CylinderGeometry(wR + 0.001, wR + 0.001, 0.24, 20, 1, true, -0.8, 1.6),
+    new THREE.MeshStandardMaterial({ map: wTex, roughness: 0.35, metalness: 0.1 })
+  );
+  wLabel.position.y = 0.25;
+  waterG.add(wLabel);
+  const wValve = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.022, 0.05, 12), extMetalMat);
+  wValve.position.y = wH + 0.055;
+  waterG.add(wValve);
+  const wCarry = new THREE.Mesh(new THREE.BoxGeometry(0.016, 0.013, 0.12), extBlackMat);
+  wCarry.position.set(0, wH + 0.06, -0.06);
+  wCarry.rotation.x = 0.1;
+  waterG.add(wCarry);
+  const wLever = new THREE.Mesh(new THREE.BoxGeometry(0.018, 0.012, 0.13), extBlackMat);
+  wLever.position.set(0, wH + 0.1, -0.06);
+  wLever.rotation.x = -0.36;
+  waterG.add(wLever);
+  const wPin = new THREE.Mesh(new THREE.TorusGeometry(0.014, 0.0024, 6, 14), extPinMat);
+  wPin.position.set(0.026, wH + 0.075, -0.01);
+  wPin.rotation.y = Math.PI / 3;
+  waterG.add(wPin);
+  // Hose from the valve, round the shoulder and down the side to a nozzle held in a clip
+  const hoseCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0.02, wH + 0.055, 0),
+    new THREE.Vector3(0.06, wH + 0.05, 0.01),
+    new THREE.Vector3(wR + 0.02, wH - 0.03, 0.02),
+    new THREE.Vector3(wR + 0.014, 0.3, 0.03),
+    new THREE.Vector3(wR + 0.004, 0.16, 0.035)
+  ]);
+  const hose = new THREE.Mesh(new THREE.TubeGeometry(hoseCurve, 24, 0.008, 8), extBlackMat);
+  hose.castShadow = true;
+  waterG.add(hose);
+  const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(0.007, 0.011, 0.07, 10), extBlackMat);
+  nozzle.position.set(wR + 0.004, 0.12, 0.035);
+  waterG.add(nozzle);
+  const clip = new THREE.Mesh(new THREE.BoxGeometry(0.006, 0.012, 0.03), extMetalMat);
+  clip.position.set(wR + 0.001, 0.12, 0.035);
+  waterG.add(clip);
+  return waterG;
 }
 
 // Build the West Timber Tower Substructure, Diagonal Bracing, Coffered Belfry Ceiling & Vestry
@@ -1780,6 +2181,11 @@ function buildWestTowerInterior(mats, ceilingGroup) {
     sleeve.position.y = -spare * 0.5;
     sleeve.visible = false;
     rope.add(sleeve);
+    // The striped woollen sally at hand height rides on the fall, so it rises & falls with the rope
+    const sallyLen = 0.62;
+    const sally = buildSally(sallyLen, 0.026, ropeR);
+    sally.position.y = floorY + 1.62 - rope.position.y;
+    rope.add(sally);
     tail.userData.bellRope = { bell: bellName, baseY: tail.position.y };
     bellRopes.add(rope, tail);
   });
@@ -1826,10 +2232,10 @@ function buildWestTowerInterior(mats, ceilingGroup) {
   tableTop.castShadow = true;
   g.add(tableTop);
 
-  const purpleDrape = new THREE.Mesh(new THREE.BoxGeometry(0.66, 0.75, 1.53), mats.purpleCloth);
-  purpleDrape.position.set(pX - 0.42, floorY + 0.38, -1.48);
-  purpleDrape.castShadow = true;
-  g.add(purpleDrape);
+  // Purple cloth curtain gathered on a rail beneath the tabletop, hanging to just above the carpet
+  const curtain = buildTableCurtain(0.66, 1.53, 0.735, mats.purpleCloth, mats.iron);
+  curtain.position.set(pX - 0.42, floorY + 0.755, -1.48);
+  g.add(curtain);
 
   // Tall pile of blue hymn books on the vestry table (IMG_3944)
   g.add(buildHymnBookPile(pX - 0.35, floorY + 0.805, -1.95, 0.68));
@@ -2032,6 +2438,40 @@ function buildWestTowerInterior(mats, ceilingGroup) {
   signMesh.position.set(pX + 0.046, floorY + 0.78, -0.74);
   g.add(signMesh);
 
+  // 9-litre water extinguisher on the other (South, left-hand) side of the vestry doorway: all red, with a red
+  // identification band, a black hose looped down the side to a nozzle clipped near the base
+  const waterG = buildWaterExtinguisher();
+  waterG.position.set(pX + 0.16, floorY, 0.72);
+  waterG.rotation.y = Math.PI * 0.58; // label & hose facing out toward the nave
+  g.add(waterG);
+
+  // Matching water-extinguisher ID sign above it on the partition
+  const wsCanvas = document.createElement('canvas');
+  wsCanvas.width = 128;
+  wsCanvas.height = 96;
+  const wsctx = wsCanvas.getContext('2d');
+  wsctx.fillStyle = '#f2f0ea';
+  wsctx.fillRect(0, 0, 128, 96);
+  wsctx.fillStyle = '#c8161d';
+  wsctx.fillRect(6, 6, 54, 84);
+  wsctx.fillStyle = '#ffffff';
+  wsctx.font = 'bold 15px sans-serif';
+  wsctx.textAlign = 'center';
+  wsctx.fillText('WATER', 33, 54);
+  wsctx.fillStyle = '#1e7b34';
+  wsctx.fillRect(66, 6, 56, 38);
+  wsctx.fillStyle = '#c8161d';
+  wsctx.fillRect(66, 50, 56, 40);
+  const wsTex = new THREE.CanvasTexture(wsCanvas);
+  wsTex.colorSpace = THREE.SRGBColorSpace;
+  const wSign = new THREE.Mesh(
+    new THREE.PlaneGeometry(0.11, 0.085),
+    new THREE.MeshStandardMaterial({ map: wsTex, roughness: 0.45 })
+  );
+  wSign.rotation.y = Math.PI / 2;
+  wSign.position.set(pX + 0.046, floorY + 0.86, 0.74);
+  g.add(wSign);
+
   return g;
 }
 
@@ -2088,22 +2528,48 @@ export function buildInterior(mats) {
   step2.receiveShadow = true;
   interiorGroup.add(step2);
 
+  // The two sanctuary steps are fronted with dressed stone, not tiles
+  [
+    [6.25, DIM.chancelFloorY, DIM.sanctuaryStep1Y],
+    [7.4, DIM.sanctuaryStep1Y, DIM.sanctuaryStep2Y]
+  ].forEach(([sx, y0, y1]) => {
+    const faceGeo = new THREE.BoxGeometry(0.016, y1 - y0 + 0.004, chanW);
+    applyBoxUVs(faceGeo, 0.45);
+    const face = new THREE.Mesh(faceGeo, mats.ashlarWarm);
+    face.position.set(sx - 0.008, (y0 + y1) * 0.5 + 0.002, 0);
+    face.receiveShadow = true;
+    interiorGroup.add(face);
+  });
+
   // Warm cream-gold carpet runner through Rood Screen & up the Sanctuary steps (IMG_3937, 3938)
-  const addRunner = (x0, x1, y, w = 1.12) => {
+  // One width all the way from the doorway to the altar, filling the screen opening between its quoins
+  const runW = 1.2;
+  const addRunner = (x0, x1, y, w = runW) => {
     const r = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, 0.018, w), mats.carpetGold);
     r.position.set((x0 + x1) * 0.5, y + 0.01, 0);
     r.receiveShadow = true;
     interiorGroup.add(r);
   };
   addRunner(2.55, 3.22, DIM.naveFloorY, 1.28);
-  addRunner(3.22, 6.26, DIM.chancelFloorY, 1.12);
-  addRunner(6.25, 7.41, DIM.sanctuaryStep1Y, 1.06);
-  addRunner(7.4, 8.2, DIM.sanctuaryStep2Y, 1.06);
+  // Either side of the opening the nave carpet carries on, left and right, along the front of the rood screen's
+  // dwarf walls to the side walls
+  const dwarfFaceX = N.xEastInt + 0.02 - 0.18 - 0.002;
+  [-1, 1].forEach((side) => {
+    const z0 = 0.64;
+    const z1 = N.zSouthInt - 0.01;
+    const strip = new THREE.Mesh(new THREE.BoxGeometry(dwarfFaceX - 2.55, 0.018, z1 - z0), mats.carpetGold);
+    strip.position.set((2.55 + dwarfFaceX) * 0.5, DIM.naveFloorY + 0.01, side * (z0 + z1) * 0.5);
+    strip.receiveShadow = true;
+    interiorGroup.add(strip);
+  });
+  addRunner(C.xWestInt - 0.021, 6.26, DIM.chancelFloorY); // wraps over the riser's top edge
+  addRunner(6.25 - 0.037, 7.41, DIM.sanctuaryStep1Y);
+  addRunner(7.4 - 0.037, 8.2, DIM.sanctuaryStep2Y);
   // Vertical carpet risers on each step
   [
-    [3.22, DIM.naveFloorY, DIM.chancelFloorY, 1.12],
-    [6.25, DIM.chancelFloorY, DIM.sanctuaryStep1Y, 1.06],
-    [7.4, DIM.sanctuaryStep1Y, DIM.sanctuaryStep2Y, 1.06]
+    [C.xWestInt - 0.011, DIM.naveFloorY + 0.019, DIM.chancelFloorY + 0.019, runW], // nave -> chancel, proud of the step face
+    [6.25 - 0.027, DIM.chancelFloorY + 0.019, DIM.sanctuaryStep1Y + 0.019, runW], // over the stone step face
+    [7.4 - 0.027, DIM.sanctuaryStep1Y + 0.019, DIM.sanctuaryStep2Y + 0.019, runW]
   ].forEach(([rx, y0, y1, rw]) => {
     const riser = new THREE.Mesh(new THREE.BoxGeometry(0.02, y1 - y0, rw), mats.carpetGold);
     riser.position.set(rx, (y0 + y1) * 0.5, 0);
@@ -2174,10 +2640,11 @@ export function buildInterior(mats) {
   ridgeBeam.position.set((T.eastPostX + N.xEastInt) * 0.5, 5.18, 0);
   ceilingGroup.add(ridgeBeam);
 
-  // Carved limewood angel standing on the South wall-plate above the Attenborough plaque (photograph, 2026).
+  // Carved limewood angels standing on the South wall-plate above the Attenborough plaque & the Roll of Honour.
   // It leans back against the coved ceiling, parallel to its first facet, its lobed base resting on the plate.
   {
-    const angelMat = new THREE.MeshStandardMaterial({ color: 0xe8d2a8, roughness: 0.85, vertexColors: true });
+    // Darkened, aged oak tone
+    const angelMat = new THREE.MeshStandardMaterial({ color: 0x8a6440, roughness: 0.8, vertexColors: true });
     const angel = buildPiercedCarving(createCarvedAngelHeightMap(), 0.045, angelMat);
     const cove0 = new THREE.Vector3(0, naveCeilPts[6].y, naveCeilPts[6].x); // eaves, South
     const cove1 = new THREE.Vector3(0, naveCeilPts[5].y, naveCeilPts[5].x);
@@ -2190,24 +2657,45 @@ export function buildInterior(mats) {
       .clone()
       .addScaledVector(upSlope, sBase + 0.21)
       .addScaledVector(intoRoom, 0.006);
-    centre.x = 1.88; // centred over the plaque
-    angel.matrix.makeBasis(across, upSlope, intoRoom);
-    angel.matrix.setPosition(centre);
-    angel.matrix.decompose(angel.position, angel.quaternion, angel.scale);
-    ceilingGroup.add(angel);
-  }
+    // One over the Attenborough plaque, its twin at the same height over the Roll of Honour (x = -2.32)
+    [1.88, -2.32].forEach((x, k) => {
+      const a = k === 0 ? angel : angel.clone();
+      a.matrix.makeBasis(across, upSlope, intoRoom);
+      a.matrix.setPosition(centre.clone().setX(x));
+      a.matrix.decompose(a.position, a.quaternion, a.scale);
+      ceilingGroup.add(a);
+    });
 
-  // Carved wooden winged-angel corbels along Nave wall-plates (IMG_3936, 3937, 3950)
-  [
-    [-1.45, N.zSouthInt - 0.08, Math.PI],
-    [-2.05, N.zNorthInt + 0.08, 0],
-    [-2.65, N.zNorthInt + 0.08, 0]
-  ].forEach(([ax, az, rotY]) => {
-    const angel = buildAngelCorbel(mats);
-    angel.position.set(ax, N.eavesY + 0.14, az);
-    angel.rotation.y = rotY;
-    ceilingGroup.add(angel);
-  });
+    // Two half angels on the North wall-plate above the doorway: the same carving split down its centre line, each
+    // half with one outspread wing, set either side of the door with their cut edges towards each other
+    const nCove0 = new THREE.Vector3(0, naveCeilPts[0].y, naveCeilPts[0].x); // eaves, North
+    const nCove1 = new THREE.Vector3(0, naveCeilPts[1].y, naveCeilPts[1].x);
+    const nUp = nCove1.clone().sub(nCove0).normalize();
+    const nInto = new THREE.Vector3(0, -nUp.z, nUp.y); // facing the nave (+Z)
+    const nAcross = nUp.clone().cross(nInto); // +X: the viewer's right when facing the North wall
+    const nBase = (plateTopY + 0.005 - nCove0.y) / nUp.y;
+    const nCentre = nCove0
+      .clone()
+      .addScaledVector(nUp, nBase + 0.21)
+      .addScaledVector(nInto, 0.006);
+    const full = createCarvedAngelHeightMap();
+    const halfW = full.width / 2;
+    const doorX = DIM.porch.xCenter;
+    [
+      { srcX: 0, x: doorX - 0.22 - halfW * 0.0005 }, // left half (West wing) West of the door
+      { srcX: halfW, x: doorX + 0.22 + halfW * 0.0005 } // right half (East wing) East of the door
+    ].forEach(({ srcX, x }) => {
+      const half = document.createElement('canvas');
+      half.width = halfW;
+      half.height = full.height;
+      half.getContext('2d').drawImage(full, srcX, 0, halfW, full.height, 0, 0, halfW, full.height);
+      const h = buildPiercedCarving(half, 0.045, angelMat);
+      h.matrix.makeBasis(nAcross, nUp, nInto);
+      h.matrix.setPosition(nCentre.clone().setX(x));
+      h.matrix.decompose(h.position, h.quaternion, h.scale);
+      ceilingGroup.add(h);
+    });
+  }
 
   // Chancel Dark Oak Wagon-Ribbed Barrel Vault (x: 3.20 to 9.00, IMG_3936, 3937, 3938!)
   // Built explicitly with world-space (x, y, z) quads arching cleanly UPWARD from z=-2.00 to z=+2.00
@@ -2246,6 +2734,20 @@ export function buildInterior(mats) {
     rib.position.set(rx, C.eavesY, 0);
     ceilingGroup.add(rib);
   }
+
+  // Two black spotlights fixed to the underside of the wooden chancel arch frame, low on its curve, trained on the
+  // altar. The arch frame (built below) is a torus of radius vaultR + 0.04 and tube 0.14, squashed to 0.94 high.
+  const altarAim = new THREE.Vector3(8.3, DIM.sanctuaryStep2Y + 0.95, 0);
+  const soffitR = vaultR + 0.04 - 0.14;
+  const soffitRise = soffitR * 0.94;
+  [-1, 1].forEach((sideZ) => {
+    // About a third of the way up the arch from its springing
+    const a = sideZ < 0 ? Math.PI * 0.17 : Math.PI * 0.83;
+    const surf = new THREE.Vector3(C.xWestInt + 0.04, C.eavesY + Math.sin(a) * soffitRise, -Math.cos(a) * soffitR);
+    const inward = new THREE.Vector3(0, -Math.sin(a) * soffitR, Math.cos(a) * soffitRise).normalize();
+    const spot = buildCeilingSpotlight(altarAim, surf, inward);
+    ceilingGroup.add(spot);
+  });
 
   // Heavy dark oak wall plates & longitudinal purlins on Chancel vault
   [-1, 1].forEach((sideZ) => {
@@ -2568,9 +3070,51 @@ export function buildInterior(mats) {
     });
   });
 
-  const bookRest = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.14, 0.3), mats.brass);
-  bookRest.position.set(altarX - 0.06, altY + altarH + 0.1, -0.34);
-  bookRest.rotation.z = 0.42;
+  // Brass altar lectern (missal desk): a moulded foot, a short turned stem and a sloping desk with a book ledge,
+  // tilted towards the priest standing at the West of the altar
+  const bookRest = new THREE.Group();
+  const deskFoot = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.09, 0.018, 24), mats.brass);
+  deskFoot.position.y = 0.009;
+  bookRest.add(deskFoot);
+  const deskStem = new THREE.Mesh(
+    new THREE.LatheGeometry(
+      [
+        new THREE.Vector2(0.03, 0.018),
+        new THREE.Vector2(0.016, 0.04),
+        new THREE.Vector2(0.024, 0.07),
+        new THREE.Vector2(0.013, 0.1),
+        new THREE.Vector2(0.018, 0.13),
+        new THREE.Vector2(0.0, 0.135)
+      ],
+      16
+    ),
+    mats.brass
+  );
+  bookRest.add(deskStem);
+  const desk = new THREE.Group();
+  desk.position.set(0, 0.14, 0);
+  desk.rotation.z = 0.5; // the desk face looks West (-X) and up
+  const plate = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.006, 0.32), mats.brass);
+  desk.add(plate);
+  const rim = new THREE.Mesh(new THREE.BoxGeometry(0.008, 0.012, 0.32), mats.brass);
+  [-1, 1].forEach((sx) => {
+    const r = rim.clone();
+    r.position.set(sx * 0.116, 0.006, 0);
+    desk.add(r);
+  });
+  const ledge = new THREE.Mesh(new THREE.BoxGeometry(0.014, 0.03, 0.3), mats.brass);
+  ledge.position.set(-0.122, 0.016, 0);
+  desk.add(ledge);
+  // Pierced quatrefoil boss in the middle of the desk
+  const boss = new THREE.Mesh(new THREE.TorusGeometry(0.03, 0.005, 8, 24), mats.brass);
+  boss.rotation.x = Math.PI / 2;
+  boss.position.y = 0.004;
+  desk.add(boss);
+  bookRest.add(desk);
+  bookRest.traverse((o) => {
+    if (o.isMesh) o.castShadow = true;
+  });
+  bookRest.position.set(altarX - 0.06, altY + altarH, -0.34);
   interiorGroup.add(bookRest);
 
   // Flanking Stone Brackets with Floral Arrangements & Sanctuary Oak Chairs (IMG_3938)
@@ -2592,8 +3136,112 @@ export function buildInterior(mats) {
   });
 
   // Tall Wrought-Iron Paschal Candle Stand on North Sanctuary side (IMG_3938)
-  const paschalStand = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.14, 1.05, 8), mats.iron);
-  paschalStand.position.set(7.68, altY + 0.52, -1.68);
+  // Ornate black wrought-iron stand: a slender shaft with knops and a barley-twist collar on three splayed legs.
+  // Each leg ends in a scroll and ball foot, carries an S-scroll, a knee volute and a lyre of C-scrolls, and
+  // scrolled brackets and a crown of small curls carry the drip pan under the candle
+  const paschalStand = new THREE.Group();
+  const standTop = 1.01;
+  const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.018, standTop - 0.28, 10), mats.iron);
+  shaft.position.y = 0.28 + (standTop - 0.28) * 0.5;
+  paschalStand.add(shaft);
+  [0.32, 0.62, 0.9].forEach((ky) => {
+    const knop = new THREE.Mesh(new THREE.SphereGeometry(0.028, 14, 10), mats.iron);
+    knop.scale.y = 0.6;
+    knop.position.y = ky;
+    paschalStand.add(knop);
+  });
+  const pan = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.06, 0.025, 20), mats.iron);
+  pan.position.y = standTop - 0.012;
+  paschalStand.add(pan);
+  const scroll = (pts) =>
+    new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 48, 0.008, 6), mats.iron);
+  for (let k = 0; k < 3; k++) {
+    const ang = (k / 3) * Math.PI * 2;
+    const leg = new THREE.Group();
+    // In the leg's own plane: x outward, y up
+    const legPts = [
+      new THREE.Vector3(0.01, 0.34, 0),
+      new THREE.Vector3(0.06, 0.24, 0),
+      new THREE.Vector3(0.14, 0.12, 0),
+      new THREE.Vector3(0.21, 0.008, 0)
+    ];
+    // Curl outwards, up and back in over itself at the foot
+    const footR = 0.034;
+    for (let i = 1; i <= 14; i++) {
+      const t = (i / 14) * Math.PI * 1.6;
+      const r = footR * (1 - (0.55 * i) / 14);
+      legPts.push(new THREE.Vector3(0.21 + Math.sin(t) * r, 0.008 + footR - Math.cos(t) * r, 0));
+    }
+    leg.add(scroll(legPts));
+    // C-scroll swirl between the leg and the shaft
+    const cPts = [];
+    for (let i = 0; i <= 16; i++) {
+      const t = (i / 16) * Math.PI * 1.7;
+      const r = 0.05 * (1 - i / 26);
+      cPts.push(new THREE.Vector3(0.05 + Math.sin(t) * r, 0.36 + Math.cos(t) * r, 0));
+    }
+    leg.add(scroll(cPts));
+    // Facing C-scroll curling the other way, so the pair forms a lyre beside the shaft
+    const c2Pts = [];
+    for (let i = 0; i <= 16; i++) {
+      const t = (i / 16) * Math.PI * 1.7;
+      const r = 0.042 * (1 - i / 26);
+      c2Pts.push(new THREE.Vector3(0.05 + Math.sin(t) * r, 0.46 - Math.cos(t) * r, 0));
+    }
+    leg.add(scroll(c2Pts));
+    // S-scroll sprung from the inside of the leg, curling down towards the floor and up against the shaft
+    leg.add(
+      scroll([
+        ...spiralPts(0.112, 0.085, 0.028, Math.PI, Math.PI * 1.5, -1, 0.55).reverse(),
+        ...spiralPts(0.05, 0.24, 0.026, 0, Math.PI * 1.5, 1, 0.55)
+      ])
+    );
+    // Small volute on the outside of the leg at its knee
+    leg.add(scroll(spiralPts(0.135, 0.175, 0.022, Math.PI * 0.75, Math.PI * 1.6, -1, 0.6)));
+    // Ball feet inside the foot scrolls
+    const ball = new THREE.Mesh(new THREE.SphereGeometry(0.009, 8, 6), mats.iron);
+    ball.position.set(0.21, 0.008 + footR, 0);
+    leg.add(ball);
+    leg.rotation.y = ang;
+    paschalStand.add(leg);
+
+    // Three scrolled brackets cradling the drip pan, set between the legs
+    const bracket = new THREE.Group();
+    const bPts = [new THREE.Vector3(0.016, standTop - 0.15, 0), new THREE.Vector3(0.024, standTop - 0.1, 0)];
+    bPts.push(...spiralPts(0.05, standTop - 0.06, 0.026, Math.PI, Math.PI * 1.6, -1, 0.55).slice(1));
+    bracket.add(scroll(bPts));
+    bracket.add(scroll(spiralPts(0.035, standTop - 0.13, 0.016, 0, Math.PI * 1.5, 1, 0.55)));
+    bracket.rotation.y = ang + Math.PI / 3;
+    paschalStand.add(bracket);
+  }
+  // Barley-twist iron wrapped around the middle of the shaft
+  const twistPts = [];
+  for (let i = 0; i <= 120; i++) {
+    const t = i / 120;
+    const a = t * Math.PI * 2 * 6;
+    twistPts.push(new THREE.Vector3(Math.cos(a) * 0.02, 0.42 + t * 0.16, Math.sin(a) * 0.02));
+  }
+  paschalStand.add(
+    new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(twistPts), 240, 0.0045, 5), mats.iron)
+  );
+  // Collars either side of the twist
+  [0.415, 0.585].forEach((cy) => {
+    const collar = new THREE.Mesh(new THREE.TorusGeometry(0.021, 0.005, 6, 18), mats.iron);
+    collar.rotation.x = Math.PI / 2;
+    collar.position.y = cy;
+    paschalStand.add(collar);
+  });
+  // Crown of small scrolls around the drip pan rim
+  for (let k = 0; k < 8; k++) {
+    const curl = new THREE.Group();
+    curl.add(scroll(spiralPts(0.093, standTop + 0.012, 0.012, Math.PI, Math.PI * 1.5, 1, 0.6)));
+    curl.rotation.y = (k / 8) * Math.PI * 2;
+    paschalStand.add(curl);
+  }
+  paschalStand.traverse((o) => {
+    if (o.isMesh) o.castShadow = true;
+  });
+  paschalStand.position.set(7.68, altY, -1.68);
   interiorGroup.add(paschalStand);
   const paschalCandle = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.045, 0.95, 10), mats.wax);
   paschalCandle.position.set(7.68, altY + 1.48, -1.68);
@@ -2614,25 +3262,43 @@ export function buildInterior(mats) {
     waxRadius: 0.042
   });
 
-  // Wooden Communion Rails with Crimson Kneelers (x = 6.36, IMG_3938)
+  // Wooden Communion Rails with Crimson Kneelers (IMG_3938). Both stand on the first sanctuary step: the kneeling
+  // cushions along its front edge, and the rail behind them on a moulded oak base board
   const railBaseY = DIM.sanctuaryStep1Y;
+  const railX = 6.7;
   [-1, 1].forEach((sideZ) => {
     const rLen = C.zSouthInt - 0.56;
     const midZ = sideZ * (0.56 + rLen * 0.5);
     const railTop = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.07, rLen), mats.medOak);
-    railTop.position.set(6.38, railBaseY + 0.68, midZ);
+    railTop.position.set(railX, railBaseY + 0.68, midZ);
     railTop.castShadow = true;
     interiorGroup.add(railTop);
 
+    // Oak base: a deep plinth board with a moulded top capping, which the posts rise from
+    const baseH = 0.1;
+    const plinth = new THREE.Mesh(new THREE.BoxGeometry(0.1, baseH, rLen), mats.medOak);
+    plinth.position.set(railX, railBaseY + baseH * 0.5, midZ);
+    plinth.castShadow = true;
+    plinth.receiveShadow = true;
+    interiorGroup.add(plinth);
+    const capping = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.022, rLen + 0.01), mats.medOak);
+    capping.position.set(railX, railBaseY + baseH + 0.011, midZ);
+    capping.castShadow = true;
+    interiorGroup.add(capping);
+
     [0.08, rLen * 0.5, rLen - 0.08].forEach((off) => {
-      const post = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.68, 0.06), mats.medOak);
-      post.position.set(6.38, railBaseY + 0.34, sideZ * (0.56 + off));
+      const postH = 0.68 - baseH - 0.022;
+      const post = new THREE.Mesh(new THREE.BoxGeometry(0.06, postH, 0.06), mats.medOak);
+      post.position.set(railX, railBaseY + baseH + 0.022 + postH * 0.5, sideZ * (0.56 + off));
+      post.castShadow = true;
       interiorGroup.add(post);
     });
 
-    // Crimson velvet communion kneeler cushion along step below rail
-    const cKneeler = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.08, rLen - 0.06), mats.cushionCrimson);
-    cKneeler.position.set(6.08, DIM.chancelFloorY + 0.04, midZ);
+    // Crimson velvet communion kneeler cushion on top of the step, in front of the rail
+    const cKneeler = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.07, rLen - 0.06), mats.cushionCrimson);
+    cKneeler.position.set(6.25 + 0.02 + 0.15, railBaseY + 0.035, midZ);
+    cKneeler.castShadow = true;
+    cKneeler.receiveShadow = true;
     interiorGroup.add(cKneeler);
   });
 
@@ -2649,8 +3315,9 @@ export function buildInterior(mats) {
   const bibleTable = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.72, 0.62), mats.medOak);
   bibleTable.position.set(3.66, DIM.chancelFloorY + 0.36, -1.58);
   interiorGroup.add(bibleTable);
-  const bigBible = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.09, 0.36), mats.iron);
-  bigBible.position.set(3.66, DIM.chancelFloorY + 0.76, -1.58);
+  const bigBible = buildOldBible(mats);
+  bigBible.position.set(3.66, DIM.chancelFloorY + 0.72, -1.58);
+  bigBible.rotation.y = 0.05;
   interiorGroup.add(bigBible);
 
   // South Chancel Carved Oak Clergy Prayer Desk / Stall on Raised Dais (IMG_3940!)
@@ -2666,6 +3333,12 @@ export function buildInterior(mats) {
   stallSeat.position.set(4.15, DIM.chancelFloorY + 0.14, 1.66);
   stallSeat.rotation.y = Math.PI / 2; // Local +X (seat front) faces -Z (North toward prayer desk)
   deskG.add(stallSeat);
+
+  // Water fire extinguisher standing against the chancel South wall, East of the choir stall
+  const chancelExt = buildWaterExtinguisher();
+  chancelExt.position.set(5.05, DIM.chancelFloorY, C.zSouthInt - 0.12);
+  chancelExt.rotation.y = Math.PI + 0.35; // label towards the chancel aisle and the nave
+  interiorGroup.add(chancelExt);
   interiorGroup.add(deskG);
 
   // The medieval jamb carvings of Window 7 are cut into its splayed jambs: see buildCompositeWall in architecture.js
@@ -2697,21 +3370,25 @@ export function buildInterior(mats) {
   plinthCap.receiveShadow = true;
   pulpitG.add(plinthCap);
 
-  // 2. Rear stone steps at the East (+X) back of the pulpit ascending into the open rear entrance
-  // Lower step (y: 0 -> 0.125m) & Upper step (y: 0.125 -> 0.245m) with bullnose treads
+  // 2. Two stone steps at the East (+X) rear of the pulpit, their risers facing South into the middle of the
+  // church: the lower step by the aisle, the upper one a landing outside the rear door. From the landing the
+  // plinth's edge makes the final step up through the door into the pulpit.
   const stepSpecs = [
-    { x: 0.72, h: 0.12, wX: 0.34, wZ: 0.54 },
-    { x: 0.55, h: 0.24, wX: 0.32, wZ: 0.54 }
+    { z: 0.36, h: 0.12, wZ: 0.26 },
+    { z: 0.0, h: 0.24, wZ: 0.48 }
   ];
-  stepSpecs.forEach(({ x, h, wX, wZ }) => {
-    const riser = new THREE.Mesh(new THREE.BoxGeometry(wX, h - 0.03, wZ), mats.ashlar);
-    riser.position.set(x, (h - 0.03) * 0.5, 0.14);
+  const stepX0 = 0.58; // the plinth cap's East edge
+  const stepWX = 0.36;
+  stepSpecs.forEach(({ z, h, wZ }) => {
+    const riser = new THREE.Mesh(new THREE.BoxGeometry(stepWX, h - 0.03, wZ), mats.ashlar);
+    riser.position.set(stepX0 + stepWX * 0.5, (h - 0.03) * 0.5, z);
     riser.castShadow = true;
     riser.receiveShadow = true;
     pulpitG.add(riser);
 
-    const tread = new THREE.Mesh(new THREE.BoxGeometry(wX + 0.04, 0.034, wZ + 0.04), mats.ashlarWarm);
-    tread.position.set(x + 0.01, h - 0.015, 0.14);
+    // bullnose tread oversailing the riser towards the aisle
+    const tread = new THREE.Mesh(new THREE.BoxGeometry(stepWX + 0.02, 0.034, wZ + 0.03), mats.ashlarWarm);
+    tread.position.set(stepX0 + stepWX * 0.5, h - 0.015, z + 0.015);
     tread.castShadow = true;
     tread.receiveShadow = true;
     pulpitG.add(tread);
@@ -2724,11 +3401,11 @@ export function buildInterior(mats) {
   innerFloor.receiveShadow = true;
   pulpitG.add(innerFloor);
 
-  // 4. Open-topped octagonal dark-oak parapet walls (6 closed panelled facets; East + SE-East rear left open for steps)
+  // 4. Open-topped octagonal dark-oak parapet walls: 7 panelled facets plus a full-height hinged door in the East rear
   // Facet angles: 0 = West (-X), 1 = SW (-X,+Z), 2 = South (+Z), 3 = SE (+X,+Z),
-  //               4 = East (+X, OPEN entry), 5 = NE (+X,-Z), 6 = North (-Z), 7 = NW (-X,-Z)
+  //               4 = East (+X, rear door), 5 = NE (+X,-Z), 6 = North (-Z), 7 = NW (-X,-Z)
+  const holeMatDark = new THREE.MeshBasicMaterial({ color: 0x0d0907 });
   for (let i = 0; i < 8; i++) {
-    if (i === 4) continue; // Open rear doorway facing the stone steps!
     const ang = (i * Math.PI) / 4;
     // Direction vector pointing outward from pulpit centre for facet i (0 = West = -X, 2 = South = +Z)
     const nx = -Math.cos(ang);
@@ -2787,6 +3464,27 @@ export function buildInterior(mats) {
     copingTop.castShadow = true;
     facetG.add(copingTop);
 
+    if (i === 4) {
+      // The rear facet is the door: shadow gaps down both edges, iron strap hinges on the North edge, brass knob
+      const outZ = wallT * 0.5 + 0.034;
+      [-1, 1].forEach((s) => {
+        const gap = new THREE.Mesh(new THREE.BoxGeometry(0.006, parapetH - 0.02, 0.07), holeMatDark);
+        gap.position.set(s * (faceW * 0.5 + 0.006), parapetH * 0.5, wallT * 0.5 - 0.02);
+        facetG.add(gap);
+      });
+      [0.24, 0.86].forEach((hy) => {
+        const strap = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.024, 0.006), mats.iron);
+        strap.position.set(faceW * 0.5 - 0.06, hy, outZ - 0.004);
+        facetG.add(strap);
+        const knuckle = new THREE.Mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.06, 10), mats.iron);
+        knuckle.position.set(faceW * 0.5 + 0.004, hy, outZ - 0.008);
+        facetG.add(knuckle);
+      });
+      const knob = new THREE.Mesh(new THREE.SphereGeometry(0.018, 14, 10), mats.brass);
+      knob.position.set(-faceW * 0.5 + 0.05, 0.62, outZ + 0.008);
+      facetG.add(knob);
+    }
+
     pulpitG.add(facetG);
   }
 
@@ -2830,6 +3528,12 @@ export function buildInterior(mats) {
   });
 
   pulpitG.add(pulpitDeskG);
+  // White anglepoise lamp clamped on the pulpit's North parapet by the wall, switched on over the reading desk
+  const pulpitLamp = buildAnglepoiseLamp();
+  pulpitLamp.scale.setScalar(0.85);
+  pulpitLamp.position.set(0.05, plinthH + parapetH + 0.0225, -(apothem - wallT * 0.5));
+  pulpitLamp.rotation.y = -Math.PI / 2 - 0.35; // arm reaches in over the pulpit towards the desk
+  pulpitG.add(pulpitLamp);
   pulpitG.position.set(2.26, nfY, -1.92);
   pulpitG.updateMatrixWorld(true);
   pulpitCandleSticks.forEach((cStick, idx) => {
@@ -2844,40 +3548,40 @@ export function buildInterior(mats) {
   });
   interiorGroup.add(pulpitG);
 
-  // Dark Oak Lectern in SE Nave (IMG_3936, 3940, 3941)
+  // Golden oak Lectern in SE Nave (IMG_3936, 3940, 3941): pedestal stem carrying a sloping book desk whose front
+  // panel, facing the congregation, is pierced and carved (lectern-carving photo)
   const lecternG = new THREE.Group();
-  const lBase = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.3, 0.1, 14), mats.darkOak);
+  const lBase = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.3, 0.1, 14), mats.medOak);
   lBase.position.y = 0.05;
   lecternG.add(lBase);
-  const lStem = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.075, 1.12, 12), mats.darkOak);
+  const lStem = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.075, 1.12, 12), mats.medOak);
   lStem.position.y = 0.62;
   lStem.castShadow = true;
   lecternG.add(lStem);
-  const lDesk = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.24, 0.58), mats.darkOak);
-  lDesk.position.y = 1.24;
-  lDesk.rotation.z = 0.35;
-  lDesk.castShadow = true;
-  lecternG.add(lDesk);
+  lecternG.add(buildLecternDesk(mats.medOak, 1.16));
   lecternG.position.set(2.46, nfY, 1.22);
   interiorGroup.add(lecternG);
 
   // Nave Oak Pews with Crimson Cushions & Blue Kneelers!
-  // North block: 4 rows between Pulpit & North Doorway (IMG_3936, 3949)
-  [1.42, 0.48, -0.46, -1.4].forEach((px) => {
+  // North block: 6 rows between the Pulpit & the North Doorway (the rearmost stops at the door's East jamb)
+  const northFront = 1.4;
+  const northBack = -1.57;
+  for (let k = 0; k < 6; k++) {
     const pew = buildPew(1.86, mats);
-    pew.position.set(px, nfY, -1.52);
+    pew.position.set(northFront + ((northBack - northFront) * k) / 5, nfY, -1.52);
     interiorGroup.add(pew);
-  });
+  }
 
-  // South block: 5 main rows + 1 west-end pew + 1 tower-bay pew (IMG_3941, 3943, 3950)
-  [1.62, 0.7, -0.22, -1.14, -2.06, -2.98].forEach((px) => {
-    const pew = buildPew(1.86, mats);
-    pew.position.set(px, nfY, 1.52);
+  // South block: 7 full-length rows between the Lectern & the Font, then 4 narrow pews continuing beside the
+  // Font back towards the vestry partition, all on one pitch and clear of the font & the tower post
+  const southFront = 1.95;
+  const southPitch = 0.685;
+  for (let k = 0; k < 11; k++) {
+    const narrow = k >= 7;
+    const pew = buildPew(narrow ? 1.2 : 1.86, mats);
+    pew.position.set(southFront - k * southPitch, nfY, narrow ? 1.62 : 1.52);
     interiorGroup.add(pew);
-  });
-  const towerBayPew = buildPew(1.36, mats, { includeKneelers: false });
-  towerBayPew.position.set(-4.52, nfY, 1.66);
-  interiorGroup.add(towerBayPew);
+  }
 
   // Octagonal Medieval Limestone Font with 4-Rib Curved Ogee Oak Cover (matching close-up photo & IMG_3941/3943)
   const fontG = new THREE.Group();
@@ -2995,19 +3699,117 @@ export function buildInterior(mats) {
 
   // Wooden Organ Console, Pedalboard & Bench in NW Tower Bay (IMG_3941, 3942)
   const organG = new THREE.Group();
-  const oBody = new THREE.Mesh(new THREE.BoxGeometry(0.68, 1.24, 1.26), mats.medOak);
-  oBody.position.set(0, 0.62, 0);
-  oBody.castShadow = true;
-  organG.add(oBody);
-  const oKeys = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.06, 0.92), mats.wax);
-  oKeys.position.set(-0.34, 0.86, 0);
+  // Case: full depth above the keys, set back below them to leave a kneehole over the pedalboard
+  const oUpper = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.4, 1.26), mats.medOak);
+  oUpper.position.set(0, 1.04, 0);
+  oUpper.castShadow = true;
+  organG.add(oUpper);
+  const oLower = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.84, 1.26), mats.medOak);
+  oLower.position.set(0.12, 0.42, 0);
+  oLower.castShadow = true;
+  organG.add(oLower);
+  [-1, 1].forEach((sz) => {
+    const cheek = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.84, 0.05), mats.medOak);
+    cheek.position.set(-0.22, 0.42, sz * 0.605);
+    cheek.castShadow = true;
+    organG.add(cheek);
+  });
+  const keyBed = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.03, 1.16), mats.medOak);
+  keyBed.position.set(-0.45, 0.825, 0);
+  organG.add(keyBed);
+  const oKeys = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.03, 0.92), mats.wax);
+  oKeys.position.set(-0.44, 0.855, 0);
   organG.add(oKeys);
-  const oBench = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.58, 1.12), mats.medOak);
-  oBench.position.set(-0.62, 0.29, 0);
-  organG.add(oBench);
-  const oPedals = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.08, 0.88), mats.warmOak);
-  oPedals.position.set(-0.35, 0.06, 0);
-  organG.add(oPedals);
+
+  // Roll-top (tambour) fall drawn down over the keyboard: a quarter-round of narrow oak slats running in
+  // curved grooves in the two shaped cheeks, with a moulded lip on the bottom slat to lift it by
+  const arcC = new THREE.Vector2(-0.34, 0.875); // centre of the quarter-round, against the case front
+  const arcR = 0.24;
+  const slats = 16;
+  for (let k = 0; k < slats; k++) {
+    const a0 = Math.PI / 2 + (k / slats) * (Math.PI / 2);
+    const a1 = Math.PI / 2 + ((k + 1) / slats) * (Math.PI / 2);
+    const am = (a0 + a1) * 0.5;
+    const slat = new THREE.Mesh(new THREE.BoxGeometry(arcR * (a1 - a0) - 0.002, 0.012, 0.98), mats.warmOak);
+    slat.position.set(arcC.x + Math.cos(am) * arcR, arcC.y + Math.sin(am) * arcR, 0);
+    slat.rotation.z = am - Math.PI / 2;
+    slat.castShadow = true;
+    organG.add(slat);
+  }
+  const lip = new THREE.Mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.98, 10), mats.darkOak);
+  lip.rotation.x = Math.PI / 2;
+  lip.position.set(arcC.x - arcR - 0.004, arcC.y + 0.006, 0);
+  organG.add(lip);
+  const cheekShape = new THREE.Shape();
+  cheekShape.moveTo(0, 0);
+  cheekShape.lineTo(0, arcR + 0.03);
+  cheekShape.absarc(0, 0, arcR + 0.03, Math.PI / 2, Math.PI, false);
+  cheekShape.lineTo(0, 0);
+  const cheekGeo = new THREE.ExtrudeGeometry(cheekShape, { depth: 0.04, bevelEnabled: false, curveSegments: 16 });
+  [-1, 1].forEach((sz) => {
+    const tCheek = new THREE.Mesh(cheekGeo, mats.medOak);
+    tCheek.position.set(arcC.x, arcC.y - 0.035, sz > 0 ? 0.49 : -0.53);
+    tCheek.castShadow = true;
+    organG.add(tCheek);
+  });
+
+  // Bench: a seat plank on two shaped end boards, so the pedalboard runs underneath it
+  const seatBoard = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.04, 1.12), mats.medOak);
+  seatBoard.position.set(-0.8, 0.56, 0);
+  seatBoard.castShadow = true;
+  organG.add(seatBoard);
+  [-1, 1].forEach((sz) => {
+    const end = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.54, 0.035), mats.medOak);
+    end.position.set(-0.8, 0.27, sz * 0.54);
+    end.castShadow = true;
+    organG.add(end);
+  });
+  const benchRail = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.08, 1.04), mats.medOak);
+  benchRail.position.set(-0.92, 0.46, 0);
+  organG.add(benchRail);
+
+  // Flat pedalboard of 32 wooden pedals (C to G): 19 long naturals with 13 raised dark-capped sharps at the
+  // case end, all on a low frame
+  const pedalFrame = new THREE.Group();
+  const frameBase = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.03, 1.04), mats.darkOak);
+  frameBase.position.set(-0.43, 0.015, 0);
+  frameBase.receiveShadow = true;
+  pedalFrame.add(frameBase);
+  const frameBack = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.08, 1.04), mats.darkOak);
+  frameBack.position.set(-0.11, 0.04, 0);
+  pedalFrame.add(frameBack);
+  const naturalSpan = 0.98;
+  const nW = naturalSpan / 19;
+  const natGeo = new THREE.BoxGeometry(0.56, 0.028, nW - 0.016);
+  const sharpGeo = new THREE.BoxGeometry(0.15, 0.03, nW - 0.022);
+  const capGeo = new THREE.BoxGeometry(0.15, 0.008, nW - 0.022);
+  const pedalWood = new THREE.MeshStandardMaterial({ color: 0xc9a574, roughness: 0.6 });
+  const pedalCap = new THREE.MeshStandardMaterial({ color: 0x1d1712, roughness: 0.5 });
+  const hasSharpAfter = [true, true, false, true, true, true, false]; // C D E F G A B
+  for (let n = 0; n < 19; n++) {
+    // Player sits at -X, so their left (low notes) is +Z
+    const z = naturalSpan * 0.5 - (n + 0.5) * nW;
+    const nat = new THREE.Mesh(natGeo, pedalWood);
+    nat.position.set(-0.44, 0.044, z);
+    nat.castShadow = true;
+    nat.receiveShadow = true;
+    pedalFrame.add(nat);
+    if (n < 18 && hasSharpAfter[n % 7]) {
+      const sharp = new THREE.Mesh(sharpGeo, pedalWood);
+      sharp.position.set(-0.22, 0.073, z - nW * 0.5);
+      sharp.castShadow = true;
+      pedalFrame.add(sharp);
+      const cap = new THREE.Mesh(capGeo, pedalCap);
+      cap.position.set(-0.22, 0.092, z - nW * 0.5);
+      pedalFrame.add(cap);
+    }
+  }
+  organG.add(pedalFrame);
+  // White anglepoise lamp standing on the organ case, its shade angled down over the music desk & keys
+  const lamp = buildAnglepoiseLamp();
+  lamp.position.set(0.04, 1.24, 0.36);
+  lamp.rotation.y = Math.PI;
+  organG.add(lamp);
   organG.position.set(-4.32, nfY, -1.72);
   organG.rotation.y = 0;
   interiorGroup.add(organG);
@@ -3018,10 +3820,10 @@ export function buildInterior(mats) {
   interiorGroup.add(visitorPew);
   interiorGroup.add(buildVisitorBook(mats, -3.27, nfY + 0.518, -1.9));
 
-  // Hinged iron donation plate with a coin slot & keyhole, on the North wall right (East) of the door, above the front pew
+  // Hinged iron donation plate with two coin slots, a keyhole & a taped 'Donations' label, on the North wall right (East) of the door, above the front pew
   const donation = buildDonationPlate(mats);
   donation.scale.setScalar(0.7);
-  donation.position.set(-1.4, nfY + 1.1, N.zNorthInt);
+  donation.position.set(-1.6, nfY + 0.95, N.zNorthInt);
   interiorGroup.add(donation);
 
   // -------------------------------------------------------
@@ -3030,11 +3832,13 @@ export function buildInterior(mats) {
   interiorGroup.add(buildWestTowerInterior(mats, ceilingGroup));
 
   // -------------------------------------------------------
-  // 7. THREE SUSPENDED CHANDELIERS, WALL MEMORIALS & STAINED-GLASS CAUSTIC
+  // 7. FOUR SUSPENDED PENDANT CLUSTERS (3 nave, 1 chancel), WALL MEMORIALS & STAINED-GLASS CAUSTIC
   // -------------------------------------------------------
+  // Nave pendants spaced evenly under the nave ceiling, the westernmost kept clear of the bell tower frame
   [
-    [-2.2, 5.08, 2.38, 1.7],
-    [0.95, 5.08, 2.38, 1.8],
+    [-2.45, 5.08, 2.38, 1.6],
+    [-0.2, 5.08, 2.38, 1.65],
+    [1.95, 5.08, 2.38, 1.65],
     [5.45, 4.66, 2.05, 1.7]
   ].forEach(([cx, topY, drop, intensity]) => {
     const ch = buildChandelier(drop, mats, intensity);
@@ -3138,7 +3942,8 @@ export function buildInterior(mats) {
   );
   donorsArt.position.z = 0.008;
   donorsG.add(topRail, botRail, leftRail, rightRail, backBoard, donorsArt);
-  donorsG.position.set(-0.58, 1.92, N.zNorthInt + 0.02);
+  donorsG.scale.set(0.5, 0.5, 1); // half size
+  donorsG.position.set(-0.08, 1.92, N.zNorthInt + 0.02); // just west of the Jaques window reveal
   interiorGroup.add(donorsG);
 
   // Rainbow Stained-Glass Sunlight Caustic projected onto the North Nave Wall (IMG_3949!)
@@ -3188,4 +3993,337 @@ export function buildInterior(mats) {
   };
 
   return { interiorGroup, ceilingGroup, chandelierLights, causticMesh, candleEffect };
+}
+
+/**
+ * Gathered cloth curtain skirting a table on all four sides. Origin is the rail
+ * at the top of the curtain, centred on the table; the cloth hangs down by `drop`.
+ */
+function buildTableCurtain(width, depth, drop, clothMat, railMat) {
+  const g = new THREE.Group();
+  const foldPitch = 0.055;
+  const foldDepth = 0.012;
+  const sides = [
+    { len: depth, x: width * 0.5, z: 0, rotY: Math.PI / 2 },
+    { len: depth, x: -width * 0.5, z: 0, rotY: -Math.PI / 2 },
+    { len: width, x: 0, z: depth * 0.5, rotY: 0 },
+    { len: width, x: 0, z: -depth * 0.5, rotY: Math.PI }
+  ];
+  sides.forEach(({ len, x, z, rotY }, sideIdx) => {
+    const segW = Math.max(24, Math.round((len / foldPitch) * 6));
+    const geo = new THREE.PlaneGeometry(len, drop, segW, 10);
+    const pos = geo.attributes.position;
+    const folds = Math.round(len / foldPitch);
+    for (let i = 0; i < pos.count; i++) {
+      const u = pos.getX(i) / len + 0.5;
+      const v = 0.5 - pos.getY(i) / drop; // 0 at rail, 1 at hem
+      const phase = u * folds * Math.PI * 2 + sideIdx * 0.7;
+      // Folds are tight at the rail and relax and flare slightly towards the hem
+      const amp = foldDepth * (0.75 + 0.5 * v) * (1 + 0.15 * Math.sin(u * 13.1 + sideIdx));
+      let offset = Math.sin(phase) * amp + 0.006 + v * 0.018;
+      // Fade the folds out at the corners so neighbouring sides meet cleanly
+      const edge = Math.min(u, 1 - u) * len;
+      if (edge < 0.03) offset *= edge / 0.03;
+      pos.setZ(i, offset);
+      pos.setY(i, -v * drop);
+    }
+    geo.computeVertexNormals();
+    const cloth = new THREE.Mesh(geo, clothMat);
+    cloth.position.set(x, 0, z);
+    cloth.rotation.y = rotY;
+    cloth.castShadow = true;
+    cloth.receiveShadow = true;
+    g.add(cloth);
+  });
+  // Slim rail the curtain hangs from, tucked under the tabletop edge
+  const railT = 0.012;
+  [
+    [width + 0.03, 0, depth * 0.5 + 0.01],
+    [width + 0.03, 0, -depth * 0.5 - 0.01]
+  ].forEach(([len, rx, rz]) => {
+    const rail = new THREE.Mesh(new THREE.BoxGeometry(len, railT, railT), railMat);
+    rail.position.set(rx, -railT * 0.5, rz);
+    g.add(rail);
+  });
+  [width * 0.5 + 0.01, -width * 0.5 - 0.01].forEach((rx) => {
+    const rail = new THREE.Mesh(new THREE.BoxGeometry(railT, railT, depth + 0.03), railMat);
+    rail.position.set(rx, -railT * 0.5, 0);
+    g.add(rail);
+  });
+  return g;
+}
+
+/**
+ * Points along a flat iron scroll in the x/y plane, starting on a circle of radius r0 about (cx, cy) at angle a0
+ * (0 = straight below the centre, measured anticlockwise) and sweeping `sweep` radians in direction `dir`,
+ * tightening by `tighten` towards the end.
+ */
+function spiralPts(cx, cy, r0, a0, sweep, dir = 1, tighten = 0.55) {
+  const pts = [];
+  const n = 18;
+  for (let i = 0; i <= n; i++) {
+    const f = i / n;
+    const a = a0 + dir * sweep * f;
+    const r = r0 * (1 - tighten * f);
+    pts.push(new THREE.Vector3(cx + Math.sin(a) * r, cy - Math.cos(a) * r, 0));
+  }
+  return pts;
+}
+
+/**
+ * A black theatre-style spotlight on a ceiling plate: a short drop rod, a yoke and a cylindrical can with a warm
+ * lens, aimed at `aim`. `mountPos` is the point on the ceiling surface and `inward` its unit normal into the room.
+ */
+function buildCeilingSpotlight(aim, mountPos, inward) {
+  const black = new THREE.MeshStandardMaterial({ color: 0x141414, roughness: 0.45, metalness: 0.55 });
+  const lensMat = new THREE.MeshStandardMaterial({
+    color: 0xfff1d6,
+    emissive: 0xffe2b0,
+    emissiveIntensity: 1.6,
+    roughness: 0.2
+  });
+  const g = new THREE.Group();
+
+  // Ceiling plate and drop rod, aligned to the ceiling normal
+  const mount = new THREE.Group();
+  mount.position.copy(mountPos);
+  mount.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0), inward);
+  const plate = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 0.012, 20), black);
+  plate.position.y = -0.006;
+  mount.add(plate);
+  const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.1, 8), black);
+  rod.position.y = -0.06;
+  mount.add(rod);
+  g.add(mount);
+
+  // Pivot at the end of the rod, from which the can points at the target
+  const pivotPos = mountPos.clone().addScaledVector(inward, 0.11);
+  const head = new THREE.Group();
+  head.position.copy(pivotPos);
+  head.lookAt(aim); // local +z now points at the target
+  const yoke = new THREE.Mesh(new THREE.TorusGeometry(0.05, 0.006, 6, 16, Math.PI), black);
+  yoke.rotation.z = Math.PI / 2;
+  head.add(yoke);
+  const canGeo = new THREE.CylinderGeometry(0.042, 0.038, 0.15, 20, 1, true);
+  canGeo.rotateX(Math.PI / 2);
+  const can = new THREE.Mesh(
+    canGeo,
+    new THREE.MeshStandardMaterial({
+      color: 0x141414,
+      roughness: 0.45,
+      metalness: 0.55,
+      side: THREE.DoubleSide
+    })
+  );
+  head.add(can);
+  const back = new THREE.Mesh(new THREE.CylinderGeometry(0.038, 0.038, 0.01, 20), black);
+  back.rotation.x = Math.PI / 2;
+  back.position.z = -0.075;
+  head.add(back);
+  const lens = new THREE.Mesh(new THREE.CircleGeometry(0.036, 20), lensMat);
+  lens.position.z = 0.05;
+  head.add(lens);
+  // Cooling fins round the back of the can
+  for (let i = 0; i < 4; i++) {
+    const fin = new THREE.Mesh(new THREE.TorusGeometry(0.043, 0.003, 4, 20), black);
+    fin.position.z = -0.06 + i * 0.016;
+    head.add(fin);
+  }
+  g.add(head);
+
+  // The light itself: a narrow warm beam from the lens onto the altar
+  const lensWorld = pivotPos.clone().addScaledVector(aim.clone().sub(pivotPos).normalize(), 0.06);
+  const light = new THREE.SpotLight(0xffe4bc, 3.2, 9, 0.2, 0.5, 1.2);
+  light.position.copy(lensWorld);
+  light.target.position.copy(aim);
+  g.add(light, light.target);
+  return g;
+}
+
+/**
+ * Height map (pxPerMm pixels per mm, drawn in mm) for the carved front panel of the nave lectern desk: four pierced, cusped quatrefoils in
+ * sunk roundels at the corners and, in the centre, a pierced roundel holding a cross crosslet, ringed with studs and
+ * a laurel wreath tied at the bottom with a ribbon bow. Black is cut right through; brighter is higher.
+ */
+function createLecternPanelHeightMap(w, h, pxPerMm = 1) {
+  const c = document.createElement('canvas');
+  c.width = w * pxPerMm;
+  c.height = h * pxPerMm;
+  const ctx = c.getContext('2d');
+  ctx.scale(pxPerMm, pxPerMm);
+  const tone = (v) => {
+    const g = Math.round(Math.max(0, Math.min(1, v)) * 255);
+    return `rgb(${g},${g},${g})`;
+  };
+  const circle = (x, y, r, v) => {
+    ctx.fillStyle = tone(v);
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  };
+  // Flat board field
+  ctx.fillStyle = tone(0.55);
+  ctx.fillRect(0, 0, w, h);
+  // Moulded border just inside the edge
+  ctx.strokeStyle = tone(0.42);
+  ctx.lineWidth = 2;
+  ctx.strokeRect(9, 9, w - 18, h - 18);
+
+  // Pierced quatrefoil with its lobes on the diagonals, as a path for filling or stroking
+  const quatrefoilPath = (cx, cy, lobeR, lobeD, coreR) => {
+    ctx.beginPath();
+    for (let k = 0; k < 4; k++) {
+      const a = Math.PI / 4 + (k * Math.PI) / 2;
+      ctx.moveTo(cx + Math.cos(a) * lobeD + lobeR, cy + Math.sin(a) * lobeD);
+      ctx.arc(cx + Math.cos(a) * lobeD, cy + Math.sin(a) * lobeD, lobeR, 0, Math.PI * 2);
+    }
+    ctx.moveTo(cx + coreR, cy);
+    ctx.arc(cx, cy, coreR, 0, Math.PI * 2);
+  };
+  const r = 50;
+  const corners = [
+    [95, 72],
+    [w - 95, 72],
+    [95, h - 72],
+    [w - 95, h - 72]
+  ];
+  corners.forEach(([cx, cy]) => {
+    // Incised outer ring, then a sunk roundel field
+    circle(cx, cy, r + 2, 0.36);
+    circle(cx, cy, r - 1, 0.58);
+    circle(cx, cy, r - 6, 0.4);
+    // Raised moulding following the quatrefoil, with pointed cusps where the lobes meet
+    quatrefoilPath(cx, cy, 21, 20, 14);
+    ctx.fillStyle = tone(0.82);
+    ctx.fill();
+    quatrefoilPath(cx, cy, 15.5, 20, 9);
+    ctx.fillStyle = tone(0);
+    ctx.fill();
+  });
+
+  // Centre: laurel wreath, stud ring and pierced roundel with a cross crosslet
+  const cx = w * 0.5;
+  const cy = 128;
+  circle(cx, cy, 70, 0.4);
+  const leaves = 26;
+  for (let i = 0; i < leaves; i++) {
+    // Leaves run up both sides from the ribbon at the bottom to meet at the top
+    const side = i < leaves / 2 ? -1 : 1;
+    const t = (i % (leaves / 2)) / (leaves / 2);
+    const a = Math.PI / 2 + side * (0.25 + t * 2.7);
+    for (const ring of [56, 63]) {
+      const lx = cx + Math.cos(a) * ring;
+      const ly = cy + Math.sin(a) * ring;
+      ctx.save();
+      ctx.translate(lx, ly);
+      ctx.rotate(a + side * (Math.PI / 2 + 0.5));
+      ctx.fillStyle = tone(ring === 56 ? 0.8 : 0.95);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 11, 4.6, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = tone(0.64);
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(-8, 0);
+      ctx.lineTo(8, 0);
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+  // Plain raised band carrying the studs
+  circle(cx, cy, 51, 0.7);
+  circle(cx, cy, 40, 0.5);
+  for (let i = 0; i < 18; i++) {
+    const a = (i / 18) * Math.PI * 2;
+    circle(cx + Math.cos(a) * 45.5, cy + Math.sin(a) * 45.5, 2.6, 1);
+  }
+  circle(cx, cy, 37, 0);
+  // Cross crosslet left standing in the opening
+  ctx.fillStyle = tone(0.78);
+  const bar = 5;
+  const arm = 36;
+  ctx.fillRect(cx - bar / 2, cy - arm, bar, arm * 2);
+  ctx.fillRect(cx - arm, cy - bar / 2, arm * 2, bar);
+  for (let k = 0; k < 4; k++) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate((k * Math.PI) / 2);
+    ctx.fillRect(-8, -arm + 7, 16, bar - 1);
+    ctx.restore();
+  }
+  // Ribbon bow tying the wreath at the bottom, its two tails flaring out below
+  circle(cx, cy + 66, 6, 0.9);
+  ctx.strokeStyle = tone(0.84);
+  ctx.lineCap = 'round';
+  [-1, 1].forEach((side) => {
+    ctx.lineWidth = 4.5;
+    ctx.beginPath();
+    ctx.moveTo(cx + side * 3, cy + 70);
+    ctx.bezierCurveTo(cx + side * 10, cy + 88, cx + side * 20, cy + 98, cx + side * 40, cy + 104);
+    ctx.stroke();
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(cx + side * 2, cy + 64);
+    ctx.quadraticCurveTo(cx + side * 16, cy + 58, cx + side * 12, cy + 70);
+    ctx.stroke();
+  });
+  return c;
+}
+
+/**
+ * Sloping lectern book desk on top of the stem at `baseY`. The tall front edge faces the congregation (-X) and is
+ * the pierced, carved panel; the desk slopes down towards the reader at +X onto a book ledge.
+ */
+function buildLecternDesk(oak, baseY) {
+  const g = new THREE.Group();
+  const deskW = 0.58; // along Z
+  const deskD = 0.4; // along X
+  const frontH = 0.29;
+  const backH = 0.1;
+  const t = 0.02;
+  const x0 = -deskD * 0.5;
+  const x1 = deskD * 0.5;
+
+  // Carved front panel: the carving's back sits on the box line, its relief stands proud towards the congregation
+  const panelMat = oak.clone();
+  panelMat.side = THREE.DoubleSide;
+  const panel = buildPiercedCarving(createLecternPanelHeightMap(580, 290, 2), 0.024, panelMat, 2);
+  panel.rotation.y = -Math.PI / 2;
+  panel.position.set(x0 + t * 0.5, baseY + frontH * 0.5, 0);
+  g.add(panel);
+
+  // Trapezoid side cheeks
+  const sideShape = new THREE.Shape();
+  sideShape.moveTo(x0, 0);
+  sideShape.lineTo(x1, 0);
+  sideShape.lineTo(x1, backH);
+  sideShape.lineTo(x0, frontH);
+  sideShape.closePath();
+  [-1, 1].forEach((side) => {
+    const geo = new THREE.ExtrudeGeometry(sideShape, { depth: t, bevelEnabled: false });
+    geo.translate(0, 0, -t * 0.5);
+    applyBoxUVs(geo, 0.45);
+    const cheek = new THREE.Mesh(geo, oak);
+    cheek.position.set(0, baseY, side * (deskW * 0.5 - t * 0.5));
+    cheek.castShadow = true;
+    g.add(cheek);
+  });
+
+  // Bottom, low back board and the sloping desk top with a book ledge along its lower edge
+  const bottom = new THREE.Mesh(new THREE.BoxGeometry(deskD, t, deskW), oak);
+  bottom.position.set(0, baseY + t * 0.5, 0);
+  g.add(bottom);
+  const backBoard = new THREE.Mesh(new THREE.BoxGeometry(t, backH, deskW - 2 * t), oak);
+  backBoard.position.set(x1 - t * 0.5, baseY + backH * 0.5, 0);
+  g.add(backBoard);
+  const slopeLen = Math.hypot(deskD, frontH - backH);
+  const top = new THREE.Mesh(new THREE.BoxGeometry(slopeLen + 0.03, t, deskW + 0.02), oak);
+  top.position.set(0, baseY + (frontH + backH) * 0.5 + t * 0.5, 0);
+  top.rotation.z = -Math.atan2(frontH - backH, deskD);
+  top.castShadow = true;
+  g.add(top);
+  const ledge = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.045, deskW + 0.02), oak);
+  ledge.position.set(x1 + 0.012, baseY + backH + 0.03, 0);
+  g.add(ledge);
+  return g;
 }

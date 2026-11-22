@@ -108,10 +108,10 @@ export const DIM = {
     w3: {
       wall: 'chancel-south',
       x: 4.55,
-      sillY: 0.98,
-      width: 0.36,
-      springY: 2.2,
-      apexY: 2.46,
+      sillY: 1.2,
+      width: 0.28,
+      springY: 2.06,
+      apexY: 2.27,
       type: 'wilson-stained'
     },
     // 4: Nave South "Sower" Window (2-light pointed gothic, vivid stained glass)
@@ -147,10 +147,10 @@ export const DIM = {
     w7: {
       wall: 'chancel-north',
       x: 4.65,
-      sillY: 1.18,
-      width: 0.48,
-      springY: 2.1,
-      apexY: 2.42,
+      sillY: 1.56,
+      width: 0.3,
+      springY: 2.44,
+      apexY: 2.66,
       type: 'lancet'
     },
     // 8: Chancel North East lancet

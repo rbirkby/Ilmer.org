@@ -45,6 +45,51 @@ export function createRopeMaterial() {
 // Three-strand hawser-laid bell rope: a cylinder whose radius dips into three helical grooves, with
 // vertex colours shading each strand round its crown and a fine streak of fibre along it.
 // Pass a curve to lay the rope along it (it is built straight, then each ring is carried onto the curve).
+// A bell-rope sally: the tufted woollen hand grip woven into the fall, twisted in spiral cream, red & blue stripes
+// and tapering into the rope at each end. Built along +Y, centred on the origin.
+export function buildSally(length, radius, ropeRadius) {
+  const radial = 24;
+  const rows = Math.max(16, Math.round(length / 0.005));
+  const geo = new THREE.CylinderGeometry(radius, radius, length, radial, rows, true);
+  const pos = geo.attributes.position;
+  const colors = new Float32Array(pos.count * 3);
+  const stripes = [
+    new THREE.Color(0xeee3c6),
+    new THREE.Color(0xb0222a),
+    new THREE.Color(0xeee3c6),
+    new THREE.Color(0x24407e)
+  ];
+  const taper = 0.09; // length of the woven taper into the rope at each end
+  const pitch = radius * 9; // one full turn of the spiral stripes
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i);
+    const y = pos.getY(i);
+    const z = pos.getZ(i);
+    const theta = Math.atan2(z, x);
+    const fromEnd = length * 0.5 - Math.abs(y);
+    const t = Math.min(1, fromEnd / taper);
+    const swell = t * t * (3 - 2 * t);
+    // woollen tufts: fine irregular bumps over the surface
+    const tuft = 0.06 * Math.sin(theta * 11 + y * 610) * Math.sin(theta * 7 - y * 430);
+    const r = ropeRadius + (radius - ropeRadius) * swell * (1 + tuft);
+    pos.setX(i, Math.cos(theta) * r);
+    pos.setZ(i, Math.sin(theta) * r);
+    // two-start spiral: the band index advances around the girth and along the length
+    const u = ((((theta / (2 * Math.PI) + y / pitch) * 2) % 1) + 1) % 1;
+    const c = stripes[Math.floor(u * stripes.length)];
+    const shade = 0.86 + 0.14 * Math.sin(theta * 23 + y * 1300) * Math.cos(y * 700);
+    colors[i * 3] = c.r * shade;
+    colors[i * 3 + 1] = c.g * shade;
+    colors[i * 3 + 2] = c.b * shade;
+  }
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  geo.computeVertexNormals();
+  const mat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1, metalness: 0 });
+  const sally = new THREE.Mesh(geo, mat);
+  sally.castShadow = true;
+  return sally;
+}
+
 export function buildTwistedRope(length, radius, material, curve = null) {
   if (curve) length = curve.getLength();
   const strands = 3;
