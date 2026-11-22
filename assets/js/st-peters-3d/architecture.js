@@ -716,8 +716,10 @@ function buildTowerAndSpire(mats) {
   capSolidMasonry(belfryWalls);
   g.add(belfryWalls);
   const chamber = buildBellChamber(mats);
-  capSolidMasonry(chamber); // floor, ceiling & timbers stay solid as the tour camera rises through them
-  g.add(chamber);
+  capSolidMasonry(chamber.shell); // floor, ceiling & timbers stay solid as the tour camera rises through them
+  capSolidMasonry(chamber.frame);
+  g.add(chamber.shell);
+  g.userData.bellFrame = chamber.frame;
 
   // Dark corner timber trim strips on belfry
   const hs = s * 0.5;
@@ -1768,6 +1770,8 @@ export function buildArchitecture(mats) {
   // Weatherboarded Bell-Turret & Oak-Shingled Broach Spire
   const towerSpire = buildTowerAndSpire(mats);
   roofGroup.add(towerSpire);
+  // The bells & their frame belong with the walls, so the floorplan cutaway (which hides roofGroup) keeps them
+  wallsGroup.add(towerSpire.userData.bellFrame);
 
   // Masonry is solid: when the camera's near plane slices into a wall, show its rubble core, not the far faces
   capSolidMasonry(wallsGroup);

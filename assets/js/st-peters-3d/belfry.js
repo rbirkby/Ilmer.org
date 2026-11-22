@@ -374,9 +374,10 @@ function box(w, h, d, mat, x, y, z) {
 
 // Bell chamber inside the weatherboarded turret: boarded floor and ceiling, studs, a two-tier oak frame with the
 // second and tenor side by side below and the treble above, and the three ropes running down to the holes in the
-// tower ceiling (their positions below are fixed by interior.js).
+// tower ceiling (their positions below are fixed by interior.js). Returns { shell, frame }.
 export function buildBellChamber(mats) {
-  const g = new THREE.Group();
+  const g = new THREE.Group(); // boarding, floor & ceiling: hidden with the roof in the floorplan cutaway
+  const frame = new THREE.Group(); // bell frame, bells & ropes: stay visible in the cutaway
   const T = DIM.tower;
   const cx = T.xCenter;
   const cz = T.zCenter;
@@ -436,33 +437,33 @@ export function buildBellChamber(mats) {
   const zS = cz + 1.2;
   const frameXs = [-3.89, -5.19, -6.41];
   frameXs.forEach((fx) => {
-    g.add(box(sideW, sideH, zS - zN, oak, fx, lowTop - sideH * 0.5, (zN + zS) * 0.5));
+    frame.add(box(sideW, sideH, zS - zN, oak, fx, lowTop - sideH * 0.5, (zN + zS) * 0.5));
     [zN + 0.08, zS - 0.08].forEach((pz) =>
-      g.add(box(sideW, lowTop - sideH - floorTop, sideW, oak, fx, floorTop + (lowTop - sideH - floorTop) * 0.5, pz))
+      frame.add(box(sideW, lowTop - sideH - floorTop, sideW, oak, fx, floorTop + (lowTop - sideH - floorTop) * 0.5, pz))
     );
     // Raking braces from the sill up to the side
     [-1, 1].forEach((dir) => {
       const brace = box(0.1, 0.95, 0.1, oak, fx, floorTop + 0.42, (zN + zS) * 0.5 + dir * 0.75);
       brace.rotation.x = dir * 0.62;
-      g.add(brace);
+      frame.add(brace);
     });
   });
   [zN + 0.08, zS - 0.08].forEach((sz) =>
-    g.add(box(frameXs[0] - frameXs[2] + 0.2, 0.14, 0.16, oak, (frameXs[0] + frameXs[2]) * 0.5, floorTop + 0.07, sz))
+    frame.add(box(frameXs[0] - frameXs[2] + 0.2, 0.14, 0.16, oak, (frameXs[0] + frameXs[2]) * 0.5, floorTop + 0.07, sz))
   );
 
   // --- Upper tier: two cross beams on posts rising from the lower frame, carrying the treble's pit ------------
   const upTop = floorTop + 2.5;
   const upXs = [-4.32, -5.48];
   [zN + 0.08, zS - 0.08].forEach((sz) => {
-    g.add(
+    frame.add(
       box(frameXs[0] - frameXs[2] + 0.14, 0.2, 0.16, oak, (frameXs[0] + frameXs[2]) * 0.5, upTop - sideH - 0.1, sz)
     );
     [frameXs[0], frameXs[2]].forEach((px) =>
-      g.add(box(sideW, upTop - sideH - 0.2 - lowTop, sideW, oak, px, (lowTop + upTop - sideH - 0.2) * 0.5, sz))
+      frame.add(box(sideW, upTop - sideH - 0.2 - lowTop, sideW, oak, px, (lowTop + upTop - sideH - 0.2) * 0.5, sz))
     );
   });
-  upXs.forEach((fx) => g.add(box(sideW, sideH, zS - zN - 0.04, oak, fx, upTop - sideH * 0.5, (zN + zS) * 0.5)));
+  upXs.forEach((fx) => frame.add(box(sideW, sideH, zS - zN - 0.04, oak, fx, upTop - sideH * 0.5, (zN + zS) * 0.5)));
 
   // --- The bells ---------------------------------------------------------------------------------------------
   const ropeMat = new THREE.MeshStandardMaterial({ color: 0xd8c08a, roughness: 0.95 });
@@ -494,9 +495,9 @@ export function buildBellChamber(mats) {
     const hung = buildHungBell(bell, { pitHalf, wheelX: wheelLocalX - bellOffset, wheelR, headX: -bellOffset }, mats);
     hung.position.set(pitCx + bellOffset, axleY, axleZ);
     hung.userData.bell = bell;
-    g.add(hung);
+    frame.add(hung);
     // Plummer blocks on the frame sides
-    [xa, xb].forEach((bx) => g.add(box(0.16, 0.08, 0.18, mats.iron, bx, top + 0.02, axleZ)));
+    [xa, xb].forEach((bx) => frame.add(box(0.16, 0.08, 0.18, mats.iron, bx, top + 0.02, axleZ)));
 
     // Rope: leaves the wheel at its North-most low point and runs down through a guide to the hole
     const wx = pitCx + wheelLocalX;
@@ -507,18 +508,18 @@ export function buildBellChamber(mats) {
     const rope = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, len, 8), ropeMat);
     rope.position.copy(from).add(to).multiplyScalar(0.5);
     rope.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), to.clone().sub(from).normalize());
-    g.add(rope);
+    frame.add(rope);
     // Garter: the rope's last turn round the sole, from the bottom of the wheel to its North side
     const garter = new THREE.Mesh(new THREE.TorusGeometry(wheelR + 0.006, 0.012, 6, 24, Math.PI / 2), ropeMat);
     garter.rotation.y = Math.PI / 2;
     garter.rotation.x = Math.PI;
     garter.position.set(wx, axleY, axleZ);
-    g.add(garter);
+    frame.add(garter);
     // Wooden rope guide on the floor
     const ropeAtFloor = from.clone().lerp(to, (from.y - floorTop) / (from.y - to.y));
     const guide = box(0.12, 0.05, 0.12, board, ropeAtFloor.x, floorTop + 0.025, ropeAtFloor.z);
-    g.add(guide);
+    frame.add(guide);
   });
 
-  return g;
+  return { shell: g, frame };
 }
