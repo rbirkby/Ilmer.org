@@ -456,7 +456,88 @@ function buildStoveChimney(x, N, mats) {
     stay.position.set(x + Math.cos(a) * pipeR * 0.9, topY + 0.03, zc + Math.sin(a) * pipeR * 0.9);
     g.add(stay);
   }
+  // Stove smoke curling out from under the rain cap
+  const smoke = buildChimneySmoke();
+  smoke.position.set(x, topY + 0.06, zc);
+  g.add(smoke);
   return g;
+}
+
+// Wisps of coal smoke from the stove pipe: one Points draw whose puffs rise, swell, drift East on the breeze and
+// fade, all worked out in the vertex shader from the clock, so it costs no per-frame JavaScript beyond one uniform
+const WHITE = new THREE.Color(1, 1, 1);
+function buildChimneySmoke(count = 28) {
+  const seeds = new Float32Array(count);
+  for (let i = 0; i < count; i++) seeds[i] = i / count;
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(count * 3), 3));
+  geo.setAttribute('aSeed', new THREE.BufferAttribute(seeds, 1));
+  geo.boundingSphere = new THREE.Sphere(new THREE.Vector3(1.2, 2.2, 0), 3.5);
+  const mat = new THREE.ShaderMaterial({
+    uniforms: {
+      uTime: { value: 0 },
+      uPxScale: { value: 400 },
+      uTint: { value: new THREE.Color(1, 1, 1) },
+      uVis: { value: 1 }
+    },
+    transparent: true,
+    depthWrite: false,
+    vertexShader: `
+      uniform float uTime;
+      uniform float uPxScale;
+      attribute float aSeed;
+      varying float vAlpha;
+      varying float vShade;
+      const float LIFE = 7.0;
+      void main() {
+        float age = fract(uTime / LIFE + aSeed);
+        float h = fract(sin(aSeed * 91.7) * 43758.5);
+        vec3 p = vec3(0.0);
+        p.y = 2.6 * age - 0.7 * age * age;
+        p.x = 1.9 * age * age + 0.12 * sin(uTime * 0.9 + h * 6.28) * age;
+        p.z = (h - 0.5) * 0.9 * age + 0.1 * cos(uTime * 0.7 + h * 9.0) * age;
+        vec4 mv = modelViewMatrix * vec4(p, 1.0);
+        gl_Position = projectionMatrix * mv;
+        float size = mix(0.22, 1.5, sqrt(age)) * (0.8 + 0.4 * h);
+        gl_PointSize = size * uPxScale / -mv.z;
+        vAlpha = smoothstep(0.0, 0.08, age) * pow(1.0 - age, 1.6) * 0.32;
+        vShade = 0.3 + 0.1 * h + 0.12 * age;
+      }
+    `,
+    fragmentShader: `
+      uniform vec3 uTint;
+      uniform float uVis;
+      varying float vAlpha;
+      varying float vShade;
+      void main() {
+        vec2 c = gl_PointCoord - 0.5;
+        float d = dot(c, c) * 4.0;
+        float a = uVis * vAlpha * smoothstep(1.0, 0.0, d) * (0.75 + 0.25 * sin(gl_PointCoord.x * 9.0 + gl_PointCoord.y * 7.0));
+        if (a < 0.004) discard;
+        gl_FragColor = vec4(vShade * uTint, a);
+        #include <colorspace_fragment>
+      }
+    `
+  });
+  const smoke = new THREE.Points(geo, mat);
+  smoke.renderOrder = 5;
+  const buf = new THREE.Vector2();
+  smoke.onBeforeRender = (renderer, scene, camera) => {
+    mat.uniforms.uTime.value = performance.now() / 1000;
+    // Unlit, so follow the daylight through the mood's fog colour: warm at golden hour, gone after dark (Evensong)
+    if (scene.fog) {
+      const f = scene.fog.color;
+      const lum = 0.2126 * f.r + 0.7152 * f.g + 0.0722 * f.b;
+      mat.uniforms.uVis.value = THREE.MathUtils.smoothstep(lum, 0.06, 0.35);
+      mat.uniforms.uTint.value
+        .copy(f)
+        .multiplyScalar(1 / Math.max(lum, 0.01))
+        .lerp(WHITE, 0.6);
+    }
+    // Point sizes are in pixels: world size x (half the drawing height / tan(half the field of view))
+    mat.uniforms.uPxScale.value = renderer.getDrawingBufferSize(buf).y * 0.5 * camera.projectionMatrix.elements[5];
+  };
+  return smoke;
 }
 
 // The West end's half hip as it was before the 1909 rebuild ('1900' era): a tiled hip slab rising from the old gable

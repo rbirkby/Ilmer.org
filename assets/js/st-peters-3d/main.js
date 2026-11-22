@@ -9,6 +9,8 @@ import '/assets/js/st-peters-3d/walk-joystick.js';
 import { BELL_NOMINAL_HZ, createBellRinger } from '/assets/js/st-peters-3d/belfry.js';
 import { CHURCH_TOUR_WAYPOINTS, DIM } from '/assets/js/st-peters-3d/dimensions.js';
 import { CAMERA_PRESETS, createCameraController } from '/assets/js/st-peters-3d/controls.js';
+import { findAnimatedObjects, mergeStaticMeshes } from '/assets/js/st-peters-3d/static-merge.js';
+import '/assets/js/st-peters-3d/stats-overlay.js';
 
 const stage = document.getElementById('church-scene');
 const statusEl = document.getElementById('scene-status');
@@ -25,6 +27,13 @@ if (stage) {
   renderer.shadowMap.enabled = true;
   renderer.localClippingEnabled = true; // the bell ropes' spare length is clipped at the ceiling
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  // Performance switches for comparing before & after: ?stats shows the overlay, &nomerge keeps every mesh
+  // separate, &liveshadows redraws the sun's shadow map every frame as before
+  const perfParams = new URLSearchParams(window.location.search);
+  // The sun & nearly everything it lights stand still, so its 4096² shadow map (a second pass over ~1,800 casters)
+  // is drawn only when something it can see changes: mood, era, cutaway, doors or bells moving
+  renderer.shadowMap.autoUpdate = perfParams.has('liveshadows');
+  let shadowsDirty = true;
   stage.prepend(renderer.domElement);
 
   const scene = new THREE.Scene();
@@ -144,6 +153,7 @@ if (stage) {
     const m = LIGHTING_MOODS[moodKey];
     if (!m) return;
     state.lighting = moodKey;
+    shadowsDirty = true;
     sunLight.position.set(...m.sunPos);
     sunLight.color.setHex(m.sunColor);
     sunLight.intensity = m.sunInt;
@@ -218,6 +228,7 @@ if (stage) {
 
   function setEra(era) {
     state.era = era;
+    shadowsDirty = true;
     for (const o of eraObjects) o.visible = o.userData.era === era;
     for (const g of stainedGlass) {
       g.material = era === '1900' ? createPlainGlazingMaterial(g.userData.stainedMat) : g.userData.stainedMat;
@@ -252,6 +263,7 @@ if (stage) {
 
   function setCutaway(enabled) {
     state.cutaway = enabled;
+    shadowsDirty = true;
     roofGroup.visible = !enabled;
     ceilingGroup.visible = !enabled;
     atmosphere.group.visible = !enabled;
@@ -550,7 +562,7 @@ if (stage) {
 
   // The three bells: click one (or reach them on the tour) to swing-chime two rounds. Each wheel draws its rope
   // up and lets it back as the bell swings, so the falls & tails in the vestry rise and drop in step.
-  const bellRinger = createBellRinger(wallsGroup);
+  const bellRinger = createBellRinger(wallsGroup, interiorGroup); // interior: the 1900 vestry chiming cords
   const bellRopeParts = [];
   const bellRopeGroups = [];
   interiorGroup.traverse((o) => {
@@ -747,6 +759,66 @@ if (stage) {
     );
   }
 
+  // Bake static meshes together: ~4,000 draw calls down to a few hundred. Whatever an animation moves (found by
+  // running the animators once), the doors and anything tagged in userData stay as their own groups.
+  let mergeInfo = 'off';
+  if (!perfParams.has('nomerge')) {
+    const mergeRoots = [wallsGroup, roofGroup, interiorGroup, ceilingGroup, churchyardGroup];
+    const allKeys = new Set(Array.from({ length: 128 }, (_, i) => i));
+    const dynamic = findAnimatedObjects(
+      mergeRoots,
+      (checkpoint) => {
+        organAnimator.update(5, true, { manual: allKeys, pedal: allKeys });
+        checkpoint();
+        candleEffect.update(1.7);
+        checkpoint();
+        // Ring & chime a full round in small steps, checking poses at each: hammers & clappers strike and fall back
+        for (const mode of ['swing', 'chime']) {
+          bellRinger.setMode(mode);
+          bellRinger.ring(0);
+          for (let t = 0.1; t < 12; t += 0.1) {
+            bellRinger.update(t);
+            checkpoint();
+          }
+        }
+      },
+      () => {
+        organAnimator.update(5, false, null);
+        bellRinger.setMode('swing');
+      }
+    );
+    for (const pivot of Object.values(doorPivots)) if (pivot) dynamic.add(pivot);
+    const counts = mergeStaticMeshes(mergeRoots, { dynamic });
+    mergeInfo = `${counts.before}→${counts.after}`;
+  }
+
+  // Things that move and cast shadows: while any of them moves the shadow map is redrawn
+  const shadowMovers = [...Object.values(doorPivots), ...bellRopeParts];
+  for (const h of bellRinger.bells) shadowMovers.push(h, h.userData.clapper, h.userData.hammer);
+  const moverPose = shadowMovers.filter(Boolean).map((o) => ({ o, q: o.quaternion.clone(), y: o.position.y }));
+  function shadowMoversMoved() {
+    let moved = false;
+    for (const p of moverPose) {
+      if (p.o.position.y !== p.y || !p.o.quaternion.equals(p.q)) {
+        p.y = p.o.position.y;
+        p.q.copy(p.o.quaternion);
+        moved = true;
+      }
+    }
+    return moved;
+  }
+
+  let stats = null;
+  if (perfParams.has('stats')) {
+    stats = document.createElement('st-scene-stats');
+    stage.append(stats);
+    stats.setInfo({
+      load: `${(performance.now() / 1000).toFixed(1)} s`,
+      meshes: mergeInfo,
+      shadows: renderer.shadowMap.autoUpdate ? 'live' : 'on change'
+    });
+  }
+
   setEra('today');
   applyLighting('autumn');
   if (statusEl) statusEl.hidden = true;
@@ -756,6 +828,7 @@ if (stage) {
   let elapsed = 0;
   function animate() {
     requestAnimationFrame(animate);
+    const frameStart = performance.now();
     const dt = Math.min(clock.getDelta(), 0.05);
     elapsed += dt;
 
@@ -784,7 +857,12 @@ if (stage) {
     // Console follows the organ voluntary: tambour open and keys/pedals moving only while it plays
     organAnimator.update(dt, churchAudio.isRunning(), churchAudio.getSoundingNotes());
     updateMiniPlan();
+    if (shadowMoversMoved() || shadowsDirty) {
+      renderer.shadowMap.needsUpdate = true;
+      shadowsDirty = false;
+    }
     renderer.render(scene, camera);
+    stats?.frame(renderer, performance.now() - frameStart);
   }
 
   animate();

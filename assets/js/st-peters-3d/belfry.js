@@ -460,6 +460,7 @@ function buildHungBell(bell, { pitHalf, wheelX, wheelR, headX }, mats) {
   const ballY = lipY + D * 0.2;
   const ballR = D * 0.065;
   const clapper = new THREE.Group();
+  clapper.userData.animated = true; // swings: main.js's static-mesh merge must keep it a group of its own
   clapper.position.y = shaftTop;
   const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.018, shaftTop - ballY, 8), clapperMat);
   shaft.position.y = (ballY - shaftTop) * 0.5;
@@ -679,6 +680,7 @@ export function buildBellChamber(mats) {
     const bowY = axleY - 0.085 - D * 0.62; // sound bow, just above the lip
     const bowZ = axleZ + D * 0.5;
     const pivot = new THREE.Group();
+    pivot.userData.animated = true; // swings: main.js's static-mesh merge must keep it a group of its own
     pivot.position.set(bellX, bowY + 0.32, bowZ + 0.1);
     const shank = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.32, 8), mats.iron);
     shank.position.y = -0.16;
@@ -695,11 +697,17 @@ export function buildBellChamber(mats) {
     hammerG.add(bracket);
     const post = box(0.1, top - (bowY + 0.32) + 0.1, 0.1, oak, bellX, (top + bowY + 0.32) * 0.5, bowZ + 0.27);
     hammerG.add(post);
+    // The cord hangs from the tail of the hammer and rises and falls with it (main.js's static merge leaves it alone
+    // because it carries userData); it runs on down through a hole in the floor
     const cordTop = new THREE.Vector3(bellX, bowY + 0.32, bowZ + 0.1 + 0.16);
-    const cordFoot = new THREE.Vector3(bellX, floorTop, bowZ + 0.26);
-    hammerG.add(buildTwistedRope(0, 0.006, ropeMat, new THREE.LineCurve3(cordTop, cordFoot)));
+    const cordFoot = new THREE.Vector3(bellX, floorTop - 0.2, bowZ + 0.26);
+    const cordG = new THREE.Group();
+    cordG.userData.chimeCord = true;
+    cordG.add(buildTwistedRope(0, 0.006, ropeMat, new THREE.LineCurve3(cordTop, cordFoot)));
+    hammerG.add(cordG);
     frame.add(hammerG);
     hung.userData.hammer = pivot;
+    hung.userData.hammerCord = cordG;
   });
 
   return { shell: g, frame };
@@ -728,9 +736,15 @@ function swingAngle(tau) {
 }
 
 const CHIME_GAP = 0.55; // seconds between hammer blows when chiming
-const HAMMER_LIFT = 0.12; // seconds for the hammer to swing in and strike
+const HAMMER_LIFT = 0.2; // seconds for the hammer to swing in and strike
+const HAMMER_FALL = 0.32; // seconds for it to drop back off the bell
+const HAMMER_REST = -0.5; // radians: drawn well back from the bell, so each blow is plain to see
+const HAMMER_STRIKE = 0.07; // radians: head on the sound bow
+const HAMMER_TAIL = 0.16; // metres from the pivot to the cord on the hammer's tail
+const VESTRY_PULL = 1.6; // radians the vestry cord swings out towards the ringer per metre of hammer-tail travel
 
-export function createBellRinger(frame) {
+// frame: the belfry; extraRoots: other groups holding the 1900 chiming frame's vestry cords (userData.chimeCord = n)
+export function createBellRinger(frame, ...extraRoots) {
   const hung = [];
   frame.traverse((o) => {
     if (o.userData.bell && o.userData.clapper) hung.push(o);
@@ -751,6 +765,31 @@ export function createBellRinger(frame) {
     return chimes.map((c) => ({ bell: c.hung.userData.bell, delay: c.at + HAMMER_LIFT }));
   }
 
+  // Vestry chiming-frame cords by bell number: each hangs from the ceiling, and the ringer pulls its foot out
+  // towards them (+X) to work the hammer
+  const vestryCords = new Map();
+  for (const root of extraRoots) {
+    root.traverse((o) => {
+      if (typeof o.userData.chimeCord !== 'number') return;
+      const half = (o.geometry?.parameters?.height ?? 1) / 2;
+      vestryCords.set(o.userData.chimeCord, { o, half, top: o.position.clone().setY(o.position.y + half) });
+    });
+  }
+  // Pose a hammer: its cord (on the tail) and the matching vestry cord follow it down as it strikes
+  function poseHammer(h, angle) {
+    const pivot = h.userData.hammer;
+    if (!pivot) return;
+    pivot.rotation.x = angle;
+    const drop = HAMMER_TAIL * (Math.sin(angle) - Math.sin(HAMMER_REST)); // how far the tail has come down
+    if (h.userData.hammerCord) h.userData.hammerCord.position.y = -HAMMER_TAIL * Math.sin(angle);
+    const v = vestryCords.get(h.userData.bell.number);
+    if (v) {
+      const phi = drop * VESTRY_PULL;
+      v.o.rotation.z = phi;
+      v.o.position.set(v.top.x + v.half * Math.sin(phi), v.top.y - v.half * Math.cos(phi), v.top.z);
+    }
+  }
+
   function updateChime(now) {
     const t = now - startedAt;
     hung.forEach((h) => {
@@ -760,15 +799,15 @@ export function createBellRinger(frame) {
         if (c.hung !== h) continue;
         const u = t - c.at;
         if (u >= 0 && u < HAMMER_LIFT) a = Math.max(a, smooth01(u / HAMMER_LIFT));
-        else if (u >= HAMMER_LIFT && u < HAMMER_LIFT + 0.25) a = Math.max(a, 1 - smooth01((u - HAMMER_LIFT) / 0.25));
+        else if (u >= HAMMER_LIFT && u < HAMMER_LIFT + HAMMER_FALL) {
+          a = Math.max(a, 1 - smooth01((u - HAMMER_LIFT) / HAMMER_FALL));
+        }
       }
-      if (h.userData.hammer) h.userData.hammer.rotation.x = -0.3 + a * 0.36;
+      poseHammer(h, HAMMER_REST + a * (HAMMER_STRIKE - HAMMER_REST));
     });
     const end = chimes.length ? chimes[chimes.length - 1].at + 1 : 0;
     if (t > end) {
-      hung.forEach((h) => {
-        if (h.userData.hammer) h.userData.hammer.rotation.x = -0.3;
-      });
+      hung.forEach((h) => poseHammer(h, HAMMER_REST));
       startedAt = null;
     }
   }
@@ -779,7 +818,7 @@ export function createBellRinger(frame) {
     hung.forEach((h) => {
       h.rotation.x = 0;
       h.userData.clapper.rotation.x = 0;
-      if (h.userData.hammer) h.userData.hammer.rotation.x = -0.3;
+      poseHammer(h, HAMMER_REST);
     });
   }
 

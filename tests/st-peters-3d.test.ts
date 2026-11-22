@@ -42,7 +42,8 @@ test("every St Peter's 3D module imported by the page exists and is cache-busted
     assert.ok(existsSync(fileUrl), `missing module ${modPath}`);
     const source = readFileSync(fileUrl, 'utf8');
 
-    for (const match of source.matchAll(/from\s+['"]([^'"]+)['"]/g)) {
+    // Both `import x from '...'` and side-effect `import '...'` (walk joystick, stats overlay)
+    for (const match of source.matchAll(/(?:from|import)\s+['"]([^'"]+)['"]/g)) {
       const spec = match[1];
       if (spec.startsWith('/assets/js/st-peters-3d/')) {
         assert.ok(
@@ -54,7 +55,9 @@ test("every St Peter's 3D module imported by the page exists and is cache-busted
     }
   }
 
-  assert.equal(seen.size, 13);
+  assert.equal(seen.size, 16);
+  assert.ok(seen.has('/assets/js/st-peters-3d/static-merge.js'));
+  assert.ok(seen.has('/assets/js/st-peters-3d/stats-overlay.js'));
   assert.ok(seen.has('/assets/js/st-peters-3d/belfry.js'));
   assert.ok(seen.has('/assets/js/st-peters-3d/stained-glass.js'));
   assert.ok(seen.has('/assets/js/st-peters-3d/plaques.js'));

@@ -4972,6 +4972,7 @@ function buildChimingFrame(mats, floorY) {
     // Cord from its hook on the bottom rail, over a brass pulley on the top rail and up through the ceiling
     const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, ceilingY - y0 - 0.08, 6), cordMat);
     cord.position.set(x + 0.085, (ceilingY + y0 + 0.08) * 0.5, cz);
+    cord.userData.chimeCord = i + 1; // belfry.js pulls it down as that bell's hammer strikes
     g.add(cord);
     const hook = new THREE.Mesh(new THREE.TorusGeometry(0.012, 0.003, 6, 12), mats.brass);
     hook.position.set(x + 0.085, y0 + 0.07, cz);
