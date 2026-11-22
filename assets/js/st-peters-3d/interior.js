@@ -1314,6 +1314,11 @@ function buildRoodScreen(mats) {
     rail.position.set(-0.008, -0.24 + r * 0.125, 0);
     hymnG.add(rail);
   }
+  // Hymn 59 (O Come, All Ye Faithful) on a painted number card resting on the top rail; main.js plays it when the
+  // card is clicked
+  const hymnCard = buildHymnNumberCard('59', 0.135 + 0.009);
+  hymnCard.userData.hymnNumber = 59; // only the card is clickable, not the whole board
+  hymnG.add(hymnCard);
   hymnG.position.set(xPos - 0.13, baseY + 1.84, southMaxZ - 0.16);
   hymnG.userData.era = 'today';
   g.add(hymnG);
@@ -1325,6 +1330,36 @@ function buildRoodScreen(mats) {
   g.add(hymn1900);
 
   return g;
+}
+
+// A hymn board number card: cream-painted board with dark numerals, standing on a rail (railTopY) against the
+// board's face (-X)
+function buildHymnNumberCard(text, railTopY) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 192;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#f1ead8';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = '#cfc4a8';
+  ctx.lineWidth = 10;
+  ctx.strokeRect(5, 5, canvas.width - 10, canvas.height - 10);
+  ctx.fillStyle = '#1f1a15';
+  ctx.font = 'bold 150px Georgia, "Times New Roman", serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, canvas.width / 2, canvas.height / 2 + 8);
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 4;
+  const h = 0.1;
+  const card = new THREE.Mesh(
+    new THREE.PlaneGeometry(0.26, h),
+    new THREE.MeshStandardMaterial({ map: tex, roughness: 0.7 })
+  );
+  card.rotation.y = -Math.PI / 2; // faces -X, numerals reading left to right
+  card.position.set(-0.021, railTopY + h / 2, 0);
+  return card;
 }
 
 // Pierced (cut-out) carving: a plane subdivided every ~4mm and displaced by a height-field canvas (1px = 1mm),
@@ -3024,6 +3059,18 @@ export function buildInterior(mats) {
   });
 
   const litCandles = [];
+  // 1900 paraffin lamps: the lamp's flame becomes the same flickering shader flame as the candles, and its light
+  // flickers with it (main.js keeps the mood level in light.userData.moodIntensity)
+  const oilFlames = [];
+  function addOilFlame({ flame, light }) {
+    const phase = oilFlames.length * 1.9 + 0.7;
+    flame.geometry = flameGeo;
+    flame.material = createFlameShaderMaterial(phase);
+    flame.renderOrder = 3;
+    flame.position.y = 0.176; // wick top in the burner
+    flame.scale.set(1.05, 0.8, 1.05);
+    oilFlames.push({ flameMat: flame.material, light, phase });
+  }
   function addLitCandleFlame(
     x,
     topY,
@@ -3990,6 +4037,7 @@ export function buildInterior(mats) {
     oil.group.position.set(cx, topY, 0);
     ceilingGroup.add(oil.group);
     oilLights.push(oil.light);
+    addOilFlame(oil);
   });
 
   // 1900: two paraffin wall lamps on the North wall between the doorway and Window 6
@@ -3998,10 +4046,11 @@ export function buildInterior(mats) {
     wl.group.position.set(x, nfY + 1.95, N.zNorthInt);
     interiorGroup.add(wl.group);
     oilLights.push(wl.light);
+    addOilFlame(wl);
   });
 
   // 1900: Tortoise slow-combustion stove South of the aisle, its flue out of the back, up the wall & into it
-  interiorGroup.add(buildTortoiseStove(mats, -2.25, nfY, 1.02, N.zSouthInt));
+  interiorGroup.add(buildTortoiseStove(mats, -2.25, nfY, 1.75, N.zSouthInt));
 
   // Soft Sanctuary highlight light so altar frontal & reredos glow warmly
   const sanctuaryLight = new THREE.PointLight(0xffe7c2, 1.35, 7.5, 1.6);
@@ -4134,7 +4183,7 @@ export function buildInterior(mats) {
         candleHaloScale = 1.0;
         candleFlameBoost = 1.0;
       }
-      for (const c of litCandles) {
+      for (const c of [...litCandles, ...oilFlames]) {
         c.flameMat.uniforms.uBoost.value = candleFlameBoost;
       }
     },
@@ -4152,6 +4201,18 @@ export function buildInterior(mats) {
         c.halo.scale.set(haloSize, haloSize, 1);
         c.halo.material.opacity = Math.min(0.92, (0.42 + flicker * 0.14) * candleHaloScale);
         c.light.intensity = c.baseIntensity * candleLightScale * (0.78 + flicker * 0.26);
+      }
+      for (const o of oilFlames) {
+        if (!o.light.parent.visible) continue; // 1900 only
+        const p = o.phase;
+        o.flameMat.uniforms.uTime.value = elapsed;
+        const flicker =
+          1 +
+          Math.sin(elapsed * 7.3 + p) * 0.12 +
+          Math.sin(elapsed * 14.9 + p * 1.7) * 0.075 +
+          Math.sin(elapsed * 23.1 + p * 2.9) * 0.045;
+        const mood = o.light.userData.moodIntensity ?? o.light.intensity;
+        o.light.intensity = (mood * (0.78 + flicker * 0.26)) / 1.04;
       }
     }
   };
@@ -4555,6 +4616,7 @@ function buildParaffinLamp(mats) {
   const flame = new THREE.Mesh(a.flameGeo, a.flameMat);
   flame.position.y = 0.205;
   g.add(flame);
+  g.userData.flame = flame; // buildInterior swaps in the flickering candle-flame shader
   const chimney = new THREE.Mesh(a.chimneyGeo, a.chimneyMat);
   chimney.position.y = 0.18;
   g.add(chimney);
@@ -4651,7 +4713,7 @@ function buildOilPendant(dropHeight, mats) {
   const light = new THREE.PointLight(0xffb866, 1.2, 8.5, 1.8);
   light.position.y = ringY + 0.3;
   g.add(light);
-  return { group: g, light };
+  return { group: g, light, flame: lamp.userData.flame };
 }
 
 // Paraffin bracket lamp on a wall (faces +Z, back on the wall at z = 0): iron back plate with a silvered
@@ -4691,7 +4753,7 @@ function buildOilWallLamp(mats) {
   const light = new THREE.PointLight(0xffb866, 0.7, 5, 1.8);
   light.position.set(0, 0.2, 0.25);
   g.add(light);
-  return { group: g, light };
+  return { group: g, light, flame: lamp.userData.flame };
 }
 
 // Octagonal cast-iron 'Tortoise' slow-combustion stove (Charles Portway & Son, Halstead), its feed door facing the

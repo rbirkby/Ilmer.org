@@ -166,7 +166,8 @@ if (stage) {
     // 1900 paraffin lamps: dimmer & warmer than today's electric pendants
     oilLights.forEach((lt) => {
       lt.userData.baseIntensity ??= lt.intensity;
-      lt.intensity = lt.userData.baseIntensity * m.chandelierScale;
+      lt.userData.moodIntensity = lt.userData.baseIntensity * m.chandelierScale;
+      lt.intensity = lt.userData.moodIntensity; // candleEffect flickers it around this level
     });
     chandelierLights.forEach((lt, idx) => {
       // Last light is the soft sanctuary highlight; the rest are pendant lamps
@@ -194,8 +195,10 @@ if (stage) {
   const eraObjects = [];
   const stainedGlass = [];
   const halfHipClipped = [];
+  const wideBoarded = [];
   scene.traverse((o) => {
     if (o.userData.era) eraObjects.push(o);
+    if (o.userData.wideBoards1900) wideBoarded.push(o);
     if (o.userData.clipIn1900) halfHipClipped.push(o);
     if (o.userData.stainedGlass) {
       o.userData.stainedMat = o.material;
@@ -223,6 +226,20 @@ if (stage) {
     for (const mat of [mats.clayRoof, ...halfHipClipped.map((o) => o.material)]) {
       mat.clippingPlanes = era === '1900' && halfHipClip ? [halfHipClip] : [];
       mat.needsUpdate = true;
+    }
+    // 1900 belfry boarding: twice-deep boards, keeping the wall's solid-cut material settings
+    for (const o of wideBoarded) {
+      o.userData.todayMat ??= o.material;
+      if (!o.userData.wideMat) {
+        const today = o.userData.todayMat;
+        const wide = mats.weatherboardWide.clone();
+        wide.side = today.side;
+        wide.shadowSide = today.shadowSide;
+        wide.onBeforeCompile = today.onBeforeCompile;
+        wide.customProgramCacheKey = today.customProgramCacheKey;
+        o.userData.wideMat = wide;
+      }
+      o.material = era === '1900' ? o.userData.wideMat : o.userData.todayMat;
     }
     bellRinger.setMode(era === '1900' ? 'chime' : 'swing');
     for (const part of bellRopeParts) part.position.y = part.userData.bellRope.baseY;
@@ -586,7 +603,12 @@ if (stage) {
   // Clickable gravestones & exterior memorial tablets: smooth zoom directly facing the carved inscription
   const raycaster = new THREE.Raycaster();
   const pointerNdc = new THREE.Vector2();
-  const pickRoots = [...memorialGroups, wallsGroup, ...bellRopeGroups];
+  // Hymn number cards (one board per era): clicking a card plays its hymn on the organ
+  const hymnBoards = [];
+  interiorGroup.traverse((o) => {
+    if (o.userData.hymnNumber) hymnBoards.push(o);
+  });
+  const pickRoots = [...memorialGroups, wallsGroup, ...bellRopeGroups, ...hymnBoards];
   let downX = 0;
   let downY = 0;
   let downTime = 0;
@@ -595,6 +617,19 @@ if (stage) {
   function isShown(obj) {
     for (let cur = obj; cur; cur = cur.parent) if (!cur.visible) return false;
     return true;
+  }
+
+  function findHymnBoard(obj) {
+    for (let cur = obj; cur; cur = cur.parent) if (cur.userData?.hymnNumber) return cur;
+    return null;
+  }
+
+  // Unmute if need be (the click unlocks the audio), then play the hymn on the organ
+  function playHymn(number) {
+    if (churchAudio.isMuted()) setSoundMuted(false);
+    churchAudio.start().then((ok) => {
+      if (ok) churchAudio.playHymn(number);
+    });
   }
 
   function findMemorialGroup(obj) {
@@ -616,7 +651,7 @@ if (stage) {
     // click targets whose parent is shown
     const hit = raycaster.intersectObjects(pickRoots, true).find((h) => isShown(h.object.parent));
     if (!hit) return null;
-    return findMemorialGroup(hit.object) || findBell(hit.object);
+    return findMemorialGroup(hit.object) || findBell(hit.object) || findHymnBoard(hit.object);
   }
 
   function focusMemorial(memorialGroup) {
@@ -641,7 +676,8 @@ if (stage) {
   });
 
   renderer.domElement.addEventListener('pointermove', (e) => {
-    if (e.buttons !== 0 || controller.getMode() === 'walk') {
+    // Hand cursor over anything clickable (gravestones, bells, hymn board), in Orbit and Walk mode alike
+    if (e.buttons !== 0) {
       renderer.domElement.style.cursor = '';
       return;
     }
@@ -657,6 +693,7 @@ if (stage) {
     if (dist >= 6 || elapsedMs >= 450) return;
     const picked = pickMemorialAtEvent(e);
     if (picked?.userData.bell || picked?.userData.ringsBells) ringBells();
+    else if (picked?.userData.hymnNumber) playHymn(picked.userData.hymnNumber);
     else if (picked) focusMemorial(picked);
   });
 

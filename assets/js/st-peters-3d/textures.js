@@ -1731,6 +1731,21 @@ export function createMaterials(renderer) {
       bumpScale: 0.045,
       roughness: 0.9
     }),
+    // 1900 belfry: the same boarding with each board twice as deep
+    weatherboardWide: (() => {
+      const wide = (t) => {
+        const c = t.clone();
+        c.repeat.set(t.repeat.x, t.repeat.y * 0.5);
+        c.needsUpdate = true;
+        return c;
+      };
+      return new THREE.MeshStandardMaterial({
+        map: wide(weatherboardMaps.map),
+        bumpMap: wide(weatherboardMaps.bumpMap),
+        bumpScale: 0.045,
+        roughness: 0.9
+      });
+    })(),
     shingles: new THREE.MeshStandardMaterial({
       map: shingleMaps.map,
       bumpMap: shingleMaps.bumpMap,
@@ -2014,12 +2029,40 @@ export function createPlainGlazingMaterial(stainedMat) {
     const n = sat[y1 * (w + 1) + x1] - sat[y0 * (w + 1) + x1] - sat[y1 * (w + 1) + x0] + sat[y0 * (w + 1) + x0];
     return n > (x1 - x0) * (y1 - y0) * 0.72;
   };
+  // Real stonework (surround, mullions, tracery) is joined to the frame round the edge of the window; grey patches
+  // of painted figure work in the middle are not. Keep only stone reachable from the border.
+  const stone = new Uint8Array(w * h);
+  const stack = [];
+  const seed = (x, y) => {
+    const k = y * w + x;
+    if (!stone[k] && isStone(x, y)) {
+      stone[k] = 1;
+      stack.push(k);
+    }
+  };
+  for (let x = 0; x < w; x++) {
+    seed(x, 0);
+    seed(x, h - 1);
+  }
+  for (let y = 0; y < h; y++) {
+    seed(0, y);
+    seed(w - 1, y);
+  }
+  while (stack.length) {
+    const k = stack.pop();
+    const x = k % w;
+    const y = (k - x) / w;
+    if (x > 0) seed(x - 1, y);
+    if (x < w - 1) seed(x + 1, y);
+    if (y > 0) seed(x, y - 1);
+    if (y < h - 1) seed(x, y + 1);
+  }
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
       const i = (y * w + x) * 4;
       // Keep only the stone (tracery & surround). Everything else, coloured or pale glass, painted detail and the
       // old leads alike, becomes plain quarry glazing.
-      if (isStone(x, y)) continue;
+      if (stone[y * w + x]) continue;
       // Diamond quarries: lead lines along both diagonals
       const a = (x + y * 0.62) % step;
       const d = (x - y * 0.62 + h * 4) % step;

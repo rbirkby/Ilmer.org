@@ -900,6 +900,7 @@ function buildTowerAndSpire(mats) {
     wall.position.set(t.xCenter, 0, t.zCenter);
     wall.castShadow = true;
     wall.receiveShadow = true;
+    wall.userData.wideBoards1900 = true; // main.js boards it with mats.weatherboardWide in 1900
     belfryWalls.add(wall);
   });
   capSolidMasonry(belfryWalls);
@@ -920,7 +921,14 @@ function buildTowerAndSpire(mats) {
   ].forEach(([sx, sz]) => {
     const trim = new THREE.Mesh(new THREE.BoxGeometry(0.1, belfryH, 0.1), mats.darkOak);
     trim.position.set(t.xCenter + sx * hs, t.baseY + belfryH * 0.5, t.zCenter + sz * hs);
+    trim.userData.era = 'today';
     g.add(trim);
+    // 1900: plain corner boards the same colour as the boarding
+    const board = new THREE.Mesh(new THREE.BoxGeometry(0.1, belfryH, 0.1), mats.weatherboardWide);
+    board.position.copy(trim.position);
+    board.userData.era = '1900';
+    board.visible = false;
+    g.add(board);
   });
 
   // Lead flashing skirt where belfry meets the clay Nave roof
@@ -990,6 +998,7 @@ function buildTowerAndSpire(mats) {
   const cornice = new THREE.Mesh(new THREE.BoxGeometry(corniceSize, 0.12, corniceSize), mats.darkOak);
   cornice.position.set(t.xCenter, t.eavesY, t.zCenter);
   cornice.castShadow = true;
+  cornice.userData.era = 'today'; // in 1900 the boarding ran straight up into the gables, with no cornice
   g.add(cornice);
 
   // Watertight flat-faceted English octagonal broach spire:
@@ -1080,7 +1089,7 @@ function buildTowerAndSpire(mats) {
   capG.userData.era = '1900';
   capG.visible = false;
   const rise = 0.62;
-  const roofY0 = t.eavesY + 0.06;
+  const roofY0 = t.eavesY - 0.06; // slopes bear on the wall heads
   const halfSpan = corniceSize * 0.5 + 0.04;
   const slopeLen = Math.hypot(halfSpan, rise);
   const pitch = Math.atan2(rise, halfSpan);
@@ -1093,7 +1102,7 @@ function buildTowerAndSpire(mats) {
     slab.receiveShadow = true;
     capG.add(slab);
   });
-  const ridge = new THREE.Mesh(new THREE.BoxGeometry(roofLen, 0.06, 0.1), mats.darkOak);
+  const ridge = new THREE.Mesh(new THREE.BoxGeometry(roofLen, 0.06, 0.1), mats.weatherboard);
   ridge.position.set(t.xCenter, roofY0 + rise + 0.05, t.zCenter);
   capG.add(ridge);
   // Gable triangles above the cornice, boarded like the walls below, with plain barge boards
@@ -1101,14 +1110,14 @@ function buildTowerAndSpire(mats) {
     const tri = new THREE.Shape();
     tri.moveTo(-hsBox, 0);
     tri.lineTo(hsBox, 0);
-    tri.lineTo(0, rise);
+    tri.lineTo(0, roofY0 + rise - t.eavesY);
     tri.closePath();
     const triGeo = new THREE.ExtrudeGeometry(tri, { depth: wallT, bevelEnabled: false });
     triGeo.translate(0, 0, -wallT * 0.5);
     applyBoxUVs(triGeo, 0.42);
-    const gable = new THREE.Mesh(triGeo, mats.weatherboard);
+    const gable = new THREE.Mesh(triGeo, mats.weatherboardWide);
     gable.rotation.y = Math.PI / 2;
-    gable.position.set(t.xCenter + sideX * (hsBox - wallT * 0.5), roofY0, t.zCenter);
+    gable.position.set(t.xCenter + sideX * (hsBox - wallT * 0.5), t.eavesY, t.zCenter);
     gable.castShadow = true;
     capG.add(gable);
     [-1, 1].forEach((side) => {
@@ -1136,39 +1145,39 @@ function buildTowerAndSpire(mats) {
     if (!northSouth) geo.scale((s - 2 * wallT) / s, 1, 1);
     geo.translate(0, 0, hsBox - wallT);
     applyBoxUVs(geo, 0.42);
-    const m = new THREE.Mesh(geo, mats.weatherboard);
+    const m = new THREE.Mesh(geo, mats.weatherboardWide);
     m.rotation.y = rotY;
     m.position.set(t.xCenter, 0, t.zCenter);
     capG.add(m);
   });
-  // A single small louvre high in the West gable wall, off-centre towards the North (photo)
-  {
-    const lw = 0.46;
-    const lh = 0.36;
+  // A louvre centred high in each of the East and West walls
+  [-1, 1].forEach((sideX) => {
+    const lw = 0.92;
+    const lh = 0.72;
     const louvre = new THREE.Group();
     const back = new THREE.Mesh(new THREE.PlaneGeometry(lw, lh), new THREE.MeshBasicMaterial({ color: 0x0d0b09 }));
     back.position.z = 0.002;
     louvre.add(back);
     [
-      [lw + 0.08, 0.05, 0, (lh + 0.05) * 0.5],
-      [lw + 0.08, 0.05, 0, -(lh + 0.05) * 0.5],
-      [0.05, lh, (lw + 0.05) * 0.5, 0],
-      [0.05, lh, -(lw + 0.05) * 0.5, 0]
+      [lw + 0.12, 0.07, 0, (lh + 0.07) * 0.5],
+      [lw + 0.12, 0.07, 0, -(lh + 0.07) * 0.5],
+      [0.07, lh, (lw + 0.07) * 0.5, 0],
+      [0.07, lh, -(lw + 0.07) * 0.5, 0]
     ].forEach(([w, h, x, y]) => {
-      const f = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.05), mats.weatherboard);
-      f.position.set(x, y, 0.02);
+      const f = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.06), mats.weatherboard);
+      f.position.set(x, y, 0.025);
       louvre.add(f);
     });
-    for (let i = 0; i < 5; i++) {
-      const slat = new THREE.Mesh(new THREE.BoxGeometry(lw, 0.045, 0.06), mats.weatherboard);
-      slat.position.set(0, -lh * 0.5 + 0.04 + i * 0.07, 0.025);
+    for (let i = 0; i < 8; i++) {
+      const slat = new THREE.Mesh(new THREE.BoxGeometry(lw, 0.06, 0.08), mats.weatherboard);
+      slat.position.set(0, -lh * 0.5 + 0.06 + i * 0.087, 0.03);
       slat.rotation.x = 0.5;
       louvre.add(slat);
     }
-    louvre.rotation.y = -Math.PI / 2;
-    louvre.position.set(t.xCenter - hsBox - 0.003, t.eavesY - 0.62, t.zCenter - 0.55);
+    louvre.rotation.y = sideX < 0 ? -Math.PI / 2 : Math.PI / 2;
+    louvre.position.set(t.xCenter + sideX * (hsBox + 0.003), t.eavesY - 1.02, t.zCenter);
     capG.add(louvre);
-  }
+  });
   g.add(capG);
 
   const spire = new THREE.Mesh(spireGeo, mats.shingles);

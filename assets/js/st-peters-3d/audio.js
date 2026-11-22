@@ -138,6 +138,146 @@ const VOLUNTARY_PHRASES = [
   { beats: 4, pedal: 43, chord: [55, 59, 62], melody: [[0, 4, 67]] } // G (cadence)
 ];
 
+// Hymn tunes by their number on the hymn board. Adeste Fideles (Wade, 18th century), harmonised in G major.
+// melody: [beat, beats, midi]; chords: [beat, beats, pedal, [inner voices]]
+const G = [43, [55, 59, 62]];
+const D = [50, [54, 57, 62]];
+const C = [48, [52, 55, 60]];
+const EM = [40, [52, 55, 59]];
+const AM = [45, [52, 57, 60]];
+const A7 = [45, [55, 57, 61]];
+const D7 = [50, [54, 57, 60]];
+const chordRun = (list) => list.map(([beat, beats, [pedal, inner]]) => [beat, beats, pedal, inner]);
+export const HYMNS = {
+  59: {
+    title: 'O Come, All Ye Faithful',
+    beatSec: 0.6,
+    // O come, all ye faithful, joyful and triumphant, O come ye, O come ye to Bethlehem; come and behold him,
+    // born the King of angels: O come, let us adore him (x3), Christ the Lord
+    melody: [
+      [0, 1, 67],
+      [1, 2, 67],
+      [3, 1, 62],
+      [4, 1, 67],
+      [5, 2, 69],
+      [7, 2, 62],
+      [9, 1, 71],
+      [10, 1, 69],
+      [11, 1, 71],
+      [12, 1, 72],
+      [13, 2, 71],
+      [15, 1, 69],
+      [16, 1, 67],
+      [17, 2, 67],
+      [19, 1, 66],
+      [20, 1, 64],
+      [21, 1, 66],
+      [22, 1, 67],
+      [23, 1, 69],
+      [24, 1, 71],
+      [25, 2, 66],
+      [27, 1.5, 64],
+      [28.5, 0.5, 62],
+      [29, 3, 62],
+      [33, 2, 74],
+      [35, 1, 72],
+      [36, 1, 71],
+      [37, 2, 72],
+      [39, 2, 71],
+      [41, 1, 69],
+      [42, 1, 71],
+      [43, 1, 67],
+      [44, 1, 69],
+      [45, 1.5, 66],
+      [46.5, 0.5, 64],
+      [47, 1, 62],
+      [48, 1, 67],
+      [49, 1, 67],
+      [50, 1, 66],
+      [51, 1, 67],
+      [52, 1, 69],
+      [53, 2, 67],
+      [55, 1, 62],
+      [56, 1, 71],
+      [57, 1, 71],
+      [58, 1, 69],
+      [59, 1, 71],
+      [60, 1, 72],
+      [61, 2, 71],
+      [63, 1, 69],
+      [64, 1, 71],
+      [65, 1, 72],
+      [66, 1, 71],
+      [67, 1, 69],
+      [68, 1, 67],
+      [69, 2, 66],
+      [71, 1, 67],
+      [72, 1, 72],
+      [73, 2, 71],
+      [75, 1.5, 69],
+      [76.5, 0.5, 67],
+      [77, 3, 67]
+    ],
+    chords: chordRun([
+      [0, 1, G],
+      [1, 4, G],
+      [5, 4, D],
+      [9, 1, G],
+      [10, 1, D],
+      [11, 1, G],
+      [12, 1, AM],
+      [13, 2, G],
+      [15, 1, D],
+      [16, 1, G],
+      [17, 2, C],
+      [19, 1, D],
+      [20, 1, EM],
+      [21, 1, D],
+      [22, 1, EM],
+      [23, 1, D],
+      [24, 1, G],
+      [25, 2, D],
+      [27, 2, A7],
+      [29, 3, D],
+      [33, 2, G],
+      [35, 1, D7],
+      [36, 1, G],
+      [37, 2, C],
+      [39, 2, G],
+      [41, 1, D],
+      [42, 1, G],
+      [43, 1, EM],
+      [44, 1, D],
+      [45, 1.5, D],
+      [46.5, 0.5, A7],
+      [47, 1, D],
+      [48, 1, G],
+      [49, 1, G],
+      [50, 1, D],
+      [51, 1, G],
+      [52, 1, D],
+      [53, 4, G],
+      [57, 1, G],
+      [58, 1, D],
+      [59, 1, G],
+      [60, 1, AM],
+      [61, 2, G],
+      [63, 1, D],
+      [64, 1, G],
+      [65, 1, C],
+      [66, 1, G],
+      [67, 1, D],
+      [68, 1, EM],
+      [69, 2, D],
+      [71, 1, G],
+      [72, 1, C],
+      [73, 2, G],
+      [75, 2, D7],
+      [77, 3, G]
+    ])
+  }
+};
+
 export function createChurchAudio() {
   let context = null;
   let muffleFilter = null;
@@ -155,6 +295,12 @@ export function createChurchAudio() {
   const activeNodes = new Set();
   // Notes scheduled on the audio clock, so the organ console can show what is sounding: { midi, start, end, pedal }
   let scheduledNotes = [];
+  // Note envelopes still sounding or yet to sound, so a hymn can cut the voluntary short
+  const noteGains = new Set();
+  // A hymn being played: its notes on the audio clock, in start order, and when it finishes
+  let hymnEvents = null;
+  let hymnIdx = 0;
+  let hymnEnd = 0;
 
   const BEAT_SEC = 0.92; // Slow, peaceful ~65 BPM voluntary
 
@@ -266,6 +412,7 @@ export function createChurchAudio() {
     noteGain.gain.setValueAtTime(level * 0.92, startTime + Math.max(attack + 0.05, duration - 0.08));
     noteGain.gain.exponentialRampToValueAtTime(0.0001, stopTime);
     noteGain.connect(organBus);
+    noteGains.add(noteGain);
 
     for (const p of partials) {
       const osc = context.createOscillator();
@@ -279,7 +426,10 @@ export function createChurchAudio() {
       pGain.connect(noteGain);
 
       activeNodes.add(osc);
-      osc.onended = () => activeNodes.delete(osc);
+      osc.onended = () => {
+        activeNodes.delete(osc);
+        noteGains.delete(noteGain);
+      };
       osc.start(startTime);
       osc.stop(stopTime + 0.04);
     }
@@ -290,6 +440,18 @@ export function createChurchAudio() {
     const now = context.currentTime;
     if (nextBarTime < now + 0.05) {
       nextBarTime = now + 0.08;
+    }
+    if (hymnEvents) {
+      while (hymnIdx < hymnEvents.length && hymnEvents[hymnIdx].start < now + 1.2) {
+        const n = hymnEvents[hymnIdx++];
+        playPipeNote(midiToHz(n.midi), n.start, n.end - n.start, n.level, n.opts);
+        scheduledNotes.push({ midi: n.midi, start: n.start, end: n.end, pedal: Boolean(n.opts.isPedal) });
+      }
+      if (hymnIdx < hymnEvents.length || now < hymnEnd) return;
+      // Hymn over: a short pause, then the voluntary begins again from the top
+      hymnEvents = null;
+      phraseIdx = 0;
+      nextBarTime = now + 2.5;
     }
     while (nextBarTime < now + 1.2) {
       const bar = VOLUNTARY_PHRASES[phraseIdx % VOLUNTARY_PHRASES.length];
@@ -318,6 +480,43 @@ export function createChurchAudio() {
       nextBarTime += barDur;
       phraseIdx = (phraseIdx + 1) % VOLUNTARY_PHRASES.length;
     }
+  }
+
+  // Play a hymn from HYMNS, fading out whatever the organ is playing first. Returns false if there is no such hymn.
+  function playHymn(number) {
+    const hymn = HYMNS[number];
+    if (!hymn || !context || context.state !== 'running') return false;
+    const now = context.currentTime;
+    for (const g of noteGains) {
+      g.gain.cancelScheduledValues(now);
+      g.gain.setTargetAtTime(0.0001, now, 0.12);
+    }
+    noteGains.clear();
+    scheduledNotes = [];
+    const t0 = now + 1.2;
+    const beat = hymn.beatSec;
+    const events = [];
+    for (const [b, len, midi] of hymn.melody) {
+      events.push({
+        midi,
+        start: t0 + b * beat,
+        end: t0 + (b + len) * beat - 0.07,
+        level: 0.15,
+        opts: { isMelody: true }
+      });
+    }
+    for (const [b, len, pedal, inner] of hymn.chords) {
+      const start = t0 + b * beat;
+      const end = t0 + (b + len) * beat - 0.05;
+      events.push({ midi: pedal, start, end, level: 0.2, opts: { isPedal: true } });
+      for (const midi of inner) events.push({ midi, start, end, level: 0.1, opts: {} });
+    }
+    events.sort((a, b) => a.start - b.start);
+    hymnEvents = events;
+    hymnIdx = 0;
+    hymnEnd = Math.max(...events.map((e) => e.end)) + 0.6;
+    schedule();
+    return true;
   }
 
   function applyGainAndFilter() {
@@ -385,6 +584,7 @@ export function createChurchAudio() {
     muted = Boolean(isMuted);
     if (muted) {
       scheduledNotes = [];
+      hymnEvents = null; // muting ends a hymn; unmuting returns to the voluntary
       if (timer) {
         clearInterval(timer);
         timer = null;
@@ -490,6 +690,7 @@ export function createChurchAudio() {
     isRunning: () => context?.state === 'running' && !muted,
     updateSpatial,
     getSoundingNotes,
+    playHymn,
     playBell
   };
 }
