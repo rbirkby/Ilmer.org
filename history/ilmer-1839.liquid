@@ -14,7 +14,7 @@ permalink: /history/ilmer-1839/index.html
   <span class="reconstruction-seal">1839<br><small>TITHE SURVEY</small></span>
 </div>
 <div class="reconstruction-stage st-peters-stage">
-  <div id="village-scene" tabindex="0" role="region" aria-label="Interactive 3D reconstruction of Ilmer" aria-describedby="scene-help" aria-keyshortcuts="C F M R T Escape">
+  <div id="village-scene" tabindex="0" role="region" aria-label="Interactive 3D reconstruction of Ilmer" aria-describedby="scene-help" aria-keyshortcuts="C F M R T V Escape">
     <p id="scene-status" role="status">Loading the village&hellip;</p>
 
     <div class="st-peters-top-controls" role="toolbar" aria-label="Scene controls">
@@ -24,6 +24,18 @@ permalink: /history/ilmer-1839/index.html
       <div class="st-peters-control-group" role="group" aria-label="Exploration toggles">
         <button type="button" class="st-peters-pill" id="btn-fly" aria-pressed="false" title="Toggle free flight (F)">Mode: Orbit</button>
         <button type="button" class="st-peters-pill" id="map-layer" aria-pressed="false" title="Show the original 1839 tithe map (M)">Original Map</button>
+        <button type="button" class="st-peters-pill st-peters-icon-btn" id="btn-sound" aria-pressed="false" aria-label="Mute village sounds" title="Mute village sounds (V)">
+          <svg data-icon="sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+          </svg>
+          <svg data-icon="sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+            <line x1="22" y1="9" x2="16" y2="15" />
+            <line x1="16" y1="9" x2="22" y2="15" />
+          </svg>
+        </button>
         <button type="button" class="st-peters-pill st-peters-icon-btn" id="btn-fullscreen" aria-pressed="false" aria-label="Enter fullscreen" title="Enter fullscreen">
           <svg data-icon="fs-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M8 3H5a2 2 0 0 0-2 2v3" />
@@ -49,7 +61,6 @@ permalink: /history/ilmer-1839/index.html
         </div>
         <span id="flight-status" role="status" class="st-peters-walk-hint"></span>
         <span id="ride-status" role="status" class="st-peters-walk-hint"></span>
-        <span id="ride-sound-status" role="status" class="st-peters-walk-hint"></span>
         <span id="ar-start-status" role="status" class="st-peters-walk-hint" aria-live="polite"></span>
       </div>
 
@@ -82,7 +93,7 @@ permalink: /history/ilmer-1839/index.html
   </div>
 </div>
 <p id="scene-help" class="scene-help">
-  <span class="st-peters-kbd-only">Drag to orbit &middot; Scroll or pinch to zoom &middot; Right-drag to pan &middot; Click or tap the horse and cart to ride; choose a view or press Escape to leave. Keyboard: <strong>T</strong> starts the Historic Tour, <strong>F</strong> toggles Fly mode (WASD, E/Q up/down, Shift faster), <strong>C</strong> rides or pauses the cart, <strong>M</strong> shows the original map, arrows orbit, <strong>+</strong>/<strong>&minus;</strong> zoom, <strong>R</strong> resets the view.</span>
+  <span class="st-peters-kbd-only">Drag to orbit &middot; Scroll or pinch to zoom &middot; Right-drag to pan &middot; Click or tap the horse and cart to ride; choose a view or press Escape to leave. Keyboard: <strong>T</strong> starts the Historic Tour, <strong>F</strong> toggles Fly mode (WASD, E/Q up/down, Shift faster), <strong>C</strong> rides or pauses the cart, <strong>M</strong> shows the original map, <strong>V</strong> mutes the village sounds, arrows orbit, <strong>+</strong>/<strong>&minus;</strong> zoom, <strong>R</strong> resets the view.</span>
   <span class="st-peters-touch-only">Drag to orbit &middot; Pinch to zoom &middot; Drag with two fingers to pan &middot; Click or tap the horse and cart to ride. Pick a place from <strong>Views</strong> or take the <strong>Historic Tour</strong>. To fly freely, tap <strong>Mode: Orbit</strong> to switch to Fly, then use the joystick to fly where you are looking and drag anywhere else to look around.</span>
 </p>
 <noscript><p>The interactive model requires JavaScript. Visit <a href="/history/fields-farming/">Fields &amp; farming</a> for the tithe apportionment.</p></noscript>
@@ -98,6 +109,8 @@ permalink: /history/ilmer-1839/index.html
     "/assets/js/ilmer-camera.js": "{{ '/assets/js/ilmer-camera.js' | cacheBust }}",
     "/assets/js/ilmer-flight.js": "{{ '/assets/js/ilmer-flight.js' | cacheBust }}",
     "/assets/js/ilmer-ride-audio.js": "{{ '/assets/js/ilmer-ride-audio.js' | cacheBust }}",
+    "/assets/js/ilmer-horse-cart.js": "{{ '/assets/js/ilmer-horse-cart.js' | cacheBust }}",
+    "/assets/js/ilmer-sky.js": "{{ '/assets/js/ilmer-sky.js' | cacheBust }}",
     "/assets/js/ilmer-livestock.js": "{{ '/assets/js/ilmer-livestock.js' | cacheBust }}",
     "/assets/js/scene-fullscreen.js": "{{ '/assets/js/scene-fullscreen.js' | cacheBust }}",
     "/assets/js/st-peters-3d/walk-joystick.js": "{{ '/assets/js/st-peters-3d/walk-joystick.js' | cacheBust }}"

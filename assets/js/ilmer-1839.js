@@ -25,8 +25,16 @@ import { validateTerrain, historicalTerrain, terrainHeight } from './ilmer-terra
 import { validateTrees, historicalTrees, circleOverlapsTriangles } from './ilmer-trees.js';
 import { rideCircuitPoint, rideCircuitLength, rideLength, rideStart, rideEnd, rideSpeed } from './ilmer-ride.js';
 import { cameraFloor, cameraGroundClearance } from './ilmer-camera.js';
-import { flightStops, flightProgress } from './ilmer-flight.js';
-import { createRideAudio } from './ilmer-ride-audio.js';
+import {
+  flightStops,
+  advanceFlight as advanceFlightDistance,
+  blendIn,
+  smoothClearance,
+  stopAtDistance
+} from './ilmer-flight.js';
+import { createVillageAudio } from './ilmer-ride-audio.js';
+import { AUTUMN_SUN, createVillageSky } from './ilmer-sky.js';
+import { createHorseAndCart, HORSE_OFFSET } from './ilmer-horse-cart.js';
 import { livestockFields, createLivestock, advanceLivestock, withinField } from './ilmer-livestock.js';
 import { bindFullscreenToggle } from './scene-fullscreen.js';
 import './st-peters-3d/walk-joystick.js';
@@ -51,7 +59,10 @@ async function start() {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.setClearColor(0xe3e8dc, 1);
+  // The church model's cinematic Autumn Sun look: filmic tone mapping, a low warm sun and blue haze
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = AUTUMN_SUN.exposure;
+  renderer.setClearColor(AUTUMN_SUN.fogColor, 1);
   renderer.domElement.setAttribute('aria-hidden', 'true');
   host.append(renderer.domElement);
   const arVideo = document.createElement('video');
@@ -81,12 +92,16 @@ async function start() {
   const structures = new THREE.Group();
   const labels = new THREE.Group();
   scene.add(landscape, mappedGround, waterFeatures, structures, labels);
-  scene.add(new THREE.HemisphereLight(0xffffee, 0x6e806b, 2.3));
-  const sun = new THREE.DirectionalLight(0xffedc6, 3);
-  sun.position.set(-140, 240, 90);
+  const villageFog = new THREE.FogExp2(AUTUMN_SUN.fogColor, AUTUMN_SUN.fogDensity);
+  scene.fog = villageFog;
+  const sky = createVillageSky(THREE, 1500);
+  scene.add(sky.mesh);
+  scene.add(new THREE.HemisphereLight(AUTUMN_SUN.hemiSky, AUTUMN_SUN.hemiGround, AUTUMN_SUN.hemiIntensity));
+  const sun = new THREE.DirectionalLight(AUTUMN_SUN.sunColor, AUTUMN_SUN.sunIntensity);
+  sun.position.set(...AUTUMN_SUN.sunDirection).setLength(420);
   sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
-  Object.assign(sun.shadow.camera, { left: -350, right: 350, top: 250, bottom: -250, near: 1, far: 650 });
+  Object.assign(sun.shadow.camera, { left: -380, right: 380, top: 330, bottom: -330, near: 1, far: 900 });
   sun.shadow.bias = -0.0008;
   sun.shadow.normalBias = 0.3;
   scene.add(sun);
@@ -332,17 +347,10 @@ async function start() {
   flatPolygon(tenementGarden, material(0xb5bc8d));
   const pondSurfaces = [];
   const pondPolygons = ponds.map((pond) => pond.map(([x, y]) => mapPoint(x, y)));
-  for (const [index, pond] of ponds.entries()) {
-    const waterLevel = Math.min(...pond.map(([x, y]) => groundHeight(...mapPoint(x, y))));
-    // The historic cottages outline spans modern sloping ground; do not bury it at its lowest vertex.
+  for (const pond of ponds) {
+    // Ponds follow the modern ground: a flat surface at the lowest vertex would bury most of a pond on a slope.
     pondSurfaces.push(
-      flatPolygon(
-        pond,
-        material(0x7eaaa5, { roughness: 0.4, side: THREE.DoubleSide }),
-        0.08,
-        waterFeatures,
-        index === 0 || index >= 3 ? null : waterLevel
-      )
+      flatPolygon(pond, material(0x7eaaa5, { roughness: 0.4, side: THREE.DoubleSide }), 0.08, waterFeatures, null)
     );
   }
 
@@ -1554,7 +1562,14 @@ async function start() {
     ctx.fillStyle = '#344938';
     ctx.fillText(text, 256, 60, 480);
     const sprite = new THREE.Sprite(
-      new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(canvas), depthTest: false, depthWrite: false })
+      // Labels keep their own colours, unaffected by the haze and filmic grading
+      Object.assign(
+        new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(canvas), depthTest: false, depthWrite: false }),
+        {
+          fog: false,
+          toneMapped: false
+        }
+      )
     );
     sprite.renderOrder = 1000;
     const [wx, wz] = mapPoint(x, y);
@@ -1582,84 +1597,81 @@ async function start() {
   mapPlane.receiveShadow = true;
   scene.add(mapPlane);
 
-  const cart = new THREE.Group();
-  const horse = new THREE.Group();
+  const { cart, horse, driver, update: animateHorseAndCart, reinPoints } = createHorseAndCart(THREE, { timber });
   scene.add(cart, horse);
   cart.visible = horse.visible = false;
-  box(cart, 1.8, 0.2, 2.8, 0, 0.95, 0, timber);
-  box(cart, 1.85, 0.55, 0.16, 0, 1.32, 1.35, timber);
-  box(cart, 1.85, 0.35, 0.16, 0, 1.65, -1.35, timber);
-  box(cart, 1.7, 0.16, 0.5, 0, 1.45, 0.4, timber);
-  for (const side of [-1, 1]) {
-    box(cart, 0.12, 0.55, 2.8, side * 0.9, 1.32, 0, timber);
-    box(cart, 0.09, 0.1, 4.2, side * 0.65, 1.1, -2.5, timber);
-  }
-  const wheels = [];
-  for (const side of [-1, 1]) {
-    const wheel = new THREE.Group();
-    wheel.position.set(side * 1.05, 0.7, 0.4);
-    const rim = new THREE.Mesh(new THREE.TorusGeometry(0.65, 0.075, 6, 20), dark);
-    rim.rotation.y = Math.PI / 2;
-    wheel.add(rim);
-    for (let spoke = 0; spoke < 8; spoke++) {
-      const bar = box(wheel, 0.08, 1.25, 0.07, 0, 0, 0, timber);
-      bar.rotation.x = (spoke * Math.PI) / 8;
-    }
-    cart.add(wheel);
-    wheels.push(wheel);
-  }
-  const horseCoat = material(0x72503a);
-  const mane = material(0x30271f);
-  const driver = new THREE.Group();
-  cart.add(driver);
-  const coat = material(0x465b70);
-  const skin = material(0xc69b78);
-  box(driver, 0.62, 0.8, 0.42, 0, 1.94, 0.4, coat);
-  box(driver, 0.4, 0.42, 0.4, 0, 2.56, 0.38, skin);
-  box(driver, 0.65, 0.06, 0.6, 0, 2.8, 0.38, mane);
-  box(driver, 0.42, 0.24, 0.4, 0, 2.92, 0.38, mane);
-  for (const side of [-1, 1]) {
-    box(driver, 0.22, 0.2, 0.65, side * 0.2, 1.48, 0.05, coat);
-    box(driver, 0.2, 0.55, 0.22, side * 0.2, 1.12, -0.22, dark);
-    box(driver, 0.22, 0.18, 0.38, side * 0.2, 0.87, -0.3, mane);
-    const arm = box(driver, 0.18, 0.18, 0.68, side * 0.36, 1.95, 0.02, coat);
-    arm.rotation.x = -0.15;
-    box(driver, 0.16, 0.16, 0.16, side * 0.36, 1.9, -0.32, skin);
-  }
-  box(horse, 0.85, 0.85, 1.8, 0, 1.65, 0, horseCoat);
-  const neck = box(horse, 0.6, 1.25, 0.65, 0, 2.08, -0.75, horseCoat);
-  neck.rotation.x = -0.3;
-  box(horse, 0.52, 0.6, 0.95, 0, 2.65, -1.05, horseCoat);
-  box(horse, 0.55, 0.32, 0.35, 0, 2.43, -1.56, mane);
-  box(horse, 0.18, 1, 0.18, 0, 2.2, -0.43, mane);
-  const legs = [];
-  for (const side of [-1, 1]) {
-    box(horse, 0.15, 0.4, 0.18, side * 0.2, 3.05, -0.84, horseCoat);
-    box(horse, 0.07, 0.08, 0.12, side * 0.28, 2.72, -1.26, dark);
-    for (const end of [-1, 1]) {
-      const leg = new THREE.Group();
-      leg.position.set(side * 0.3, 1.4, end * 0.6);
-      box(leg, 0.19, 1.1, 0.22, 0, -0.55, 0, horseCoat);
-      box(leg, 0.22, 0.2, 0.3, 0, -1.25, -0.02, mane);
-      horse.add(leg);
-      legs.push(leg);
-    }
-    box(horse, 0.04, 0.06, 1.9, side * 0.46, 1.75, 0, dark);
-  }
-  const tail = box(horse, 0.2, 1.1, 0.2, 0, 1.25, 0.95, mane);
-  tail.rotation.x = -0.25;
   const reinsGeometry = new THREE.BufferGeometry().setFromPoints(Array.from({ length: 4 }, () => new THREE.Vector3()));
   const reins = new THREE.LineSegments(reinsGeometry, new THREE.LineBasicMaterial({ color: 0x392a22 }));
   scene.add(reins);
   reins.visible = false;
   const rideButton = document.getElementById('ride-pause');
   const rideStatus = document.getElementById('ride-status');
-  const soundStatus = document.getElementById('ride-sound-status');
-  const rideAudio = createRideAudio();
-  function audioError(error) {
-    console.error('Horse and cart audio could not start:', error);
-    soundStatus.textContent = 'Ride sound unavailable. Check your browser audio permissions.';
+  // Village sounds, like the church's organ: they start with your first click, tap or key press (browsers
+  // block sound until then) and the speaker button mutes them. Each comes from its source and grows louder
+  // as the camera nears it.
+  const villageAudio = createVillageAudio();
+  const soundButton = document.getElementById('btn-sound');
+  const soundOnIcon = soundButton.querySelector('[data-icon="sound-on"]');
+  const soundOffIcon = soundButton.querySelector('[data-icon="sound-off"]');
+  function setSoundMuted(isMuted) {
+    villageAudio.setMuted(isMuted);
+    soundButton.setAttribute('aria-pressed', String(isMuted));
+    const label = isMuted ? 'Unmute village sounds' : 'Mute village sounds';
+    soundButton.setAttribute('aria-label', label);
+    soundButton.title = `${label} (V)`;
+    soundOnIcon.toggleAttribute('hidden', isMuted);
+    soundOffIcon.toggleAttribute('hidden', !isMuted);
   }
+  function toggleSound() {
+    // If the browser held sound back until this click, start it rather than muting it
+    if (!villageAudio.isMuted() && !villageAudio.isRunning()) {
+      setSoundMuted(false);
+      void villageAudio.start();
+      return;
+    }
+    setSoundMuted(!villageAudio.isMuted());
+  }
+  soundButton.addEventListener('click', toggleSound);
+  const UNLOCK_EVENTS = ['pointerdown', 'pointerup', 'click', 'keydown', 'wheel', 'touchstart'];
+  function removeUnlockListeners() {
+    for (const type of UNLOCK_EVENTS) window.removeEventListener(type, unlockVillageAudio, true);
+  }
+  function unlockVillageAudio(event) {
+    if (villageAudio.isMuted() || villageAudio.isRunning()) {
+      removeUnlockListeners();
+      return;
+    }
+    if (event?.target instanceof Node && soundButton.contains(event.target)) return;
+    void villageAudio.start().then((ok) => ok && removeUnlockListeners());
+  }
+  for (const type of UNLOCK_EVENTS) window.addEventListener(type, unlockVillageAudio, { capture: true, passive: true });
+  void villageAudio.start().then((ok) => ok && removeUnlockListeners());
+  const listenerRight = new THREE.Vector3();
+  function updateVillageAudio() {
+    listenerRight.setFromMatrixColumn(camera.matrixWorld, 0).normalize();
+    /** @type {{ id: string, kind: 'cart' | 'duck' | 'chicken' | 'sheep', position: number[] }[]} */
+    const emitters = herds.map((herd) => {
+      const x = herd.animals.reduce((sum, animal) => sum + animal.x, 0) / herd.animals.length;
+      const z = herd.animals.reduce((sum, animal) => sum + animal.z, 0) / herd.animals.length;
+      return { id: herd.id, kind: herd.species, position: [x, groundHeight(x, z) + 0.5, z] };
+    });
+    // The horse and cart are heard only while they are moving
+    if (riding && cart.visible)
+      emitters.push({
+        id: 'cart',
+        kind: 'cart',
+        position: [
+          (cart.position.x + horse.position.x) / 2,
+          cart.position.y + 1,
+          (cart.position.z + horse.position.z) / 2
+        ]
+      });
+    villageAudio.update({ position: camera.position.toArray(), right: listenerRight.toArray() }, emitters);
+  }
+  const RIDE_CHASE_BEHIND = 7.5;
+  const RIDE_CHASE_HEIGHT = 4.4;
+  const RIDE_CHASE_AHEAD = 2.2;
+  const RIDE_CHASE_SIDE = 1.1;
   let riding = false;
   let rideMode = 'village';
   let rideState = 'idle';
@@ -1681,24 +1693,25 @@ async function start() {
   }
   function positionRide() {
     seatOnRoad(cart, rideDistance);
-    seatOnRoad(horse, rideDistance + 4.6);
+    seatOnRoad(horse, rideDistance + HORSE_OFFSET);
     if (rideMode === 'rider') {
-      camera.position.copy(cart.localToWorld(new THREE.Vector3(0, 2.7, 1.1)));
-      const [x, z] = rideCircuitPoint(rideDistance + 13);
-      controls.target.set(x, groundHeight(x, z) + 2.2, z);
+      // Follow a few paces behind along the road and a little to the right, high enough to see the carter,
+      // the cart and the horse ahead of him
+      const [cx, cz] = rideCircuitPoint(rideDistance - RIDE_CHASE_BEHIND);
+      const [px, pz] = rideCircuitPoint(rideDistance - RIDE_CHASE_BEHIND - 0.5);
+      const along = Math.hypot(cx - px, cz - pz) || 1;
+      const sx = cx - ((cz - pz) / along) * RIDE_CHASE_SIDE;
+      const sz = cz + ((cx - px) / along) * RIDE_CHASE_SIDE;
+      camera.position.set(sx, Math.max(groundHeight(sx, sz), cart.position.y) + RIDE_CHASE_HEIGHT, sz);
+      const [x, z] = rideCircuitPoint(rideDistance + RIDE_CHASE_AHEAD);
+      controls.target.set(x, groundHeight(x, z) + 0.9, z);
       camera.lookAt(controls.target);
     }
-    const points = [];
-    for (const side of [-1, 1]) {
-      points.push(cart.localToWorld(new THREE.Vector3(side * 0.36, 1.9, -0.32)));
-      points.push(horse.localToWorld(new THREE.Vector3(side * 0.35, 2.4, -1.2)));
-    }
-    reinsGeometry.setFromPoints(points);
-    wheels.forEach((wheel) => (wheel.rotation.x = -rideDistance / 0.65));
-    legs.forEach((leg, i) => (leg.rotation.x = Math.sin(rideDistance * 2.8 + (i % 3 ? Math.PI : 0)) * 0.22));
+    animateHorseAndCart(rideDistance);
+    horse.updateMatrixWorld(true);
+    reinsGeometry.setFromPoints(reinPoints());
   }
   function pauseRide() {
-    rideAudio.stop();
     riding = false;
     rideState = 'paused';
     cancelAnimationFrame(rideFrame);
@@ -1709,8 +1722,6 @@ async function start() {
     rideStatus.textContent = 'Journey paused. Choose a view or press Escape to leave.';
   }
   function stopRide() {
-    rideAudio.stop();
-    soundStatus.textContent = '';
     riding = false;
     rideState = 'idle';
     cancelAnimationFrame(rideFrame);
@@ -1744,12 +1755,9 @@ async function start() {
     rideMode = 'rider';
     riding = true;
     rideState = 'riding';
-    soundStatus.textContent = '';
-    rideAudio.start().catch(audioError);
     ridePreviousTime = null;
     controls.enabled = false;
-    cart.visible = horse.visible = reins.visible = true;
-    driver.visible = false;
+    cart.visible = horse.visible = reins.visible = driver.visible = true;
     labels.visible = false;
     mapPlane.visible = false;
     syncMapButton();
@@ -1768,6 +1776,7 @@ async function start() {
   }
   rideButton.addEventListener('click', startCartRide);
   document.addEventListener('visibilitychange', () => {
+    villageAudio.setHidden(document.hidden);
     if (document.hidden && flying) pauseFlight();
     if (rideMode === 'village') {
       if (document.hidden) {
@@ -1863,17 +1872,58 @@ async function start() {
   const flightCurve = new THREE.CatmullRomCurve3(flightPoints, true, 'centripetal');
   const targetCurve = new THREE.CatmullRomCurve3(flightTargets, true, 'centripetal');
   const roofBounds = selectable.map((group) => new THREE.Box3().setFromObject(group));
+  // The tour flies at a steady speed along the route's true length (arc length), not its uneven spline parameter.
+  flightCurve.arcLengthDivisions = 4000;
+  const flightLength = flightCurve.getLength();
+  const stopDistances = (() => {
+    const lengths = flightCurve.getLengths(4000);
+    return stops.map((_, index) => lengths[Math.round((index / stops.length) * 4000)]);
+  })();
+  // Height the camera must climb along the route to clear roofs and ground, smoothed so it never jumps
+  const clearanceSamples = 2400;
+  const clearance = smoothClearance(
+    Array.from({ length: clearanceSamples }, (_, i) => {
+      const point = flightCurve.getPointAt(i / clearanceSamples);
+      let floor = cameraFloor(terrain, point.x, point.z) + 1;
+      for (const bounds of roofBounds) {
+        if (
+          point.x >= bounds.min.x - 3 &&
+          point.x <= bounds.max.x + 3 &&
+          point.z >= bounds.min.z - 3 &&
+          point.z <= bounds.max.z + 3
+        )
+          floor = Math.max(floor, bounds.max.y + 2.5);
+      }
+      return Math.max(0, floor - point.y);
+    }),
+    Math.ceil((30 / flightLength) * clearanceSamples)
+  );
+  function flightPose(distance, position, target) {
+    const u = (((distance % flightLength) + flightLength) % flightLength) / flightLength;
+    flightCurve.getPointAt(u, position);
+    const sample = u * clearanceSamples;
+    const i = Math.floor(sample);
+    const lift =
+      clearance[i % clearanceSamples] * (1 - (sample - i)) + clearance[(i + 1) % clearanceSamples] * (sample - i);
+    position.y += lift;
+    targetCurve.getPoint(flightCurve.getUtoTmapping(u), target);
+  }
   let flying = false;
   let flightState = 'idle';
   let flightElapsed = 0;
+  let flightTravel = { distance: 0, throttle: 0 };
+  let flightBlend = null;
   let flightTime = null;
   let flightFrame = 0;
+  const flightPosition = new THREE.Vector3();
+  const flightTarget = new THREE.Vector3();
   const visitedFlightStops = new Set();
   function stopFlight() {
     cancelAnimationFrame(flightFrame);
     flying = false;
     flightState = 'idle';
     flightTime = null;
+    flightBlend = null;
     controls.enabled = navigationMode === 'orbit';
     flightButton.textContent = 'Historic Tour';
     flightButton.setAttribute('aria-pressed', 'false');
@@ -1884,6 +1934,7 @@ async function start() {
     flying = false;
     flightState = 'paused';
     flightTime = null;
+    flightBlend = null;
     controls.enabled = navigationMode === 'orbit';
     flightButton.textContent = 'Resume Historic Tour';
     flightButton.setAttribute('aria-pressed', 'false');
@@ -1891,24 +1942,29 @@ async function start() {
   }
   function advanceFlight(time) {
     if (!flying) return;
-    if (flightTime !== null) flightElapsed += Math.max(0, Math.min((time - flightTime) / 1000, 0.15));
+    const seconds = flightTime === null ? 0 : Math.max(0, Math.min((time - flightTime) / 1000, 0.1));
     flightTime = time;
-    const progress = flightProgress(flightElapsed, stops.length);
-    visitedFlightStops.add(stops[progress.index].id);
-    const parameter = (progress.index + progress.fraction) / stops.length;
-    camera.position.copy(flightCurve.getPoint(parameter));
-    for (const bounds of roofBounds) {
-      if (
-        camera.position.x >= bounds.min.x - 2 &&
-        camera.position.x <= bounds.max.x + 2 &&
-        camera.position.z >= bounds.min.z - 2 &&
-        camera.position.z <= bounds.max.z + 2
-      )
-        camera.position.y = Math.max(camera.position.y, bounds.max.y + 2);
+    flightElapsed += seconds;
+    flightTravel = advanceFlightDistance(flightTravel, seconds);
+    flightPose(flightTravel.distance, flightPosition, flightTarget);
+    if (flightBlend) {
+      // Glide from wherever the viewer was onto the moving route, as the church tour sets off from the current view
+      flightBlend.elapsed += seconds;
+      const weight = blendIn(flightBlend.elapsed, flightBlend.duration);
+      flightPosition.lerpVectors(flightBlend.position, flightPosition, weight);
+      flightTarget.lerpVectors(flightBlend.target, flightTarget, weight);
+      if (weight === 1) flightBlend = null;
     }
-    controls.target.copy(targetCurve.getPoint(parameter));
+    camera.position.copy(flightPosition);
+    controls.target.copy(flightTarget);
     camera.lookAt(controls.target);
-    const message = `Flying · ${stops[progress.fraction === 1 ? progress.next : progress.index].title} · ${visitedFlightStops.size} of ${stops.length} buildings visited`;
+    const index = stopAtDistance(stopDistances, flightTravel.distance, flightLength);
+    visitedFlightStops.add(stops[index].id);
+    const upcoming = stops[(index + 1) % stops.length];
+    const along = ((flightTravel.distance % flightLength) + flightLength) % flightLength;
+    const nextDistance = index + 1 < stops.length ? stopDistances[index + 1] : flightLength;
+    const current = nextDistance - along < (nextDistance - stopDistances[index]) / 2 ? upcoming : stops[index];
+    const message = `Flying · ${current.title} · ${visitedFlightStops.size} of ${stops.length} buildings visited`;
     if (flightStatus.textContent !== message) flightStatus.textContent = message;
     render();
     flightFrame = requestAnimationFrame(advanceFlight);
@@ -1927,8 +1983,18 @@ async function start() {
     }
     if (flightState !== 'paused') {
       flightElapsed = 0;
+      flightTravel = { distance: 0, throttle: 0 };
       visitedFlightStops.clear();
     }
+    // Ease up to speed and glide onto the route from the current view, whether starting or resuming
+    flightTravel = { distance: flightTravel.distance, throttle: 0 };
+    flightPose(flightTravel.distance, flightPosition, flightTarget);
+    flightBlend = {
+      position: camera.position.clone(),
+      target: controls.target.clone(),
+      elapsed: 0,
+      duration: Math.min(6, 2.5 + camera.position.distanceTo(flightPosition) / 80)
+    };
     applyNavigationMode('orbit');
     flying = true;
     flightState = 'flying';
@@ -1998,6 +2064,12 @@ async function start() {
         (2 * camera.position.distanceTo(sprite.position) * Math.tan((camera.fov * Math.PI) / 360)) / host.clientHeight;
       sprite.scale.set(pixelScale * 144, pixelScale * 27, 1);
     }
+    // AR shows the camera feed behind the buildings, so no sky or haze there
+    const ar = document.body.classList.contains('ar-active');
+    sky.mesh.visible = !ar;
+    scene.fog = ar ? null : villageFog;
+    sky.mesh.position.copy(camera.position);
+    sky.material.uniforms.uTime.value = performance.now() / 1000;
     renderer.render(scene, camera);
   }
   function freeFlightAvailable() {
@@ -2154,6 +2226,7 @@ async function start() {
     else if (key === 't') toggleHistoricTour();
     else if (key === 'f') setNavigationMode(navigationMode === 'fly' ? 'orbit' : 'fly');
     else if (key === 'm') toggleMapLayer();
+    else if (key === 'v') toggleSound();
     else if (key === 'r') setView('village');
     else if (key === 'escape' && fullscreen.isPseudoFullscreen()) fullscreen.exit();
     else return;
@@ -2576,6 +2649,7 @@ async function start() {
       advanceFreeFlight(seconds);
       advanceLivestock(herds, seconds);
       updateAnimalMeshes();
+      updateVillageAudio();
       if (!riding && !flying && !viewTransition) render();
       animalTime = time;
     } else animalTime = null;
@@ -2609,6 +2683,8 @@ async function start() {
     flight: {
       state: flightState,
       elapsed: flightElapsed,
+      distance: flightTravel.distance,
+      routeLength: flightLength,
       stops: stops.length,
       stopIds: stops.map((stop) => stop.id),
       visited: [...visitedFlightStops],
@@ -2625,7 +2701,7 @@ async function start() {
       )
     },
     ride: {
-      audio: rideAudio.diagnostics(),
+      audio: villageAudio.diagnostics(),
       state: rideState,
       mode: rideMode,
       driverVisible: driver.visible && cart.visible,

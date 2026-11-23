@@ -39,7 +39,14 @@ import {
   rideCircuitLength
 } from '../assets/js/ilmer-ride.js';
 import { cameraFloor, cameraGroundClearance } from '../assets/js/ilmer-camera.js';
-import { flightStops, flightProgress } from '../assets/js/ilmer-flight.js';
+import {
+  flightStops,
+  advanceFlight,
+  blendIn,
+  smoothClearance,
+  stopAtDistance,
+  FLIGHT_SPEED
+} from '../assets/js/ilmer-flight.js';
 import { livestockFields, withinField } from '../assets/js/ilmer-livestock.js';
 
 test('historical terrain removes only the eastern modern embankment and keeps the measured source intact', () => {
@@ -91,13 +98,44 @@ test('roof-height tour visits every mapped footprint including unnamed buildings
     })
   );
   assert.ok(stops.some((stop) => stop.place === 'outbuilding'));
+  const stopDistances = stops.map((_, index) => index * 10);
+  const total = stops.length * 10;
   const visited = new Set();
-  for (let elapsed = 0; elapsed < stops.length * 6; elapsed += 0.1)
-    visited.add(flightProgress(elapsed, stops.length).index);
+  for (let distance = 0; distance < total; distance += 1) visited.add(stopAtDistance(stopDistances, distance, total));
   assert.equal(visited.size, stops.length);
-  assert.deepEqual(flightProgress(stops.length * 6, stops.length), { index: 0, next: 1, fraction: 0 });
-  assert.equal(flightProgress(5, stops.length).fraction, 1);
-  assert.throws(() => flightProgress(NaN, stops.length), /Invalid flying tour/);
+  assert.equal(stopAtDistance(stopDistances, total + 5, total), 0);
+});
+
+test('flying tour glides at a constant speed after a gentle start, like the church tour', () => {
+  let state = { distance: 0, throttle: 0 };
+  const steps = [];
+  for (let frame = 0; frame < 600; frame += 1) {
+    const before = state.distance;
+    state = advanceFlight(state, 1 / 60);
+    steps.push(state.distance - before);
+  }
+  assert.ok(
+    steps.every((step) => step > 0),
+    'the tour never pauses'
+  );
+  assert.ok(steps[0] < steps[30], 'the tour eases in');
+  const cruise = steps.slice(-200);
+  assert.ok(
+    cruise.every((step) => Math.abs(step - FLIGHT_SPEED / 60) < 1e-9),
+    'the tour holds a steady speed'
+  );
+  assert.throws(() => advanceFlight({ distance: NaN, throttle: 0 }, 0.1), /Invalid flying tour/);
+  assert.equal(blendIn(0, 3), 0);
+  assert.equal(blendIn(3, 3), 1);
+  assert.ok(blendIn(1, 3) < blendIn(2, 3));
+});
+
+test('flying tour height clears every roof without sudden jumps', () => {
+  const required = Array.from({ length: 200 }, (_, index) => (index > 90 && index < 110 ? 12 : 0));
+  const smoothed = smoothClearance(required, 12);
+  smoothed.forEach((height: number, index: number) => assert.ok(height >= required[index] - 1e-9));
+  for (let index = 1; index < smoothed.length; index += 1)
+    assert.ok(Math.abs(smoothed[index] - smoothed[index - 1]) < 3, 'height changes gradually');
 });
 
 test('road clearance removes crown-edge overlaps as well as trunks inside actual road triangles', () => {
@@ -208,6 +246,9 @@ test('cart journey controls remain separate from the existing place and map cont
   assert.match(page, /id="ride-pause"[^>]*hidden disabled/);
   assert.doesNotMatch(page, /id="ride-toggle"|id="ride-stop"|Ride by horse|Leave cart/);
   assert.doesNotMatch(page, /id="ride-sound"|Mute ride sounds|Enable ride sounds/);
+  // One speaker button mutes every village sound, like the church model's
+  assert.match(page, /id="btn-sound" aria-pressed="false" aria-label="Mute village sounds"/);
+  assert.match(page, /data-icon="sound-on"[\s\S]*data-icon="sound-off"[^>]*hidden/);
   assert.match(page, /Click or tap the horse and cart/);
   assert.match(page, /id="ride-status" role="status"/);
   assert.doesNotMatch(page, /id="village-cart"/);
@@ -351,7 +392,7 @@ test('cottages pond traces the complete northern 1839 outline and cart has no sc
 });
 
 test('the tenements garden is not a pond and ducks use the cottages pond', () => {
-  assert.equal(ponds.length, 5);
+  assert.equal(ponds.length, 10);
   assert.equal(livestockFields.find((field) => field.species === 'duck')?.outline, ponds[0]);
   assert.equal(tenementGarden.length, 17);
   assert.equal(withinField(tenementGarden, 895, 285), true);

@@ -30,11 +30,55 @@ export function flightStops() {
   return result;
 }
 
-export function flightProgress(elapsed, count) {
-  if (!Number.isFinite(elapsed) || elapsed < 0 || !Number.isInteger(count) || count < 1)
+/** Cruising speed of the Historic Tour along its route, in metres per second. */
+export const FLIGHT_SPEED = 7;
+/** Seconds the tour takes to ease up to cruising speed when it starts or resumes. */
+export const FLIGHT_RAMP = 2.5;
+
+/**
+ * Moves the tour along its route. Like the church tour, it glides continuously through every stop at a steady
+ * speed, easing in only when it starts or resumes (the throttle rises from 0 to 1 over `ramp` seconds).
+ */
+export function advanceFlight({ distance, throttle }, seconds, { speed = FLIGHT_SPEED, ramp = FLIGHT_RAMP } = {}) {
+  if (![distance, throttle, seconds, speed, ramp].every(Number.isFinite) || seconds < 0 || ramp <= 0)
     throw new Error('Invalid flying tour progress');
-  const segment = Math.floor(elapsed / 6);
-  const fraction = Math.min((elapsed % 6) / 4.5, 1);
-  const eased = fraction * fraction * (3 - 2 * fraction);
-  return { index: segment % count, next: (segment + 1) % count, fraction: eased };
+  const next = Math.min(1, throttle + seconds / ramp);
+  return { distance: distance + speed * ((throttle + next) / 2) * seconds, throttle: next };
+}
+
+/** Smoothstep weight for gliding from the viewer's own view onto the tour route. */
+export function blendIn(elapsed, duration) {
+  const t = Math.max(0, Math.min(1, elapsed / duration));
+  return t * t * (3 - 2 * t);
+}
+
+/**
+ * Turns the height each sample of a looping route must climb (to clear roofs and ground) into a smooth lift that
+ * still clears every sample: a running maximum over `radius` samples either side, then two box blurs of half that
+ * width, so the camera rises gently before a roof and settles gently after it instead of jumping.
+ */
+export function smoothClearance(required, radius) {
+  const n = required.length;
+  const at = (values, i) => values[((i % n) + n) % n];
+  const widened = required.map((_, i) => {
+    let peak = 0;
+    for (let k = -radius; k <= radius; k++) peak = Math.max(peak, at(required, i + k));
+    return peak;
+  });
+  const half = Math.max(1, Math.floor(radius / 2));
+  const blur = (values) =>
+    values.map((_, i) => {
+      let sum = 0;
+      for (let k = -half; k <= half; k++) sum += at(values, i + k);
+      return sum / (2 * half + 1);
+    });
+  return blur(blur(widened));
+}
+
+/** Index of the stop the tour most recently passed, given each stop's distance along a looping route. */
+export function stopAtDistance(stopDistances, distance, total) {
+  const along = ((distance % total) + total) % total;
+  let index = 0;
+  for (let i = 0; i < stopDistances.length; i++) if (stopDistances[i] <= along) index = i;
+  return index;
 }

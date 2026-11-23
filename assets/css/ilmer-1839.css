@@ -305,3 +305,17 @@ body.ar-active #ar-overlay:not([hidden]) {
     600 14px system-ui,
     sans-serif;
 }
+
+/* The church model's cinematic edge vignette */
+#village-scene::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(ellipse at center, rgb(0 0 0 / 0%) 58%, rgb(12 10 8 / 34%) 100%);
+}
+
+.ar-active #village-scene::after {
+  display: none;
+}
