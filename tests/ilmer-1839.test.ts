@@ -27,7 +27,7 @@ import {
   tenementGarden
 } from '../assets/js/ilmer-1839-data.js';
 import { validateTerrain, historicalTerrain, terrainHeight } from '../assets/js/ilmer-terrain.js';
-import { validateTrees, register1876Tree, historicalTrees, circleOverlapsTriangles } from '../assets/js/ilmer-trees.js';
+import { validateTrees, registerMapTree, historicalTrees, circleOverlapsTriangles } from '../assets/js/ilmer-trees.js';
 import {
   ridePath,
   ridePoint,
@@ -441,6 +441,11 @@ test('the experience retains accessible controls and locally served Three.js wit
   assert.doesNotMatch(page, /reconstruction-evidence|reconstruction-sources|Reading the evidence|What we know/);
   assert.doesNotMatch(page, /<img|notes are below|available below|tree-registration\.png|tree-detections\.png/);
   assert.match(page, /id="map-layer"/);
+  // On the original map, planting is hidden and a button shows or hides the buildings over it
+  assert.match(page, /id="map-buildings" aria-pressed="true"[^>]*hidden>Buildings: Shown</);
+  const villageScript = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  assert.match(villageScript, /landscape\.visible = !showMap;/);
+  assert.match(villageScript, /structures\.visible = !showMap \|\| mapBuildingsShown;/);
   assert.match(page, /id="ar-start"/);
   assert.match(page, /id="ar-controls"[^>]*hidden/);
   assert.match(styles, /#ar-controls\[hidden\]/);
@@ -839,36 +844,39 @@ test('wooden house windows clear corners, neighbouring frames and front doorways
   assert.throws(() => spacedWindowCentres(NaN, 1.1, 2), /Invalid dwelling window/);
 });
 
-test('individual detected symbols replace the old interpolated rows with a checked map orientation', () => {
+test('trees come from the Ordnance Survey map, laid over the tithe map by the church and Lower Farm farmhouse', () => {
   const data = validateTrees(JSON.parse(readFileSync(new URL('../assets/ilmer-trees.json', import.meta.url), 'utf8')));
-  assert.equal(data.source.year, 1876);
+  assert.match(data.source.map, /Ordnance Survey/);
   assert.match(data.source.method, /template/);
   assert.equal(data.source.sha256.length, 64);
-  assert.ok(data.detections.length > 300);
-  assert.ok(data.registration.determinant > 0);
-  assert.ok(data.registration.clockwiseDegreesInImageCoordinates > 30);
-  assert.ok(data.registration.clockwiseDegreesInImageCoordinates < 50);
-  const [normal, reflected] = data.registration.comparison;
-  assert.ok(normal.rmsPixels < reflected.rmsPixels / 2);
-  for (const landmark of data.registration.landmarks) {
-    if (!landmark.usedForFit) continue;
-    const registered = register1876Tree(data, ...landmark.source);
-    for (let axis = 0; axis < 2; axis++) assert.ok(Math.abs(registered[axis] - landmark.target[axis]) < 0.00001);
+  assert.ok(data.detections.length > 400);
+  const [church, farmhouse] = data.registration.controlPoints;
+  assert.match(church.name, /St Peter's Church/);
+  assert.match(farmhouse.name, /Lower Farm main farmhouse.*benchmark/);
+  // The control points land on the modelled church and farmhouse
+  assert.deepEqual(church.target, CHURCH_PLAN.centre);
+  const lowerFarmhouse = buildings
+    .filter((building) => building.place === 'lower')
+    .flatMap((building) => building.parts)
+    .find(([, , , , , height]) => height === 7)!;
+  assert.deepEqual(farmhouse.target, lowerFarmhouse.slice(0, 2));
+  for (const control of data.registration.controlPoints) {
+    const registered = registerMapTree(data, ...control.source);
+    for (let axis = 0; axis < 2; axis++) assert.ok(Math.abs(registered[axis] - control.target[axis]) < 0.00001);
   }
-  assert.ok(
-    data.registration.landmarks.some(
-      (landmark: { usedForFit: boolean; errorPixels: number }) => !landmark.usedForFit && landmark.errorPixels > 100
-    )
-  );
-  assert.throws(() => register1876Tree(data, NaN, 0), /Invalid 1876 tree registration/);
+  // The OS map is turned about 45 degrees and slightly enlarged to fit the tithe map
+  assert.ok(data.registration.rotationDegrees > 40 && data.registration.rotationDegrees < 50);
+  assert.ok(data.registration.scale > 1 && data.registration.scale < 1.2);
+  assert.throws(() => registerMapTree(data, NaN, 0), /Invalid tree registration/);
   const { trees, excluded } = historicalTrees(data);
   assert.ok(trees.length > 250);
+  assert.ok(trees.some((tree) => !tree.orchard));
   assert.equal(trees.length + excluded.building + excluded.outsideCrop, data.detections.length);
   assert.ok(trees.some((tree) => tree.orchard));
   assert.equal(new Set(trees.map((tree) => tree.detectionIndex)).size, trees.length);
   for (const tree of trees) {
     assert.ok(tree.x > 0 && tree.x < MAP.width && tree.y > 0 && tree.y < MAP.height);
-    const registered = register1876Tree(data, ...tree.source);
+    const registered = registerMapTree(data, ...tree.source);
     assert.deepEqual(registered, [tree.x, tree.y]);
     const detection = data.detections[tree.detectionIndex];
     assert.deepEqual([detection.x, detection.y], tree.source);
@@ -892,12 +900,38 @@ test('detected tree data rejects corrupt geometry rather than silently replacing
     () => validateTrees({ ...data, detections: [{ x: NaN, y: 1, kind: 'tree' }] }),
     /Invalid detected-tree coordinates/
   );
+  const [[a, b, tx], [c, d, ty]] = data.registration.matrix;
   const reflected = {
     ...data,
     registration: {
       ...data.registration,
-      controlTargets: data.registration.controlTargets.map(([x, y]: number[]) => [-x, y])
+      matrix: [
+        [-a, -b, tx],
+        [c, d, ty]
+      ]
     }
   };
   assert.throws(() => validateTrees(reflected), /folds or reflects/);
+  const sheared = {
+    ...data,
+    registration: {
+      ...data.registration,
+      matrix: [
+        [a * 1.3, b, tx],
+        [c, d, ty]
+      ]
+    }
+  };
+  assert.throws(() => validateTrees(sheared), /distorts/);
+  const shifted = {
+    ...data,
+    registration: {
+      ...data.registration,
+      matrix: [
+        [a, b, tx + 20],
+        [c, d, ty]
+      ]
+    }
+  };
+  assert.throws(() => validateTrees(shifted), /misses its control points/);
 });

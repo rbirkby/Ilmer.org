@@ -1279,16 +1279,39 @@ async function start() {
     (tree) => !pondPolygons.some((polygon) => withinField(polygon, ...mapPoint(tree.x, tree.y)))
   );
   excludedTrees.water = detectedTrees.length - dryTrees.length;
+  // Hedgerow trees on the Ordnance Survey map line the road verges. Where the overlay puts one over the road, step
+  // it back onto the verge (up to TREE_VERGE_SHIFT metres, about the overlay's accuracy) rather than losing it.
+  const TREE_VERGE_SHIFT = 5;
+  const clearOfRoad = (x, z, radius) =>
+    !circleOverlapsTriangles(x, z, radius, roadTriangles) && !circleOverlapsTriangles(x, z, radius, cartCorridor);
+  let shiftedTrees = 0;
   const mappedTrees = dryTrees
     .map((tree, renderIndex) => ({ ...tree, renderIndex }))
-    .filter((tree) => {
+    .flatMap((tree) => {
       const [x, z] = mapPoint(tree.x, tree.y);
       const radius = treeSize(tree) * (tree.conifer ? 0.3 : 0.4 * crownRadius);
-      return (
-        !circleOverlapsTriangles(x, z, radius, roadTriangles) && !circleOverlapsTriangles(x, z, radius, cartCorridor)
-      );
+      if (clearOfRoad(x, z, radius)) return [tree];
+      for (let shift = 0.5; shift <= TREE_VERGE_SHIFT; shift += 0.5)
+        for (let step = 0; step < 16; step++) {
+          const angle = (step / 16) * Math.PI * 2;
+          const sx = x + Math.cos(angle) * shift;
+          const sz = z + Math.sin(angle) * shift;
+          if (
+            clearOfRoad(sx, sz, radius) &&
+            !pondPolygons.some((polygon) => withinField(polygon, sx, sz)) &&
+            Math.abs(sx) < terrain.width / 2 - 1 &&
+            Math.abs(sz) < terrain.depth / 2 - 1
+          ) {
+            shiftedTrees++;
+            return [
+              { ...tree, x: sx / MAP.scale + MAP.width / 2, y: sz / MAP.scale + MAP.height / 2, vergeShift: shift }
+            ];
+          }
+        }
+      return [];
     });
   excludedTrees.road = dryTrees.length - mappedTrees.length;
+  excludedTrees.shiftedToVerge = shiftedTrees;
   const treeTrunks = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), trunkMaterial, mappedTrees.length);
   const treeCrowns = leafMaterials.map(
     (mat, index) =>
@@ -1781,9 +1804,7 @@ async function start() {
     controls.enabled = false;
     cart.visible = horse.visible = reins.visible = driver.visible = true;
     labels.visible = false;
-    mapPlane.visible = false;
-    syncMapButton();
-    mappedGround.visible = true;
+    setMapLayer(false);
     selected = null;
     host.setAttribute('aria-label', 'Riding through Ilmer on a horse and cart');
     for (const button of document.querySelectorAll('[data-view]')) button.setAttribute('aria-pressed', 'false');
@@ -2207,20 +2228,38 @@ async function start() {
   presetsToggleButton.addEventListener('click', () => setPresetsExpanded(!presetBar.classList.contains('is-expanded')));
 
   const mapButton = document.getElementById('map-layer');
+  // On the original map the trees, hedges and other planting are hidden so the 1839 drawing shows through; the
+  // buildings can be shown or hidden over it
+  const mapBuildingsButton = document.getElementById('map-buildings');
+  let mapBuildingsShown = true;
   function syncMapButton() {
     mapButton.setAttribute('aria-pressed', String(mapPlane.visible));
+    mapBuildingsButton.hidden = !mapPlane.visible;
+    mapBuildingsButton.setAttribute('aria-pressed', String(mapBuildingsShown));
+    mapBuildingsButton.textContent = mapBuildingsShown ? 'Buildings: Shown' : 'Buildings: Hidden';
+  }
+  function setMapLayer(showMap) {
+    mapPlane.visible = showMap;
+    mappedGround.visible = !showMap;
+    waterFeatures.visible = !showMap;
+    landscape.visible = !showMap;
+    structures.visible = !showMap || mapBuildingsShown;
+    syncMapButton();
   }
   function toggleMapLayer() {
     const showMap = !mapPlane.visible;
     if (rideMode === 'rider' || flightState !== 'idle') setView(activeView);
-    mapPlane.visible = showMap;
-    mappedGround.visible = !mapPlane.visible;
-    waterFeatures.visible = !mapPlane.visible;
+    setMapLayer(showMap);
     labels.visible = !mapPlane.visible && !views[activeView].place;
-    syncMapButton();
+    render();
+  }
+  function toggleMapBuildings() {
+    mapBuildingsShown = !mapBuildingsShown;
+    setMapLayer(mapPlane.visible);
     render();
   }
   mapButton.addEventListener('click', toggleMapLayer);
+  mapBuildingsButton.addEventListener('click', toggleMapBuildings);
 
   const fullscreen = bindFullscreenToggle({
     button: document.getElementById('btn-fullscreen'),
@@ -2744,11 +2783,11 @@ async function start() {
       foliageOpacity: leafMaterials[0].opacity,
       transparentFoliage: leafMaterials.every((mat) => mat.transparent && !mat.depthWrite),
       orchard: mappedTrees.filter((tree) => tree.orchard).length,
-      sourceYear: treeData.source.year,
+      sourceMap: treeData.source.map,
       detected: treeData.detections.length,
       excluded: excludedTrees,
-      orientation: treeData.registration.clockwiseDegreesInImageCoordinates,
-      reflection: treeData.registration.determinant < 0,
+      orientation: treeData.registration.rotationDegrees,
+      scale: treeData.registration.scale,
       trunkInstances: treeTrunks.count,
       crownInstances: treeCrowns.reduce((sum, mesh) => sum + mesh.count, coniferCrowns.count),
       maxGroundingError: maxTreeGroundingError,

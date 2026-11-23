@@ -17,73 +17,56 @@ export function circleOverlapsTriangles(x, z, radius, triangles) {
   });
 }
 
+/**
+ * Trees detected on the Ordnance Survey map, with the two-point similarity that lays that map over the tithe map:
+ * St Peter's Church and Lower Farm's main farmhouse (the benchmark) fix its rotation, scale and position.
+ */
 export function validateTrees(data) {
+  const point = (value) => Array.isArray(value) && value.length === 2 && value.every(Number.isFinite);
   if (
-    data?.source?.year !== 1876 ||
+    typeof data?.source?.map !== 'string' ||
+    !Number.isFinite(data.source.width) ||
+    !Number.isFinite(data.source.height) ||
     !Array.isArray(data.detections) ||
     !Array.isArray(data.registration?.controlPoints) ||
-    !Array.isArray(data.registration?.controlTargets) ||
-    !Array.isArray(data.registration?.triangles) ||
     !Array.isArray(data.registration?.matrix)
   )
     throw new Error('Invalid detected-tree data');
-  const { controlPoints, controlTargets, triangles, matrix } = data.registration;
-  const point = (value) => Array.isArray(value) && value.length === 2 && value.every(Number.isFinite);
+  const { controlPoints, matrix } = data.registration;
+  const { width, height } = data.source;
   if (
-    controlPoints.length < 3 ||
-    triangles.length === 0 ||
-    controlPoints.length !== controlTargets.length ||
-    !controlPoints.every(point) ||
-    !controlTargets.every(point) ||
+    controlPoints.length < 2 ||
+    !controlPoints.every((control) => point(control.source) && point(control.target)) ||
     matrix.length !== 2 ||
     !matrix.every((row) => Array.isArray(row) && row.length === 3 && row.every(Number.isFinite)) ||
-    !triangles.every(
-      (triangle) =>
-        Array.isArray(triangle) &&
-        triangle.length === 3 &&
-        triangle.every((index) => Number.isInteger(index) && index >= 0 && index < controlPoints.length)
-    ) ||
     !data.detections.every(
       (tree) =>
         Number.isFinite(tree.x) &&
         Number.isFinite(tree.y) &&
         tree.x >= 0 &&
-        tree.x < 2000 &&
+        tree.x < width &&
         tree.y >= 0 &&
-        tree.y < 1126 &&
+        tree.y < height &&
         ['tree', 'orchard', 'conifer'].includes(tree.kind)
     )
   )
     throw new Error('Invalid detected-tree coordinates');
-  if (matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0] <= 0)
-    throw new Error('Detected-tree registration folds or reflects the map');
-  for (const triangle of triangles) {
-    const area = (points) => {
-      const [a, b, c] = triangle.map((index) => points[index]);
-      return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
-    };
-    if (area(controlPoints) * area(controlTargets) <= 0)
-      throw new Error('Detected-tree registration folds or reflects the map');
+  // A similarity keeps shapes: equal scale on both axes, no shear, and no mirror image
+  const [[a, b], [c, d]] = matrix;
+  if (a * d - b * c <= 0) throw new Error('Detected-tree registration folds or reflects the map');
+  if (Math.abs(a - d) > 1e-6 || Math.abs(b + c) > 1e-6) throw new Error('Detected-tree registration distorts the map');
+  for (const control of controlPoints) {
+    const [x, y] = registerMapTree(data, ...control.source);
+    if (Math.hypot(x - control.target[0], y - control.target[1]) > 0.5)
+      throw new Error('Detected-tree registration misses its control points');
   }
   return data;
 }
 
-export function register1876Tree(data, x, y) {
-  if (!Number.isFinite(x) || !Number.isFinite(y)) throw new Error('Invalid 1876 tree registration coordinate');
-  const { controlPoints, controlTargets, triangles, matrix } = data.registration;
-  for (const triangle of triangles) {
-    const [a, b, c] = triangle.map((index) => controlPoints[index]);
-    const determinant = (b[0] - a[0]) * (c[1] - a[1]) - (c[0] - a[0]) * (b[1] - a[1]);
-    const u = ((x - a[0]) * (c[1] - a[1]) - (y - a[1]) * (c[0] - a[0])) / determinant;
-    const v = ((b[0] - a[0]) * (y - a[1]) - (b[1] - a[1]) * (x - a[0])) / determinant;
-    if (u >= -1e-8 && v >= -1e-8 && u + v <= 1 + 1e-8) {
-      const [targetA, targetB, targetC] = triangle.map((index) => controlTargets[index]);
-      return [0, 1].map(
-        (axis) => targetA[axis] + u * (targetB[axis] - targetA[axis]) + v * (targetC[axis] - targetA[axis])
-      );
-    }
-  }
-  return matrix.map((row) => row[0] * x + row[1] * y + row[2]);
+/** Tithe-map pixel position of a point on the Ordnance Survey map. */
+export function registerMapTree(data, x, y) {
+  if (!Number.isFinite(x) || !Number.isFinite(y)) throw new Error('Invalid tree registration coordinate');
+  return data.registration.matrix.map((row) => row[0] * x + row[1] * y + row[2]);
 }
 
 export function historicalTrees(data) {
@@ -92,7 +75,7 @@ export function historicalTrees(data) {
   const footprints = buildings.flatMap((building) => [...building.parts, ...(building.projections ?? [])]);
   footprints.push([957, 507, 70, 43, 21, 0]);
   data.detections.forEach((detection, index) => {
-    const [x, y] = register1876Tree(data, detection.x, detection.y);
+    const [x, y] = registerMapTree(data, detection.x, detection.y);
     if (x < 1 || y < 1 || x > MAP.width - 1 || y > MAP.height - 1) {
       excluded.outsideCrop++;
       return;
