@@ -281,8 +281,8 @@ export function computeChurchAcoustics(pos, doorsOpen = false) {
 export const CHURCH_TOUR_WAYPOINTS = [
   {
     label: 'Exterior NW & Broach Spire',
-    pos: [-18.5, 5.6, -15.5],
-    target: [-1.8, 6.0, 0.0],
+    pos: [-22.5, 4.8, -9.5], // looking in past the west kissing gate, between the churchyard trees
+    target: [-1.8, 7.0, 0.0],
     duration: 2.4,
     hold: 0.4,
     doorsOpen: false,
@@ -483,8 +483,8 @@ export const CHURCH_TOUR_WAYPOINTS = [
   },
   {
     label: "St Peter's Church, Ilmer",
-    pos: [-21.5, 6.8, -21.8],
-    target: [-0.8, 8.4, 0.0],
+    pos: [-27.0, 6.5, -12.0], // matches the Exterior NW view, clear of the trees inside the north railings
+    target: [-1.0, 8.0, 0.0],
     duration: 3.0,
     hold: 0.0,
     doorsOpen: false,

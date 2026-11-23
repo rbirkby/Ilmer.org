@@ -6,16 +6,18 @@ export const CAMERA_PRESETS = {
   'exterior-nw': {
     label: 'Exterior NW',
     group: 'Exterior',
-    pos: [-21.5, 6.8, -21.8],
-    target: [-0.8, 8.4, 0.0],
+    // West-north-west, so the trees just inside the north railings stay out of the shot
+    pos: [-27.0, 6.5, -12.0],
+    target: [-1.0, 8.0, 0.0],
     cutaway: false,
     doorsOpen: false
   },
   'exterior-north': {
     label: 'North Elevation',
     group: 'Exterior',
-    pos: [0.2, 6.5, -24.5],
-    target: [0.2, 7.8, 0.0],
+    // A little west and lower than square-on, looking between the trees inside the north railings
+    pos: [-1.5, 3.4, -24.5],
+    target: [-0.4, 6.0, 0.0],
     cutaway: false,
     doorsOpen: false
   },
@@ -124,7 +126,7 @@ export function createCameraController(camera, domElement) {
   orbit.maxPolarAngle = Math.PI * 0.72;
   orbit.minDistance = 0.42;
   orbit.maxDistance = 42;
-  orbit.target.set(-0.8, 8.4, 0);
+  orbit.target.set(...CAMERA_PRESETS['exterior-nw'].target);
 
   let mode = 'orbit'; // 'orbit' | 'walk'
   let transition = null;

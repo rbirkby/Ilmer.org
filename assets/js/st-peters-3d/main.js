@@ -898,7 +898,8 @@ if (stage) {
     controller.update(dt);
     autoWalkIndoors();
     if (gravestoneEra.update(dt)) shadowsDirty = true;
-    if (kissingGates.update(dt, camera.position)) shadowsDirty = true; // leaves swing for the walker
+    // Leaves swing for the walker, but not for the Church Tour's camera gliding past
+    if (!controller.isTouring() && kissingGates.update(dt, camera.position)) shadowsDirty = true;
     churchAudio.updateSpatial(camera.position, state.doorsOpen);
     // Console follows the organ voluntary: tambour open and keys/pedals moving only while it plays
     organAnimator.update(dt, churchAudio.isRunning(), churchAudio.getSoundingNotes());

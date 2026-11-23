@@ -33,6 +33,7 @@
     "@lhci/cli": "^0.16.0",
     "@types/markdown-it-footnote": "^3.0.4",
     "@types/node": "^26.4.1",
+    "@types/three": "^0.187.0",
     "ajv": "^8.20.0",
     "lighthouse": "^13.4.0",
     "linkinator": "^8.0.2",

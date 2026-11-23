@@ -1252,6 +1252,14 @@ const PATH_GRASS_BANK = 0.45;
  * Lower the lawn under the footpath and curve it down steeply to the path edges so grass never
  * sits on top of the pavers. `pathX0`/`pathX1` are the E–W extents of the slab at `pathZ`.
  */
+/**
+ * Edge of the churchyard's surrounding land, in metres from the church centre at bearing θ (atan2(z, x)): a few
+ * gentle waves on a ~52 m circle, so the perimeter is irregular but smooth, never beyond the 60 m terrain grid.
+ */
+export function groundOutlineRadius(theta) {
+  return 52 + 3.6 * Math.sin(2 * theta + 0.7) + 2.4 * Math.sin(3 * theta + 2.1) + 1.4 * Math.sin(5 * theta + 0.4);
+}
+
 function applyPathGrassBanks(groundGeo, pathX0, pathX1, pathZ = PATH_Z, pathWidth = PATH_WIDTH) {
   const pos = groundGeo.attributes.position;
   const half = pathWidth * 0.5;
@@ -1674,6 +1682,16 @@ export function buildChurchyard(mats) {
   groundGeo.rotateX(-Math.PI / 2);
   const pos = groundGeo.attributes.position;
   for (let i = 0; i < pos.count; i++) {
+    // Pull the square's outer cells in onto a smooth, irregular outline (the grid's last ring of cells folds flat
+    // onto it), so the land reads as an island of countryside rather than a square tile
+    const x = pos.getX(i);
+    const z = pos.getZ(i);
+    const edge = groundOutlineRadius(Math.atan2(z, x));
+    const r = Math.hypot(x, z);
+    if (r > edge) {
+      pos.setX(i, (x / r) * edge);
+      pos.setZ(i, (z / r) * edge);
+    }
     pos.setY(i, getGroundHeight(pos.getX(i), pos.getZ(i)));
   }
   applyPathGrassBanks(groundGeo, pathX0, pathX1, PATH_Z, PATH_WIDTH);
@@ -1754,15 +1772,32 @@ export function buildChurchyard(mats) {
   g.add(yewSE);
 
   const trees = [
-    [-21.5, -5.5, 8.8, 0x8f6b32],
     [-19.5, 11.5, 7.8, 0x6e5430],
-    [-26.5, -14.5, 9.2, 0x5c6838],
     [24.5, -15.5, 10.2, 0x8c682c],
     [25.5, 3.5, 8.8, 0x9b722b],
     [16.5, 24.5, 9.6, 0x6b5b34],
     [-8.5, 27.5, 10.5, 0x7d6535],
     [6.5, 27.5, 8.6, 0x5e6234]
   ];
+  // Four trees just inside the north railings, evenly spaced along them (at 1/5, 2/5, 3/5 & 4/5 of their length)
+  // and 2 m in from the line, towards the church
+  const railingLen = polylineLength(NORTH_CHURCHYARD_RAILINGS);
+  const railingTrees = [
+    [8.4, 0x7a6232],
+    [9.4, 0x5f6a36],
+    [8.9, 0x8a6a2e],
+    [8.0, 0x6c5a30]
+  ];
+  railingTrees.forEach(([th, col], i) => {
+    const at = pointAlongPolyline(NORTH_CHURCHYARD_RAILINGS, ((i + 1) / 5) * railingLen);
+    let nx = -at.dz;
+    let nz = at.dx;
+    if (-at.x * nx + (PATH_Z - at.z) * nz < 0) {
+      nx = -nx;
+      nz = -nz;
+    }
+    trees.push([at.x + nx * 2, at.z + nz * 2, th, col]);
+  });
   trees.forEach(([tx, tz, th, col]) => {
     const tree = buildTree(th, col, false);
     tree.position.set(tx, getGroundHeight(tx, tz), tz);

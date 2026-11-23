@@ -89,7 +89,7 @@ In 1907, Miss Moreton once again supported the community by donating a new Paris
 ## A new spire
 
 ![St Peter's without spire](/images/church-no-spire2.jpg#right,bwphoto)
-_St Peter's, pre-1909, without spire_[^5]
+_St Peter's, between 1893-1909, without spire_[^5]
 
 [^5]: St Peter's without spire. Source: Unknown
 
