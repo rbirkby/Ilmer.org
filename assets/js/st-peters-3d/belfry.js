@@ -461,6 +461,7 @@ function buildHungBell(bell, { pitHalf, wheelX, wheelR, headX }, mats) {
   const ballR = D * 0.065;
   const clapper = new THREE.Group();
   clapper.userData.animated = true; // swings: main.js's static-mesh merge must keep it a group of its own
+  clapper.userData.era = 'today'; // in 1900 the bells hung dead and were chimed by hammers, so no clappers
   clapper.position.y = shaftTop;
   const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.018, shaftTop - ballY, 8), clapperMat);
   shaft.position.y = (ballY - shaftTop) * 0.5;
