@@ -23,7 +23,16 @@ import {
 import { compassHeading, createGeoReference, gpsToMapPixel, observeCompassAvailability } from './ilmer-ar.js';
 import { validateTerrain, historicalTerrain, terrainHeight } from './ilmer-terrain.js';
 import { validateTrees, historicalTrees, circleOverlapsTriangles } from './ilmer-trees.js';
-import { rideCircuitPoint, rideCircuitLength, rideLength, rideStart, rideEnd, rideSpeed } from './ilmer-ride.js';
+import {
+  rideCircuitPoint,
+  rideCircuitLength,
+  rideLength,
+  rideStart,
+  rideEnd,
+  rideSpeed,
+  ridePoint
+} from './ilmer-ride.js';
+import { SIGNPOSTS, createFingerpost, signpostPlacement } from './ilmer-signpost.js';
 import { cameraFloor, cameraGroundClearance } from './ilmer-camera.js';
 import {
   flightStops,
@@ -1398,6 +1407,19 @@ async function start() {
   hedgeMesh.castShadow = true;
   hedgeMesh.receiveShadow = true;
   landscape.add(hedgeMesh);
+  // Fingerposts at the two ends of the village road: east past Lower Farm to Longwick, west to Towersey
+  const signposts = SIGNPOSTS.map(({ id, end, text }) => {
+    const [endDistance, inwardDistance] = end === 'east' ? [rideLength - 3, rideLength - 9] : [3, 9];
+    const { x, z, heading } = signpostPlacement(ridePoint(endDistance), ridePoint(inwardDistance), (px, pz) =>
+      mappedRoadPolygons.some((polygon) => withinField(polygon, px, pz, 0.3))
+    );
+    const post = createFingerpost(THREE, text);
+    post.name = `signpost-${id}`;
+    post.position.set(x, groundHeight(x, z) - 0.05, z);
+    post.rotation.y = -heading;
+    structures.add(post);
+    return { id, text, position: [x, z], heading };
+  });
 
   const fieldObstacles = new Map(
     livestockFields.map((field) => {
@@ -2700,6 +2722,7 @@ async function start() {
         Infinity
       )
     },
+    signposts,
     ride: {
       audio: villageAudio.diagnostics(),
       state: rideState,
