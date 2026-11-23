@@ -62,59 +62,6 @@
     sans-serif;
   letter-spacing: 0.1em;
 }
-.reconstruction-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-  padding: 12px 0;
-  border-top: 1px solid #d7d1bf;
-}
-.reconstruction-toolbar button,
-.reconstruction-toolbar select {
-  border: 1px solid #c6c7b5;
-  background: #fffdf4;
-  border-radius: 4px;
-  color: var(--ink);
-  padding: 10px 16px;
-  font:
-    13px system-ui,
-    sans-serif;
-  cursor: pointer;
-}
-#free-flight-controls[hidden] {
-  display: none;
-}
-.reconstruction-toolbar button[aria-pressed='true'] {
-  background: var(--ink);
-  color: white;
-  border-color: var(--ink);
-}
-.reconstruction-toolbar label {
-  font:
-    12px system-ui,
-    sans-serif;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: 12px;
-}
-.reconstruction-toolbar input {
-  accent-color: var(--ink);
-}
-.journey-controls {
-  border-top: 0;
-  padding-top: 0;
-}
-.journey-controls span {
-  font:
-    12px/1.6 system-ui,
-    sans-serif;
-}
-.journey-controls button:disabled {
-  cursor: wait;
-  opacity: 0.6;
-}
 .reconstruction-stage {
   position: relative;
   border: 1px solid #c8c9b6;
@@ -123,10 +70,53 @@
   background: #e3e8dc;
 }
 #village-scene {
-  height: min(65vh, 700px);
-  min-height: 440px;
+  /* Overlay controls share the church model's frosted HUD (st-peters-3d.css) */
+  --hud-glass: rgb(24 22 20 / 72%);
+  --hud-border: rgb(235 222 202 / 22%);
+  --hud-text: #f5efe6;
+  --hud-muted: #c8bfb0;
+  --hud-accent: #d8aa54;
+  --hud-accent-bg: rgb(216 170 84 / 22%);
+  position: relative;
+  height: min(76vh, 780px);
+  min-height: 520px;
   width: 100%;
   touch-action: none;
+  overflow: hidden;
+}
+.st-peters-stage:fullscreen #village-scene,
+.st-peters-stage:-webkit-full-screen #village-scene,
+.st-peters-stage.is-pseudo-fullscreen #village-scene {
+  height: 100dvh;
+  min-height: 0;
+}
+#village-scene .st-peters-pill:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+/* Status messages for the tour, cart and AR stack at the top-left, as the church's walk hint and tour banner do */
+.village-banners {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  max-width: calc(100% - 300px);
+  pointer-events: none;
+}
+.village-banners .st-peters-walk-hint {
+  position: static;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.village-banners .st-peters-walk-hint:empty {
+  display: none;
+}
+.village-journey {
+  display: contents;
 }
 #village-scene canvas {
   display: block;
@@ -147,21 +137,34 @@
 }
 .scene-caption {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 12px 20px;
+  right: 14px;
+  bottom: 14px;
+  z-index: 5;
+  width: 126px;
+  box-sizing: border-box;
+  padding: 8px 10px;
   margin: 0;
-  background: #f5f1e6d9;
+  border-radius: 12px;
+  background: var(--hud-glass);
+  border: 1px solid var(--hud-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--hud-muted);
+  text-align: center;
   font:
-    10px system-ui,
-    sans-serif;
-  letter-spacing: 0.15em;
+    600 9.5px/1.3 Georgia,
+    serif;
+  letter-spacing: 0.08em;
   pointer-events: none;
 }
 .scene-caption span {
-  float: right;
+  display: block;
+  margin-top: 4px;
+  font:
+    10px/1.35 system-ui,
+    sans-serif;
   letter-spacing: 0;
+  color: var(--hud-text);
 }
 .scene-help {
   font:
@@ -169,6 +172,27 @@
     sans-serif;
   color: #626751;
   margin: 10px 0 32px;
+}
+.reconstruction-crosslink {
+  max-width: 760px;
+  margin: 8px 0 0;
+  padding: 18px 22px;
+  border: 1px solid #d7d1bf;
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  background: #fffdf4;
+}
+.reconstruction-crosslink .reconstruction-eyebrow {
+  margin: 0 0 6px;
+}
+.reconstruction-crosslink p:last-child {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.reconstruction-crosslink a {
+  color: var(--accent);
+  font-weight: 600;
 }
 .reconstruction :focus-visible {
   outline: 3px solid #a66726;
@@ -185,11 +209,17 @@
     display: none;
   }
   #village-scene {
-    min-height: 350px;
-    height: 52vh;
+    min-height: 440px;
+    height: 64vh;
   }
-  .reconstruction-toolbar button {
-    flex: 1 0 40%;
+  .village-banners {
+    position: static;
+    align-items: center;
+    max-width: 100%;
+  }
+  /* Views collapse behind the "Views: …" toggle, as the church's viewpoints do */
+  #village-scene .st-peters-preset-bar:not(.is-expanded) [data-view] {
+    display: none;
   }
 }
 #ar-controls[hidden],
@@ -239,7 +269,10 @@ body.ar-active #village-scene canvas {
   z-index: 1;
   pointer-events: none;
 }
-body.ar-active .scene-caption {
+body.ar-active .scene-caption,
+body.ar-active #village-scene .st-peters-top-controls,
+body.ar-active #village-scene .st-peters-bottom-stack,
+body.ar-active #village-scene .st-peters-joystick {
   display: none;
 }
 body.ar-active #ar-overlay:not([hidden]) {

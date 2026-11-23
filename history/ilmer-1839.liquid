@@ -13,57 +13,78 @@ permalink: /history/ilmer-1839/index.html
   </div>
   <span class="reconstruction-seal">1839<br><small>TITHE SURVEY</small></span>
 </div>
-<div class="reconstruction-toolbar" role="group" aria-label="Reconstruction views">
-  <button type="button" data-view="village" aria-pressed="true">Village view</button>
-  <button type="button" data-view="church" aria-pressed="false">St Peter's</button>
-  <button type="button" data-view="barns" aria-pressed="false">Upper Farm barns</button>
-  <button type="button" data-view="middle" aria-pressed="false">Middle Farm</button>
-  <button type="button" data-view="lower" aria-pressed="false">Lower Farm</button>
-  <button type="button" data-view="cottages" aria-pressed="false">Two Cottages &amp; Gardens</button>
-  <button type="button" data-view="tenements" aria-pressed="false">Three Tenements &amp; Gardens</button>
-  <button type="button" data-view="vicarage" aria-pressed="false">Old Vicarage</button>
-  <button type="button" data-view="plan" aria-pressed="false">Overhead plan</button>
-  <label><input id="map-layer" type="checkbox"> Original map</label>
-  <label>Controls
-    <select id="navigation-mode">
-      <option value="orbit">Look around</option>
-      <option value="fly">Fly freely</option>
-    </select>
-  </label>
-</div>
-<div id="free-flight-controls" class="reconstruction-toolbar journey-controls" role="group" aria-label="Hold to fly" hidden>
-  <button type="button" data-fly-key="w">Forward</button>
-  <button type="button" data-fly-key="s">Back</button>
-  <button type="button" data-fly-key="a">Left</button>
-  <button type="button" data-fly-key="d">Right</button>
-  <button type="button" data-fly-key="e">Up</button>
-  <button type="button" data-fly-key="q">Down</button>
-  <span>Drag to look. Hold a direction to move.</span>
-</div>
-<div class="reconstruction-toolbar journey-controls" role="group" aria-label="Horse and cart journey">
-  <button type="button" id="ride-pause" aria-pressed="false" hidden disabled>Pause cart journey</button>
-  <span id="ride-sound-status" role="status"></span>
-  <span id="ride-status" role="status"></span>
-</div>
-<div class="reconstruction-toolbar journey-controls" role="group" aria-label="Roof-height flying tour">
-  <button type="button" id="flight-toggle" aria-pressed="false" disabled>Historic Tour</button>
-  <span id="flight-status" role="status"></span>
-</div>
-<div id="ar-controls" class="reconstruction-toolbar journey-controls" role="group" aria-label="Augmented reality" hidden>
-  <button type="button" id="ar-start">Camera AR view</button>
-  <span id="ar-start-status" role="status" aria-live="polite">On supported mobile browsers, AR uses the camera, location and compass. Alignment is approximate.</span>
-</div>
-<div class="reconstruction-stage">
-  <div id="village-scene" tabindex="0" role="region" aria-label="Interactive 3D reconstruction of Ilmer" aria-describedby="scene-help" aria-keyshortcuts="C Escape">
+<div class="reconstruction-stage st-peters-stage">
+  <div id="village-scene" tabindex="0" role="region" aria-label="Interactive 3D reconstruction of Ilmer" aria-describedby="scene-help" aria-keyshortcuts="C F M R T Escape">
     <p id="scene-status" role="status">Loading the village&hellip;</p>
+
+    <div class="st-peters-top-controls" role="toolbar" aria-label="Scene controls">
+      <div id="ar-controls" class="st-peters-control-group" role="group" aria-label="Augmented reality" hidden>
+        <button type="button" class="st-peters-pill" id="ar-start" title="On supported mobile browsers, AR uses the camera, location and compass. Alignment is approximate.">Camera AR</button>
+      </div>
+      <div class="st-peters-control-group" role="group" aria-label="Exploration toggles">
+        <button type="button" class="st-peters-pill" id="btn-fly" aria-pressed="false" title="Toggle free flight (F)">Mode: Orbit</button>
+        <button type="button" class="st-peters-pill" id="map-layer" aria-pressed="false" title="Show the original 1839 tithe map (M)">Original Map</button>
+        <button type="button" class="st-peters-pill st-peters-icon-btn" id="btn-fullscreen" aria-pressed="false" aria-label="Enter fullscreen" title="Enter fullscreen">
+          <svg data-icon="fs-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+            <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+            <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+            <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+          </svg>
+          <svg data-icon="fs-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+            <path d="M4 14h3a2 2 0 0 1 2 2v3" />
+            <path d="M20 10h-3a2 2 0 0 1-2-2V5" />
+            <path d="M9 5v3a2 2 0 0 1-2 2H4" />
+            <path d="M15 19v-3a2 2 0 0 1 2-2h3" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="st-peters-bottom-stack">
+      <div class="village-banners">
+        <div id="fly-hint" class="st-peters-walk-hint" hidden>
+          <span class="st-peters-kbd-only">Fly Mode: <strong>W A S D</strong> to move &middot; <strong>E</strong>/<strong>Q</strong> up/down &middot; Arrows or drag to look &middot; Press <strong>F</strong> for Orbit</span>
+          <span class="st-peters-touch-only">Joystick to fly &middot; Drag to look around</span>
+        </div>
+        <span id="flight-status" role="status" class="st-peters-walk-hint"></span>
+        <span id="ride-status" role="status" class="st-peters-walk-hint"></span>
+        <span id="ride-sound-status" role="status" class="st-peters-walk-hint"></span>
+        <span id="ar-start-status" role="status" class="st-peters-walk-hint" aria-live="polite"></span>
+      </div>
+
+      <nav class="st-peters-preset-bar" id="preset-bar" aria-label="Village viewpoints">
+        <button type="button" class="st-peters-pill" id="flight-toggle" aria-pressed="false" title="Start or pause the roof-height Historic Tour (T)" disabled>Historic Tour</button>
+        <span class="village-journey" role="group" aria-label="Horse and cart journey">
+          <button type="button" class="st-peters-pill" id="ride-pause" aria-pressed="false" title="Pause or resume the cart journey (C)" hidden disabled>Pause cart journey</button>
+        </span>
+        <button type="button" class="st-peters-pill st-peters-presets-toggle" id="btn-presets-toggle" aria-expanded="false" aria-controls="preset-bar">Views: Village view &#9662;</button>
+        <button type="button" class="st-peters-pill" data-view="village" aria-pressed="true">Village view</button>
+        <button type="button" class="st-peters-pill" data-view="church" aria-pressed="false">St Peter's</button>
+        <button type="button" class="st-peters-pill" data-view="barns" aria-pressed="false">Upper Farm barns</button>
+        <button type="button" class="st-peters-pill" data-view="middle" aria-pressed="false">Middle Farm</button>
+        <button type="button" class="st-peters-pill" data-view="lower" aria-pressed="false">Lower Farm</button>
+        <button type="button" class="st-peters-pill" data-view="cottages" aria-pressed="false">Two Cottages &amp; Gardens</button>
+        <button type="button" class="st-peters-pill" data-view="tenements" aria-pressed="false">Three Tenements &amp; Gardens</button>
+        <button type="button" class="st-peters-pill" data-view="vicarage" aria-pressed="false">Old Vicarage</button>
+        <button type="button" class="st-peters-pill" data-view="plan" aria-pressed="false">Overhead plan</button>
+      </nav>
+    </div>
+
+    <st-walk-joystick id="fly-joystick" class="st-peters-joystick" aria-label="Fly joystick: drag to move" hidden></st-walk-joystick>
+
+    <p class="scene-caption">ILMER &middot; 1839 <span>Historical interpretation, not a measured survey</span></p>
+
     <div id="ar-overlay" role="group" aria-label="Augmented reality controls" hidden>
       <p id="ar-live-status" role="status" aria-live="polite"></p>
       <button type="button" id="ar-exit">Exit AR view</button>
     </div>
   </div>
-  <p class="scene-caption">ILMER &middot; 1839 <span>Historical interpretation, not a measured survey</span></p>
 </div>
-<p id="scene-help" class="scene-help">Drag to orbit &middot; Scroll or pinch to zoom &middot; Right-drag or two fingers to pan. Click or tap the horse and cart to ride; choose a view or press Escape to leave. Keyboard: C rides or pauses the cart, arrows orbit, +/&minus; zoom, R resets the view.</p>
+<p id="scene-help" class="scene-help">
+  <span class="st-peters-kbd-only">Drag to orbit &middot; Scroll or pinch to zoom &middot; Right-drag to pan &middot; Click or tap the horse and cart to ride; choose a view or press Escape to leave. Keyboard: <strong>T</strong> starts the Historic Tour, <strong>F</strong> toggles Fly mode (WASD, E/Q up/down, Shift faster), <strong>C</strong> rides or pauses the cart, <strong>M</strong> shows the original map, arrows orbit, <strong>+</strong>/<strong>&minus;</strong> zoom, <strong>R</strong> resets the view.</span>
+  <span class="st-peters-touch-only">Drag to orbit &middot; Pinch to zoom &middot; Drag with two fingers to pan &middot; Click or tap the horse and cart to ride. Pick a place from <strong>Views</strong> or take the <strong>Historic Tour</strong>. To fly freely, tap <strong>Mode: Orbit</strong> to switch to Fly, then use the joystick to fly where you are looking and drag anywhere else to look around.</span>
+</p>
 <noscript><p>The interactive model requires JavaScript. Visit <a href="/history/fields-farming/">Fields &amp; farming</a> for the tithe apportionment.</p></noscript>
 <script type="importmap">
 {
@@ -77,7 +98,9 @@ permalink: /history/ilmer-1839/index.html
     "/assets/js/ilmer-camera.js": "{{ '/assets/js/ilmer-camera.js' | cacheBust }}",
     "/assets/js/ilmer-flight.js": "{{ '/assets/js/ilmer-flight.js' | cacheBust }}",
     "/assets/js/ilmer-ride-audio.js": "{{ '/assets/js/ilmer-ride-audio.js' | cacheBust }}",
-    "/assets/js/ilmer-livestock.js": "{{ '/assets/js/ilmer-livestock.js' | cacheBust }}"
+    "/assets/js/ilmer-livestock.js": "{{ '/assets/js/ilmer-livestock.js' | cacheBust }}",
+    "/assets/js/scene-fullscreen.js": "{{ '/assets/js/scene-fullscreen.js' | cacheBust }}",
+    "/assets/js/st-peters-3d/walk-joystick.js": "{{ '/assets/js/st-peters-3d/walk-joystick.js' | cacheBust }}"
   }
 }
 </script>

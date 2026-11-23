@@ -28,6 +28,8 @@ import { cameraFloor, cameraGroundClearance } from './ilmer-camera.js';
 import { flightStops, flightProgress } from './ilmer-flight.js';
 import { createRideAudio } from './ilmer-ride-audio.js';
 import { livestockFields, createLivestock, advanceLivestock, withinField } from './ilmer-livestock.js';
+import { bindFullscreenToggle } from './scene-fullscreen.js';
+import './st-peters-3d/walk-joystick.js';
 
 const host = document.getElementById('village-scene');
 const status = document.getElementById('scene-status');
@@ -66,8 +68,8 @@ async function start() {
   let navigationMode = 'orbit';
   const movementKeys = new Set();
   const flyKeys = new Set(['w', 'a', 's', 'd', 'q', 'e', 'shift', 'arrowleft', 'arrowright', 'arrowup', 'arrowdown']);
-  const sceneHelp = document.getElementById('scene-help');
-  const orbitHelp = sceneHelp.textContent;
+  // Analog fly input from the on-screen joystick (x: right, y: forward, each -1..1)
+  const flyStick = { x: 0, y: 0 };
   controls.enableDamping = false;
   controls.minDistance = 22;
   controls.maxDistance = 800;
@@ -1750,11 +1752,12 @@ async function start() {
     driver.visible = false;
     labels.visible = false;
     mapPlane.visible = false;
-    document.getElementById('map-layer').checked = false;
+    syncMapButton();
     mappedGround.visible = true;
     selected = null;
     host.setAttribute('aria-label', 'Riding through Ilmer on a horse and cart');
     for (const button of document.querySelectorAll('[data-view]')) button.setAttribute('aria-pressed', 'false');
+    setPresetsExpanded(false);
     rideButton.hidden = false;
     rideButton.textContent = 'Pause cart journey';
     rideButton.setAttribute('aria-pressed', 'true');
@@ -1911,7 +1914,8 @@ async function start() {
     flightFrame = requestAnimationFrame(advanceFlight);
   }
   flightButton.disabled = false;
-  flightButton.addEventListener('click', () => {
+  flightButton.addEventListener('click', toggleHistoricTour);
+  function toggleHistoricTour() {
     stopViewFlight();
     if (flying) {
       pauseFlight();
@@ -1925,6 +1929,7 @@ async function start() {
       flightElapsed = 0;
       visitedFlightStops.clear();
     }
+    applyNavigationMode('orbit');
     flying = true;
     flightState = 'flying';
     flightTime = null;
@@ -1933,11 +1938,13 @@ async function start() {
     selected = null;
     host.setAttribute('aria-label', 'Flying around every mapped property in Ilmer');
     for (const button of document.querySelectorAll('[data-view]')) button.setAttribute('aria-pressed', 'false');
+    setPresetsExpanded(false);
     flightButton.textContent = 'Pause Historic Tour';
     flightButton.setAttribute('aria-pressed', 'true');
     advanceFlight(performance.now());
-  });
+  }
   function setView(name, animate = true) {
+    applyNavigationMode('orbit');
     movementKeys.clear();
     stopViewFlight();
     stopFlight();
@@ -1971,6 +1978,7 @@ async function start() {
     for (const button of document.querySelectorAll('[data-view]')) {
       button.setAttribute('aria-pressed', String(button.dataset.view === name));
     }
+    setPresetsExpanded(false);
     if (view.place) select(selectable.find((group) => group.userData.place === view.place));
     else {
       selected = null;
@@ -2009,15 +2017,21 @@ async function start() {
     controls.target.copy(camera.position).addScaledVector(camera.getWorldDirection(direction), 50);
   }
   function advanceFreeFlight(seconds) {
-    if (!freeFlightAvailable() || !movementKeys.size) return;
+    const stickPush = Math.hypot(flyStick.x, flyStick.y);
+    const stickActive = stickPush > 0.08;
+    if (!freeFlightAvailable() || (!movementKeys.size && !stickActive)) return;
     const value = (positive, negative) => Number(movementKeys.has(positive)) - Number(movementKeys.has(negative));
     rotateFreeCamera(value('arrowleft', 'arrowright') * seconds, value('arrowup', 'arrowdown') * seconds);
     const direction = camera.getWorldDirection(new THREE.Vector3());
     const right = new THREE.Vector3().crossVectors(direction, camera.up).normalize();
-    const movement = direction.multiplyScalar(value('w', 's')).addScaledVector(right, value('d', 'a'));
+    const forwardInput = value('w', 's') + (stickActive ? flyStick.y : 0);
+    const sideInput = value('d', 'a') + (stickActive ? flyStick.x : 0);
+    const movement = direction.multiplyScalar(forwardInput).addScaledVector(right, sideInput);
     movement.y += value('e', 'q');
     if (movement.lengthSq()) {
-      movement.normalize().multiplyScalar(seconds * (movementKeys.has('shift') ? 50 : 22));
+      // Keys fly at full pace; the joystick scales with how far it is pushed, quickening near the rim
+      const throttle = movementKeys.size ? 1 : Math.min(1, stickPush) * (stickPush > 0.9 ? 1.6 : 1);
+      movement.normalize().multiplyScalar(seconds * (movementKeys.has('shift') ? 50 : 22) * throttle);
       camera.position.add(movement);
       camera.position.x = Math.max(-terrain.width / 2 + 0.5, Math.min(terrain.width / 2 - 0.5, camera.position.x));
       camera.position.z = Math.max(-terrain.depth / 2 + 0.5, Math.min(terrain.depth / 2 - 0.5, camera.position.z));
@@ -2034,34 +2048,37 @@ async function start() {
       controls.target.copy(camera.position).addScaledVector(camera.getWorldDirection(new THREE.Vector3()), 50);
     }
   }
-  document.getElementById('navigation-mode').addEventListener('change', (event) => {
-    movementKeys.clear();
+  // Updates the navigation mode and its overlay controls, like the church model's Orbit/Walk toggle
+  function applyNavigationMode(mode) {
+    if (mode !== navigationMode) movementKeys.clear();
+    navigationMode = mode;
+    const isFly = mode === 'fly';
+    controls.enabled = !isFly;
+    const modeButton = document.getElementById('btn-fly');
+    modeButton.setAttribute('aria-pressed', String(isFly));
+    modeButton.textContent = isFly ? 'Mode: Fly' : 'Mode: Orbit';
+    document.getElementById('fly-hint').hidden = !isFly;
+    // The thumb stick only shows on touch screens (see CSS); it flies where the camera looks, so tilting climbs
+    document.getElementById('fly-joystick').hidden = !isFly;
+    if (!isFly) flyStick.x = flyStick.y = 0;
+  }
+  function setNavigationMode(mode) {
     stopViewFlight();
     stopFlight();
     stopRide();
     rideMode = 'village';
-    navigationMode = event.target.value;
-    controls.enabled = navigationMode === 'orbit';
-    document.getElementById('free-flight-controls').hidden = navigationMode !== 'fly';
-    sceneHelp.textContent =
-      navigationMode === 'fly'
-        ? 'Drag to look. Fly with W/A/S/D, Q down, E up, Shift faster; arrows turn. On touch, hold a direction button. C rides the cart; choose a view or press Escape to leave the ride or tour.'
-        : orbitHelp;
+    applyNavigationMode(mode);
     labels.visible = !mapPlane.visible && !views[activeView].place;
     startVillageCart();
-    host.focus({ preventScroll: true });
     render();
-  });
-  for (const button of document.querySelectorAll('[data-fly-key]')) {
-    button.addEventListener('pointerdown', (event) => {
-      if (!freeFlightAvailable()) return;
-      event.preventDefault();
-      button.setPointerCapture(event.pointerId);
-      movementKeys.add(button.dataset.flyKey);
-    });
-    for (const type of ['pointerup', 'pointercancel', 'lostpointercapture'])
-      button.addEventListener(type, () => movementKeys.delete(button.dataset.flyKey));
   }
+  document.getElementById('btn-fly').addEventListener('click', () => {
+    setNavigationMode(navigationMode === 'fly' ? 'orbit' : 'fly');
+  });
+  document.getElementById('fly-joystick').addEventListener('joystickmove', (event) => {
+    flyStick.x = event.detail.x;
+    flyStick.y = event.detail.y;
+  });
   window.addEventListener('keyup', (event) => movementKeys.delete(event.key.toLowerCase()));
   window.addEventListener('blur', () => movementKeys.clear());
   host.addEventListener('blur', () => movementKeys.clear());
@@ -2083,13 +2100,64 @@ async function start() {
   for (const button of document.querySelectorAll('[data-view]')) {
     button.addEventListener('click', () => setView(button.dataset.view));
   }
-  document.getElementById('map-layer').addEventListener('change', (event) => {
+
+  // On narrow screens the views collapse behind a "Views: …" toggle, as on the church model
+  const presetBar = document.getElementById('preset-bar');
+  const presetsToggleButton = document.getElementById('btn-presets-toggle');
+  function setPresetsExpanded(expanded) {
+    presetBar.classList.toggle('is-expanded', expanded);
+    presetsToggleButton.setAttribute('aria-expanded', String(expanded));
+    const active = presetBar.querySelector('[data-view][aria-pressed="true"]');
+    presetsToggleButton.textContent = `Views: ${active ? active.textContent.trim() : 'Select'} ${expanded ? '▴' : '▾'}`;
+  }
+  presetsToggleButton.addEventListener('click', () => setPresetsExpanded(!presetBar.classList.contains('is-expanded')));
+
+  const mapButton = document.getElementById('map-layer');
+  function syncMapButton() {
+    mapButton.setAttribute('aria-pressed', String(mapPlane.visible));
+  }
+  function toggleMapLayer() {
+    const showMap = !mapPlane.visible;
     if (rideMode === 'rider' || flightState !== 'idle') setView(activeView);
-    mapPlane.visible = event.target.checked;
+    mapPlane.visible = showMap;
     mappedGround.visible = !mapPlane.visible;
     waterFeatures.visible = !mapPlane.visible;
     labels.visible = !mapPlane.visible && !views[activeView].place;
+    syncMapButton();
     render();
+  }
+  mapButton.addEventListener('click', toggleMapLayer);
+
+  const fullscreen = bindFullscreenToggle({
+    button: document.getElementById('btn-fullscreen'),
+    stage: host.closest('.reconstruction-stage') || host
+  });
+
+  // Keyboard shortcuts work anywhere on the page, as on the church model
+  function isEditableTarget(target) {
+    return (
+      target instanceof HTMLElement &&
+      (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable)
+    );
+  }
+  window.addEventListener('keydown', (event) => {
+    if (isEditableTarget(event.target) || event.metaKey || event.ctrlKey || event.altKey) return;
+    if (arSession || host.dataset.state === 'error') return;
+    const key = event.key.toLowerCase();
+    if (freeFlightAvailable() && flyKeys.has(key)) {
+      movementKeys.add(key);
+      event.preventDefault();
+      return;
+    }
+    if (event.repeat) return;
+    if (key === 'c') startCartRide();
+    else if (key === 't') toggleHistoricTour();
+    else if (key === 'f') setNavigationMode(navigationMode === 'fly' ? 'orbit' : 'fly');
+    else if (key === 'm') toggleMapLayer();
+    else if (key === 'r') setView('village');
+    else if (key === 'escape' && fullscreen.isPseudoFullscreen()) fullscreen.exit();
+    else return;
+    event.preventDefault();
   });
   const arStartButton = document.getElementById('ar-start');
   const arStartStatus = document.getElementById('ar-start-status');
@@ -2460,17 +2528,8 @@ async function start() {
   });
   host.addEventListener('keydown', (event) => {
     if (event.target !== host && event.target !== renderer.domElement) return;
-    if (event.key.toLowerCase() === 'c' && !event.repeat) {
-      startCartRide();
-      event.preventDefault();
-      return;
-    }
-    if (freeFlightAvailable() && flyKeys.has(event.key.toLowerCase())) {
-      movementKeys.add(event.key.toLowerCase());
-      event.preventDefault();
-      return;
-    }
-    if ((viewTransition || flying || (riding && rideMode === 'rider')) && event.key.toLowerCase() !== 'r') return;
+    // Letter shortcuts and fly keys are handled by the page-wide shortcut listener
+    if (freeFlightAvailable() || viewTransition || flying || (riding && rideMode === 'rider')) return;
     const offset = camera.position.clone().sub(controls.target);
     const sphere = new THREE.Spherical().setFromVector3(offset);
     if (event.key === 'ArrowLeft') sphere.theta -= 0.12;
@@ -2480,10 +2539,7 @@ async function start() {
     else if (event.key === '+' || event.key === '=')
       sphere.radius = Math.max(controls.minDistance, sphere.radius * 0.88);
     else if (event.key === '-') sphere.radius = Math.min(controls.maxDistance, sphere.radius * 1.12);
-    else if (event.key.toLowerCase() === 'r') {
-      setView('village');
-      return;
-    } else return;
+    else return;
     event.preventDefault();
     camera.position.copy(controls.target).add(new THREE.Vector3().setFromSpherical(sphere));
     controls.update();

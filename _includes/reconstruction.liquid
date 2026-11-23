@@ -19,5 +19,7 @@
     , title: title %}
 
   {{ content }}
+
+  {% render "reconstruction-crosslink", pageUrl: page.url %}
 </main>
 {% render "footer" %}

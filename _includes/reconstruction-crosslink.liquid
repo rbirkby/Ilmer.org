@@ -1,0 +1,22 @@
+{%- comment -%}
+  "If you enjoyed this…" note at the foot of each 3D reconstruction, linking to the other reconstructions.
+  Add a new 3D page to this list and every reconstruction will point to it.
+{%- endcomment -%}
+{%- assign reconstructions = 'church|village' | split: '|' -%}
+{%- for key in reconstructions -%}
+  {%- if key == 'church' -%}
+    {%- assign url = '/history/st-peters/3d-model/' -%}
+    {%- assign name = "St Peter's Church" -%}
+    {%- assign blurb = "Walk inside Ilmer's 12th-century parish church, climb to the bells, take the guided Church Tour and switch between today and 1900." -%}
+  {%- else -%}
+    {%- assign url = '/history/ilmer-1839/' -%}
+    {%- assign name = 'Ilmer in 1839' -%}
+    {%- assign blurb = "Fly over the whole village as the 1839 tithe map recorded it, ride the horse and cart through the lanes and take the Historic Tour of its farms and cottages." -%}
+  {%- endif -%}
+  {%- unless url == pageUrl -%}
+    <aside class="reconstruction-crosslink" aria-label="Another 3D reconstruction">
+      <p class="reconstruction-eyebrow">Another 3D reconstruction</p>
+      <p>If you enjoyed this, why not experience the 3D reconstruction of <a href="{{ url }}">{{ name }}</a>? {{ blurb }}</p>
+    </aside>
+  {%- endunless -%}
+{%- endfor -%}
