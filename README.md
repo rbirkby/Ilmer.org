@@ -183,8 +183,11 @@ no inferred use. Hedge species and height remain illustrative.
 Three.js and its licence are copied from the pinned npm dependency at build time.
 
 `assets/ilmer-terrain.json` is a generated elevation grid, sampled from the
-Environment Agency's 1 m bare-earth DTM. It records the source, request,
-checksum, licence and approximate historical/modern registration landmarks.
+Environment Agency's 1 m bare-earth DTM at about 2 m spacing. The tithe map is
+georeferenced through the Ordnance Survey map (St Peter's Church and Lower
+Farm's benchmarked farmhouse), and the JSON records the source, request,
+checksum, licence, registration, the railway embankment's traced crest and a
+comparison with the OS benchmarks and spot heights.
 It is not an elevation estimate derived from the supplied hillshade.
 
 Contains Environment Agency information, copyright and/or database right 2022,
@@ -194,8 +197,8 @@ Modern registration landmarks use [OpenStreetMap contributors' data](https://www
 To regenerate it, download `image/tiff` from the source WCS recorded in the
 JSON with `request=GetCoverage`, `service=WCS`, `version=2.0.1`,
 the recorded `coverageId`, `subset=E(475500,478500)`,
-`subset=N(204500,207000)` and
-`outputCRS=http://www.opengis.net/def/crs/EPSG/0/4326`, then run:
+`subset=N(204500,207000)`, keeping its native British National Grid
+(EPSG:27700) so nothing is resampled, then run:
 
 ```sh
 node scripts/build-ilmer-terrain.ts /path/to/downloaded-dtm.tif

@@ -49,31 +49,43 @@ import {
 } from '../assets/js/ilmer-flight.js';
 import { livestockFields, withinField } from '../assets/js/ilmer-livestock.js';
 
-test('historical terrain removes only the eastern modern embankment and keeps the measured source intact', () => {
+test('historical terrain removes only the railway embankment and keeps the measured source intact', () => {
   const measured = JSON.parse(readFileSync('assets/ilmer-terrain.json', 'utf8'));
   const original = measured.elevations.slice();
   const historical = historicalTerrain(measured);
   assert.deepEqual(measured.elevations, original);
   assert.ok(historical.historicalCorrection.maxRemoval > 5);
+  const { start, end, halfWidth } = measured.embankment;
+  const length = Math.hypot(end[0] - start[0], end[1] - start[1]);
+  const along = [(end[0] - start[0]) / length, (end[1] - start[1]) / length];
+  const normal = [-along[1], along[0]];
+  const height = (x: number, z: number) =>
+    terrainHeight(
+      measured,
+      Math.max(-measured.width / 2, Math.min(measured.width / 2, x)),
+      Math.max(-measured.depth / 2, Math.min(measured.depth / 2, z))
+    ) + measured.baseElevation;
   for (let row = 0; row < measured.rows; row++) {
-    const along = row / (measured.rows - 1);
-    const left = 1880 - 80 * along;
-    const right = 1990 - 50 * along;
+    const z = (row / (measured.rows - 1) - 0.5) * measured.depth;
     for (let col = 0; col < measured.columns; col++) {
-      const x = (col * 2000) / (measured.columns - 1);
+      const x = (col / (measured.columns - 1) - 0.5) * measured.width;
       const index = row * measured.columns + col;
-      if (x <= left || x >= right) assert.equal(historical.elevations[index], original[index]);
-      else if (x > left + (right - left) * 0.12 && x < right - (right - left) * 0.12) {
-        const [ax, az] = mapPoint(left, along * 882);
-        const [bx, bz] = mapPoint(right, along * 882);
-        const a = terrainHeight(measured, ax, az) + measured.baseElevation;
-        const b = terrainHeight(measured, bx, bz) + measured.baseElevation;
+      const t = (x - start[0]) * along[0] + (z - start[1]) * along[1];
+      const offset = (x - start[0]) * normal[0] + (z - start[1]) * normal[1];
+      if (Math.abs(offset) >= halfWidth) assert.equal(historical.elevations[index], original[index]);
+      else if (Math.abs(offset) < halfWidth * 0.75) {
+        const cx = start[0] + along[0] * t;
+        const cz = start[1] + along[1] * t;
+        const a = height(cx - normal[0] * halfWidth, cz - normal[1] * halfWidth);
+        const b = height(cx + normal[0] * halfWidth, cz + normal[1] * halfWidth);
         assert.ok(historical.elevations[index] >= Math.min(a, b) - 1e-8);
         assert.ok(historical.elevations[index] <= Math.max(a, b) + 1e-8);
       }
     }
   }
-  const [x, z] = mapPoint(1880, 683);
+  // Crest of the embankment where it leaves the north-east of the crop
+  const z = 120;
+  const x = start[0] + ((end[0] - start[0]) * (z - start[1])) / (end[1] - start[1]);
   assert.ok(terrainHeight(measured, x, z) - terrainHeight(historical, x, z) > 5);
   assert.equal(terrainHeight(historical, ...mapPoint(957, 507)), terrainHeight(measured, ...mapPoint(957, 507)));
   assert.equal(terrainHeight(historical, ...mapPoint(1468, 644)), terrainHeight(measured, ...mapPoint(1468, 644)));
@@ -602,12 +614,16 @@ test('authentic measured terrain places the church higher than adjoining farmyar
   assert.equal(data.source.sourceResolutionMetres, 1);
   assert.match(data.source.name, /Environment Agency.*DTM/);
   assert.equal(data.source.sha256.length, 64);
-  assert.match(data.source.registration, /Not a georectified/);
-  assert.equal(data.elevations.length, 201 * 89);
-  assert.ok(data.maxElevation - data.minElevation > 8);
-  assert.ok(data.maxElevation - data.minElevation < 10);
+  assert.match(data.source.registration, /Ordnance Survey map/);
+  assert.equal(data.elevations.length, 321 * 142);
+  assert.ok(data.source.sampleSpacingMetres < 2.5);
+  assert.ok(data.maxElevation - data.minElevation > 10);
+  assert.ok(data.maxElevation - data.minElevation < 12);
   const church = terrainHeight(data, ...mapPoint(957, 507)) + data.baseElevation;
-  assert.ok(Math.abs(church - 84.995) < 0.1);
+  assert.ok(Math.abs(church - 84.9) < 0.1);
+  // The Ordnance Survey's own benchmarks and spot heights agree with the registered LIDAR
+  assert.equal(data.source.osHeights.length, 4);
+  for (const height of data.source.osHeights) assert.ok(Math.abs(height.differenceMetres) < 0.75, height.name);
   for (const [x, y] of [
     [1150, 620],
     [1542, 636],

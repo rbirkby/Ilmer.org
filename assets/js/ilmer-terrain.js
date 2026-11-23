@@ -37,23 +37,43 @@ export function terrainHeight(data, x, z) {
   return elevation - data.baseElevation;
 }
 
+/** Measured height above datum, with the position held inside the surveyed crop. */
+function clampedElevation(data, x, z) {
+  const cx = Math.max(-data.width / 2, Math.min(data.width / 2, x));
+  const cz = Math.max(-data.depth / 2, Math.min(data.depth / 2, z));
+  return terrainHeight(data, cx, cz) + data.baseElevation;
+}
+
+/**
+ * Remove the railway embankment (1862) along the crest line traced in the LIDAR. Within its half-width the ground
+ * blends to a straight grade between the measured heights at its two feet; outside it the LIDAR is untouched. The
+ * pre-earthwork grade is inferred, not evidence of exact 1839 elevations.
+ */
 export function historicalTerrain(measured) {
   validateTerrain(measured);
+  const embankment = measured.embankment;
+  if (!embankment || !(embankment.halfWidth > 0)) throw new Error('Measured terrain has no embankment line.');
+  const [sx, sz] = embankment.start;
+  const [ex, ez] = embankment.end;
+  const length = Math.hypot(ex - sx, ez - sz);
+  const along = [(ex - sx) / length, (ez - sz) / length];
+  const normal = [-along[1], along[0]];
+  const half = embankment.halfWidth;
   const elevations = measured.elevations.slice();
   let modifiedSamples = 0;
   let maxRemoval = 0;
-  // The modern embankment crosses the eastern crop. Its pre-earthwork grade is
-  // inferred between the measured feet, not evidence of exact 1839 elevations.
   for (let row = 0; row < measured.rows; row++) {
-    const along = row / (measured.rows - 1);
-    const left = (1880 - 80 * along) / 2000;
-    const right = (1990 - 50 * along) / 2000;
-    const z = (along - 0.5) * measured.depth;
-    const a = terrainHeight(measured, (left - 0.5) * measured.width, z) + measured.baseElevation;
-    const b = terrainHeight(measured, (right - 0.5) * measured.width, z) + measured.baseElevation;
+    const z = (row / (measured.rows - 1) - 0.5) * measured.depth;
     for (let col = 0; col < measured.columns; col++) {
-      const across = (col / (measured.columns - 1) - left) / (right - left);
-      if (across <= 0 || across >= 1) continue;
+      const x = (col / (measured.columns - 1) - 0.5) * measured.width;
+      const t = (x - sx) * along[0] + (z - sz) * along[1];
+      const offset = (x - sx) * normal[0] + (z - sz) * normal[1];
+      if (t < 0 || t > length || Math.abs(offset) >= half) continue;
+      const cx = sx + along[0] * t;
+      const cz = sz + along[1] * t;
+      const a = clampedElevation(measured, cx - normal[0] * half, cz - normal[1] * half);
+      const b = clampedElevation(measured, cx + normal[0] * half, cz + normal[1] * half);
+      const across = (offset + half) / (2 * half);
       const edge = Math.min(1, across / 0.12, (1 - across) / 0.12);
       const blend = edge * edge * (3 - 2 * edge);
       const index = row * measured.columns + col;
@@ -69,7 +89,7 @@ export function historicalTerrain(measured) {
     minElevation: Math.min(...elevations),
     maxElevation: Math.max(...elevations),
     historicalCorrection: {
-      description: 'Modern eastern embankment removed; grade inferred between measured feet with blended margins',
+      description: `${embankment.name} removed along its traced crest; grade inferred between its measured feet`,
       modifiedSamples,
       maxRemoval
     }
