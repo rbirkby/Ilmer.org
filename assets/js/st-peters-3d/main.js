@@ -10,6 +10,7 @@ import { BELL_NOMINAL_HZ, createBellRinger } from '/assets/js/st-peters-3d/belfr
 import { CHURCH_TOUR_WAYPOINTS, DIM } from '/assets/js/st-peters-3d/dimensions.js';
 import { CAMERA_PRESETS, createCameraController } from '/assets/js/st-peters-3d/controls.js';
 import { findAnimatedObjects, mergeStaticMeshes } from '/assets/js/st-peters-3d/static-merge.js';
+import { createFader } from '/assets/js/st-peters-3d/fade.js';
 import '/assets/js/st-peters-3d/stats-overlay.js';
 
 const stage = document.getElementById('church-scene');
@@ -74,7 +75,13 @@ if (stage) {
   const { wallsGroup, roofGroup, doorPivots } = buildArchitecture(mats);
   const { interiorGroup, ceilingGroup, chandelierLights, oilLights, causticMesh, candleEffect, organAnimator } =
     buildInterior(mats);
-  const { group: churchyardGroup, christmasEffect, memorialGroups, gravestoneEra } = buildChurchyard(mats);
+  const {
+    group: churchyardGroup,
+    christmasEffect,
+    memorialGroups,
+    gravestoneEra,
+    kissingGates
+  } = buildChurchyard(mats);
   const atmosphere = buildAtmosphere();
 
   scene.add(wallsGroup);
@@ -226,10 +233,26 @@ if (stage) {
     }
   }
 
-  function setEra(era) {
+  // Features fade in & out over half a second when the era or the cutaway changes (fade.js)
+  const fader = createFader();
+
+  function setEra(era, instant = false) {
     state.era = era;
     shadowsDirty = true;
-    for (const o of eraObjects) o.visible = o.userData.era === era;
+    for (const o of eraObjects) fader.setVisible(o, o.userData.era === era, instant);
+    // Glazing, the half-hip cut and the belfry boards can't fade, so they change half way, as the features cross over
+    fader.atMidpoint('era', () => applyEraMaterials(era), instant);
+    bellRinger.setMode(era === '1900' ? 'chime' : 'swing');
+    gravestoneEra.setEra(era); // C14 rights itself for 1900 and topples again for today
+    for (const part of bellRopeParts) part.position.y = part.userData.bellRope.baseY;
+    const btn = document.getElementById('btn-era');
+    if (btn) {
+      btn.setAttribute('aria-pressed', String(era === '1900'));
+      btn.textContent = era === '1900' ? 'Year: 1900' : 'Year: Today';
+    }
+  }
+
+  function applyEraMaterials(era) {
     for (const g of stainedGlass) {
       g.material = era === '1900' ? createPlainGlazingMaterial(g.userData.stainedMat) : g.userData.stainedMat;
     }
@@ -252,22 +275,12 @@ if (stage) {
       }
       o.material = era === '1900' ? o.userData.wideMat : o.userData.todayMat;
     }
-    bellRinger.setMode(era === '1900' ? 'chime' : 'swing');
-    gravestoneEra.setEra(era); // C14 rights itself for 1900 and topples again for today
-    for (const part of bellRopeParts) part.position.y = part.userData.bellRope.baseY;
-    const btn = document.getElementById('btn-era');
-    if (btn) {
-      btn.setAttribute('aria-pressed', String(era === '1900'));
-      btn.textContent = era === '1900' ? 'Year: 1900' : 'Year: Today';
-    }
   }
 
   function setCutaway(enabled) {
     state.cutaway = enabled;
     shadowsDirty = true;
-    roofGroup.visible = !enabled;
-    ceilingGroup.visible = !enabled;
-    atmosphere.group.visible = !enabled;
+    for (const g of [roofGroup, ceilingGroup, atmosphere.group]) fader.setVisible(g, !enabled);
     const btn = document.getElementById('btn-cutaway');
     if (btn) btn.setAttribute('aria-pressed', String(enabled));
   }
@@ -842,7 +855,7 @@ if (stage) {
     });
   }
 
-  setEra('today');
+  setEra('today', true);
   applyLighting('autumn');
   if (statusEl) statusEl.hidden = true;
   stage.dataset.state = 'ready';
@@ -878,10 +891,12 @@ if (stage) {
     controller.update(dt);
     autoWalkIndoors();
     if (gravestoneEra.update(dt)) shadowsDirty = true;
+    if (kissingGates.update(dt, camera.position)) shadowsDirty = true; // leaves swing for the walker
     churchAudio.updateSpatial(camera.position, state.doorsOpen);
     // Console follows the organ voluntary: tambour open and keys/pedals moving only while it plays
     organAnimator.update(dt, churchAudio.isRunning(), churchAudio.getSoundingNotes());
     updateMiniPlan();
+    if (fader.update(dt)) shadowsDirty = true;
     if (shadowMoversMoved() || shadowsDirty) {
       renderer.shadowMap.needsUpdate = true;
       shadowsDirty = false;

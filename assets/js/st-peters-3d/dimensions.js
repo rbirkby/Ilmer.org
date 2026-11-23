@@ -2,7 +2,9 @@
 // Coordinate system: 1 unit = 1 meter
 // +X = East (Altar / Chancel), -X = West (Tower / Spire)
 // +Z = South (Sower window / 3 buttresses), -Z = North (North Porch)
-// +Y = Up (0 = exterior ground level)
+// +Y = Up (0 = exterior ground at the church = measured terrain at CHURCH_PLAN centre)
+
+import churchTerrain from './church-terrain-data.js';
 
 export const DIM = {
   // Floor elevations
@@ -179,24 +181,59 @@ export function isChristmasSeason(date = new Date(), search = '') {
   return date.getMonth() === 11;
 }
 
-// Rolling exterior terrain elevation (flat y = 0 across the mapped graveyard bounds)
-export function getGroundHeight(x, z) {
-  const dx = Math.max(0, -16.5 - x, x - 15.5);
-  const dz = Math.max(0, -15.5 - z, z - 25.5);
-  const distChurchyard = Math.max(dx, dz);
-  if (distChurchyard <= 0) return DIM.groundY;
-  const blend = Math.min(1, distChurchyard / 10);
-  return (Math.sin(x * 0.08) * Math.cos(z * 0.07) * 0.75 + Math.sin(x * 0.19 + z * 0.13) * 0.25) * blend;
+/** Same triangle interpolation as ilmer-terrain.js, clamped to the church-local crop. */
+function sampleChurchTerrain(x, z) {
+  const data = churchTerrain;
+  const col = (x / data.width + 0.5) * (data.columns - 1);
+  const row = (z / data.depth + 0.5) * (data.rows - 1);
+  const u = Math.max(0, Math.min(data.columns - 1, col));
+  const v = Math.max(0, Math.min(data.rows - 1, row));
+  const ix = Math.min(Math.floor(u), data.columns - 2);
+  const iy = Math.min(Math.floor(v), data.rows - 2);
+  const dx = u - ix;
+  const dy = v - iy;
+  const sample = (i, j) => data.elevations[j * data.columns + i];
+  return dx + dy <= 1
+    ? sample(ix, iy) * (1 - dx - dy) + sample(ix + 1, iy) * dx + sample(ix, iy + 1) * dy
+    : sample(ix, iy + 1) * (1 - dx) + sample(ix + 1, iy) * (1 - dy) + sample(ix + 1, iy + 1) * (dx + dy - 1);
 }
 
-// Minimum walkable/camera floor surface at (x, z): interior church floors or exterior ground (never < 0)
+/**
+ * Soft pad under the church footprint: masonry and floors stay on y = 0 while the
+ * surrounding churchyard and fields follow the measured 1839/LIDAR terrain.
+ */
+function buildingPadWeight(x, z) {
+  const N = DIM.nave;
+  const C = DIM.chancel;
+  const P = DIM.porch;
+  const pad = 0.85;
+  const minX = N.xWestExt - pad;
+  const maxX = C.xEastExt + pad;
+  const minZ = Math.min(P.zNorthExt, N.zNorthExt) - pad;
+  const maxZ = N.zSouthExt + pad;
+  const dx = Math.max(0, minX - x, x - maxX);
+  const dz = Math.max(0, minZ - z, z - maxZ);
+  const dist = Math.hypot(dx, dz);
+  if (dist <= 0) return 1;
+  const blend = Math.min(1, dist / 2.5);
+  return 1 - blend * blend * (3 - 2 * blend);
+}
+
+// Measured exterior terrain elevation (relative to the church). Flat under the building pad.
+export function getGroundHeight(x, z) {
+  const measured = sampleChurchTerrain(x, z);
+  const pad = buildingPadWeight(x, z);
+  return measured * (1 - pad);
+}
+
+// Minimum walkable/camera floor surface at (x, z): interior church floors or exterior ground
 export function getSurfaceY(x, z) {
   if (x > 7.38 && x < 9.0 && Math.abs(z) < 2.0) return DIM.sanctuaryStep2Y;
   if (x > 6.23 && x < 9.0 && Math.abs(z) < 2.0) return DIM.sanctuaryStep1Y;
   if (x > 3.2 && x < 9.0 && Math.abs(z) < 2.0) return DIM.chancelFloorY;
   if (x > -7.0 && x < 3.25 && Math.abs(z) < 2.65) return DIM.naveFloorY;
   if (Math.abs(x - DIM.porch.xCenter) < 1.1 && z > -5.5 && z < -2.6) return DIM.porchFloorY;
-  return Math.max(DIM.groundY, getGroundHeight(x, z));
+  return getGroundHeight(x, z);
 }
 
 // Spatial church acoustics: louder & brighter inside the church, quietly stone-muffled outside

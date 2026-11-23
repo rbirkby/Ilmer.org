@@ -1169,51 +1169,515 @@ export function createSkyDome() {
   return { mesh, material: skyMat };
 }
 
+// North churchyard frontage from the 1839 tithe-map outline (ilmer-1839-data `churchyard`), converted into
+// St Peter's local metres (+X east, +Z south) about CHURCH_PLAN.centre, then shifted 4 m toward the church
+// (original 1 m offset plus a further 3 m).
+export const NORTH_CHURCHYARD_RAILINGS = [
+  // West end: the last ~5 panels re-routed so the kissing gate stands 5 m in from the old end of the path
+  // (towards the church door), coming straight down to the path; they meet the rest at an angle
+  [-17.589, -6.181],
+  [-17.6, -9.0],
+  [-16.58, -16.57],
+  [-14.689, -18.64],
+  [-9.702, -20.382],
+  [-3.246, -20.976],
+  [1.831, -20.697],
+  [8.745, -17.866],
+  [9.709, -16.694],
+  [11.099, -16.199],
+  // East end brought a further 3 m in along the path, easing round to come straight down to the gate
+  [16.4, -11.2],
+  [18.2, -8.8],
+  [18.556, -6.15]
+];
+
+// Kept as an alias so older references keep working during the rename
+export const NORTH_CHURCHYARD_FENCE = NORTH_CHURCHYARD_RAILINGS;
+
+const RAILING_HEIGHT = 1.28;
+const RAILING_PICKET_SPACING = 0.135;
+const PATH_Z = -6.22;
+const PATH_WIDTH = 1.48;
+/** Half-width of the kissing gate's U (the leaf, hinged at the middle of its mouth, is about this long). */
+const KISSING_GATE_RADIUS = 0.8;
+/** Depth of the U from its mouth: deeper than the leaf, so a walker can stand inside while it swings past. */
+const KISSING_GATE_DEPTH = 1.65;
+/** The railing carries on south from the western gate's U to just past the next tree (at z 11.5). */
+const WEST_RAILING_SOUTH_END = [-17.6, 13.2];
+
+function polylineLength(points) {
+  let len = 0;
+  for (let i = 1; i < points.length; i++) {
+    len += Math.hypot(points[i][0] - points[i - 1][0], points[i][1] - points[i - 1][1]);
+  }
+  return len;
+}
+
+function pointAlongPolyline(points, distance) {
+  let remaining = Math.max(0, distance);
+  for (let i = 1; i < points.length; i++) {
+    const x0 = points[i - 1][0];
+    const z0 = points[i - 1][1];
+    const x1 = points[i][0];
+    const z1 = points[i][1];
+    const seg = Math.hypot(x1 - x0, z1 - z0);
+    if (seg < 1e-6) continue;
+    if (remaining <= seg) {
+      const dx = (x1 - x0) / seg;
+      const dz = (z1 - z0) / seg;
+      return { x: x0 + dx * remaining, z: z0 + dz * remaining, dx, dz, yaw: Math.atan2(-dz, dx) };
+    }
+    remaining -= seg;
+  }
+  const last = points.length - 1;
+  const x0 = points[last - 1][0];
+  const z0 = points[last - 1][1];
+  const x1 = points[last][0];
+  const z1 = points[last][1];
+  const seg = Math.hypot(x1 - x0, z1 - z0) || 1;
+  const dx = (x1 - x0) / seg;
+  const dz = (z1 - z0) / seg;
+  return { x: x1, z: z1, dx, dz, yaw: Math.atan2(-dz, dx) };
+}
+
+const PATH_THICKNESS = 0.03;
+const PATH_SURFACE_LIFT = 0.015;
+const PATH_SEGMENT_LEN = 1.25;
+/** How far below the paver surface the grass is pushed under the path (keeps lawn off the top). */
+const PATH_GRASS_RECESS = 0.08;
+/** Width of the grass bank outside each path edge that curves down to meet the pavers. */
+const PATH_GRASS_BANK = 0.45;
+
+/**
+ * Lower the lawn under the footpath and curve it down steeply to the path edges so grass never
+ * sits on top of the pavers. `pathX0`/`pathX1` are the E–W extents of the slab at `pathZ`.
+ */
+function applyPathGrassBanks(groundGeo, pathX0, pathX1, pathZ = PATH_Z, pathWidth = PATH_WIDTH) {
+  const pos = groundGeo.attributes.position;
+  const half = pathWidth * 0.5;
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i);
+    const z = pos.getZ(i);
+    if (x < pathX0 || x > pathX1) continue;
+    const dz = Math.abs(z - pathZ);
+    if (dz > half + PATH_GRASS_BANK) continue;
+    const naturalY = pos.getY(i);
+    const pathSurf = getGroundHeight(x, pathZ) + PATH_SURFACE_LIFT;
+    if (dz <= half) {
+      // Directly under the path — recess so the lawn cannot overlap the paver top
+      pos.setY(i, pathSurf - PATH_GRASS_RECESS);
+      continue;
+    }
+    // Bank: steep near the path edge (t≈0), easing out to natural grass (t≈1)
+    const t = (dz - half) / PATH_GRASS_BANK;
+    const blend = Math.pow(t, 0.4);
+    pos.setY(i, pathSurf + (naturalY - pathSurf) * blend);
+  }
+  pos.needsUpdate = true;
+}
+
+/**
+ * Terrain-following footpath with the original diamond-chequer paver mapping (UV 0–1 along the
+ * whole run, as on the previous single slab) and gravel edges.
+ */
+function addPathSlab(parent, mats, x0, z0, x1, z1, width = PATH_WIDTH) {
+  const horiz = Math.hypot(x1 - x0, z1 - z0);
+  if (horiz < 0.05) return;
+  const steps = Math.max(2, Math.ceil(horiz / PATH_SEGMENT_LEN));
+  const dx = (x1 - x0) / horiz;
+  const dz = (z1 - z0) / horiz;
+  // Perpendicular in XZ (path width)
+  const px = -dz;
+  const pz = dx;
+  const half = width * 0.5;
+  const halfT = PATH_THICKNESS * 0.5;
+
+  const topPos = [];
+  const topUv = [];
+  const topIdx = [];
+  const edgePos = [];
+  const edgeIdx = [];
+
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    const x = x0 + (x1 - x0) * t;
+    const z = z0 + (z1 - z0) * t;
+    const y = getGroundHeight(x, z) + PATH_SURFACE_LIFT;
+    const lx = x - px * half;
+    const lz = z - pz * half;
+    const rx = x + px * half;
+    const rz = z + pz * half;
+    // Top surface — same UV stretch as the previous single-slab paver face
+    topPos.push(lx, y, lz, rx, y, rz);
+    topUv.push(t, 0, t, 1);
+    // Vertical gravel skirts
+    edgePos.push(lx, y + halfT, lz, lx, y - halfT, lz, rx, y + halfT, rz, rx, y - halfT, rz);
+    if (i < steps) {
+      const a = i * 2;
+      topIdx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2);
+      const e = i * 4;
+      // left skirt, right skirt, and end caps are enough; join along the run
+      edgeIdx.push(e, e + 1, e + 4, e + 1, e + 5, e + 4);
+      edgeIdx.push(e + 2, e + 6, e + 3, e + 3, e + 6, e + 7);
+    }
+  }
+
+  const topGeo = new THREE.BufferGeometry();
+  topGeo.setAttribute('position', new THREE.Float32BufferAttribute(topPos, 3));
+  topGeo.setAttribute('uv', new THREE.Float32BufferAttribute(topUv, 2));
+  topGeo.setIndex(topIdx);
+  topGeo.computeVertexNormals();
+  const top = new THREE.Mesh(topGeo, mats.pathPavers);
+  top.receiveShadow = true;
+  parent.add(top);
+
+  const edgeGeo = new THREE.BufferGeometry();
+  edgeGeo.setAttribute('position', new THREE.Float32BufferAttribute(edgePos, 3));
+  edgeGeo.setIndex(edgeIdx);
+  edgeGeo.computeVertexNormals();
+  const edges = new THREE.Mesh(edgeGeo, mats.gravelPath);
+  edges.receiveShadow = true;
+  parent.add(edges);
+}
+
+const RAILING_TAPER_LEN = 0.1; // only the top ~10 cm tapers to a point
+
+/** Straight shaft + short tapered tip (no full-length taper, no separate cone finial). */
+function addTaperedUpright(parent, mats, x, baseR) {
+  const iron = mats.iron;
+  const shaftH = RAILING_HEIGHT - RAILING_TAPER_LEN;
+  const shaft = new THREE.Mesh(new THREE.CylinderGeometry(baseR, baseR, shaftH, 6), iron);
+  shaft.position.set(x, shaftH * 0.5, 0);
+  shaft.castShadow = true;
+  parent.add(shaft);
+  // Top 10 cm: same radius as the shaft, tapering to a point
+  const tip = new THREE.Mesh(new THREE.CylinderGeometry(0.001, baseR, RAILING_TAPER_LEN, 6), iron);
+  tip.position.set(x, shaftH + RAILING_TAPER_LEN * 0.5, 0);
+  tip.castShadow = true;
+  parent.add(tip);
+}
+
+/** Wrought-iron railing panel: uprights with a short top taper, joined by flat horizontal bars. */
+function buildIronRailPanel(mats, length, { includeStartPost = true, includeEndPost = true } = {}) {
+  const g = new THREE.Group();
+  const iron = mats.iron;
+  const barH = 0.035;
+  const barT = 0.012;
+  const picketBaseR = 0.012;
+  const postBaseR = 0.038;
+  const railYs = [0.22, 0.58, 0.98];
+  const shaftH = RAILING_HEIGHT - RAILING_TAPER_LEN;
+
+  if (includeStartPost || includeEndPost) {
+    for (const [on, x] of [
+      [includeStartPost, 0],
+      [includeEndPost, length]
+    ]) {
+      if (!on) continue;
+      addTaperedUpright(g, mats, x, postBaseR);
+    }
+  }
+
+  for (const y of railYs) {
+    const rail = new THREE.Mesh(new THREE.BoxGeometry(length, barH, barT * 2.2), iron);
+    rail.position.set(length * 0.5, y, 0);
+    rail.castShadow = true;
+    g.add(rail);
+  }
+
+  const picketCount = Math.max(2, Math.floor(length / RAILING_PICKET_SPACING) + 1);
+  const shaftGeo = new THREE.CylinderGeometry(picketBaseR, picketBaseR, shaftH, 6);
+  const tipGeo = new THREE.CylinderGeometry(0.001, picketBaseR, RAILING_TAPER_LEN, 6);
+  const shafts = new THREE.InstancedMesh(shaftGeo, iron, picketCount);
+  const tips = new THREE.InstancedMesh(tipGeo, iron, picketCount);
+  shafts.castShadow = true;
+  tips.castShadow = true;
+  const dummy = new THREE.Object3D();
+  for (let i = 0; i < picketCount; i++) {
+    const x = (i / (picketCount - 1)) * length;
+    dummy.position.set(x, shaftH * 0.5, 0);
+    dummy.updateMatrix();
+    shafts.setMatrixAt(i, dummy.matrix);
+    dummy.position.set(x, shaftH + RAILING_TAPER_LEN * 0.5, 0);
+    dummy.updateMatrix();
+    tips.setMatrixAt(i, dummy.matrix);
+  }
+  g.add(shafts);
+  g.add(tips);
+  return g;
+}
+
+/**
+ * Proper kissing gate (plan view): a U-shaped railed enclosure with a single swinging leaf that
+ * kisses either side of the U.
+ *
+ * Local frame: origin on the hinge post, which is the end post of the boundary railing; +X carries on
+ * along the boundary line, across the footpath. The U lies on the +X side, 2r wide and KISSING_GATE_DEPTH
+ * deep (straight arms, round back), its two mouth posts at (0, ±r) beside the hinge post, so the gaps between
+ * the hinge post and those posts face the two sides of the boundary (−Z and +Z). The leaf, about r long,
+ * swings within the U from one gap to the other. A walker steps sideways out of the path into the U through
+ * the open gap, stands at the back of the U clear of the leaf while it swings across in front of them, and
+ * steps out through the other gap: the boundary is never open straight through, which keeps livestock in.
+ *
+ * The leaf's angle φ is measured from +X towards +Z: φ = −π/2 closes the −Z gap, +π/2 the +Z gap.
+ */
+const KISSING_LEAF_LIMIT = Math.PI / 2 - 0.09; // the leaf's end stops against the U's end posts
+
+function buildKissingGate(mats) {
+  const g = new THREE.Group();
+  const iron = mats.iron;
+  const r = KISSING_GATE_RADIUS;
+  const picketR = 0.011;
+  const postR = 0.038;
+  const shaftH = RAILING_HEIGHT - RAILING_TAPER_LEN;
+  const railYs = [0.22, 0.58, 0.98];
+  // The U: straight arms from its −Z mouth post out to depth D − r, round a semicircle, and back to the +Z post.
+  // It is deeper than the leaf is long, leaving room to stand clear of the leaf while it swings across.
+  const arm = KISSING_GATE_DEPTH - r;
+  const outlineLen = 2 * arm + Math.PI * r;
+  const arcCount = Math.round(outlineLen / 0.2);
+  const arcPoint = (i) => {
+    const d = (i / arcCount) * outlineLen;
+    if (d <= arm) return [d, -r];
+    if (d >= arm + Math.PI * r) return [arm - (d - arm - Math.PI * r), r];
+    const ang = -Math.PI / 2 + (d - arm) / r;
+    return [arm + Math.cos(ang) * r, Math.sin(ang) * r];
+  };
+
+  function addPost(x, z, radius = postR) {
+    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, shaftH, 8), iron);
+    shaft.position.set(x, shaftH * 0.5, z);
+    shaft.castShadow = true;
+    g.add(shaft);
+    const tip = new THREE.Mesh(new THREE.CylinderGeometry(0.001, radius, RAILING_TAPER_LEN, 8), iron);
+    tip.position.set(x, shaftH + RAILING_TAPER_LEN * 0.5, z);
+    tip.castShadow = true;
+    g.add(tip);
+  }
+
+  // Hinge post on the boundary line, and the two end posts of the U beside it
+  addPost(0, 0, postR * 1.15);
+  addPost(...arcPoint(0));
+  addPost(...arcPoint(arcCount));
+
+  // U-shaped enclosure: uprights on the semicircle between its end posts
+  const shaftGeo = new THREE.CylinderGeometry(picketR, picketR, shaftH, 6);
+  const tipGeo = new THREE.CylinderGeometry(0.001, picketR, RAILING_TAPER_LEN, 6);
+  const shafts = new THREE.InstancedMesh(shaftGeo, iron, arcCount - 1);
+  const tips = new THREE.InstancedMesh(tipGeo, iron, arcCount - 1);
+  shafts.castShadow = true;
+  tips.castShadow = true;
+  const dummy = new THREE.Object3D();
+  for (let i = 1; i < arcCount; i++) {
+    const [x, z] = arcPoint(i);
+    dummy.position.set(x, shaftH * 0.5, z);
+    dummy.updateMatrix();
+    shafts.setMatrixAt(i - 1, dummy.matrix);
+    dummy.position.set(x, shaftH + RAILING_TAPER_LEN * 0.5, z);
+    dummy.updateMatrix();
+    tips.setMatrixAt(i - 1, dummy.matrix);
+  }
+  g.add(shafts);
+  g.add(tips);
+
+  // Horizontal rails following the U (short chords between uprights)
+  for (const y of railYs) {
+    for (let i = 0; i < arcCount; i++) {
+      const [x0, z0] = arcPoint(i);
+      const [x1, z1] = arcPoint(i + 1);
+      const len = Math.hypot(x1 - x0, z1 - z0);
+      const rail = new THREE.Mesh(new THREE.BoxGeometry(len, 0.032, 0.022), iron);
+      rail.position.set((x0 + x1) * 0.5, y, (z0 + z1) * 0.5);
+      rail.rotation.y = Math.atan2(-(z1 - z0), x1 - x0);
+      rail.castShadow = true;
+      g.add(rail);
+    }
+  }
+
+  // Swinging leaf on the hinge post. Panel local +X is the leaf length; pivot yaw −φ points it at angle φ.
+  const leafLen = r - 0.06;
+  const pivot = new THREE.Group();
+  pivot.userData.animated = true; // swings: main.js's static-mesh merge must keep it a group of its own
+  pivot.add(buildIronRailPanel(mats, leafLen, { includeStartPost: false, includeEndPost: true }));
+  g.add(pivot);
+  g.userData.kissingLeaf = pivot;
+  return g;
+}
+
+/**
+ * Place a kissing gate at the end of the boundary railing. end: the railing's last point (the hinge
+ * post); prev: the point before it, so the boundary carries on across the path in the same direction.
+ * Returns a gate record for createKissingGateAnimator.
+ */
+function placeKissingGate(parent, mats, end, prev, onward = null) {
+  const gate = buildKissingGate(mats);
+  const dx = end[0] - prev[0];
+  const dz = end[1] - prev[1];
+  const yaw = Math.atan2(-dz, dx); // gate +X along the boundary, onward from the railing
+  gate.position.set(end[0], getGroundHeight(end[0], end[1]), end[1]);
+  gate.rotation.y = yaw;
+  parent.add(gate);
+  // The boundary carries on from the back of the U, across the rest of the path and onto the grass, so the
+  // only way through is via the gate
+  const len = Math.hypot(dx, dz);
+  const ux = dx / len;
+  const uz = dz / len;
+  const back = [end[0] + ux * KISSING_GATE_DEPTH, end[1] + uz * KISSING_GATE_DEPTH];
+  addRailingRun(parent, mats, [back, onward ?? [back[0] + ux * 1.5, back[1] + uz * 1.5]]);
+  const pivot = gate.userData.kissingLeaf;
+  const rec = { gate, pivot, x: end[0], z: end[1], yaw, angle: 0, outside: 0 };
+  return rec;
+}
+
+/**
+ * Swing the kissing gates for whoever walks through: the leaf stays shut against the far gap, so the U is
+ * open towards an approaching walker; once they are inside the U it swings across behind them to let them
+ * out the other side. update(dt, walkerPos) returns true while a leaf is moving.
+ */
+function createKissingGateAnimator(gates) {
+  const r = KISSING_GATE_RADIUS;
+  const leafLen = r - 0.06;
+  const local = (rec, p) => {
+    const dx = p.x - rec.x;
+    const dz = p.z - rec.z;
+    const c = Math.cos(rec.yaw);
+    const s = Math.sin(rec.yaw);
+    // Inverse of the gate's yaw about Y
+    return { u: dx * c - dz * s, v: dx * s + dz * c };
+  };
+  for (const rec of gates) {
+    rec.side = 1; // the side the last walker came from (+1: the gate's +Z side)
+    rec.angle = -KISSING_LEAF_LIMIT; // at rest shut against the −Z gap
+    rec.pivot.rotation.y = -rec.angle;
+  }
+  return {
+    gates,
+    update(dt, walker) {
+      let moving = false;
+      for (const rec of gates) {
+        const { u, v } = local(rec, walker);
+        const d = Math.hypot(u, v);
+        let target = rec.angle;
+        if (d < 4) {
+          const inU = u > 0 && u < KISSING_GATE_DEPTH && Math.abs(v) < r;
+          if (!inU && Math.abs(v) > 0.15) rec.side = Math.sign(v);
+          // Outside: open the U towards the walker (shut the far gap). Once they stand at the back of the U, clear
+          // of the leaf, swing it across behind them; while they are still in its way it waits.
+          if (!inU) target = -rec.side * KISSING_LEAF_LIMIT;
+          else if (d > leafLen + 0.15) target = rec.side * KISSING_LEAF_LIMIT;
+        }
+        const diff = target - rec.angle;
+        if (Math.abs(diff) > 1e-3) {
+          const step = Math.sign(diff) * Math.min(Math.abs(diff), dt * 2.2); // a firm push, ~1.4 s across
+          rec.angle += step;
+          rec.pivot.rotation.y = -rec.angle;
+          moving = true;
+        }
+      }
+      return moving;
+    }
+  };
+}
+
+function addRailingRun(parent, mats, points) {
+  const total = polylineLength(points);
+  const panelLen = 2.35;
+  for (let dist = 0; dist < total - 0.05;) {
+    const span = Math.min(panelLen, total - dist);
+    if (span < 0.3) break;
+    const a = pointAlongPolyline(points, dist);
+    const b = pointAlongPolyline(points, dist + span);
+    const dx = b.x - a.x;
+    const dz = b.z - a.z;
+    const len = Math.hypot(dx, dz);
+    if (len < 0.3) break;
+    const panel = buildIronRailPanel(mats, len, {
+      includeStartPost: true,
+      includeEndPost: dist + span >= total - 0.05
+    });
+    panel.position.set(a.x, getGroundHeight(a.x, a.z), a.z);
+    panel.rotation.y = Math.atan2(-dz, dx);
+    parent.add(panel);
+    dist += span;
+  }
+}
+
+/**
+ * North-side wrought-iron churchyard railings from the 1839 boundary, with kissing gates where the
+ * E–W footpath exits at each end. No userData.era — the railings stood by 1900 and remain today.
+ */
+export function buildNorthChurchyardRailings(mats, frontage = NORTH_CHURCHYARD_RAILINGS) {
+  const g = new THREE.Group();
+  g.name = 'north-churchyard-railings';
+
+  const westX = frontage[0][0];
+  const eastX = frontage[frontage.length - 1][0];
+  // The gates sit where the railing ends meet the path; the paving stops there (none outside the boundary)
+  const westGate = { x: westX, z: PATH_Z };
+  const eastGate = { x: eastX, z: PATH_Z };
+
+  addRailingRun(g, mats, frontage);
+
+  // The railing's two ends come down to the footpath; each ends at a kissing gate's hinge post, and the gate's
+  // U carries the boundary on across the path, so walkers pass by swinging the leaf within the U
+  const n = frontage.length;
+  const gates = [
+    placeKissingGate(g, mats, frontage[0], frontage[1], WEST_RAILING_SOUTH_END),
+    placeKissingGate(g, mats, frontage[n - 1], frontage[n - 2])
+  ];
+
+  return { group: g, westGate, eastGate, kissingGates: createKissingGateAnimator(gates) };
+}
+
+/** @deprecated Use buildNorthChurchyardRailings */
+export function buildNorthChurchyardFence(mats, points) {
+  return buildNorthChurchyardRailings(mats, points);
+}
+
 export function buildChurchyard(mats) {
   const g = new THREE.Group();
 
-  // 1. Wide rolling English churchyard lawn (completely level y=0 across the entire mapped graveyard!)
-  const groundGeo = new THREE.PlaneGeometry(120, 120, 56, 56);
+  // 2. North wrought-iron railings first so the path extents are known for the lawn banks
+  const { group: railingGroup, westGate, eastGate, kissingGates } = buildNorthChurchyardRailings(mats);
+  const pathOverhang = 0; // paving ends at the gates' boundary line
+  const pathX0 = westGate.x - pathOverhang;
+  const pathX1 = eastGate.x + pathOverhang;
+
+  // 1. Churchyard lawn following the measured village terrain (flat under the church pad at y = 0).
+  // Dense enough that the path-edge banks (sub-metre) read as a vertical curve, not a step every 2 m.
+  const groundGeo = new THREE.PlaneGeometry(120, 120, 120, 120);
   groundGeo.rotateX(-Math.PI / 2);
   const pos = groundGeo.attributes.position;
   for (let i = 0; i < pos.count; i++) {
-    const hill = getGroundHeight(pos.getX(i), pos.getZ(i));
-    if (hill !== 0) pos.setY(i, hill);
+    pos.setY(i, getGroundHeight(pos.getX(i), pos.getZ(i)));
   }
+  applyPathGrassBanks(groundGeo, pathX0, pathX1, PATH_Z, PATH_WIDTH);
   groundGeo.computeVertexNormals();
   const ground = new THREE.Mesh(groundGeo, mats.grass);
   ground.receiveShadow = true;
   g.add(ground);
+  g.add(railingGroup);
 
-  // 2. Churchyard footpath of diamond-chequer pavers (survey plan: straight E-W path along the North side, its
-  //    South edge running right up to the North Porch, so no separate spur is needed)
-  const mainPath = new THREE.Mesh(new THREE.BoxGeometry(27.5, 0.03, 1.48), [
-    mats.gravelPath,
-    mats.gravelPath,
-    mats.pathPavers,
-    mats.gravelPath,
-    mats.gravelPath,
-    mats.gravelPath
-  ]);
-  mainPath.position.set(-1.1, 0.015, -6.22);
-  mainPath.receiveShadow = true;
-  g.add(mainPath);
+  // 3. Straight E–W footpath through both kissing gates (same trajectory; no turns into the gates)
+  addPathSlab(g, mats, pathX0, PATH_Z, pathX1, PATH_Z);
 
-  // 3. Weathered wooden garden bench beside West gable wall (IMG_3928 & IMG_3934)
+  // 4. Weathered wooden garden bench beside West gable wall (IMG_3928 & IMG_3934)
   const bench = buildGardenBench(mats);
-  bench.position.set(DIM.nave.xWestExt - 0.65, 0, -1.55);
+  const benchX = DIM.nave.xWestExt - 0.65;
+  const benchZ = -1.55;
+  bench.position.set(benchX, getGroundHeight(benchX, benchZ), benchZ);
   bench.rotation.y = -Math.PI / 2;
   bench.userData.era = 'today';
   g.add(bench);
 
-  // 4. All 49 Plotted Churchyard Gravestones & Memorials with Carved Inscriptions
+  // 5. All 49 Plotted Churchyard Gravestones & Memorials with Carved Inscriptions
   const memorialGroups = [];
   const topplers = [];
   CHURCHYARD_MEMORIALS.forEach((m, idx) => {
     const { x, z } = surveyGridToWorld(m.col, m.row);
     const monument = buildMemorial(m, mats);
     monument.name = `memorial-${m.id}`;
-    monument.position.set(x, 0, z);
+    monument.position.set(x, getGroundHeight(x, z), z);
     const subtleYaw = (((idx * 37) % 11) - 5) * 0.012;
     // Memorials face East by default; those turned towards the church face South (north side) or North (south side)
     const churchYaw = z < 0 ? -Math.PI / 2 : Math.PI / 2;
@@ -1247,19 +1711,21 @@ export function buildChurchyard(mats) {
       // Reader looks along -front, so their left is the memorial's local +z
       const side = new THREE.Vector3(0, 0, 2.4).applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
       const fwd = new THREE.Vector3(0.15, 0, 0).applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
-      memBench.position.set(x + side.x + fwd.x, 0, z + side.z + fwd.z);
+      const bx = x + side.x + fwd.x;
+      const bz = z + side.z + fwd.z;
+      memBench.position.set(bx, getGroundHeight(bx, bz), bz);
       memBench.userData.era = 'today';
       g.add(memBench);
     }
   });
 
-  // 5. Characteristic Clipped Yew Bushes & Perimeter Autumn/Winter Trees
+  // 6. Characteristic Clipped Yew Bushes & Perimeter Autumn/Winter Trees
   const yewNE = buildTree(5.0, 0x26441d, true);
-  yewNE.position.set(14.8, 0, -10.8);
+  yewNE.position.set(14.8, getGroundHeight(14.8, -10.8), -10.8);
   g.add(yewNE);
 
   const yewSE = buildTree(4.6, 0x2a4a20, true);
-  yewSE.position.set(17.4, 0, 7.2);
+  yewSE.position.set(17.4, getGroundHeight(17.4, 7.2), 7.2);
   g.add(yewSE);
 
   const trees = [
@@ -1274,21 +1740,27 @@ export function buildChurchyard(mats) {
   ];
   trees.forEach(([tx, tz, th, col]) => {
     const tree = buildTree(th, col, false);
-    tree.position.set(tx, 0, tz);
+    tree.position.set(tx, getGroundHeight(tx, tz), tz);
     g.add(tree);
   });
 
-  // 6. December Festive Christmas Tree outside the North Porch with twinkling fairy lights
+  // 7. December Festive Christmas Tree outside the North Porch with twinkling fairy lights
   let christmasEffect = null;
   const searchStr = typeof window !== 'undefined' ? window.location.search : '';
   if (isChristmasSeason(new Date(), searchStr)) {
     christmasEffect = buildChristmasTree(mats);
-    christmasEffect.group.position.set(-0.2, 0, -4.55);
+    christmasEffect.group.position.set(-0.2, getGroundHeight(-0.2, -4.55), -4.55);
     christmasEffect.group.userData.era = 'today'; // electric fairy lights
     g.add(christmasEffect.group);
   }
 
-  return { group: g, christmasEffect, memorialGroups, gravestoneEra: createToppleAnimator(topplers) };
+  return {
+    group: g,
+    christmasEffect,
+    memorialGroups,
+    gravestoneEra: createToppleAnimator(topplers),
+    kissingGates
+  };
 }
 
 // Build a festive Norway Spruce Christmas tree in a wooden planter with twinkling fairy lights & golden star

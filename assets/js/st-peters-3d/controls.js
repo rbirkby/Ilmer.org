@@ -109,6 +109,14 @@ export const CAMERA_PRESETS = {
   }
 };
 
+// Walk pace in metres per second (Shift boost matches the ~2.3× ratio used by 1839 fly mode)
+export const WALK_SPEED = 2.8;
+export const WALK_SPEED_SPRINT = 6.4;
+
+export function walkMoveSpeed(shiftHeld) {
+  return shiftHeld ? WALK_SPEED_SPRINT : WALK_SPEED;
+}
+
 export function createCameraController(camera, domElement) {
   const orbit = new OrbitControls(camera, domElement);
   orbit.enableDamping = true;
@@ -123,6 +131,7 @@ export function createCameraController(camera, domElement) {
   let tour = null;
 
   const keys = new Set();
+  let shiftHeld = false;
   let yaw = 0;
   let pitch = 0;
   let draggingLook = false;
@@ -131,6 +140,11 @@ export function createCameraController(camera, domElement) {
   const stick = { x: 0, y: 0 };
   let lastMouseX = 0;
   let lastMouseY = 0;
+
+  function clearMovementKeys() {
+    keys.clear();
+    shiftHeld = false;
+  }
 
   function syncWalkAnglesFromCamera() {
     const dir = new THREE.Vector3();
@@ -309,9 +323,23 @@ export function createCameraController(camera, domElement) {
       e.preventDefault();
     }
     keys.add(e.code);
+    // Match 1839 fly mode: treat Shift via key name, and pick up a held Shift even if its own
+    // keydown was missed (e.g. pressed before the page had focus)
+    if (e.key === 'Shift' || e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.shiftKey) {
+      shiftHeld = true;
+    }
   });
   window.addEventListener('keyup', (e) => {
     keys.delete(e.code);
+    if (e.key === 'Shift' || e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+      shiftHeld = false;
+      keys.delete('ShiftLeft');
+      keys.delete('ShiftRight');
+    }
+  });
+  window.addEventListener('blur', clearMovementKeys);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) clearMovementKeys();
   });
 
   domElement.addEventListener('pointerdown', (e) => {
@@ -425,7 +453,8 @@ export function createCameraController(camera, domElement) {
       const euler = new THREE.Euler(pitch, yaw, 0, 'YXZ');
       camera.quaternion.setFromEuler(euler);
 
-      const moveSpeed = (keys.has('ShiftLeft') || keys.has('ShiftRight') ? 5.2 : 2.8) * dt;
+      const sprinting = shiftHeld || keys.has('ShiftLeft') || keys.has('ShiftRight');
+      const moveSpeed = walkMoveSpeed(sprinting) * dt;
       const forward = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw));
       const right = new THREE.Vector3(Math.cos(yaw), 0, -Math.sin(yaw));
 
@@ -436,7 +465,7 @@ export function createCameraController(camera, domElement) {
       // Joystick: walking pace for most of its travel, quickening towards a stride near the rim
       const push = Math.hypot(stick.x, stick.y);
       if (push > 0.08) {
-        const pace = (push > 0.9 ? 4.2 : 2.8) * dt;
+        const pace = (push > 0.9 ? WALK_SPEED_SPRINT * 0.66 : WALK_SPEED) * dt;
         camera.position.addScaledVector(forward, stick.y * pace);
         camera.position.addScaledVector(right, stick.x * pace);
       }
