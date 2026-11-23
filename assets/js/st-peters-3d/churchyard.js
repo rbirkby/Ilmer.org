@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { DIM, getGroundHeight, isChristmasSeason } from '/assets/js/st-peters-3d/dimensions.js';
+import { DIM, getGroundHeight, groundOutlineRadius, isChristmasSeason } from '/assets/js/st-peters-3d/dimensions.js';
 import { CHURCHYARD_MEMORIALS, surveyGridToWorld } from '/assets/js/st-peters-3d/memorials-data.js';
 
 function pickStoneMat(stone, mats) {
@@ -940,7 +940,11 @@ function getLeafClusterMaterial(foliageHex, isEvergreen) {
 }
 
 // Build a natural, leafy, semi-transparent English churchyard tree or clipped yew bush
-function buildTree(height, foliageColor, isEvergreen = false) {
+/**
+ * girth scales the trunk (and, half as much, the limbs) for older, more mature trees. crownBase (metres), when
+ * given, brings the foliage down to that height on low, spreading limbs, as on an open-grown churchyard tree.
+ */
+function buildTree(height, foliageColor, isEvergreen = false, girth = 1, crownBase = null) {
   const g = new THREE.Group();
   const barkMat = new THREE.MeshStandardMaterial({ color: 0x453a30, roughness: 0.95 });
   const leafMat = getLeafClusterMaterial(foliageColor, isEvergreen);
@@ -998,7 +1002,8 @@ function buildTree(height, foliageColor, isEvergreen = false) {
 
   // Deciduous churchyard tree: tapered trunk + spreading primary limbs + twigs + airy semi-transparent leafy crown
   const trunkH = height * 0.44;
-  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.24, trunkH, 7), barkMat);
+  const limbGirth = (1 + girth) / 2;
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.11 * girth, 0.24 * girth, trunkH, 9), barkMat);
   trunk.position.y = trunkH * 0.5;
   trunk.castShadow = true;
   g.add(trunk);
@@ -1009,7 +1014,7 @@ function buildTree(height, foliageColor, isEvergreen = false) {
     const az = (i / 5) * Math.PI * 2 + (rand() - 0.5) * 0.35;
     const tilt = 0.42 + rand() * 0.32;
     const limbLen = height * (0.3 + rand() * 0.1);
-    const limb = new THREE.Mesh(new THREE.CylinderGeometry(0.038, 0.088, limbLen, 6), barkMat);
+    const limb = new THREE.Mesh(new THREE.CylinderGeometry(0.038 * limbGirth, 0.088 * limbGirth, limbLen, 6), barkMat);
     const dirX = Math.sin(tilt) * Math.cos(az);
     const dirY = Math.cos(tilt);
     const dirZ = Math.sin(tilt) * Math.sin(az);
@@ -1049,6 +1054,28 @@ function buildTree(height, foliageColor, isEvergreen = false) {
   // Upper crown apex tip
   branchTips.push([0, height * 0.84, 0], [0, height * 0.72, 0]);
 
+  // Low skirt of foliage: thin, whippy shoots sprouting from the trunk all the way down to just above crownBase,
+  // each carrying a few small sprays of leaves, so the leaves hang to about crownBase off the ground
+  const lowClusters = [];
+  if (crownBase !== null) {
+    const shoots = 22;
+    for (let i = 0; i < shoots; i++) {
+      const ang = rand() * Math.PI * 2;
+      const baseY = crownBase + 0.25 + rand() * (trunkH - crownBase - 0.25);
+      const len = 0.9 + rand() * 1.5;
+      const d = new THREE.Vector3(Math.cos(ang), 0.05 + rand() * 0.45, Math.sin(ang)).normalize();
+      const shoot = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.02, len, 4), barkMat);
+      // Start at the trunk's surface (its radius tapers from 0.24 to 0.11, times girth)
+      const trunkR = (0.24 - 0.13 * (baseY / trunkH)) * girth;
+      const sx = d.x * trunkR;
+      const sz = d.z * trunkR;
+      shoot.position.set(sx + (d.x * len) / 2, baseY + (d.y * len) / 2, sz + (d.z * len) / 2);
+      shoot.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d);
+      g.add(shoot);
+      for (const f of [0.45, 0.8, 1]) lowClusters.push([sx + d.x * len * f, baseY + d.y * len * f, sz + d.z * len * f]);
+    }
+  }
+
   // Populate airy, semi-transparent leafy clusters around every branch tip
   branchTips.forEach(([bx, by, bz]) => {
     const clusterCount = 2;
@@ -1061,6 +1088,11 @@ function buildTree(height, foliageColor, isEvergreen = false) {
         height * (0.14 + rand() * 0.08)
       );
     }
+  });
+  // The low skirt's clusters: their lower edges hang to about crownBase
+  lowClusters.forEach(([bx, by, bz]) => {
+    const r = 0.32 + rand() * 0.28; // small sprays, not the crown's big clusters
+    addLeafCluster(bx + (rand() - 0.5) * 0.2, Math.max(by, crownBase + r * 0.6), bz + (rand() - 0.5) * 0.2, r);
   });
 
   return g;
@@ -1252,14 +1284,6 @@ const PATH_GRASS_BANK = 0.45;
  * Lower the lawn under the footpath and curve it down steeply to the path edges so grass never
  * sits on top of the pavers. `pathX0`/`pathX1` are the E–W extents of the slab at `pathZ`.
  */
-/**
- * Edge of the churchyard's surrounding land, in metres from the church centre at bearing θ (atan2(z, x)): a few
- * gentle waves on a ~52 m circle, so the perimeter is irregular but smooth, never beyond the 60 m terrain grid.
- */
-export function groundOutlineRadius(theta) {
-  return 52 + 3.6 * Math.sin(2 * theta + 0.7) + 2.4 * Math.sin(3 * theta + 2.1) + 1.4 * Math.sin(5 * theta + 0.4);
-}
-
 function applyPathGrassBanks(groundGeo, pathX0, pathX1, pathZ = PATH_Z, pathWidth = PATH_WIDTH) {
   const pos = groundGeo.attributes.position;
   const half = pathWidth * 0.5;
@@ -1394,7 +1418,7 @@ function buildIronRailPanel(mats, length, { includeStartPost = true, includeEndP
   const barT = 0.012;
   const picketBaseR = 0.012;
   const postBaseR = 0.038;
-  const railYs = [0.22, 0.58, 0.98];
+  const railYs = [0.22, 0.98]; // top & bottom bars only
   const shaftH = RAILING_HEIGHT - RAILING_TAPER_LEN;
 
   if (includeStartPost || includeEndPost) {
@@ -1459,7 +1483,7 @@ function buildKissingGate(mats) {
   const picketR = 0.011;
   const postR = 0.038;
   const shaftH = RAILING_HEIGHT - RAILING_TAPER_LEN;
-  const railYs = [0.22, 0.58, 0.98];
+  const railYs = [0.22, 0.98]; // top & bottom bars only
   // The U: straight arms from its −Z mouth post out to depth D − r, round a semicircle, and back to the +Z post.
   // It is deeper than the leaf is long, leaving room to stand clear of the leaf while it swings across.
   const arm = KISSING_GATE_DEPTH - r;
@@ -1764,7 +1788,8 @@ export function buildChurchyard(mats) {
 
   // 6. Characteristic Clipped Yew Bushes & Perimeter Autumn/Winter Trees
   const yewNE = buildTree(5.0, 0x26441d, true);
-  yewNE.position.set(14.8, getGroundHeight(14.8, -10.8), -10.8);
+  // Just inside the north railings, west of the easternmost railing tree (further round from the East kissing gate)
+  yewNE.position.set(7.6, getGroundHeight(7.6, -16.0), -16.0);
   g.add(yewNE);
 
   const yewSE = buildTree(4.6, 0x2a4a20, true);
@@ -1773,8 +1798,8 @@ export function buildChurchyard(mats) {
 
   const trees = [
     [-19.5, 11.5, 7.8, 0x6e5430],
-    [24.5, -15.5, 10.2, 0x8c682c],
-    [25.5, 3.5, 8.8, 0x9b722b],
+    // A mature tree inside the railings, south of the path between the East kissing gate & the East gable
+    [14.2, -2.3, 12.5, 0x8c682c, 2.4, 1.0],
     [16.5, 24.5, 9.6, 0x6b5b34],
     [-8.5, 27.5, 10.5, 0x7d6535],
     [6.5, 27.5, 8.6, 0x5e6234]
@@ -1798,8 +1823,8 @@ export function buildChurchyard(mats) {
     }
     trees.push([at.x + nx * 2, at.z + nz * 2, th, col]);
   });
-  trees.forEach(([tx, tz, th, col]) => {
-    const tree = buildTree(th, col, false);
+  trees.forEach(([tx, tz, th, col, girth = 1, crownBase = null]) => {
+    const tree = buildTree(th, col, false, girth, crownBase);
     tree.position.set(tx, getGroundHeight(tx, tz), tz);
     g.add(tree);
   });

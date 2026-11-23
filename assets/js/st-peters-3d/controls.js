@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from '/assets/vendor/three/OrbitControls.js';
-import { getSurfaceY } from '/assets/js/st-peters-3d/dimensions.js';
+import { getSurfaceY, groundOutlineRadius } from '/assets/js/st-peters-3d/dimensions.js';
 
 export const CAMERA_PRESETS = {
   'exterior-nw': {
@@ -32,8 +32,9 @@ export const CAMERA_PRESETS = {
   'exterior-east': {
     label: 'East Gable',
     group: 'Exterior',
-    pos: [22.2, 5.8, -8.2],
-    target: [3.6, 7.0, 0.0],
+    // From the south-east of the path, so the tree between the East gate & the gable stays out of the shot
+    pos: [21.5, 5.0, 10.0],
+    target: [3.6, 6.5, 0.0],
     cutaway: false,
     doorsOpen: false
   },
@@ -472,8 +473,13 @@ export function createCameraController(camera, domElement) {
         camera.position.addScaledVector(right, stick.x * pace);
       }
 
-      camera.position.x = THREE.MathUtils.clamp(camera.position.x, -26, 26);
-      camera.position.z = THREE.MathUtils.clamp(camera.position.z, -24, 24);
+      // Free to wander the fields round the churchyard, stopping a few metres short of the land's edge
+      const walkR = Math.hypot(camera.position.x, camera.position.z);
+      const maxR = groundOutlineRadius(Math.atan2(camera.position.z, camera.position.x)) - 4;
+      if (walkR > maxR) {
+        camera.position.x *= maxR / walkR;
+        camera.position.z *= maxR / walkR;
+      }
 
       const targetY = getSurfaceY(camera.position.x, camera.position.z) + 1.62;
       camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetY, Math.min(1, dt * 10));

@@ -317,7 +317,7 @@ export const CHURCH_TOUR_WAYPOINTS = [
   },
   {
     label: 'East Gable & Stained Glass',
-    pos: [20.5, 4.8, -2.8],
+    pos: [19.5, 4.6, 9.5], // south of the path, clear of the tree between the East gate & the gable
     target: [4.5, 4.6, 0.0],
     duration: 2.8,
     hold: 0.4,
@@ -491,3 +491,11 @@ export const CHURCH_TOUR_WAYPOINTS = [
     cutaway: false
   }
 ];
+
+/**
+ * Edge of the churchyard's surrounding land, in metres from the church centre at bearing θ (atan2(z, x)): a few
+ * gentle waves on a ~52 m circle, so the perimeter is irregular but smooth, never beyond the 60 m terrain grid.
+ */
+export function groundOutlineRadius(theta) {
+  return 52 + 3.6 * Math.sin(2 * theta + 0.7) + 2.4 * Math.sin(3 * theta + 2.1) + 1.4 * Math.sin(5 * theta + 0.4);
+}

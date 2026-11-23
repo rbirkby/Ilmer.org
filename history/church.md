@@ -17,7 +17,7 @@ _Title image: A view of Ilmer Church on a postcard_
 ![Ilmer Church without spire](/images/church-no-spire.jpg#right,bwphoto)
 _Ilmer Church without spire_[^1]
 
-[^1]: Ilmer Church, pre-1909, without spire. Copyright Sydney Newton until 2031.
+[^1]: Ilmer Church, between 1893-1909, without spire. Copyright Sydney Newton until 2031.
 
 For many years, St. Peter's in Ilmer lacked a spire, featuring instead a simple wooden belfry that housed three bells, cast around 1500, 1586, and 1618. The oldest bell bears the Latin inscription "Sancta Margareta ora pro nobis," which translates to "St. Margaret, pray for us." It was likely produced by William Hasylwood at his foundry in Reading. Hasylwood was active in bell casting for a period of 15 years, starting in 1494 and culminating in 1509 with his final known work—the oldest bell hanging in St. Nicholas, Chearsley. The three bells in St. Peter's have diameters of approximately 36 inches, 33 inches, and 31 inches, respectively, corresponding to the chronological order of their casting.
 
