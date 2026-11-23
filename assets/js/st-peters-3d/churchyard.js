@@ -639,7 +639,16 @@ function buildMemorial(spec, mats) {
 
       fallenPivot.position.set(-0.06, 0.065, 0);
       fallenPivot.rotation.z = Math.PI / 2 - 0.03;
+      fallenPivot.userData.animated = true; // can topple or be righted (createToppleAnimator)
       g.add(fallenPivot);
+      // Standing, the slab sits on the socket's top; it falls back (West) about the rear edge of its foot
+      g.userData.topple = {
+        pivot: fallenPivot,
+        upright: { x: 0.06, y: 0.08, angle: 0 },
+        fallen: { x: -0.06, y: 0.065, angle: Math.PI / 2 - 0.03 },
+        hinge: { x: -0.05, y: 0 }, // in the slab's own frame
+        height: h
+      };
       break;
     }
 
@@ -720,6 +729,86 @@ function buildMemorial(spec, mats) {
   }
 
   return g;
+}
+
+// Gravestones that stood in 1900 and lie fallen today. setEra('1900') rights them (lifted back up, easing in and
+// out); setEra('today') topples them: a slab pivoting on its foot under gravity, rod-like
+// (angular acceleration 3g/2L sin θ), landing with a couple of small bounces. update(dt) returns true while any
+// stone is moving, so the caller can redraw the shadow map.
+function createToppleAnimator(topplers) {
+  const G = 9.81;
+  let era = 'today';
+  const hingePos = (t, angle) => {
+    // Pivot origin such that the slab's hinge point stays put on the socket (starting from the upright pose)
+    const hx = t.upright.x + t.hinge.x;
+    const hy = t.upright.y + t.hinge.y;
+    const c = Math.cos(angle);
+    const s = Math.sin(angle);
+    return { x: hx - (t.hinge.x * c - t.hinge.y * s), y: hy - (t.hinge.x * s + t.hinge.y * c) };
+  };
+  const pose = (t, angle) => {
+    // Follow the hinge, drifting onto the measured resting spot as it comes down
+    const end = t.fallen.angle;
+    const h = hingePos(t, angle);
+    const hEnd = hingePos(t, end);
+    const k = Math.min(1, Math.max(0, angle / end)) ** 2;
+    t.pivot.rotation.z = angle;
+    t.pivot.position.set(h.x + (t.fallen.x - hEnd.x) * k, h.y + (t.fallen.y - hEnd.y) * k, 0);
+  };
+  for (const t of topplers) {
+    t.angle = t.fallen.angle;
+    t.vel = 0;
+    t.mode = 'rest';
+  }
+  return {
+    setEra(next) {
+      if (next === era) return;
+      era = next;
+      for (const t of topplers) {
+        t.monument.userData.memorialFocus = t.focus[era];
+        if (era === '1900') {
+          t.mode = 'rise';
+          t.from = t.angle;
+          t.u = 0;
+        } else {
+          t.mode = 'fall';
+          t.angle = Math.max(t.angle, 0.06); // a nudge past balance
+          t.vel = 0;
+        }
+      }
+    },
+    update(dt) {
+      let moving = false;
+      for (const t of topplers) {
+        if (t.mode === 'rise') {
+          t.u = Math.min(1, t.u + dt / 1.6);
+          const e = t.u * t.u * (3 - 2 * t.u);
+          t.angle = t.from * (1 - e);
+          if (t.u >= 1) t.mode = 'rest';
+        } else if (t.mode === 'fall') {
+          const L = t.height;
+          // Small sub-steps keep the integration steady through the fast end of the fall
+          for (let i = 0; i < 4; i++) {
+            const h = dt / 4;
+            t.vel += ((3 * G) / (2 * L)) * Math.sin(t.angle) * h;
+            t.angle += t.vel * h;
+            if (t.angle >= t.fallen.angle) {
+              t.angle = t.fallen.angle;
+              t.vel = -t.vel * 0.22; // thud, and a small bounce off the turf
+              if (Math.abs(t.vel) < 0.25) {
+                t.vel = 0;
+                t.mode = 'rest';
+                break;
+              }
+            }
+          }
+        } else continue;
+        pose(t, t.angle);
+        moving = true;
+      }
+      return moving;
+    }
+  };
 }
 
 // Build a weathered wooden churchyard memorial bench (seen beside West wall in IMG_3928 & 3934)
@@ -1119,6 +1208,7 @@ export function buildChurchyard(mats) {
 
   // 4. All 49 Plotted Churchyard Gravestones & Memorials with Carved Inscriptions
   const memorialGroups = [];
+  const topplers = [];
   CHURCHYARD_MEMORIALS.forEach((m, idx) => {
     const { x, z } = surveyGridToWorld(m.col, m.row);
     const monument = buildMemorial(m, mats);
@@ -1132,7 +1222,19 @@ export function buildChurchyard(mats) {
       id: m.id,
       ...getMemorialCameraOffsets(m)
     };
-    monument.userData.era = 'today'; // the churchyard had no gravestones in 1900
+    if (m.standingIn1900 && monument.userData.topple) {
+      // In both eras: upright in 1900, fallen today, toppling or righting itself as the era changes
+      topplers.push({
+        monument,
+        ...monument.userData.topple,
+        focus: {
+          today: monument.userData.memorialFocus,
+          1900: { id: m.id, ...getMemorialCameraOffsets({ ...m, kind: 'headstone' }) }
+        }
+      });
+    } else {
+      monument.userData.era = 'today'; // the churchyard had no gravestones in 1900, save those marked standingIn1900
+    }
     g.add(monument);
     memorialGroups.push(monument);
 
@@ -1186,7 +1288,7 @@ export function buildChurchyard(mats) {
     g.add(christmasEffect.group);
   }
 
-  return { group: g, christmasEffect, memorialGroups };
+  return { group: g, christmasEffect, memorialGroups, gravestoneEra: createToppleAnimator(topplers) };
 }
 
 // Build a festive Norway Spruce Christmas tree in a wooden planter with twinkling fairy lights & golden star

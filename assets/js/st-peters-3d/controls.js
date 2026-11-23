@@ -477,6 +477,8 @@ export function createCameraController(camera, domElement) {
     startTour,
     stopTour,
     isTouring: () => Boolean(tour),
+    // A tour or a glide to a viewpoint is moving the camera
+    isBusy: () => Boolean(tour || transition),
     setMoveInput(x, y) {
       stick.x = x;
       stick.y = y;

@@ -352,6 +352,8 @@ export const CHURCHYARD_MEMORIALS = [
   },
   {
     id: 'C14',
+    // Erected by 1884, so it also stands (upright, before it fell) in the 1900 view
+    standingIn1900: true,
     section: 'C',
     col: 18,
     row: 20,

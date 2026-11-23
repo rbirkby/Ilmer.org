@@ -74,7 +74,7 @@ if (stage) {
   const { wallsGroup, roofGroup, doorPivots } = buildArchitecture(mats);
   const { interiorGroup, ceilingGroup, chandelierLights, oilLights, causticMesh, candleEffect, organAnimator } =
     buildInterior(mats);
-  const { group: churchyardGroup, christmasEffect, memorialGroups } = buildChurchyard(mats);
+  const { group: churchyardGroup, christmasEffect, memorialGroups, gravestoneEra } = buildChurchyard(mats);
   const atmosphere = buildAtmosphere();
 
   scene.add(wallsGroup);
@@ -253,6 +253,7 @@ if (stage) {
       o.material = era === '1900' ? o.userData.wideMat : o.userData.todayMat;
     }
     bellRinger.setMode(era === '1900' ? 'chime' : 'swing');
+    gravestoneEra.setEra(era); // C14 rights itself for 1900 and topples again for today
     for (const part of bellRopeParts) part.position.y = part.userData.bellRope.baseY;
     const btn = document.getElementById('btn-era');
     if (btn) {
@@ -302,6 +303,27 @@ if (stage) {
     controller.setMoveInput(e.detail.x, e.detail.y);
   });
 
+  // Inside the nave (East of the vestry partition) or the chancel, at standing height, the view switches to Walk
+  // mode: when the camera comes in from outside, or lands there from a viewpoint button. Choosing Orbit again
+  // while inside (or focusing on a memorial) is left alone until the camera next leaves and comes back.
+  let wasInside = null;
+  let presetLanding = false;
+  function inNaveOrChancel(p) {
+    if (p.y > 3.0) return false;
+    const N = DIM.nave;
+    const C = DIM.chancel;
+    const inNave = p.x > DIM.tower.vestryPartitionX && p.x < N.xEastInt && Math.abs(p.z) < N.zSouthInt;
+    const inChancel = p.x >= C.xWestInt && p.x < C.xEastInt && Math.abs(p.z) < C.zSouthInt;
+    return inNave || inChancel;
+  }
+  function autoWalkIndoors() {
+    if (controller.isBusy()) return;
+    const inside = inNaveOrChancel(camera.position);
+    if (inside && controller.getMode() === 'orbit' && (wasInside === false || presetLanding)) setWalkMode(true);
+    wasInside = inside;
+    presetLanding = false;
+  }
+
   const presetBar = document.getElementById('preset-bar');
   const presetsToggleBtn = document.getElementById('btn-presets-toggle');
 
@@ -331,6 +353,7 @@ if (stage) {
       if (meta.doorsOpen) setDoorsOpen(true);
       setWalkMode(false);
     });
+    presetLanding = true;
   }
 
   // Bind Viewpoint Buttons & Guided Church Tour
@@ -853,6 +876,8 @@ if (stage) {
 
     updateBells();
     controller.update(dt);
+    autoWalkIndoors();
+    if (gravestoneEra.update(dt)) shadowsDirty = true;
     churchAudio.updateSpatial(camera.position, state.doorsOpen);
     // Console follows the organ voluntary: tambour open and keys/pedals moving only while it plays
     organAnimator.update(dt, churchAudio.isRunning(), churchAudio.getSoundingNotes());
