@@ -253,6 +253,7 @@ if (stage) {
   }
 
   function applyEraMaterials(era) {
+    mats.railingPaint.userData.rust.value = era === '1900' ? 0 : 1; // freshly painted railings in 1900
     for (const g of stainedGlass) {
       g.material = era === '1900' ? createPlainGlazingMaterial(g.userData.stainedMat) : g.userData.stainedMat;
     }
@@ -859,6 +860,12 @@ if (stage) {
   applyLighting('autumn');
   if (statusEl) statusEl.hidden = true;
   stage.dataset.state = 'ready';
+
+  // A kissing gate's leaf clanks against its end post, quieter the further off the listener is
+  kissingGates.onStop = (gate) => {
+    const p = camera.position;
+    churchAudio.playGateClang(Math.hypot(p.x - gate.x, p.y - gate.gate.position.y - 1, p.z - gate.z));
+  };
 
   const clock = new THREE.Clock();
   let elapsed = 0;

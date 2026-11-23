@@ -1858,6 +1858,7 @@ export function createMaterials(renderer) {
       roughness: 0.58,
       metalness: 0.68
     }),
+    railingPaint: createRailingPaintMaterial(),
     glassShade: new THREE.MeshStandardMaterial({
       color: 0xfbf7ee,
       emissive: 0xffe4b3,
@@ -1987,6 +1988,73 @@ export function createMaterials(renderer) {
 // window's own stained texture is reworked: the stone tracery and surround painted on it stay, while all its glass,
 // painted figures and leading included, becomes faintly green-tinted clear quarry glass behind diamond lead cames.
 const plainGlazingCache = new Map();
+/**
+ * Eggshell black paint on the churchyard's wrought-iron railings and kissing gates. Today it has weathered to a
+ * mild rust: small orange-brown patches where the paint has gone, matt where they are. userData.rust is the
+ * shader uniform (0 = freshly painted, 1900; 1 = today), set by main.js with the era. The patches are placed by
+ * world position, so the static-mesh merge leaves them where they were.
+ */
+export function createRailingPaintMaterial() {
+  // Eggshell: a soft sheen, not gloss
+  const mat = new THREE.MeshStandardMaterial({ color: 0x0a0a0c, roughness: 0.46, metalness: 0.08 });
+  const rust = { value: 1 };
+  mat.userData.rust = rust;
+  mat.onBeforeCompile = (shader) => {
+    shader.uniforms.uRust = rust;
+    shader.vertexShader = shader.vertexShader.replace('void main() {', 'varying vec3 vRustPos;\nvoid main() {').replace(
+      '#include <project_vertex>',
+      `#include <project_vertex>
+        vec4 rustP = vec4(transformed, 1.0);
+        #ifdef USE_INSTANCING
+          rustP = instanceMatrix * rustP;
+        #endif
+        vRustPos = (modelMatrix * rustP).xyz;`
+    );
+    shader.fragmentShader = shader.fragmentShader
+      .replace(
+        'void main() {',
+        `uniform float uRust;
+        varying vec3 vRustPos;
+        float rustHash(vec3 p) {
+          p = fract(p * 0.3183099 + 0.1);
+          p *= 17.0;
+          return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
+        }
+        float rustNoise(vec3 x) {
+          vec3 i = floor(x);
+          vec3 f = fract(x);
+          f = f * f * (3.0 - 2.0 * f);
+          return mix(mix(mix(rustHash(i), rustHash(i + vec3(1, 0, 0)), f.x),
+                         mix(rustHash(i + vec3(0, 1, 0)), rustHash(i + vec3(1, 1, 0)), f.x), f.y),
+                     mix(mix(rustHash(i + vec3(0, 0, 1)), rustHash(i + vec3(1, 0, 1)), f.x),
+                         mix(rustHash(i + vec3(0, 1, 1)), rustHash(i + vec3(1, 1, 1)), f.x), f.y), f.z);
+        }
+        void main() {
+          float rustMask = 0.0;`
+      )
+      .replace(
+        '#include <color_fragment>',
+        `#include <color_fragment>
+        if (uRust > 0.0) {
+          float n = rustNoise(vRustPos * 7.0) * 0.65 + rustNoise(vRustPos * 31.0) * 0.35;
+          rustMask = smoothstep(0.66, 0.78, n) * uRust * 0.12; // a faint bloom of rust showing through the paint
+          vec3 rustCol = mix(vec3(0.20, 0.075, 0.03), vec3(0.42, 0.19, 0.08), rustNoise(vRustPos * 90.0));
+          diffuseColor.rgb = mix(diffuseColor.rgb, rustCol, rustMask);
+        }`
+      )
+      .replace(
+        '#include <roughnessmap_fragment>',
+        '#include <roughnessmap_fragment>\nroughnessFactor = mix(roughnessFactor, 0.88, rustMask);'
+      )
+      .replace(
+        '#include <metalnessmap_fragment>',
+        '#include <metalnessmap_fragment>\nmetalnessFactor = mix(metalnessFactor, 0.0, rustMask);'
+      );
+  };
+  mat.customProgramCacheKey = () => 'railing-paint-rust';
+  return mat;
+}
+
 export function createPlainGlazingMaterial(stainedMat) {
   let mat = plainGlazingCache.get(stainedMat);
   if (mat) return mat;

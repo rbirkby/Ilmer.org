@@ -1340,18 +1340,39 @@ function addPathSlab(parent, mats, x0, z0, x1, z1, width = PATH_WIDTH) {
   parent.add(edges);
 }
 
-const RAILING_TAPER_LEN = 0.1; // only the top ~10 cm tapers to a point
+const RAILING_TAPER_LEN = 0.1; // only the top ~10 cm tapers
+
+/**
+ * The top of a railing upright: tapers over RAILING_TAPER_LEN from the shaft's radius to a small rounded tip (not a
+ * sharp point), centred on its height like the CylinderGeometry it replaced. Cached per radius & segment count.
+ */
+const railingTipCache = new Map();
+function railingTipGeometry(baseR, segments) {
+  const key = `${baseR}:${segments}`;
+  let geo = railingTipCache.get(key);
+  if (geo) return geo;
+  const h = RAILING_TAPER_LEN;
+  const tipR = baseR * 0.38;
+  const pts = [new THREE.Vector2(baseR, -h / 2), new THREE.Vector2(tipR, h / 2 - tipR)];
+  for (let i = 1; i <= 5; i++) {
+    const a = (i / 5) * (Math.PI / 2);
+    pts.push(new THREE.Vector2(Math.max(tipR * Math.cos(a), 0.0001), h / 2 - tipR + tipR * Math.sin(a)));
+  }
+  geo = new THREE.LatheGeometry(pts, segments);
+  railingTipCache.set(key, geo);
+  return geo;
+}
 
 /** Straight shaft + short tapered tip (no full-length taper, no separate cone finial). */
 function addTaperedUpright(parent, mats, x, baseR) {
-  const iron = mats.iron;
+  const iron = mats.railingPaint; // eggshell black, mildly rusted today
   const shaftH = RAILING_HEIGHT - RAILING_TAPER_LEN;
   const shaft = new THREE.Mesh(new THREE.CylinderGeometry(baseR, baseR, shaftH, 6), iron);
   shaft.position.set(x, shaftH * 0.5, 0);
   shaft.castShadow = true;
   parent.add(shaft);
   // Top 10 cm: same radius as the shaft, tapering to a point
-  const tip = new THREE.Mesh(new THREE.CylinderGeometry(0.001, baseR, RAILING_TAPER_LEN, 6), iron);
+  const tip = new THREE.Mesh(railingTipGeometry(baseR, 6), iron);
   tip.position.set(x, shaftH + RAILING_TAPER_LEN * 0.5, 0);
   tip.castShadow = true;
   parent.add(tip);
@@ -1360,7 +1381,7 @@ function addTaperedUpright(parent, mats, x, baseR) {
 /** Wrought-iron railing panel: uprights with a short top taper, joined by flat horizontal bars. */
 function buildIronRailPanel(mats, length, { includeStartPost = true, includeEndPost = true } = {}) {
   const g = new THREE.Group();
-  const iron = mats.iron;
+  const iron = mats.railingPaint; // eggshell black, mildly rusted today
   const barH = 0.035;
   const barT = 0.012;
   const picketBaseR = 0.012;
@@ -1387,7 +1408,7 @@ function buildIronRailPanel(mats, length, { includeStartPost = true, includeEndP
 
   const picketCount = Math.max(2, Math.floor(length / RAILING_PICKET_SPACING) + 1);
   const shaftGeo = new THREE.CylinderGeometry(picketBaseR, picketBaseR, shaftH, 6);
-  const tipGeo = new THREE.CylinderGeometry(0.001, picketBaseR, RAILING_TAPER_LEN, 6);
+  const tipGeo = railingTipGeometry(picketBaseR, 6);
   const shafts = new THREE.InstancedMesh(shaftGeo, iron, picketCount);
   const tips = new THREE.InstancedMesh(tipGeo, iron, picketCount);
   shafts.castShadow = true;
@@ -1425,7 +1446,7 @@ const KISSING_LEAF_LIMIT = Math.PI / 2 - 0.09; // the leaf's end stops against t
 
 function buildKissingGate(mats) {
   const g = new THREE.Group();
-  const iron = mats.iron;
+  const iron = mats.railingPaint; // eggshell black, mildly rusted today
   const r = KISSING_GATE_RADIUS;
   const picketR = 0.011;
   const postR = 0.038;
@@ -1449,7 +1470,7 @@ function buildKissingGate(mats) {
     shaft.position.set(x, shaftH * 0.5, z);
     shaft.castShadow = true;
     g.add(shaft);
-    const tip = new THREE.Mesh(new THREE.CylinderGeometry(0.001, radius, RAILING_TAPER_LEN, 8), iron);
+    const tip = new THREE.Mesh(railingTipGeometry(radius, 8), iron);
     tip.position.set(x, shaftH + RAILING_TAPER_LEN * 0.5, z);
     tip.castShadow = true;
     g.add(tip);
@@ -1462,7 +1483,7 @@ function buildKissingGate(mats) {
 
   // U-shaped enclosure: uprights on the semicircle between its end posts
   const shaftGeo = new THREE.CylinderGeometry(picketR, picketR, shaftH, 6);
-  const tipGeo = new THREE.CylinderGeometry(0.001, picketR, RAILING_TAPER_LEN, 6);
+  const tipGeo = railingTipGeometry(picketR, 6);
   const shafts = new THREE.InstancedMesh(shaftGeo, iron, arcCount - 1);
   const tips = new THREE.InstancedMesh(tipGeo, iron, arcCount - 1);
   shafts.castShadow = true;
@@ -1552,6 +1573,8 @@ function createKissingGateAnimator(gates) {
   }
   return {
     gates,
+    /** Called with a gate record each time its leaf swings shut against an end post (main.js plays a clang) */
+    onStop: null,
     update(dt, walker) {
       let moving = false;
       for (const rec of gates) {
@@ -1572,6 +1595,8 @@ function createKissingGateAnimator(gates) {
           rec.angle += step;
           rec.pivot.rotation.y = -rec.angle;
           moving = true;
+          // Iron on iron as the leaf meets the end-stop post
+          if (Math.abs(rec.angle - target) <= 1e-3 && Math.abs(target) === KISSING_LEAF_LIMIT) this.onStop?.(rec);
         }
       }
       return moving;

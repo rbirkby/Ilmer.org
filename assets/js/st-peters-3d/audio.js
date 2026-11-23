@@ -674,6 +674,94 @@ export function createChurchAudio() {
     return true;
   }
 
+  // A kissing gate's iron leaf striking its end-stop post: struck bar iron rings with the inharmonic modes of a
+  // free bar (1 : 2.76 : 5.40 : 8.93), each a detuned pair so it shimmers, over a hard click; the leaf rattles
+  // back once against the post a moment later. Out in the open air, so no stone reverb; further off it is
+  // quieter and duller. distance in metres.
+  const CLANG_MODES = [
+    { ratio: 1, gain: 0.42, decay: 1.6 },
+    { ratio: 2, gain: 0.2, decay: 1.3 }, // two extra partials (an octave and a ring between) to fill the tone out
+    { ratio: 2.76, gain: 0.34, decay: 1.1 },
+    { ratio: 4.1, gain: 0.16, decay: 0.85 },
+    { ratio: 5.4, gain: 0.22, decay: 0.7 },
+    { ratio: 8.93, gain: 0.12, decay: 0.4 }
+  ];
+  function strikeIron(dest, t0, baseHz, level) {
+    for (const m of CLANG_MODES) {
+      for (const side of [-1, 1]) {
+        const osc = context.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.value = baseHz * m.ratio * (1 + side * 0.0025);
+        const g = context.createGain();
+        g.gain.setValueAtTime(0.0001, t0);
+        g.gain.linearRampToValueAtTime(m.gain * level * 0.5, t0 + 0.0015);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + m.decay);
+        osc.connect(g);
+        g.connect(dest);
+        osc.start(t0);
+        osc.stop(t0 + m.decay + 0.02);
+      }
+    }
+    // The hit itself: a very short, bright burst of noise
+    const len = Math.floor(context.sampleRate * 0.012);
+    const buf = context.createBuffer(1, len, context.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+    const noise = context.createBufferSource();
+    noise.buffer = buf;
+    const hp = context.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 1500;
+    const ng = context.createGain();
+    ng.gain.value = 0.7 * level;
+    noise.connect(hp);
+    hp.connect(ng);
+    ng.connect(dest);
+    noise.start(t0);
+  }
+  // A one-second reverberant tail for the clang: decaying noise, a little darker as it dies away
+  let clangReverb = null;
+  function ensureClangReverb() {
+    if (clangReverb) return clangReverb;
+    const rate = context.sampleRate;
+    const len = Math.floor(rate * 1.0);
+    const ir = context.createBuffer(2, len, rate);
+    for (let ch = 0; ch < 2; ch++) {
+      const d = ir.getChannelData(ch);
+      let lp = 0;
+      for (let i = 0; i < len; i++) {
+        const t = i / len;
+        lp += (Math.random() * 2 - 1 - lp) * (0.9 - 0.6 * t); // duller towards the end
+        d[i] = lp * Math.pow(1 - t, 2.2);
+      }
+    }
+    const conv = context.createConvolver();
+    conv.buffer = ir;
+    const wet = context.createGain();
+    wet.gain.value = 0.55;
+    conv.connect(wet);
+    wet.connect(context.destination);
+    clangReverb = conv;
+    return conv;
+  }
+  function playGateClang(distance = 0, level = 0.3) {
+    if (muted || !context || context.state !== 'running') return false;
+    const t0 = context.currentTime;
+    const voice = context.createGain();
+    voice.gain.value = level / (1 + (distance * distance) / 25);
+    const air = context.createBiquadFilter();
+    air.type = 'lowpass';
+    air.frequency.value = 12000 / (1 + distance / 12);
+    voice.connect(air);
+    air.connect(context.destination);
+    air.connect(ensureClangReverb());
+    const baseHz = 260 * (1 + (Math.random() - 0.5) * 0.05); // no two knocks quite alike
+    strikeIron(voice, t0, baseHz, 1);
+    strikeIron(voice, t0 + 0.085 + Math.random() * 0.03, baseHz, 0.35); // the leaf rattles back against the post
+    window.setTimeout(() => voice.disconnect(), 3000);
+    return true;
+  }
+
   function updateSpatial(cameraPos, doorsOpen) {
     const acoustics = computeChurchAcoustics(cameraPos, doorsOpen);
     targetGain = acoustics.gain;
@@ -691,6 +779,7 @@ export function createChurchAudio() {
     updateSpatial,
     getSoundingNotes,
     playHymn,
-    playBell
+    playBell,
+    playGateClang
   };
 }

@@ -207,8 +207,17 @@ test('north churchyard wrought-iron railings follow the 1839 boundary with kissi
   assert.match(churchyard, /placeKissingGate\(g, mats, frontage\[0\], frontage\[1\], WEST_RAILING_SOUTH_END\)/);
   assert.match(churchyard, /placeKissingGate\(g, mats, frontage\[n - 1\], frontage\[n - 2\]\)/);
   assert.match(churchyard, /function createKissingGateAnimator/);
+  // The leaf clanks as it meets its end post
+  assert.match(churchyard, /this\.onStop\?\.\(rec\)/);
+  const mainSrc = readFileSync(new URL('assets/js/st-peters-3d/main.js', root), 'utf8');
+  assert.match(mainSrc, /kissingGates\.onStop = /);
+  assert.match(mainSrc, /churchAudio\.playGateClang\(/);
+  assert.match(readFileSync(new URL('assets/js/st-peters-3d/audio.js', root), 'utf8'), /function playGateClang/);
   assert.match(churchyard, /RAILING_TAPER_LEN = 0\.1/); // only the top ~10 cm tapers
-  assert.match(churchyard, /CylinderGeometry\(0\.001, (?:picketBaseR|baseR|radius), RAILING_TAPER_LEN/);
+  // Tips taper to a small rounded end, not a sharp point
+  assert.match(churchyard, /railingTipGeometry\((?:picketBaseR|baseR|radius|picketR), \d\)/);
+  assert.doesNotMatch(churchyard, /CylinderGeometry\(0\.001, \w+, RAILING_TAPER_LEN/);
+  assert.match(churchyard, /new THREE\.LatheGeometry\(pts, segments\)/);
   const railingFn = churchyard.slice(
     churchyard.indexOf('function addTaperedUpright'),
     churchyard.indexOf('function buildKissingGate')
