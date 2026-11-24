@@ -68,7 +68,9 @@ export function createHorseAndCart(THREE, { timber }) {
   function add(parent, geometry, mat, x = 0, y = 0, z = 0) {
     const mesh = new THREE.Mesh(geometry, mat);
     mesh.position.set(x, y, z);
-    mesh.castShadow = true;
+    // The cart tours the lane all the time. It receives shadows but does not cast them, so the village
+    // shadow map can stay frozen instead of being redrawn for a moving caster.
+    mesh.castShadow = false;
     mesh.receiveShadow = true;
     parent.add(mesh);
     return mesh;

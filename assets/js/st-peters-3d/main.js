@@ -863,8 +863,6 @@ if (stage) {
 
   setEra('today', true);
   applyLighting('autumn');
-  if (statusEl) statusEl.hidden = true;
-  stage.dataset.state = 'ready';
 
   // A kissing gate's leaf clanks against its end post, quieter the further off the listener is
   kissingGates.onStop = (gate) => {
@@ -918,5 +916,25 @@ if (stage) {
     stats?.frame(renderer, performance.now() - frameStart);
   }
 
-  animate();
+  // Building every shader on the first rendered frame blocks the main thread for many seconds in
+  // software WebGL. compileAsync compiles ahead of that frame and, where the browser allows, overlaps
+  // the GPU compile with the loading message via KHR_parallel_shader_compile. Hidden merged originals
+  // are included: three.js compiles every mesh it is given, and dropping them still leaves the first
+  // frame to compile the shadow-depth programs it actually draws.
+  renderer.compileAsync(scene, camera).then(
+    () => {
+      if (statusEl) statusEl.hidden = true;
+      stage.dataset.state = 'ready';
+      animate();
+    },
+    (error) => {
+      console.error("St Peter's 3D reconstruction could not start:", error);
+      stage.dataset.state = 'error';
+      if (statusEl) {
+        statusEl.hidden = false;
+        statusEl.textContent =
+          'The 3D view could not load its JavaScript modules. Please reload the page and check your connection.';
+      }
+    }
+  );
 }

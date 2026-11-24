@@ -212,6 +212,7 @@ test('north churchyard wrought-iron railings follow the 1839 boundary with kissi
   // The leaf clanks as it meets its end post
   assert.match(churchyard, /this\.onStop\?\.\(rec\)/);
   const mainSrc = readFileSync(new URL('assets/js/st-peters-3d/main.js', root), 'utf8');
+  assert.match(mainSrc, /renderer\.compileAsync\(scene, camera\)\.then\(/);
   assert.match(mainSrc, /kissingGates\.onStop = /);
   assert.match(mainSrc, /churchAudio\.playGateClang\(/);
   assert.match(readFileSync(new URL('assets/js/st-peters-3d/audio.js', root), 'utf8'), /function playGateClang/);
