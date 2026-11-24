@@ -85,7 +85,9 @@ test('does not invent regnal years for gaps or invalid dates', () => {
 });
 
 test('covers every timeline date and escapes joint regnal years in the date toggle', async () => {
-  const events = JSON.parse(readFileSync(new URL('../_data/historicalEvents.json', import.meta.url), 'utf8'));
+  const events = JSON.parse(readFileSync(new URL('../_data/historicalEvents.json', import.meta.url), 'utf8')) as {
+    date: string;
+  }[];
   for (const event of events) {
     if (event.date !== 'pre-1066') assert.notEqual(regnalYears(event.date), '', event.date);
   }

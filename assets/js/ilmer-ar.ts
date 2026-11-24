@@ -1,27 +1,50 @@
 const metresPerDegree = 111320;
 
-export function compassHeading(event: any) {
-  if (!Number.isFinite(event.beta) || !Number.isFinite(event.gamma)) return null;
-  if (Number.isFinite(event.webkitCompassHeading)) return (360 - event.webkitCompassHeading) % 360;
-  return event.absolute === true && Number.isFinite(event.alpha) ? event.alpha : null;
+/** The parts of a DeviceOrientationEvent the compass reads; Safari adds its own `webkitCompassHeading`. */
+export interface OrientationReading {
+  alpha?: number | null;
+  beta?: number | null;
+  gamma?: number | null;
+  absolute?: boolean;
+  webkitCompassHeading?: number;
 }
 
-export function observeCompassAvailability(target: any, onAvailable: any) {
+/** The window, or a stand-in for it in tests. */
+export interface OrientationTarget extends EventTarget {
+  DeviceOrientationEvent?: object;
+  matchMedia(query: string): { matches: boolean };
+}
+
+/** A tithe-map pixel with its GPS position. */
+export interface GeoLandmark {
+  x: number;
+  y: number;
+  lon: number;
+  lat: number;
+}
+
+const finite = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value);
+
+export function compassHeading(event: OrientationReading) {
+  if (!finite(event.beta) || !finite(event.gamma)) return null;
+  if (finite(event.webkitCompassHeading)) return (360 - event.webkitCompassHeading) % 360;
+  return event.absolute === true && finite(event.alpha) ? event.alpha : null;
+}
+
+export function observeCompassAvailability(target: OrientationTarget, onAvailable: () => void) {
   const stop = () => {
     target.removeEventListener('deviceorientation', observe);
     target.removeEventListener('deviceorientationabsolute', observe);
   };
-  function observe(event: any) {
-    if (compassHeading(event) === null) return;
+  function observe(event: Event) {
+    if (compassHeading(event as OrientationReading) === null) return;
     stop();
     onAvailable();
   }
-  if (!target.DeviceOrientationEvent) return stop;
+  const orientationApi = target.DeviceOrientationEvent as { requestPermission?: unknown } | undefined;
+  if (!orientationApi) return stop;
   // Permission-gated phones cannot emit a heading until the user taps the AR button.
-  if (
-    typeof target.DeviceOrientationEvent.requestPermission === 'function' &&
-    target.matchMedia('(any-pointer: coarse)').matches
-  ) {
+  if (typeof orientationApi.requestPermission === 'function' && target.matchMedia('(any-pointer: coarse)').matches) {
     onAvailable();
   } else {
     target.addEventListener('deviceorientation', observe);
@@ -30,8 +53,8 @@ export function observeCompassAvailability(target: any, onAvailable: any) {
   return stop;
 }
 
-function solve(matrix: any, values: any) {
-  const rows = matrix.map((row: any, index: any) => [...row, values[index]]);
+function solve(matrix: number[][], values: number[]) {
+  const rows = matrix.map((row, index) => [...row, values[index]]);
   for (let column = 0; column < rows.length; column++) {
     let pivot = column;
     for (let row = column + 1; row < rows.length; row++) {
@@ -40,20 +63,20 @@ function solve(matrix: any, values: any) {
     [rows[column], rows[pivot]] = [rows[pivot], rows[column]];
     if (Math.abs(rows[column][column]) < 1e-12) throw new Error('GPS map landmarks are degenerate.');
     const divisor = rows[column][column];
-    rows[column] = rows[column].map((value: any) => value / divisor);
+    rows[column] = rows[column].map((value) => value / divisor);
     for (let row = 0; row < rows.length; row++) {
       if (row === column) continue;
       const factor = rows[row][column];
-      rows[row] = rows[row].map((value: any, index: any) => value - factor * rows[column][index]);
+      rows[row] = rows[row].map((value, index) => value - factor * rows[column][index]);
     }
   }
-  return rows.map((row: any) => row.at(-1));
+  return rows.map((row) => row[row.length - 1]);
 }
 
-function fitCoordinate(points: any, values: any) {
-  const normal = Array.from({ length: 3 }, () => Array(3).fill(0));
-  const right = Array(3).fill(0);
-  points.forEach(([x, y]: [any, any], index: any) => {
+function fitCoordinate(points: [number, number][], values: number[]) {
+  const normal = Array.from({ length: 3 }, () => [0, 0, 0]);
+  const right = [0, 0, 0];
+  points.forEach(([x, y], index) => {
     const row = [1, x, y];
     for (let i = 0; i < 3; i++) {
       right[i] += row[i] * values[index];
@@ -63,7 +86,7 @@ function fitCoordinate(points: any, values: any) {
   return solve(normal, right);
 }
 
-export function createGeoReference(landmarks: any) {
+export function createGeoReference(landmarks: readonly GeoLandmark[]) {
   if (
     !Array.isArray(landmarks) ||
     landmarks.length < 3 ||
@@ -85,7 +108,7 @@ export function createGeoReference(landmarks: any) {
   const originLatitude = landmarks.reduce((sum, point) => sum + point.lat, 0) / landmarks.length;
   const originLongitude = landmarks.reduce((sum, point) => sum + point.lon, 0) / landmarks.length;
   const longitudeScale = metresPerDegree * Math.cos((originLatitude * Math.PI) / 180);
-  const points = landmarks.map(({ x, y }) => [(x - originX) / 1000, (y - originY) / 1000]);
+  const points = landmarks.map(({ x, y }): [number, number] => [(x - originX) / 1000, (y - originY) / 1000]);
   const eastings = landmarks.map(({ lon }) => (lon - originLongitude) * longitudeScale);
   const northings = landmarks.map(({ lat }) => (lat - originLatitude) * metresPerDegree);
   const east = fitCoordinate(points, eastings);
@@ -95,7 +118,9 @@ export function createGeoReference(landmarks: any) {
   return { originX, originY, originLatitude, originLongitude, longitudeScale, east, north, determinant };
 }
 
-export function gpsToMapPixel(reference: any, latitude: any, longitude: any) {
+export type GeoReference = ReturnType<typeof createGeoReference>;
+
+export function gpsToMapPixel(reference: GeoReference, latitude: number, longitude: number) {
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || Math.abs(latitude) > 90 || Math.abs(longitude) > 180)
     throw new Error('Invalid GPS position.');
   const east = (longitude - reference.originLongitude) * reference.longitudeScale - reference.east[0];

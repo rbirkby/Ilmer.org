@@ -8,8 +8,42 @@ import {
   lowerPaddock
 } from './ilmer-1839-data.ts';
 
+export type Species = 'sheep' | 'chicken' | 'duck';
+
+export interface LivestockField {
+  id: string;
+  species: Species;
+  count: number;
+  centre: [number, number];
+  outline: number[][];
+}
+
+export interface Animal {
+  id: string;
+  x: number;
+  z: number;
+  heading: number;
+  target: [number, number];
+  mode: 'feeding' | 'walking';
+  remaining: number;
+  phase: number;
+  travelled: number;
+}
+
+export interface Herd {
+  id: string;
+  species: Species;
+  polygon: [number, number][];
+  radius: number;
+  random: () => number;
+  safe: (x: number, z: number) => boolean;
+  centre: [number, number];
+  spread: number;
+  animals: Animal[];
+}
+
 // These groups illustrate husbandry, not a recorded 1839 animal census.
-export const livestockFields = [
+export const livestockFields: LivestockField[] = [
   {
     id: 'western-pasture',
     species: 'sheep',
@@ -54,7 +88,7 @@ export const livestockFields = [
   }
 ];
 
-export function withinField(polygon: any, x: any, z: any, margin = 0) {
+export function withinField(polygon: readonly (readonly number[])[], x: number, z: number, margin = 0) {
   let inside = false;
   for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
     const [ax, az] = polygon[j],
@@ -69,12 +103,10 @@ export function withinField(polygon: any, x: any, z: any, margin = 0) {
   return inside;
 }
 
-/**
- * @typedef {{id: string, x: number, z: number, heading: number, target: number[],
- * mode: 'feeding' | 'walking', remaining: number, phase: number, travelled: number}} Animal
- * @param {(x: number, z: number, radius: number, field: string) => boolean} [blocked]
- */
-export function createLivestock(blocked: (...args: any[]) => boolean = () => false) {
+/** @param blocked whether an animal of this radius at (x, z) would stand on a road or in a building */
+export function createLivestock(
+  blocked: (x: number, z: number, radius: number, field: string) => boolean = () => false
+): Herd[] {
   return livestockFields.map((field, index) => {
     let seed = 1839 + index * 7919;
     const random = () => {
@@ -82,15 +114,14 @@ export function createLivestock(blocked: (...args: any[]) => boolean = () => fal
       return seed / 0x100000000;
     };
     const polygon = field.outline.map(([x, y]) => mapPoint(x, y));
-    const centre = mapPoint(...(field.centre as [number, number]));
+    const centre = mapPoint(...field.centre);
     const radius = field.species === 'sheep' ? 1.5 : 0.85;
     const spread = field.species === 'sheep' ? 11 : 4;
-    const safe = (x: any, z: any) => withinField(polygon, x, z, radius) && !blocked(x, z, radius, field.id);
-    /** @type {Animal[]} */
-    const animals: any[] = [];
-    const herd = { id: field.id, species: field.species, polygon, radius, random, safe, centre, spread, animals };
+    const safe = (x: number, z: number) => withinField(polygon, x, z, radius) && !blocked(x, z, radius, field.id);
+    const animals: Animal[] = [];
+    const herd: Herd = { id: field.id, species: field.species, polygon, radius, random, safe, centre, spread, animals };
     for (let i = 0; i < field.count; i++) {
-      let position;
+      let position: [number, number] | undefined;
       for (let attempt = 0; attempt < 1000; attempt++) {
         const x = centre[0] + (random() - 0.5) * spread * 2;
         const z = centre[1] + (random() - 0.5) * spread * 2;
@@ -116,7 +147,7 @@ export function createLivestock(blocked: (...args: any[]) => boolean = () => fal
   });
 }
 
-export function advanceLivestock(herds: any, seconds: any) {
+export function advanceLivestock(herds: readonly Herd[], seconds: number) {
   if (!Number.isFinite(seconds) || seconds < 0 || seconds > 0.25) throw new Error('Invalid livestock animation step');
   for (const herd of herds) {
     for (const animal of herd.animals) {
@@ -158,9 +189,7 @@ export function advanceLivestock(herds: any, seconds: any) {
           const x = animal.x + (dx / distance) * step,
             z = animal.z + (dz / distance) * step;
           if (
-            herd.animals.every(
-              (other: any) => other === animal || Math.hypot(x - other.x, z - other.z) > herd.radius * 1.4
-            )
+            herd.animals.every((other) => other === animal || Math.hypot(x - other.x, z - other.z) > herd.radius * 1.4)
           ) {
             animal.x = x;
             animal.z = z;

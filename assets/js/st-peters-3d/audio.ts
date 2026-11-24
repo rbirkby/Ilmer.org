@@ -295,7 +295,7 @@ export function createChurchAudio() {
   let nextBarTime = 0;
   let targetGain = 0.075;
   let targetCutoff = 680;
-  const activeNodes = new Set();
+  const activeNodes = new Set<OscillatorNode>();
   // Notes scheduled on the audio clock, so the organ console can show what is sounding: { midi, start, end, pedal }
   let scheduledNotes: Array<{ midi: number; start: number; end: number; pedal: boolean }> = [];
   // Note envelopes still sounding or yet to sound, so a hymn can cut the voluntary short

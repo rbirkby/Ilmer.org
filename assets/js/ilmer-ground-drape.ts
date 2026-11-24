@@ -2,21 +2,28 @@
 // meshes from these functions, and the tree-placement script uses the same ones, so a verge clearance
 // computed ahead of time still matches the roads the page draws.
 
+import type * as Three from 'three';
+import type { TerrainGrid } from './ilmer-terrain.ts';
+import type { Point, Triangle } from './ilmer-trees.ts';
+
+type GroundHeight = (x: number, z: number) => number;
+type MapPoint = (x: number, y: number) => Point;
+
 export function drapeOntoTerrain(
-  THREE: any,
-  terrain: any,
-  groundHeight: any,
-  sourceGeometry: any,
-  elevation: any,
-  fixedHeight = null
+  THREE: typeof Three,
+  terrain: TerrainGrid,
+  groundHeight: GroundHeight,
+  sourceGeometry: Three.BufferGeometry,
+  elevation: number,
+  fixedHeight: number | null = null
 ) {
-  const position = sourceGeometry.attributes.position;
-  const vertices = [];
+  const position = sourceGeometry.getAttribute('position');
+  const vertices: number[] = [];
   const dx = terrain.width / (terrain.columns - 1);
   const dz = terrain.depth / (terrain.rows - 1);
   let maxDrapeError = 0;
-  function clippedPolygon(polygon: any, clip: any) {
-    const cross = (a: any, b: any, p: any) => (b[0] - a[0]) * (p[1] - a[1]) - (b[1] - a[1]) * (p[0] - a[0]);
+  function clippedPolygon(polygon: Point[], clip: Point[]) {
+    const cross = (a: Point, b: Point, p: Point) => (b[0] - a[0]) * (p[1] - a[1]) - (b[1] - a[1]) * (p[0] - a[0]);
     const sign = Math.sign(cross(clip[0], clip[1], clip[2]));
     let result = polygon;
     for (let edge = 0; edge < 3; edge++) {
@@ -39,7 +46,7 @@ export function drapeOntoTerrain(
     return result;
   }
   for (let i = 0; i < position.count; i += 3) {
-    const corners = [0, 1, 2].map((offset) => [position.getX(i + offset), -position.getY(i + offset)]);
+    const corners = [0, 1, 2].map((offset): Point => [position.getX(i + offset), -position.getY(i + offset)]);
     const minCol = Math.max(0, Math.floor((Math.min(...corners.map((p) => p[0])) + terrain.width / 2) / dx));
     const maxCol = Math.min(
       terrain.columns - 2,
@@ -53,10 +60,10 @@ export function drapeOntoTerrain(
     // Clip field faces to the same triangles as the DTM, avoiding layers cutting through hills.
     for (let row = minRow; row <= maxRow; row++) {
       for (let col = minCol; col <= maxCol; col++) {
-        const a = [-terrain.width / 2 + col * dx, -terrain.depth / 2 + row * dz];
-        const b = [a[0], a[1] + dz];
-        const c = [a[0] + dx, a[1] + dz];
-        const d = [a[0] + dx, a[1]];
+        const a: Point = [-terrain.width / 2 + col * dx, -terrain.depth / 2 + row * dz];
+        const b: Point = [a[0], a[1] + dz];
+        const c: Point = [a[0] + dx, a[1] + dz];
+        const d: Point = [a[0] + dx, a[1]];
         for (const face of [
           [a, b, d],
           [b, c, d]
@@ -76,7 +83,7 @@ export function drapeOntoTerrain(
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
   geometry.computeVertexNormals();
   if (fixedHeight === null) {
-    const positions = geometry.attributes.position;
+    const positions = geometry.getAttribute('position');
     for (let i = 0; i < positions.count; i++) {
       maxDrapeError = Math.max(
         maxDrapeError,
@@ -88,16 +95,16 @@ export function drapeOntoTerrain(
 }
 
 export function drapeMapPolygon(
-  THREE: any,
-  terrain: any,
-  groundHeight: any,
-  mapPoint: any,
-  points: any,
-  elevation: any,
-  fixedHeight = null
+  THREE: typeof Three,
+  terrain: TerrainGrid,
+  groundHeight: GroundHeight,
+  mapPoint: MapPoint,
+  points: readonly (readonly number[])[],
+  elevation: number,
+  fixedHeight: number | null = null
 ) {
   const shape = new THREE.Shape();
-  points.forEach(([x, y]: [any, any], i: any) => {
+  points.forEach(([x, y], i) => {
     const [wx, wz] = mapPoint(x, y);
     if (i === 0) shape.moveTo(wx, -wz);
     else shape.lineTo(wx, -wz);
@@ -110,16 +117,16 @@ export function drapeMapPolygon(
 }
 
 export function drapeTrack(
-  THREE: any,
-  terrain: any,
-  groundHeight: any,
-  mapPoint: any,
-  points: any,
-  width: any,
-  elevation: any
+  THREE: typeof Three,
+  terrain: TerrainGrid,
+  groundHeight: GroundHeight,
+  mapPoint: MapPoint,
+  points: readonly (readonly number[])[],
+  width: number,
+  elevation: number
 ) {
   const curve = new THREE.CatmullRomCurve3(
-    points.map(([x, y]: [any, any]) => {
+    points.map(([x, y]) => {
       const [wx, wz] = mapPoint(x, y);
       return new THREE.Vector3(wx, elevation, wz);
     }),
@@ -127,9 +134,9 @@ export function drapeTrack(
     'centripetal'
   );
   const samples = curve.getPoints(Math.max(points.length * 12, Math.ceil(curve.getLength())));
-  const vertices: any[] = [];
-  const indices: any[] = [];
-  samples.forEach((p: any, i: any) => {
+  const vertices: number[] = [];
+  const indices: number[] = [];
+  samples.forEach((p, i) => {
     const tangent = samples[Math.min(i + 1, samples.length - 1)]
       .clone()
       .sub(samples[Math.max(i - 1, 0)])
@@ -149,7 +156,7 @@ export function drapeTrack(
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
   geometry.setIndex(indices);
   const flat = geometry.toNonIndexed();
-  const flatPositions = flat.attributes.position;
+  const flatPositions = flat.getAttribute('position');
   for (let i = 0; i < flatPositions.count; i++) {
     flatPositions.setXYZ(i, flatPositions.getX(i), -flatPositions.getZ(i), 0);
   }
@@ -158,9 +165,9 @@ export function drapeTrack(
   return draped;
 }
 
-export function trianglesXZ(geometry: any) {
-  const positions = geometry.attributes.position;
-  const triangles = [];
+export function trianglesXZ(geometry: Three.BufferGeometry) {
+  const positions = geometry.getAttribute('position');
+  const triangles: Triangle[] = [];
   for (let i = 0; i < positions.count; i += 3) {
     triangles.push([0, 1, 2].map((offset) => [positions.getX(i + offset), positions.getZ(i + offset)]));
   }

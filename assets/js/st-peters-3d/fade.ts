@@ -15,15 +15,50 @@ import * as THREE from 'three';
 export const FADE_SECONDS = 0.5;
 const FADE_UNIFORMS = ['uOpacity', 'uIntensity'];
 
-const smooth = (t: any) => t * t * (3 - 2 * t);
+const smooth = (t: number) => t * t * (3 - 2 * t);
 
-function copyMaterial(orig: any) {
+interface Fade {
+  obj: THREE.Object3D;
+  show: boolean;
+  t: number;
+}
+
+interface MaterialCopy {
+  orig: THREE.Material;
+  copy: THREE.Material;
+  /** The shader uniform the fade drives, if any. */
+  uniform: string | null;
+  written: number;
+  base?: number;
+  origSeen?: number;
+}
+
+type Renderable = THREE.Object3D & { material: THREE.Material | THREE.Material[] };
+
+interface FadingMesh {
+  mats: MaterialCopy[];
+  single: boolean;
+  castShadow: boolean;
+  fades: Set<Fade>;
+}
+
+interface FadingLight {
+  base: number;
+  written: number;
+  fades: Set<Fade>;
+}
+
+const isShader = (material: THREE.Material): material is THREE.ShaderMaterial =>
+  (material as Partial<THREE.ShaderMaterial>).isShaderMaterial === true;
+const hasMaterial = (object: THREE.Object3D): object is Renderable => !!(object as Partial<Renderable>).material;
+
+function copyMaterial(orig: THREE.Material): MaterialCopy {
   const copy = orig.clone();
   // clone() leaves out per-instance shader hooks (e.g. the solid-core cut faces); keep them, so the copy looks the same
   copy.onBeforeCompile = orig.onBeforeCompile;
   copy.customProgramCacheKey = orig.customProgramCacheKey;
   copy.userData = orig.userData;
-  if (orig.isShaderMaterial) {
+  if (isShader(orig) && isShader(copy)) {
     const key = FADE_UNIFORMS.find((k) => typeof orig.uniforms[k]?.value === 'number');
     // Share every uniform object, so whatever animates the original (time, tint) animates the copy too
     copy.uniforms = { ...orig.uniforms };
@@ -35,37 +70,37 @@ function copyMaterial(orig: any) {
 }
 
 export function createFader() {
-  const fades = new Map(); // object -> { show, t }
-  const meshes = new Map(); // mesh -> { mats, single, castShadow, fades: Set }
-  const lights = new Map(); // light -> { base, written, fades: Set }
-  const timers = new Map(); // key -> { left, fn }
+  const fades = new Map<THREE.Object3D, Fade>();
+  const meshes = new Map<Renderable, FadingMesh>();
+  const lights = new Map<THREE.Light, FadingLight>();
+  const timers = new Map<string, { left: number; fn: () => void }>();
   let shadowsChanged = false;
 
-  function enlist(fade: any, obj: any) {
-    obj.traverse((o: any) => {
-      if (o.isLight) {
+  function enlist(fade: Fade, obj: THREE.Object3D) {
+    obj.traverse((o) => {
+      if (o instanceof THREE.Light) {
         let l = lights.get(o);
         if (!l) lights.set(o, (l = { base: o.intensity, written: NaN, fades: new Set() }));
         l.fades.add(fade);
         return;
       }
-      if (!o.material) return;
+      if (!hasMaterial(o)) return;
       let m = meshes.get(o);
       if (!m) {
         const single = !Array.isArray(o.material);
-        const mats = (single ? [o.material] : o.material).map(copyMaterial);
+        const mats = (Array.isArray(o.material) ? o.material : [o.material]).map(copyMaterial);
         m = { mats, single, castShadow: o.castShadow, fades: new Set() };
-        o.material = single ? mats[0].copy : mats.map((c: any) => c.copy);
+        o.material = single ? mats[0].copy : mats.map((c) => c.copy);
         meshes.set(o, m);
       }
       m.fades.add(fade);
     });
   }
 
-  function release(fade: any) {
+  function release(fade: Fade) {
     for (const [o, m] of meshes) {
       if (!m.fades.delete(fade) || m.fades.size) continue;
-      o.material = m.single ? m.mats[0].orig : m.mats.map((c: any) => c.orig);
+      o.material = m.single ? m.mats[0].orig : m.mats.map((c) => c.orig);
       if (o.castShadow !== m.castShadow) shadowsChanged = true;
       o.castShadow = m.castShadow;
       for (const c of m.mats) c.copy.dispose();
@@ -80,7 +115,7 @@ export function createFader() {
 
   // Show or hide an object: fades over FADE_SECONDS, or at once when instant (scene start-up). Reversing mid-fade
   // carries on from where it is.
-  function setVisible(obj: any, show: any, instant = false) {
+  function setVisible(obj: THREE.Object3D, show: boolean, instant = false) {
     const fade = fades.get(obj);
     if (instant) {
       if (fade) {
@@ -104,14 +139,14 @@ export function createFader() {
 
   // Run fn half way through a fade (material swaps that can't fade, e.g. glazing): a later call with the same key
   // replaces it; instant runs it now
-  function atMidpoint(key: any, fn: any, instant = false) {
+  function atMidpoint(key: string, fn: () => void, instant = false) {
     timers.delete(key);
     if (instant) fn();
     else timers.set(key, { left: FADE_SECONDS / 2, fn });
   }
 
   // Advance the fades; true when the shadow map needs redrawing
-  function update(dt: any) {
+  function update(dt: number) {
     for (const [key, timer] of timers) {
       timer.left -= dt;
       if (timer.left <= 0) {
@@ -136,7 +171,7 @@ export function createFader() {
       for (const c of m.mats) {
         const { orig, copy } = c;
         copy.clippingPlanes = orig.clippingPlanes; // the half-hip clip changes with the era
-        if (orig.isShaderMaterial) {
+        if (isShader(orig) && isShader(copy)) {
           if (c.uniform) copy.uniforms[c.uniform].value = orig.uniforms[c.uniform].value * k;
           else copy.visible = orig.visible && k >= 0.5;
           continue;
@@ -146,7 +181,7 @@ export function createFader() {
         if (copy.opacity !== c.written) c.base = copy.opacity;
         else if (orig.opacity !== c.origSeen) c.base = orig.opacity;
         c.origSeen = orig.opacity;
-        copy.opacity = c.written = c.base * k;
+        copy.opacity = c.written = (c.base ?? orig.opacity) * k;
       }
       const cast = m.castShadow && k >= 0.5;
       if (o.castShadow !== cast) {

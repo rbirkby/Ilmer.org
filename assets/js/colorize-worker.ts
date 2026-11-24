@@ -6,23 +6,7 @@ const MODEL_URL = 'https://raw.githubusercontent.com/linmingren/openmodels/main/
 const MODEL_INPUT_SIZE = 256;
 const MAX_OUTPUT_WIDTH = 1600;
 
-// `importScripts` installs this on `self`. Only the members this worker uses are described here.
-type OrtTensor = { dims: number[]; data: ArrayLike<number> & Iterable<number> };
-type OrtSession = {
-  inputNames: string[];
-  outputNames: string[];
-  run(feeds: Record<string, unknown>): Promise<Record<string, OrtTensor | undefined>>;
-};
-type OrtRuntime = {
-  env?: { wasm?: { wasmPaths: string; numThreads: number } };
-  Tensor: new (type: string, data: Float32Array, dims: number[]) => unknown;
-  InferenceSession: {
-    create(
-      buffer: Uint8Array,
-      options: { executionProviders: string[]; graphOptimizationLevel: string }
-    ): Promise<OrtSession>;
-  };
-};
+// `importScripts` installs the ONNX runtime on `self` as `ort`; see types/browser-globals.d.ts.
 type ProgressReporter = (progress: number, label?: string) => void;
 
 let ortRuntimePromise: Promise<OrtRuntime> | undefined;

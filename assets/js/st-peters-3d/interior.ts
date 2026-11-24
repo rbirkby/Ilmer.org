@@ -3742,7 +3742,7 @@ export function buildInterior(mats: ChurchMaterials) {
   // Five-octave manual, C (MIDI 36) to C (96). Each key hangs from a pivot at its back end so it can dip when
   // played; the player sits at -X, so low notes (their left) are at +Z
   const isSharpMidi = (m: number) => [1, 3, 6, 8, 10].includes(m % 12);
-  const manualKeys = new Map();
+  const manualKeys = new Map<number, { pivot: THREE.Object3D; angle: number }>();
   const naturalsBefore = (lo: number, m: number) => {
     let n = 0;
     for (let k = lo; k < m; k++) if (!isSharpMidi(k)) n++;
@@ -3834,7 +3834,7 @@ export function buildInterior(mats: ChurchMaterials) {
   const hasSharpAfter = [true, true, false, true, true, true, false]; // C D E F G A B
   // Pedals hinge at the bench end (x = -0.72) so their toes, under the case, dip when played. Compass C (MIDI 36)
   // to G (67); each entry keeps its pivot for the organ animator
-  const pedalKeys = new Map();
+  const pedalKeys = new Map<number, { pivot: THREE.Object3D; angle: number }>();
   const naturalSteps = [0, 2, 4, 5, 7, 9, 11];
   const pedalHingeX = -0.72;
   for (let n = 0; n < 19; n++) {
@@ -4995,7 +4995,7 @@ function buildHarmonium(mats: ChurchMaterials) {
     add(new THREE.CylinderGeometry(0.05, 0.05, 0.06, 14), oak, s * (W * 0.5 - 0.06), 0.84, 0.22).rotateZ(Math.PI / 2);
   });
   // Five-octave keyboard, C (MIDI 36) to C (96), keys pivoted at their back ends; low notes at -X (player's left)
-  const keys = new Map();
+  const keys = new Map<number, { pivot: THREE.Object3D; angle: number }>();
   const isSharp = (m: number) => [1, 3, 6, 8, 10].includes(m % 12);
   let naturals = 0;
   for (let m = 36; m <= 96; m++) if (!isSharp(m)) naturals++;

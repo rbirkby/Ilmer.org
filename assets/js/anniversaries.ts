@@ -9,6 +9,11 @@ type Anniversary = { daysDiff: number; year: number; yearsAgo: number; id: strin
 
 // Anniversary Web Component using LitElement
 class TimelineAnniversary extends LitElement {
+  declare label?: string;
+  declare year?: string;
+  declare yearsAgo?: number;
+  declare target?: string;
+
   static properties = {
     label: { type: String },
     year: { type: String },
@@ -34,6 +39,16 @@ class TimelineAnniversary extends LitElement {
 
 // Timeline Anniversaries Web Component using LitElement
 class TimelineAnniversaries extends LitElement {
+  declare maxAnniversaries: number;
+  declare lookAheadDays: number;
+  declare events: TimelineEvent[];
+  declare anniversaries: Anniversary[];
+  dateUtils: DateUtils;
+  now: Date;
+  currentDay: number;
+  currentMonth: number;
+  currentYear: number;
+
   static properties = {
     maxAnniversaries: { type: Number, attribute: 'max-anniversaries' },
     lookAheadDays: { type: Number, attribute: 'look-ahead-days' },
@@ -69,7 +84,7 @@ class TimelineAnniversaries extends LitElement {
     const eventsScript = this.querySelector('script[data-events]');
     if (eventsScript) {
       try {
-        this.events = JSON.parse(eventsScript.textContent || '[]').map((event: TimelineEvent) => ({
+        this.events = (JSON.parse(eventsScript.textContent || '[]') as TimelineEvent[]).map((event) => ({
           id: event.id,
           date: event.date,
           title: event.title
@@ -118,7 +133,7 @@ class TimelineAnniversaries extends LitElement {
   // Anniversaries sharing a day are shown together under one date
   groupByDay() {
     const groups = new Map<number, Anniversary[]>();
-    for (const anniversary of this.anniversaries as Anniversary[]) {
+    for (const anniversary of this.anniversaries) {
       if (!groups.has(anniversary.daysDiff)) groups.set(anniversary.daysDiff, []);
       groups.get(anniversary.daysDiff)?.push(anniversary);
     }
@@ -192,5 +207,5 @@ class TimelineAnniversaries extends LitElement {
 }
 
 // Register the web components
-customElements.define('timeline-anniversary', TimelineAnniversary as unknown as CustomElementConstructor);
-customElements.define('timeline-anniversaries', TimelineAnniversaries as unknown as CustomElementConstructor);
+customElements.define('timeline-anniversary', TimelineAnniversary);
+customElements.define('timeline-anniversaries', TimelineAnniversaries);

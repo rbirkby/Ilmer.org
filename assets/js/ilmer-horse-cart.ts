@@ -12,6 +12,17 @@
 //
 // Units are metres. Each group's origin is on the ground; local -z points forward along the road.
 
+import type * as Three from 'three';
+
+type Vec3 = [number, number, number];
+
+interface Leg {
+  top: Three.Group;
+  joint: Three.Group;
+  fore: boolean;
+  baseY: number;
+}
+
 /** Distance from the cart's axle to the horse's centre, along the road. */
 export const HORSE_OFFSET = 2.95;
 /** Cart wheel radius (a 5 ft wheel). */
@@ -24,6 +35,7 @@ export const WALK_STRIDE = 1.85;
  * stride. Exported for tests.
  */
 export const WALK_PHASES = { lh: 0, lf: 0.25, rh: 0.5, rf: 0.75 };
+type LegKey = keyof typeof WALK_PHASES;
 
 /** Fraction of each leg's cycle spent with the hoof on the ground. */
 export const STANCE = 0.62;
@@ -32,7 +44,7 @@ export const STANCE = 0.62;
  * Swing angle (about the shoulder or hip) and lower-leg flexion for a leg at the given phase of the walk.
  * Positive swing moves the hoof forward; flexion is 0 on the ground and peaks mid-swing.
  */
-export function walkPose(phase: any, reach: any) {
+export function walkPose(phase: number, reach: number) {
   const p = ((phase % 1) + 1) % 1;
   if (p < STANCE) return { swing: reach * (1 - (2 * p) / STANCE), flex: 0 };
   const w = (p - STANCE) / (1 - STANCE);
@@ -40,8 +52,9 @@ export function walkPose(phase: any, reach: any) {
   return { swing: -reach + 2 * reach * eased, flex: Math.sin(Math.PI * w) };
 }
 
-export function createHorseAndCart(THREE: any, { timber }: any) {
-  const material = (color: any, extra = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.9, ...extra });
+export function createHorseAndCart(THREE: typeof Three, { timber }: { timber: Three.Material }) {
+  const material = (color: number, extra: Three.MeshStandardMaterialParameters = {}) =>
+    new THREE.MeshStandardMaterial({ color, roughness: 0.9, ...extra });
   const coat = material(0x5b3822, { roughness: 0.75 });
   const points = material(0x1f1814, { roughness: 0.85 });
   const white = material(0xe6dfd0);
@@ -65,7 +78,7 @@ export function createHorseAndCart(THREE: any, { timber }: any) {
   const sacking = material(0xb9a47a);
   const straw = material(0xd1b66a);
 
-  function add(parent: any, geometry: any, mat: any, x = 0, y = 0, z = 0) {
+  function add(parent: Three.Object3D, geometry: Three.BufferGeometry, mat: Three.Material, x = 0, y = 0, z = 0) {
     const mesh = new THREE.Mesh(geometry, mat);
     mesh.position.set(x, y, z);
     // The cart tours the lane all the time. It receives shadows but does not cast them, so the village
@@ -75,15 +88,32 @@ export function createHorseAndCart(THREE: any, { timber }: any) {
     parent.add(mesh);
     return mesh;
   }
-  const box = (parent: any, w: any, h: any, d: any, x: any, y: any, z: any, mat: any) =>
-    add(parent, new THREE.BoxGeometry(w, h, d), mat, x, y, z);
-  function ellipsoid(parent: any, rx: any, ry: any, rz: any, x: any, y: any, z: any, mat: any) {
+  const box = (
+    parent: Three.Object3D,
+    w: number,
+    h: number,
+    d: number,
+    x: number,
+    y: number,
+    z: number,
+    mat: Three.Material
+  ) => add(parent, new THREE.BoxGeometry(w, h, d), mat, x, y, z);
+  function ellipsoid(
+    parent: Three.Object3D,
+    rx: number,
+    ry: number,
+    rz: number,
+    x: number,
+    y: number,
+    z: number,
+    mat: Three.Material
+  ) {
     const mesh = add(parent, new THREE.SphereGeometry(1, 18, 12), mat, x, y, z);
     mesh.scale.set(rx, ry, rz);
     return mesh;
   }
   // A tapered round section between two points, rTop at `b`
-  function rod(parent: any, a: any, b: any, rA: any, rB: any, mat: any, segments = 10) {
+  function rod(parent: Three.Object3D, a: Vec3, b: Vec3, rA: number, rB: number, mat: Three.Material, segments = 10) {
     const start = new THREE.Vector3(...a);
     const end = new THREE.Vector3(...b);
     const length = start.distanceTo(end);
@@ -92,7 +122,7 @@ export function createHorseAndCart(THREE: any, { timber }: any) {
     mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), end.sub(start).normalize());
     return mesh;
   }
-  function pivot(parent: any, x: any, y: any, z: any) {
+  function pivot(parent: Three.Object3D, x: number, y: number, z: number) {
     const group = new THREE.Group();
     group.position.set(x, y, z);
     parent.add(group);
@@ -166,8 +196,8 @@ export function createHorseAndCart(THREE: any, { timber }: any) {
   bit.castShadow = false;
 
   // Legs: an upper pivot at the elbow or stifle swings the leg; a lower pivot at the knee or hock flexes it
-  const legs: Record<string, any> = {};
-  function buildLeg(key: any, x: any, z: any, fore: any) {
+  const legs = {} as Record<LegKey, Leg>;
+  function buildLeg(key: LegKey, x: number, z: number, fore: boolean) {
     const top = pivot(horse, x, fore ? 1.1 : 1.16, z);
     if (fore) rod(top, [0, 0.05, 0], [0, -0.5, 0], 0.12, 0.08, coat);
     else {
@@ -216,7 +246,7 @@ export function createHorseAndCart(THREE: any, { timber }: any) {
   rod(cart, [-1.1, wheelY, 0], [1.1, wheelY, 0], 0.045, 0.045, iron, 8);
   box(cart, 1.5, 0.12, 0.14, 0, wheelY + 0.12, 0, cartRed);
 
-  const wheels: any[] = [];
+  const wheels: Three.Group[] = [];
   for (const side of [-1, 1]) {
     const wheel = pivot(cart, side * 1.0, wheelY, 0);
     const tyre = add(wheel, new THREE.TorusGeometry(CART_WHEEL_RADIUS - 0.02, 0.03, 6, 32), iron);
@@ -313,17 +343,17 @@ export function createHorseAndCart(THREE: any, { timber }: any) {
   // Arms reaching forward to the reins; the right hand also holds the whip
   const hands = [];
   for (const side of [-1, 1]) {
-    const shoulder = [side * 0.21, seatY + 0.55, seatZ - 0.02];
-    const elbow = [side * 0.25, seatY + 0.3, seatZ - 0.16];
-    const hand = [side * 0.13, seatY + 0.26, seatZ - 0.42];
+    const shoulder: Vec3 = [side * 0.21, seatY + 0.55, seatZ - 0.02];
+    const elbow: Vec3 = [side * 0.25, seatY + 0.3, seatZ - 0.16];
+    const hand: Vec3 = [side * 0.13, seatY + 0.26, seatZ - 0.42];
     rod(driver, shoulder, elbow, 0.065, 0.058, smock, 8);
     rod(driver, elbow, hand, 0.058, 0.048, smock, 8);
     add(driver, new THREE.SphereGeometry(0.045, 8, 6), skin, ...hand);
     hands.push(new THREE.Vector3(...hand));
     // Thighs forward along the seat, shins down over the front board to the footboard
-    const hip = [side * 0.11, seatY + 0.06, seatZ + 0.02];
-    const knee = [side * 0.13, seatY + 0.08, seatZ - 0.42];
-    const ankle = [side * 0.14, floorY + 0.08, seatZ - 0.5];
+    const hip: Vec3 = [side * 0.11, seatY + 0.06, seatZ + 0.02];
+    const knee: Vec3 = [side * 0.13, seatY + 0.08, seatZ - 0.42];
+    const ankle: Vec3 = [side * 0.14, floorY + 0.08, seatZ - 0.5];
     rod(driver, hip, knee, 0.085, 0.075, corduroy, 8);
     ellipsoid(driver, 0.085, 0.06, 0.1, side * 0.12, seatY + 0.1, seatZ - 0.22, smock);
     rod(driver, knee, ankle, 0.07, 0.06, gaiter, 8);
@@ -347,11 +377,11 @@ export function createHorseAndCart(THREE: any, { timber }: any) {
   const scratch = new THREE.Vector3();
 
   /** Turns the wheels and walks the horse for the cart's distance along the road. */
-  function update(distance: any) {
+  function update(distance: number) {
     for (const wheel of wheels) wheel.rotation.x = -distance / CART_WHEEL_RADIUS;
     const cycle = distance / WALK_STRIDE;
-    for (const [key, leg] of Object.entries(legs) as [string, any][]) {
-      const pose = walkPose(cycle + (WALK_PHASES as Record<string, number>)[key], leg.fore ? 0.3 : 0.26);
+    for (const [key, leg] of Object.entries(legs) as [LegKey, Leg][]) {
+      const pose = walkPose(cycle + WALK_PHASES[key], leg.fore ? 0.3 : 0.26);
       leg.top.rotation.x = pose.swing;
       leg.joint.rotation.x = -pose.flex * (leg.fore ? 1.15 : 0.55);
     }

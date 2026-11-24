@@ -1,3 +1,4 @@
+import type * as Three from 'three';
 import { canvas2d } from './st-peters-3d/canvas-utils.ts';
 
 // Wooden fingerposts where the road leaves the map, pointing to the next villages. Turnpike-era posts were
@@ -15,11 +16,14 @@ export const ARM_LENGTH = 1.25;
 /**
  * Stand the post on the verge beside the road end, clear of the road surface, with its arm pointing out along
  * the road.
- * @param {number[]} end road end point [x, z]
- * @param {number[]} inward a point a few metres back along the road [x, z]
- * @param {(x: number, z: number) => boolean} onRoad
+ * @param end road end point [x, z]
+ * @param inward a point a few metres back along the road [x, z]
  */
-export function signpostPlacement(end: any, inward: any, onRoad: any) {
+export function signpostPlacement(
+  end: readonly number[],
+  inward: readonly number[],
+  onRoad: (x: number, z: number) => boolean
+) {
   const length = Math.hypot(end[0] - inward[0], end[1] - inward[1]);
   if (!(length > 0)) throw new Error('Invalid signpost road direction');
   const out = [(end[0] - inward[0]) / length, (end[1] - inward[1]) / length];
@@ -36,12 +40,8 @@ export function signpostPlacement(end: any, inward: any, onRoad: any) {
   throw new Error('No verge beside the road end for a signpost');
 }
 
-/**
- * @param {typeof import('three')} THREE
- * @param {string} text
- * @returns {import('three').Group} arm points along local +x
- */
-export function createFingerpost(THREE: any, text: any) {
+/** A white fingerpost whose arm, lettered with `text`, points along local +x. */
+export function createFingerpost(THREE: typeof Three, text: string): Three.Group {
   const paint = new THREE.MeshStandardMaterial({ color: 0xf1ede2, roughness: 0.85 });
   const group = new THREE.Group();
   const post = new THREE.Mesh(new THREE.BoxGeometry(0.13, POST_HEIGHT, 0.13), paint);
@@ -90,8 +90,8 @@ export function createFingerpost(THREE: any, text: any) {
     if (face < 0) words.rotation.y = Math.PI;
     group.add(words);
   }
-  group.traverse((child: any) => {
-    if (child.isMesh) child.castShadow = child.receiveShadow = true;
+  group.traverse((child) => {
+    if (child instanceof THREE.Mesh) child.castShadow = child.receiveShadow = true;
   });
   return group;
 }

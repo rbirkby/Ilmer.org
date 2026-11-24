@@ -67,8 +67,7 @@ export function mergeStaticMeshes(
   { dynamic = new Set<THREE.Object3D>() }: { dynamic?: Set<THREE.Object3D> } = {}
 ) {
   const isContainer = (o: THREE.Object3D, root: THREE.Object3D) => o === root || dynamic.has(o) || hasUserData(o);
-  /** @type {Map<string, { container: THREE.Object3D, meshes: THREE.Mesh[] }>} */
-  const buckets = new Map();
+  const buckets = new Map<string, { container: THREE.Object3D; meshes: THREE.Mesh[] }>();
   let before = 0;
 
   for (const root of roots) {
@@ -130,7 +129,7 @@ export function mergeStaticMeshes(
     const arrays: Record<string, THREE.TypedArray> = {};
     for (const name of names) {
       const a = first.attributes[name];
-      const ArrayType = /** @type {new (length: number) => THREE.TypedArray} */ (a.array.constructor);
+      const ArrayType = a.array.constructor as new (length: number) => THREE.TypedArray;
       arrays[name] = new ArrayType(vertexCount * a.itemSize);
     }
     const index = vertexCount > 65535 ? new Uint32Array(indexCount) : new Uint16Array(indexCount);

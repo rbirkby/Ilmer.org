@@ -1,35 +1,52 @@
 /** Divider position from the left, 0–100. 0 is entirely January 2026; 100 is entirely the film still. */
-export function pointerToPosition(clientX: any, left: any, width: any) {
+export function pointerToPosition(clientX: number, left: number, width: number) {
   if (!(width > 0)) return 0;
   const ratio = (clientX - left) / width;
   return Math.round(Math.min(1, Math.max(0, ratio)) * 100);
 }
 
 /** Spoken position. The number is how much of the width still shows the film still. */
-export function valueText(value: any, thenLabel = 'film still', nowLabel = 'January 2026') {
+export function valueText(value: number, thenLabel = 'film still', nowLabel = 'January 2026') {
   const clamped = Math.min(100, Math.max(0, Math.round(Number(value))));
   if (!Number.isFinite(clamped) || clamped <= 0) return nowLabel;
   if (clamped >= 100) return thenLabel;
   return `${clamped}% ${thenLabel}, ${100 - clamped}% ${nowLabel}`;
 }
 
-function paint(stage: any, range: any) {
+/** The pointer fields the divider reads. */
+type StagePointer = Pick<
+  PointerEvent,
+  'button' | 'pointerId' | 'pointerType' | 'clientX' | 'clientY' | 'preventDefault'
+>;
+
+/** The parts of a `.then-now__stage` element the divider uses, so tests can pass a stand-in. */
+export interface ThenNowStage {
+  style: { setProperty(name: string, value: string): unknown };
+  hasAttribute(name: string): boolean;
+  setAttribute(name: string, value: string): void;
+  querySelector(selectors: string): unknown;
+  getBoundingClientRect(): { left: number; width: number };
+  addEventListener(type: string, listener: (event: StagePointer) => void): void;
+  setPointerCapture(pointerId: number): void;
+}
+
+function paint(stage: ThenNowStage, range: HTMLInputElement) {
   const value = Number(range.value);
   stage.style.setProperty('--then-now', `${value}%`);
   range.setAttribute('aria-valuetext', valueText(value, range.dataset?.thenLabel, range.dataset?.nowLabel));
 }
 
-function bindStage(stage: any) {
+function bindStage(stage: ThenNowStage) {
   const range = stage.querySelector('.then-now__range');
   if (!(range instanceof HTMLInputElement) || stage.hasAttribute('data-then-now')) return;
   stage.setAttribute('data-then-now', '');
 
-  let pointerId: any = null;
+  let pointerId: number | null = null;
   let startX = 0;
   let startY = 0;
   let dragging = false;
 
-  const seek = (clientX: any) => {
+  const seek = (clientX: number) => {
     const rect = stage.getBoundingClientRect();
     range.value = String(pointerToPosition(clientX, rect.left, rect.width));
     paint(stage, range);
@@ -37,7 +54,7 @@ function bindStage(stage: any) {
 
   range.addEventListener('input', () => paint(stage, range));
 
-  stage.addEventListener('pointerdown', (event: any) => {
+  stage.addEventListener('pointerdown', (event) => {
     if (event.button !== 0) return;
     pointerId = event.pointerId;
     startX = event.clientX;
@@ -50,7 +67,7 @@ function bindStage(stage: any) {
     seek(event.clientX);
   });
 
-  stage.addEventListener('pointermove', (event: any) => {
+  stage.addEventListener('pointermove', (event) => {
     if (event.pointerId !== pointerId) return;
     if (!dragging) {
       const dx = event.clientX - startX;
@@ -67,7 +84,7 @@ function bindStage(stage: any) {
     seek(event.clientX);
   });
 
-  stage.addEventListener('pointerup', (event: any) => {
+  stage.addEventListener('pointerup', (event) => {
     if (event.pointerId !== pointerId) return;
     if (!dragging) {
       const dx = Math.abs(event.clientX - startX);
@@ -78,7 +95,7 @@ function bindStage(stage: any) {
     dragging = false;
   });
 
-  stage.addEventListener('pointercancel', (event: any) => {
+  stage.addEventListener('pointercancel', (event) => {
     if (event.pointerId !== pointerId) return;
     pointerId = null;
     dragging = false;
@@ -87,7 +104,7 @@ function bindStage(stage: any) {
   paint(stage, range);
 }
 
-export function initThenNow(root: any = document) {
+export function initThenNow(root: { querySelectorAll(selectors: string): Iterable<ThenNowStage> } = document) {
   for (const stage of root.querySelectorAll('.then-now__stage')) bindStage(stage);
 }
 

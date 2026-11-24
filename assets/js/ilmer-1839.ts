@@ -22,7 +22,9 @@ import {
 } from './ilmer-1839-data.ts';
 import { compassHeading, createGeoReference, gpsToMapPixel, observeCompassAvailability } from './ilmer-ar.ts';
 import { validateTerrain, historicalTerrain, terrainHeight } from './ilmer-terrain.ts';
+import type { MeasuredTerrain } from './ilmer-terrain.ts';
 import { validateTrees, validatePlacedTrees, circleOverlapsTriangles, createTreeCrown } from './ilmer-trees.ts';
+import type { PlacedTree, Triangle } from './ilmer-trees.ts';
 import { drapeMapPolygon, drapeTrack } from './ilmer-ground-drape.ts';
 import {
   rideCircuitPoint,
@@ -43,6 +45,7 @@ import {
   stopAtDistance
 } from './ilmer-flight.ts';
 import { createVillageAudio } from './ilmer-ride-audio.ts';
+import type { Emitter } from './ilmer-ride-audio.ts';
 import { AUTUMN_SUN, createVillageSky } from './ilmer-sky.ts';
 import { createHorseAndCart, HORSE_OFFSET } from './ilmer-horse-cart.ts';
 import { livestockFields, createLivestock, advanceLivestock, withinField } from './ilmer-livestock.ts';
@@ -64,15 +67,6 @@ interface DrapedSurface {
 interface GableParts {
   roofMesh: THREE.Mesh;
   endMesh: THREE.Mesh;
-}
-
-interface PlacedTree {
-  x: number;
-  y: number;
-  renderIndex: number;
-  orchard: boolean;
-  conifer: boolean;
-  source: number[];
 }
 
 interface AnimalState {
@@ -155,7 +149,7 @@ async function start() {
   const terrainResponse = await fetch('/assets/ilmer-terrain.json');
   if (!terrainResponse.ok) throw new Error(`Measured terrain could not load: HTTP ${terrainResponse.status}`);
   const terrainText = await terrainResponse.text();
-  const terrain = historicalTerrain(validateTerrain(JSON.parse(terrainText)));
+  const terrain = historicalTerrain(validateTerrain<MeasuredTerrain>(JSON.parse(terrainText)));
   const geoReference = createGeoReference(terrain.source.landmarks);
   const treeResponse = await fetch('/assets/ilmer-trees.json');
   if (!treeResponse.ok) throw new Error(`Detected tree symbols could not load: HTTP ${treeResponse.status}`);
@@ -201,7 +195,7 @@ async function start() {
   const camera = new THREE.PerspectiveCamera(43, 1, 0.5, 1800);
   const controls = new OrbitControls(camera, renderer.domElement);
   let navigationMode = 'orbit';
-  const movementKeys = new Set();
+  const movementKeys = new Set<string>();
   const flyKeys = new Set(['w', 'a', 's', 'd', 'q', 'e', 'shift', 'arrowleft', 'arrowright', 'arrowup', 'arrowdown']);
   // Analog fly input from the on-screen joystick (x: right, y: forward, each -1..1)
   const flyStick = { x: 0, y: 0 };
@@ -407,7 +401,7 @@ async function start() {
     );
   }
 
-  const roadTriangles: number[][][] = [];
+  const roadTriangles: Triangle[] = [];
   function pathMesh(
     points: readonly (readonly number[])[],
     width: number,
@@ -1413,7 +1407,7 @@ async function start() {
   const buildingBounds = selectable.map((group) => new THREE.Box3().setFromObject(group));
   const treeCentres: [number, number][] = mappedTrees.map(({ x, y }: PlacedTree) => mapPoint(x, y));
   const animalBlocked = (x: number, z: number, radius: number, field: string) =>
-    circleOverlapsTriangles(x, z, radius, fieldObstacles.get(field)) ||
+    circleOverlapsTriangles(x, z, radius, fieldObstacles.get(field) ?? []) ||
     buildingBounds.some(
       (bounds) =>
         x > bounds.min.x - radius && x < bounds.max.x + radius && z > bounds.min.z - radius && z < bounds.max.z + radius
@@ -1649,8 +1643,7 @@ async function start() {
   const listenerRight = new THREE.Vector3();
   function updateVillageAudio() {
     listenerRight.setFromMatrixColumn(camera.matrixWorld, 0).normalize();
-    /** @type {{ id: string, kind: 'cart' | 'duck' | 'chicken' | 'sheep', position: number[] }[]} */
-    const emitters = herds.map((herd) => {
+    const emitters = herds.map((herd): Emitter => {
       const x = herd.animals.reduce((sum, animal) => sum + animal.x, 0) / herd.animals.length;
       const z = herd.animals.reduce((sum, animal) => sum + animal.z, 0) / herd.animals.length;
       return { id: herd.id, kind: herd.species, position: [x, groundHeight(x, z) + 0.5, z] };
@@ -1913,7 +1906,7 @@ async function start() {
   let flightFrame = 0;
   const flightPosition = new THREE.Vector3();
   const flightTarget = new THREE.Vector3();
-  const visitedFlightStops = new Set();
+  const visitedFlightStops = new Set<string>();
   function stopFlight() {
     cancelAnimationFrame(flightFrame);
     flying = false;

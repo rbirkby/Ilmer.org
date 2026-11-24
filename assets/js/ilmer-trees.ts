@@ -1,9 +1,62 @@
 import { MAP, buildings } from './ilmer-1839-data.ts';
 
-const triangleBoxes = new WeakMap();
+type Three = typeof import('three');
 
-export function circleOverlapsTriangles(x: any, z: any, radius: any, triangles: any) {
-  const edgeDistance = (a: any, b: any) => {
+/** A point in map or world units: [x, z]. */
+export type Point = [number, number];
+/** Three [x, z] corners. */
+export type Triangle = readonly (readonly number[])[];
+/** Axis-aligned bounds of one triangle: [minX, maxX, minZ, maxZ]. */
+type Box = [number, number, number, number];
+
+export type TreeKind = 'tree' | 'orchard' | 'conifer';
+
+/** assets/ilmer-trees.json: trees detected on the Ordnance Survey map and its registration to the tithe map. */
+export interface DetectedTreeData {
+  source: { map: string; image: string; method: string; sha256: string; width: number; height: number };
+  detections: { x: number; y: number; score: number; kind: TreeKind }[];
+  registration: {
+    model: string;
+    scale: number;
+    rotationDegrees: number;
+    controlPoints: { name: string; source: Point; target: Point }[];
+    /** Two rows of a 2D affine transform: [[a, b, tx], [c, d, ty]]. */
+    matrix: [[number, number, number], [number, number, number]];
+  };
+}
+
+export interface HistoricalTree {
+  x: number;
+  y: number;
+  orchard: boolean;
+  conifer: boolean;
+  source: Point;
+  detectionIndex: number;
+}
+
+export interface PlacedTree {
+  x: number;
+  y: number;
+  renderIndex: number;
+  orchard: boolean;
+  conifer: boolean;
+  source: Point;
+}
+
+const EXCLUDED_KEYS = ['outsideCrop', 'building', 'water', 'road', 'shiftedToVerge'] as const;
+
+export interface PlacedTreeData {
+  trees: PlacedTree[];
+  excluded: Record<(typeof EXCLUDED_KEYS)[number], number>;
+  detectionsSha256: string;
+  terrainSha256: string;
+  crownRadius: number;
+}
+
+const triangleBoxes = new WeakMap<readonly Triangle[], Box[]>();
+
+export function circleOverlapsTriangles(x: number, z: number, radius: number, triangles: readonly Triangle[]) {
+  const edgeDistance = (a: readonly number[], b: readonly number[]) => {
     const dx = b[0] - a[0],
       dz = b[1] - a[1];
     const denominator = dx * dx + dz * dz;
@@ -12,7 +65,7 @@ export function circleOverlapsTriangles(x: any, z: any, radius: any, triangles: 
   };
   let boxes = triangleBoxes.get(triangles);
   if (!boxes) {
-    boxes = triangles.map(([a, b, c]: [any, any, any]) => [
+    boxes = triangles.map(([a, b, c]): Box => [
       Math.min(a[0], b[0], c[0]),
       Math.max(a[0], b[0], c[0]),
       Math.min(a[1], b[1], c[1]),
@@ -20,10 +73,12 @@ export function circleOverlapsTriangles(x: any, z: any, radius: any, triangles: 
     ]);
     triangleBoxes.set(triangles, boxes);
   }
-  return triangles.some(([a, b, c]: [any, any, any], index: any) => {
-    const box = boxes[index];
+  const bounds = boxes;
+  return triangles.some(([a, b, c], index) => {
+    const box = bounds[index];
     if (x < box[0] - radius || x > box[1] + radius || z < box[2] - radius || z > box[3] + radius) return false;
-    const cross = (p: any, q: any) => (q[0] - p[0]) * (z - p[1]) - (q[1] - p[1]) * (x - p[0]);
+    const cross = (p: readonly number[], q: readonly number[]) =>
+      (q[0] - p[0]) * (z - p[1]) - (q[1] - p[1]) * (x - p[0]);
     const signs = [cross(a, b), cross(b, c), cross(c, a)];
     const area = (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
     const inside = Math.abs(area) > 1e-10 && (signs.every((value) => value >= 0) || signs.every((value) => value <= 0));
@@ -35,8 +90,9 @@ export function circleOverlapsTriangles(x: any, z: any, radius: any, triangles: 
  * Trees detected on the Ordnance Survey map, with the two-point similarity that lays that map over the tithe map:
  * St Peter's Church and Lower Farm's main farmhouse (the benchmark) fix its rotation, scale and position.
  */
-export function validateTrees(data: any) {
-  const point = (value: any) => Array.isArray(value) && value.length === 2 && value.every(Number.isFinite);
+export function validateTrees(input: unknown): DetectedTreeData {
+  const data = input as DetectedTreeData | null | undefined;
+  const point = (value: unknown) => Array.isArray(value) && value.length === 2 && value.every(Number.isFinite);
   if (
     typeof data?.source?.map !== 'string' ||
     !Number.isFinite(data.source.width) ||
@@ -50,11 +106,11 @@ export function validateTrees(data: any) {
   const { width, height } = data.source;
   if (
     controlPoints.length < 2 ||
-    !controlPoints.every((control: any) => point(control.source) && point(control.target)) ||
+    !controlPoints.every((control) => point(control.source) && point(control.target)) ||
     matrix.length !== 2 ||
-    !matrix.every((row: any) => Array.isArray(row) && row.length === 3 && row.every(Number.isFinite)) ||
+    !matrix.every((row) => Array.isArray(row) && row.length === 3 && row.every(Number.isFinite)) ||
     !data.detections.every(
-      (tree: any) =>
+      (tree) =>
         Number.isFinite(tree.x) &&
         Number.isFinite(tree.y) &&
         tree.x >= 0 &&
@@ -70,7 +126,7 @@ export function validateTrees(data: any) {
   if (a * d - b * c <= 0) throw new Error('Detected-tree registration folds or reflects the map');
   if (Math.abs(a - d) > 1e-6 || Math.abs(b + c) > 1e-6) throw new Error('Detected-tree registration distorts the map');
   for (const control of controlPoints) {
-    const [x, y] = registerMapTree(data, ...(control.source as [number, number]));
+    const [x, y] = registerMapTree(data, ...control.source);
     if (Math.hypot(x - control.target[0], y - control.target[1]) > 0.5)
       throw new Error('Detected-tree registration misses its control points');
   }
@@ -78,17 +134,18 @@ export function validateTrees(data: any) {
 }
 
 /** Tithe-map pixel position of a point on the Ordnance Survey map. */
-export function registerMapTree(data: any, x: any, y: any) {
+export function registerMapTree(data: DetectedTreeData, x: number, y: number): Point {
   if (!Number.isFinite(x) || !Number.isFinite(y)) throw new Error('Invalid tree registration coordinate');
-  return data.registration.matrix.map((row: any) => row[0] * x + row[1] * y + row[2]);
+  const [[a, b, tx], [c, d, ty]] = data.registration.matrix;
+  return [a * x + b * y + tx, c * x + d * y + ty];
 }
 
-export function historicalTrees(data: any) {
-  const trees: any[] = [];
+export function historicalTrees(data: DetectedTreeData) {
+  const trees: HistoricalTree[] = [];
   const excluded = { outsideCrop: 0, building: 0 };
   const footprints = buildings.flatMap((building) => [...building.parts, ...(building.projections ?? [])]);
   footprints.push([957, 507, 70, 43, 21, 0]);
-  data.detections.forEach((detection: any, index: any) => {
+  data.detections.forEach((detection, index) => {
     const [x, y] = registerMapTree(data, detection.x, detection.y);
     if (x < 1 || y < 1 || x > MAP.width - 1 || y > MAP.height - 1) {
       excluded.outsideCrop++;
@@ -119,16 +176,25 @@ export function historicalTrees(data: any) {
 const LEAVES_PER_CROWN = 180;
 
 /** The instanced broadleaf crown. Placement uses its horizontal radius; the page instances this geometry. */
-export function createTreeCrown(THREE: any) {
-  const foliagePositions: any[] = [];
-  const foliageNormals: any[] = [];
-  const foliageColors: any[] = [];
-  function foliagePart(geometry: any, x: any, y: any, z: any, sx: any, sy: any, sz: any, shade: any) {
+export function createTreeCrown(THREE: Three) {
+  const foliagePositions: number[] = [];
+  const foliageNormals: number[] = [];
+  const foliageColors: number[] = [];
+  function foliagePart(
+    geometry: InstanceType<Three['BufferGeometry']>,
+    x: number,
+    y: number,
+    z: number,
+    sx: number,
+    sy: number,
+    sz: number,
+    shade: number
+  ) {
     geometry.scale(sx, sy, sz);
     geometry.translate(x, y, z);
     const expanded = geometry.index ? geometry.toNonIndexed() : geometry;
-    foliagePositions.push(...expanded.attributes.position.array);
-    foliageNormals.push(...expanded.attributes.normal.array);
+    foliagePositions.push(...(expanded.getAttribute('position') as InstanceType<Three['BufferAttribute']>).array);
+    foliageNormals.push(...(expanded.getAttribute('normal') as InstanceType<Three['BufferAttribute']>).array);
     for (let i = 0; i < expanded.attributes.position.count; i++) foliageColors.push(shade, shade, shade);
     geometry.dispose();
     if (expanded !== geometry) expanded.dispose();
@@ -182,8 +248,8 @@ export function createTreeCrown(THREE: any) {
 const PLACED_KINDS = ['tree', 'orchard', 'conifer'];
 
 /** Rows written by scripts/build-ilmer-placed-trees.ts: [x, y, renderIndex, kind, sourceX, sourceY]. */
-export function validatePlacedTrees(data: any) {
-  const excludedKeys = ['outsideCrop', 'building', 'water', 'road', 'shiftedToVerge'];
+export function validatePlacedTrees(input: unknown): PlacedTreeData {
+  const data = input as ({ trees: unknown[] } & Omit<PlacedTreeData, 'trees'>) | null | undefined;
   if (
     typeof data?.detectionsSha256 !== 'string' ||
     data.detectionsSha256.length !== 64 ||
@@ -192,12 +258,12 @@ export function validatePlacedTrees(data: any) {
     !Number.isFinite(data.crownRadius) ||
     data.crownRadius <= 0 ||
     !data.excluded ||
-    excludedKeys.some((key) => !Number.isInteger(data.excluded[key]) || data.excluded[key] < 0) ||
+    EXCLUDED_KEYS.some((key) => !Number.isInteger(data.excluded[key]) || data.excluded[key] < 0) ||
     !Array.isArray(data.trees) ||
     data.trees.length === 0
   )
     throw new Error('Invalid placed-tree data');
-  const trees = data.trees.map((row: any) => {
+  const trees = data.trees.map((row): PlacedTree => {
     if (!Array.isArray(row) || row.length !== 6) throw new Error('Invalid placed-tree row');
     const [x, y, renderIndex, kind, sourceX, sourceY] = row;
     if (

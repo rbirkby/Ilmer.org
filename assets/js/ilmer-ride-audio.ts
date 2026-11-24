@@ -10,7 +10,7 @@ export const SOUND_REFERENCE = { cart: 8, duck: 5, chicken: 5, sheep: 9 };
  * @param {number} distance metres from the camera
  * @param {number} reference metres at which the sound plays at full volume
  */
-export function distanceGain(distance: any, reference: any) {
+export function distanceGain(distance: number, reference: number) {
   if (!Number.isFinite(distance) || distance < 0 || !Number.isFinite(reference) || reference <= 0)
     throw new Error('Invalid sound distance');
   return (reference / Math.max(distance, reference)) ** 2;
@@ -22,27 +22,63 @@ const VOLUME = 0.7;
 /** Balances the quieter animal calls against the noisy cart. */
 const LOUDNESS = { cart: 1, duck: 2.2, chicken: 2.2, sheep: 1.8 };
 
-/**
- * @typedef {{ id: string, kind: 'cart' | 'duck' | 'chicken' | 'sheep', position: number[] }} Emitter
- * @typedef {{ position: number[], right: number[] }} Listener
- */
+export type SoundKind = keyof typeof SOUND_REFERENCE;
+export type AnimalKind = Exclude<SoundKind, 'cart'>;
+
+export interface Emitter {
+  id: string;
+  kind: SoundKind;
+  position: ArrayLike<number>;
+}
+
+export interface Listener {
+  position: ArrayLike<number>;
+  right: ArrayLike<number>;
+}
+
+interface Wheel {
+  node: AudioBufferSourceNode;
+  gain: GainNode;
+  volume: number;
+}
+
+interface Voice {
+  id: string;
+  kind: SoundKind;
+  input: GainNode;
+  panner: StereoPannerNode | undefined;
+  level: number;
+  pan: number;
+  wheels?: Wheel[] | undefined;
+  nextHoof?: number | undefined;
+  nextCreak?: number | undefined;
+  nextCall?: number | undefined;
+}
+
+/** A formant: centre frequency, Q and relative level. */
+type Formant = [frequency: number, q: number, level: number];
 
 export function createVillageAudio() {
-  /** @type {AudioContext | undefined} */
-  let context: any;
-  let master: any;
-  let noise: any;
+  let context: AudioContext | undefined;
+  // Created together with the context in start(), before anything is scheduled.
+  let master!: GainNode;
+  let noise!: AudioBuffer;
   let timer: ReturnType<typeof setInterval> | undefined;
   let muted = false;
   let wanted = false;
   let steps = 0;
   let horseCalls = 0;
   const calls = { duck: 0, chicken: 0, sheep: 0 };
-  /** @type {Map<string, any>} */
-  const voices = new Map();
-  const sources = new Set<any>();
+  const voices = new Map<string, Voice>();
+  const sources = new Set<AudioScheduledSourceNode>();
   /** The voice's input node that the sound being built connects to. */
-  let out: any;
+  let out!: AudioNode;
+
+  /** The running context. Sounds are only built once start() has created it. */
+  const ac = () => {
+    if (!context) throw new Error('Village audio has not started');
+    return context;
+  };
 
   // Deterministic jitter so no two footfalls, quacks or bleats are identical.
   let seed = 1839;
@@ -50,17 +86,17 @@ export function createVillageAudio() {
     seed = (seed * 1664525 + 1013904223) >>> 0;
     return seed / 0xffffffff;
   };
-  const vary = (value: any, amount: any) => value * (1 + (random() * 2 - 1) * amount);
+  const vary = (value: number, amount: number) => value * (1 + (random() * 2 - 1) * amount);
 
-  function play(node: any, time: any, duration?: any) {
+  function play(node: AudioScheduledSourceNode, time: number, duration?: number) {
     sources.add(node);
     node.onended = () => sources.delete(node);
     node.start(time);
     if (duration !== undefined) node.stop(time + duration);
   }
 
-  function envelope(time: any, duration: any, volume: any, attack = 0.012) {
-    const gain = context.createGain();
+  function envelope(time: number, duration: number, volume: number, attack = 0.012) {
+    const gain = ac().createGain();
     gain.gain.setValueAtTime(0.001, time);
     gain.gain.exponentialRampToValueAtTime(volume, time + attack);
     gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
@@ -68,24 +104,38 @@ export function createVillageAudio() {
     return gain;
   }
 
-  function filter(type: any, frequency: any, q: any) {
-    const node = context.createBiquadFilter();
+  function filter(type: BiquadFilterType, frequency: number, q: number) {
+    const node = ac().createBiquadFilter();
     node.type = type;
     node.frequency.value = frequency;
     node.Q.value = q;
     return node;
   }
 
-  function noiseBurst(time: any, duration: any, frequency: any, volume: any, type = 'bandpass', q = 0.8) {
-    const node = context.createBufferSource();
+  function noiseBurst(
+    time: number,
+    duration: number,
+    frequency: number,
+    volume: number,
+    type: BiquadFilterType = 'bandpass',
+    q = 0.8
+  ) {
+    const node = ac().createBufferSource();
     node.buffer = noise;
     node.loop = true;
     node.connect(filter(type, frequency, q)).connect(envelope(time, duration, volume, 0.015));
     play(node, time, duration);
   }
 
-  function tone(time: any, duration: any, frequency: any, endFrequency: any, volume: any, type = 'sine') {
-    const node = context.createOscillator();
+  function tone(
+    time: number,
+    duration: number,
+    frequency: number,
+    endFrequency: number,
+    volume: number,
+    type: OscillatorType = 'sine'
+  ) {
+    const node = ac().createOscillator();
     node.type = type;
     node.frequency.setValueAtTime(frequency, time);
     node.frequency.exponentialRampToValueAtTime(endFrequency, time + duration);
@@ -94,15 +144,22 @@ export function createVillageAudio() {
   }
 
   /** A voiced call shaped by vocal-tract resonances (formants). */
-  function voiced(time: any, duration: any, type: any, pitches: any, formants: any, gain: any) {
-    const node = context.createOscillator();
+  function voiced(
+    time: number,
+    duration: number,
+    type: OscillatorType,
+    pitches: number[],
+    formants: Formant[],
+    gain: AudioNode
+  ) {
+    const node = ac().createOscillator();
     node.type = type;
     node.frequency.setValueAtTime(pitches[0], time);
-    pitches.slice(1).forEach((pitch: any, i: any) => {
+    pitches.slice(1).forEach((pitch, i) => {
       node.frequency.linearRampToValueAtTime(pitch, time + (duration * (i + 1)) / (pitches.length - 1));
     });
     for (const [frequency, q, level] of formants) {
-      const level_ = context.createGain();
+      const level_ = ac().createGain();
       level_.gain.value = level;
       node
         .connect(filter('bandpass', frequency, q))
@@ -114,7 +171,7 @@ export function createVillageAudio() {
 
   // ---- Horse and cart -------------------------------------------------------------------------------------------
 
-  function hoof(time: any, fore: any) {
+  function hoof(time: number, fore: boolean) {
     // A shod hoof on a stony road: a sharp iron click, a hollow knock that drops in pitch, a dull thud through
     // the ground and a short scatter of grit.
     const loud = vary(fore ? 1 : 0.8, 0.15);
@@ -125,20 +182,20 @@ export function createVillageAudio() {
     noiseBurst(time + 0.01, vary(0.11, 0.2), vary(2400, 0.2), 0.05 * loud, 'highpass');
   }
 
-  function tack(time: any) {
+  function tack(time: number) {
     // Harness buckles and the hames chain: a few inharmonic metallic tinkles.
     for (const partial of [2730, 3940, 5310])
       tone(time + random() * 0.03, vary(0.22, 0.2), vary(partial, 0.03), partial * 0.985, vary(0.014, 0.3));
   }
 
-  function creak(time: any) {
+  function creak(time: number) {
     // Dry wood rubbing on the axle and in the cart frame: a rough, wavering buzz through a narrow resonance.
-    const node = context.createOscillator();
+    const node = ac().createOscillator();
     node.type = 'sawtooth';
     const base = vary(150, 0.15);
     const duration = vary(0.45, 0.25);
     node.frequency.setValueAtTime(base, time);
-    const gain = context.createGain();
+    const gain = ac().createGain();
     gain.gain.setValueAtTime(0.001, time);
     for (let i = 1; i <= 8; i++) {
       node.frequency.linearRampToValueAtTime(base * vary(1 + i * 0.05, 0.12), time + (duration * i) / 8);
@@ -152,16 +209,16 @@ export function createVillageAudio() {
     play(node, time, duration);
   }
 
-  function snort(time: any) {
+  function snort(time: number) {
     // Now and then the horse blows out through its lips: a fluttering, breathy snort.
     const duration = vary(0.7, 0.2);
-    const node = context.createBufferSource();
+    const node = ac().createBufferSource();
     node.buffer = noise;
     node.loop = true;
     const shape = filter('bandpass', vary(900, 0.1), 1.2);
     shape.frequency.setValueAtTime(vary(900, 0.1), time);
     shape.frequency.exponentialRampToValueAtTime(380, time + duration);
-    const gain = context.createGain();
+    const gain = ac().createGain();
     gain.gain.setValueAtTime(0.001, time);
     const flutter = 26;
     for (let i = 0; i < duration * flutter; i++) {
@@ -175,16 +232,17 @@ export function createVillageAudio() {
     horseCalls++;
   }
 
-  function startWheels(voice: any, time: any) {
+  function startWheels(voice: Voice, time: number) {
     // Iron-tyred wheels grinding over the stony road: a low rumble and a fine, continuous gravel hiss.
-    voice.wheels = [
+    const layers: [BiquadFilterType, number, number][] = [
       ['lowpass', 160, 0.16],
       ['bandpass', 2600, 0.025]
-    ].map(([type, frequency, volume]) => {
-      const node = context.createBufferSource();
+    ];
+    voice.wheels = layers.map(([type, frequency, volume]) => {
+      const node = ac().createBufferSource();
       node.buffer = noise;
       node.loop = true;
-      const gain = context.createGain();
+      const gain = ac().createGain();
       gain.gain.setValueAtTime(0.001, time);
       gain.gain.exponentialRampToValueAtTime(volume, time + 0.8);
       node
@@ -200,7 +258,7 @@ export function createVillageAudio() {
   const WALK_BEATS = [false, true, false, true];
   const WALK_GAPS = [0.28, 0.3, 0.28, 0.3];
 
-  function cart(voice: any, now: any) {
+  function cart(voice: Voice, now: number) {
     if (!voice.wheels) startWheels(voice, now);
     voice.nextHoof = Math.max(voice.nextHoof ?? 0, now + 0.015);
     while (voice.nextHoof < now + 0.25) {
@@ -216,7 +274,8 @@ export function createVillageAudio() {
       voice.nextCreak = Math.max(voice.nextCreak, now) + vary(2.2, 0.45);
     }
     // The wheels rise and fall as they drop into ruts and ride over stones.
-    for (const { gain, volume } of voice.wheels) gain.gain.linearRampToValueAtTime(vary(volume, 0.35), now + 0.25);
+    for (const { gain, volume } of voice.wheels ?? [])
+      gain.gain.linearRampToValueAtTime(vary(volume, 0.35), now + 0.25);
     voice.nextCall ??= now + 3;
     if (voice.nextCall < now + 0.25) {
       snort(Math.max(voice.nextCall, now + 0.02));
@@ -226,7 +285,7 @@ export function createVillageAudio() {
 
   // ---- Farm animals ------------------------------------------------------------------------------------------------
 
-  function quacks(time: any) {
+  function quacks(time: number) {
     // A run of two to five nasal quacks, each a little lower and softer than the last.
     const count = 2 + Math.floor(random() * 4);
     let at = time;
@@ -250,7 +309,7 @@ export function createVillageAudio() {
     calls.duck++;
   }
 
-  function clucks(time: any) {
+  function clucks(time: number) {
     // A hen's contented muttering: short throaty "bok"s, and sometimes a rising "ba-gawk".
     const count = 3 + Math.floor(random() * 5);
     let at = time;
@@ -279,12 +338,12 @@ export function createVillageAudio() {
     calls.chicken++;
   }
 
-  function bleat(time: any) {
+  function bleat(time: number) {
     // A sheep's wavering "baa": a buzzy voice with a fast tremble through two mouth resonances. Lambs are higher.
     const lamb = random() < 0.3;
     const base = vary(lamb ? 380 : 210, 0.12);
     const duration = vary(lamb ? 0.6 : 0.9, 0.2);
-    const gain = context.createGain();
+    const gain = ac().createGain();
     gain.gain.setValueAtTime(0.001, time);
     gain.gain.exponentialRampToValueAtTime(0.16, time + 0.06);
     const tremble = vary(7, 0.15);
@@ -308,7 +367,7 @@ export function createVillageAudio() {
     calls.sheep++;
   }
 
-  const CALLS = {
+  const CALLS: Record<AnimalKind, { call: (time: number) => void; every: number }> = {
     duck: { call: quacks, every: 3.5 },
     chicken: { call: clucks, every: 2.5 },
     sheep: { call: bleat, every: 5 }
@@ -316,19 +375,20 @@ export function createVillageAudio() {
 
   // ---- Mixing ----------------------------------------------------------------------------------------------------------
 
-  function createVoice(id: any, kind: any) {
-    const input = context.createGain();
+  function createVoice(id: string, kind: SoundKind) {
+    const input = ac().createGain();
     input.gain.value = 0;
-    const panner = context.createStereoPanner?.();
+    // Older Safari has no stereo panner, so the sound stays centred there.
+    const panner = 'createStereoPanner' in ac() ? ac().createStereoPanner() : undefined;
     if (panner) input.connect(panner).connect(master);
     else input.connect(master);
-    const voice = { id, kind, input, panner, level: 0, pan: 0 };
+    const voice: Voice = { id, kind, input, panner, level: 0, pan: 0 };
     voices.set(id, voice);
     return voice;
   }
 
-  function stopWheels(voice: any) {
-    for (const { node } of voice.wheels ?? []) node.stop(context.currentTime + 0.05);
+  function stopWheels(voice: Voice) {
+    for (const { node } of voice.wheels ?? []) node.stop(ac().currentTime + 0.05);
     voice.wheels = undefined;
     voice.nextHoof = voice.nextCreak = undefined;
   }
@@ -344,11 +404,11 @@ export function createVillageAudio() {
       out = voice.input;
       if (voice.kind === 'cart') cart(voice, now);
       else {
-        const { call, every } = (CALLS as Record<string, any>)[voice.kind];
+        const { call, every } = CALLS[voice.kind];
         // Herds start at different moments so they do not all call together.
-        voice.nextCall ??= now + random() * every;
-        if (voice.nextCall < now + 0.25) {
-          call(Math.max(voice.nextCall, now + 0.02));
+        const nextCall = (voice.nextCall ??= now + random() * every);
+        if (nextCall < now + 0.25) {
+          call(Math.max(nextCall, now + 0.02));
           voice.nextCall = now + vary(every, 0.6);
         }
       }
@@ -360,15 +420,15 @@ export function createVillageAudio() {
    * @param {Listener} listener camera position and its rightward direction
    * @param {Emitter[]} emitters
    */
-  function update(listener: any, emitters: any) {
-    const present = new Set();
+  function update(listener: Listener, emitters: Iterable<Emitter>) {
+    const present = new Set<string>();
     for (const { id, kind, position } of emitters) {
       present.add(id);
       const dx = position[0] - listener.position[0];
       const dy = position[1] - listener.position[1];
       const dz = position[2] - listener.position[2];
       const distance = Math.hypot(dx, dy, dz);
-      const level = distanceGain(distance, (SOUND_REFERENCE as Record<string, number>)[kind]);
+      const level = distanceGain(distance, SOUND_REFERENCE[kind]);
       const side =
         distance > 1e-6 ? (dx * listener.right[0] + dy * listener.right[1] + dz * listener.right[2]) / distance : 0;
       if (!context) continue;
@@ -380,7 +440,7 @@ export function createVillageAudio() {
     const now = context.currentTime;
     for (const voice of voices.values()) {
       if (!present.has(voice.id)) voice.level = 0;
-      voice.input.gain.setTargetAtTime(voice.level * (LOUDNESS as Record<string, number>)[voice.kind], now, 0.08);
+      voice.input.gain.setTargetAtTime(voice.level * LOUDNESS[voice.kind], now, 0.08);
       voice.panner?.pan.setTargetAtTime(voice.pan, now, 0.08);
     }
   }
@@ -431,7 +491,7 @@ export function createVillageAudio() {
     start,
     update,
     /** @param {boolean} value */
-    setMuted(value: any) {
+    setMuted(value: boolean) {
       muted = Boolean(value);
       setMasterLevel();
       if (muted) silence();
@@ -440,7 +500,7 @@ export function createVillageAudio() {
     isMuted: () => muted,
     isRunning: () => context?.state === 'running' && !muted,
     /** Hide or show the page: sound pauses while nobody can see the village. */
-    setHidden(hidden: any) {
+    setHidden(hidden: boolean) {
       if (!context) return;
       if (hidden) {
         silence();

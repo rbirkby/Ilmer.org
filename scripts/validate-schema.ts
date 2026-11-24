@@ -6,6 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
 import { Ajv2020 } from 'ajv/dist/2020.js';
+import type { AnySchema } from 'ajv/dist/2020.js';
 
 const root = path.dirname(url.fileURLToPath(import.meta.url));
 const dataDir = path.join(root, '..', '_data');
@@ -31,8 +32,8 @@ for (const schemaFile of schemaFiles) {
     continue;
   }
 
-  const schema = JSON.parse(fs.readFileSync(path.join(dataDir, schemaFile), 'utf8'));
-  const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+  const schema = JSON.parse(fs.readFileSync(path.join(dataDir, schemaFile), 'utf8')) as AnySchema;
+  const data: unknown = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 
   const validate = ajv.compile(schema);
   if (validate(data)) {

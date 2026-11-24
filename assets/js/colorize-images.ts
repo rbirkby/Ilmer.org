@@ -3,9 +3,22 @@ import { COLOURISE_SW_PATH, isStaleColouriseWorker } from './colourise-registrat
 
 let workerRequestId = 0;
 let colorizeWorker: Worker | undefined;
-const workerRequests = new Map();
-const imageState = new WeakMap();
-const progressAnimations = new WeakMap();
+interface WorkerRequest {
+  resolve: (result: { blob: Blob; executionProvider?: string }) => void;
+  reject: (error: Error) => void;
+  onProgress: (progress?: number, label?: string) => void;
+}
+
+interface ImageState {
+  originalSrc: string;
+  colorizedSrc: string | null;
+  colorized: boolean;
+  loading: boolean;
+}
+
+const workerRequests = new Map<string, WorkerRequest>();
+const imageState = new WeakMap<HTMLImageElement, ImageState>();
+const progressAnimations = new WeakMap<HTMLElement, { value: number; frameId: number }>();
 const colorizedObjectUrls = new Set<string>();
 
 function parseImageTags(img: HTMLImageElement) {

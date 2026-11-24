@@ -17,7 +17,7 @@ const straightLength = rideEnd - rideStart;
 const turnLength = Math.PI * turnRadius;
 export const rideCircuitLength = 2 * (straightLength + turnLength);
 
-export function ridePoint(distance: any) {
+export function ridePoint(distance: number) {
   if (!Number.isFinite(distance)) throw new Error('Invalid cart journey distance');
   const clamped = Math.max(0, Math.min(rideLength, distance));
   const index = distances.findIndex((end, i) => i > 0 && end >= clamped);
@@ -25,7 +25,7 @@ export function ridePoint(distance: any) {
   return ridePath[index - 1].map((value, axis) => value + (ridePath[index][axis] - value) * t);
 }
 
-export function rideCircuitPoint(distance: any) {
+export function rideCircuitPoint(distance: number) {
   if (!Number.isFinite(distance)) throw new Error('Invalid cart journey distance');
   const phase = ((distance % rideCircuitLength) + rideCircuitLength) % rideCircuitLength;
   const returning = phase >= straightLength + turnLength;

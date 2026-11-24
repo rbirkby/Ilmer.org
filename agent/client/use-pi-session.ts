@@ -23,8 +23,8 @@ async function post(path: string, body: unknown = {}) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
   });
-  const data = await response.json();
-  if (!response.ok) throw new Error(MESSAGES[data.error] ?? 'The request could not be completed.');
+  const data = (await response.json()) as { error?: string; [key: string]: unknown };
+  if (!response.ok) throw new Error(MESSAGES[data.error ?? ''] ?? 'The request could not be completed.');
   return data;
 }
 

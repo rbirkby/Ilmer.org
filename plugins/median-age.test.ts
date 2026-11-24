@@ -47,7 +47,9 @@ test('reads the requested age field without mutating records', () => {
 });
 
 test('recognises every explicitly recorded age in the burial register', () => {
-  const records = JSON.parse(readFileSync(new URL('../_data/st-peters-burials.json', import.meta.url), 'utf8'));
-  const known = records.filter((record: { age: string }) => record.age !== '' && record.age !== 'no age');
+  const records = JSON.parse(readFileSync(new URL('../_data/st-peters-burials.json', import.meta.url), 'utf8')) as {
+    age: string;
+  }[];
+  const known = records.filter((record) => record.age !== '' && record.age !== 'no age');
   assert.equal(medianAge(records, 'age')?.count, known.length);
 });

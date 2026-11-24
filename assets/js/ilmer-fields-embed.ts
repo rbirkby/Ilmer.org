@@ -12,7 +12,18 @@
  */
 import * as L from 'https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js';
 
-const FIELDS = [
+interface Field {
+  id: number;
+  name: string;
+  color: string;
+  latlngs: L.LatLngTuple[];
+  label: L.LatLngTuple;
+  hectares: number;
+  crop1979: string[];
+  crop1980: string[];
+}
+
+const FIELDS: Field[] = [
   {
     id: 1,
     name: 'Lakes 1',

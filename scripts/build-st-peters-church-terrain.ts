@@ -9,8 +9,9 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { CHURCH_PLAN, mapPoint } from '../assets/js/ilmer-1839-data.ts';
 import { terrainHeight, validateTerrain } from '../assets/js/ilmer-terrain.ts';
+import type { MeasuredTerrain } from '../assets/js/ilmer-terrain.ts';
 
-const measured = validateTerrain(
+const measured = validateTerrain<MeasuredTerrain>(
   JSON.parse(readFileSync(new URL('../assets/ilmer-terrain.json', import.meta.url), 'utf8'))
 );
 const [originX, originZ] = mapPoint(...CHURCH_PLAN.centre);

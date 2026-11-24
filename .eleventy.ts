@@ -26,8 +26,37 @@ interface CollectionItem {
   url: string;
   date: Date;
   /** Page front-matter data; shape varies per collection. */
-  data: Record<string, any>;
+  data: PageData;
 }
+
+/** Front matter the config reads. Census pages carry `population`; others only some of these. */
+interface PageData {
+  title?: string;
+  date?: string;
+  id?: string;
+  population?: number;
+  tags?: string[];
+  [key: string]: unknown;
+}
+
+/** The subset of Eleventy's `UserConfig` this config relies on. */
+interface EleventyConfig {
+  addPassthroughCopy(path: string | Record<string, string>): void;
+  addFilter(name: string, filter: (...args: never[]) => unknown): void;
+  addShortcode(name: string, shortcode: (...args: never[]) => unknown): void;
+  addCollection(name: string, collection: (collectionApi: CollectionApi) => unknown): void;
+  addGlobalData(name: string, data: unknown): void;
+  addPlugin(plugin: unknown): void;
+  addWatchTarget(path: string): void;
+  amendLibrary(name: string, amend: (library: MarkdownIt) => unknown): void;
+  on(event: string, listener: (...args: never[]) => unknown): void;
+  setUseGitIgnore(enabled: boolean): void;
+  ignores: Set<string>;
+  watchIgnores: Set<string>;
+}
+
+/** A census page: its front matter always has the census date and the parish population. */
+type CensusItem = CollectionItem & { data: { date: string; population: number } };
 
 /** The subset of Eleventy's `CollectionApi` this config relies on. */
 interface CollectionApi {
@@ -162,7 +191,7 @@ function buildWeeklyNewsEvents(): WeeklyNewsEvent[] {
   return events;
 }
 
-export default function (eleventyConfig: any) {
+export default function (eleventyConfig: EleventyConfig) {
   eleventyConfig.addPassthroughCopy({ public: '.' });
   // Browser TypeScript is bundled by Vite into assets/dist (content-hashed). Do not publish the sources.
   eleventyConfig.addPassthroughCopy('assets/css');
@@ -282,7 +311,7 @@ export default function (eleventyConfig: any) {
   eleventyConfig.addFilter('isoDateYear', (iso: string) => /^(\d{4})-/.exec(iso)?.[1] ?? iso);
 
   /** Sparkline geometry for a collection of items with `data.date` (ISO string) and `data.population`. */
-  eleventyConfig.addFilter('censusChart', (collection: CollectionItem[]) => {
+  eleventyConfig.addFilter('censusChart', (collection: CensusItem[]) => {
     const items = [...collection].sort((a, b) => a.data.date.localeCompare(b.data.date));
     const populations = items.map((item) => item.data.population);
     const minPop = Math.min(...populations);
@@ -415,8 +444,8 @@ export default function (eleventyConfig: any) {
   eleventyConfig.addGlobalData('weeklyNewsEvents', buildWeeklyNewsEvents);
 
   eleventyConfig.addGlobalData('eleventyComputed', {
-    ancestorCrumb1: (data: Record<string, any>) => (data.hideAncestorCrumb1 ? undefined : data.ancestorCrumb1Source),
-    ancestorCrumb2: (data: Record<string, any>) => (data.hideAncestorCrumb2 ? undefined : data.ancestorCrumb2Source)
+    ancestorCrumb1: (data: PageData) => (data.hideAncestorCrumb1 ? undefined : data.ancestorCrumb1Source),
+    ancestorCrumb2: (data: PageData) => (data.hideAncestorCrumb2 ? undefined : data.ancestorCrumb2Source)
   });
 
   function subjectsForCollection(collectionApi: CollectionApi, baseTag: string) {
@@ -443,7 +472,7 @@ export default function (eleventyConfig: any) {
 
   /** Sorts monumental-inscription collection items by the numeric part of their id (e.g. 'C24' -> 24), so C10 sorts after C9 rather than before C2. Ids without a trailing number (e.g. 'RollOfHonour') sort last. */
   eleventyConfig.addFilter('sortByMemorialId', (items: CollectionItem[] | undefined) => {
-    const num = (id: string) => {
+    const num = (id: string | undefined) => {
       const m = /(\d+)$/.exec(id || '');
       return m ? Number(m[1]) : Number.POSITIVE_INFINITY;
     };

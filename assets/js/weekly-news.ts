@@ -3,11 +3,27 @@ import { DateUtils } from './anniversary-dates.ts';
 const WEEKDAY_LABELS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const MONTH_LABELS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
+/** A timeline event as the page embeds it (see buildWeeklyNewsEvents in .eleventy.ts). */
+interface WeeklyNewsEvent {
+  date: string;
+  title: string;
+  url?: string;
+  category: string;
+}
+
+interface EventMatch {
+  category: string;
+  url?: string;
+  title: string;
+  year: number;
+  yearsAgo: number;
+}
+
 function categoryClass(category: string) {
   return (category || '').toLowerCase().replace(/[^a-z]+/g, '-');
 }
 
-function buildEventRow(match: { category: string; url?: string; title: string; year: string; yearsAgo: number }) {
+function buildEventRow(match: EventMatch) {
   const item = document.createElement('li');
   item.className = 'weekly-news-event';
 
@@ -22,7 +38,7 @@ function buildEventRow(match: { category: string; url?: string; title: string; y
 
   const year = document.createElement('span');
   year.className = 'weekly-news-event__year';
-  year.textContent = match.year;
+  year.textContent = String(match.year);
 
   const divider = document.createElement('span');
   divider.className = 'weekly-news-event__divider';
@@ -37,11 +53,7 @@ function buildEventRow(match: { category: string; url?: string; title: string; y
   return item;
 }
 
-function buildDayGroup(
-  daysDiff: number,
-  dayDate: Date,
-  matches: Array<{ category: string; url?: string; title: string; year: string; yearsAgo: number }>
-) {
+function buildDayGroup(daysDiff: number, dayDate: Date, matches: EventMatch[]) {
   const group = document.createElement('div');
   group.className = 'weekly-news-day';
 
@@ -78,9 +90,9 @@ function renderWeeklyNews(container: HTMLElement) {
   const lookAheadDays = Number(container.dataset.lookAheadDays) || 7;
   if (!eventsScript) return;
 
-  let events = [];
+  let events: WeeklyNewsEvent[] = [];
   try {
-    events = JSON.parse(eventsScript.textContent);
+    events = JSON.parse(eventsScript.textContent ?? '[]') as WeeklyNewsEvent[];
   } catch (error) {
     console.error('Failed to parse weekly news events:', error);
     return;
@@ -91,7 +103,7 @@ function renderWeeklyNews(container: HTMLElement) {
   const currentYear = now.getFullYear();
   const todayDayOfYear = dateUtils.getDayOfYear(now.getDate(), now.getMonth() + 1, currentYear);
 
-  const byDaysDiff = new Map();
+  const byDaysDiff = new Map<number, EventMatch[]>();
   for (const event of events) {
     const parsed = dateUtils.parseEventDate(event.date);
     if (!parsed || parsed.year >= currentYear) continue;
@@ -101,8 +113,9 @@ function renderWeeklyNews(container: HTMLElement) {
     if (daysDiff < 0) daysDiff += dateUtils.daysInYear(currentYear);
     if (daysDiff > lookAheadDays) continue;
 
-    if (!byDaysDiff.has(daysDiff)) byDaysDiff.set(daysDiff, []);
-    byDaysDiff.get(daysDiff).push({
+    const matches = byDaysDiff.get(daysDiff) ?? [];
+    byDaysDiff.set(daysDiff, matches);
+    matches.push({
       year: parsed.year,
       yearsAgo: currentYear - parsed.year,
       title: event.title,
@@ -121,7 +134,7 @@ function renderWeeklyNews(container: HTMLElement) {
   const section = document.createElement('div');
   section.className = 'weekly-news';
   for (const daysDiff of [...byDaysDiff.keys()].sort((a, b) => a - b)) {
-    const matches = byDaysDiff.get(daysDiff);
+    const matches = byDaysDiff.get(daysDiff) ?? [];
     const dayDate = new Date(now);
     dayDate.setDate(dayDate.getDate() + daysDiff);
     section.append(buildDayGroup(daysDiff, dayDate, matches));

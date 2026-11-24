@@ -1,14 +1,27 @@
 // A full page load drops the popover. Remember that it was open for this tab.
 const KEY = 'poppy-chat-open';
 
-/**
- * @typedef {object} PoppyChatMemory
- * @property {(key: string) => string | null} getItem
- * @property {(key: string, value: string) => void} setItem
- * @property {(key: string) => void} removeItem
- */
+/** Where the open state is remembered: sessionStorage, or a stand-in in tests. */
+export type PoppyChatMemory = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
 
-function write(storage: any, open: any) {
+/** The popover, or a stand-in in tests. */
+export interface PoppyChat {
+  matches(selector: string): boolean;
+  showPopover(): void;
+  hidePopover(): void;
+}
+
+/** The parts of the document the chat uses, so tests can pass a stand-in. */
+export interface PoppyChatDocument {
+  getElementById(id: string): PoppyChat | null;
+  querySelectorAll(selectors: string): Iterable<{
+    getAttribute(name: string): string | null;
+    addEventListener(type: string, listener: () => void): void;
+  }>;
+  defaultView?: { addEventListener(type: string, listener: () => void): void } | null;
+}
+
+function write(storage: PoppyChatMemory, open: boolean) {
   try {
     if (open) storage.setItem(KEY, '1');
     else storage.removeItem(KEY);
@@ -17,7 +30,7 @@ function write(storage: any, open: any) {
   }
 }
 
-function read(storage: any) {
+function read(storage: PoppyChatMemory) {
   try {
     return storage.getItem(KEY) === '1';
   } catch {
@@ -25,11 +38,8 @@ function read(storage: any) {
   }
 }
 
-/**
- * Show or hide the chat so it matches the tab memory.
- * @param {PoppyChatMemory} storage
- */
-export function applyPoppyChat(chat: any, storage: any) {
+/** Show or hide the chat so it matches the tab memory. */
+export function applyPoppyChat(chat: PoppyChat, storage: PoppyChatMemory) {
   const open = read(storage);
   const shown = chat.matches(':popover-open');
   if (open && !shown) chat.showPopover();
@@ -41,9 +51,8 @@ export function applyPoppyChat(chat: any, storage: any) {
  * listeners before the browser changes the popover, so the saved state is the
  * state the click is about to produce. Navigation does not click them, and a
  * manual popover does not close on its own when the document unloads.
- * @param {PoppyChatMemory} [storage]
  */
-export function initPoppyChat(doc: any = document, storage: any = sessionStorage) {
+export function initPoppyChat(doc: PoppyChatDocument = document, storage: PoppyChatMemory = sessionStorage) {
   const chat = doc.getElementById('poppy-chat');
   if (!chat || typeof chat.showPopover !== 'function' || typeof chat.hidePopover !== 'function') return;
 

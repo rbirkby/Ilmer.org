@@ -7,6 +7,7 @@ import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { after, before, test } from 'node:test';
 import { SignJWT, exportJWK, generateKeyPair, type GenerateKeyPairResult, type JWK } from 'jose';
+import type { TokenResponse } from '../src/protocol.ts';
 
 const ORIGIN = process.env.POPPY_E2E_ORIGIN;
 const skip = ORIGIN ? false : 'set POPPY_E2E_ORIGIN to run against a Worker';
@@ -21,8 +22,17 @@ let dpopPublic: JWK;
 
 const now = () => Math.floor(Date.now() / 1000);
 const b64 = (bytes: Uint8Array) => Buffer.from(bytes).toString('base64url');
-// Response bodies are checked field by field, so they stay untyped.
-const json = async (response: Response | Promise<Response>): Promise<any> => (await response).json();
+// The response shapes these tests read. The receiver's own types live in src/protocol.ts.
+type Discovery = {
+  auth: { issuer: string };
+  organization: { domain: string };
+  agent: { protocols: { endpoint: string }[] };
+};
+type AuthServerMetadata = { issuer: string; poppy_domains: string[] };
+type ConversationEvent = { id: string; type: string; message?: { role: string; in_reply_to?: string } };
+type Conversation = { conversation_id: string; status: string; events: ConversationEvent[] };
+type ErrorBody = { error: string };
+const json = async <T>(response: Response | Promise<Response>) => (await (await response).json()) as T;
 const sha256 = async (value: string) =>
   b64(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value))));
 
@@ -110,8 +120,10 @@ before(async () => {
 after(() => server?.close());
 
 test('discovery and authorization server metadata agree', { skip }, async () => {
-  const discovery = await json(fetch(ORIGIN + '/.well-known/poppy.json'));
-  const metadata = await json(fetch(discovery.auth.issuer + '/.well-known/oauth-authorization-server'));
+  const discovery = await json<Discovery>(fetch(ORIGIN + '/.well-known/poppy.json'));
+  const metadata = await json<AuthServerMetadata>(
+    fetch(discovery.auth.issuer + '/.well-known/oauth-authorization-server')
+  );
   assert.equal(metadata.issuer, discovery.auth.issuer);
   assert.ok(metadata.poppy_domains.includes(discovery.organization.domain));
   assert.equal(discovery.agent.protocols[0].endpoint, ORIGIN + '/poppy/conversations');
@@ -119,14 +131,14 @@ test('discovery and authorization server metadata agree', { skip }, async () => 
 
 test('signed-out session, conversation, replay and key binding', { skip, timeout: 90_000 }, async () => {
   const response = await getToken();
-  const token = await json(response);
+  const token = await json<TokenResponse>(response);
   assert.equal(response.status, 200, JSON.stringify(token));
   assert.equal(token.token_type, 'DPoP');
   assert.equal(token.signed_in, false);
-  assert.equal(token.refresh_token, undefined);
+  assert.equal(Object.hasOwn(token, 'refresh_token'), false);
 
   // The same session renews with a fresh token.
-  const renewed = await json(getToken({ session_id: token.session_id }));
+  const renewed = await json<TokenResponse>(getToken({ session_id: token.session_id }));
   assert.equal(renewed.session_id, token.session_id);
 
   const message = {
@@ -135,23 +147,23 @@ test('signed-out session, conversation, replay and key binding', { skip, timeout
     text: 'When was the spire added to St Peter’s Church?'
   };
   const created = await call(token.access_token, 'POST', '/poppy/conversations?wait=1', { message });
-  const conversation = await json(created);
+  const conversation = await json<Conversation>(created);
   assert.equal(created.status, 201, JSON.stringify(conversation));
   assert.match(conversation.conversation_id, /^cnv_/);
-  const replies = conversation.events.filter((e: any) => e.type === 'message' && e.message.role === 'company');
+  const replies = conversation.events.filter((e) => e.type === 'message' && e.message?.role === 'company');
   assert.equal(replies.length, 1);
-  assert.equal(replies[0].message.in_reply_to, message.id);
+  assert.equal(replies[0].message?.in_reply_to, message.id);
   assert.equal(conversation.status, 'idle');
 
   // Retrying the same message id returns the same conversation; reusing it for different content conflicts.
-  const retry = await json(call(token.access_token, 'POST', '/poppy/conversations', { message }));
+  const retry = await json<Conversation>(call(token.access_token, 'POST', '/poppy/conversations', { message }));
   assert.equal(retry.conversation_id, conversation.conversation_id);
   const conflict = await call(token.access_token, 'POST', '/poppy/conversations', {
     message: { ...message, text: 'Different' }
   });
   assert.equal(conflict.status, 409);
 
-  const events = await json(
+  const events = await json<Pick<Conversation, 'events'>>(
     call(token.access_token, 'GET', `/poppy/conversations/${conversation.conversation_id}/events`)
   );
   assert.ok(events.events.length >= 4);
@@ -168,7 +180,7 @@ test('signed-out session, conversation, replay and key binding', { skip, timeout
   });
   assert.equal(stolen.status, 401);
 
-  const closed = await json(
+  const closed = await json<Conversation>(
     call(token.access_token, 'POST', `/poppy/conversations/${conversation.conversation_id}/close`, {})
   );
   assert.equal(closed.status, 'closed');
@@ -204,11 +216,11 @@ test('client assertions are single use and must be signed by the client', { skip
     body: body()
   });
   assert.equal(replay.status, 401);
-  assert.equal((await json(replay)).error, 'invalid_client');
+  assert.equal((await json<ErrorBody>(replay)).error, 'invalid_client');
 });
 
 test('revoked access tokens stop working', { skip }, async () => {
-  const token = await json(getToken());
+  const token = await json<TokenResponse>(getToken());
   const endpoint = ORIGIN + '/oauth/revoke';
   const revoked = await fetch(endpoint, {
     method: 'POST',

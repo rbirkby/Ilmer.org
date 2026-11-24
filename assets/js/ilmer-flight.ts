@@ -1,8 +1,18 @@
 import { buildings, mapPoint, MAP, places } from './ilmer-1839-data.ts';
 
+type Vec3 = [number, number, number];
+
+export interface FlightStop {
+  id: string;
+  place: string;
+  title: string;
+  target: Vec3;
+  position: Vec3;
+}
+
 export function flightStops() {
   const pending = buildings.flatMap((building, group) =>
-    building.parts.map(([x, y, length, width, _angle, eaves], part) => {
+    building.parts.map(([x, y, length, width, _angle, eaves], part): FlightStop => {
       const [wx, wz] = mapPoint(x, y);
       const offset = (Math.max(length, width) * MAP.scale) / 2 + 9;
       return {
@@ -15,14 +25,15 @@ export function flightStops() {
     })
   );
   const [x, z] = mapPoint(957, 507);
-  const result = [
+  const result: FlightStop[] = [
     { id: 'church', place: 'church', title: places.church.title, target: [x, 8, z], position: [x + 23, 15, z - 19] }
   ];
   while (pending.length) {
     const last = result[result.length - 1];
     let nearest = 0;
     for (let i = 1; i < pending.length; i++) {
-      const distance = (stop: any) => Math.hypot(stop.target[0] - last.target[0], stop.target[2] - last.target[2]);
+      const distance = (stop: FlightStop) =>
+        Math.hypot(stop.target[0] - last.target[0], stop.target[2] - last.target[2]);
       if (distance(pending[i]) < distance(pending[nearest])) nearest = i;
     }
     result.push(pending.splice(nearest, 1)[0]);
@@ -40,9 +51,9 @@ export const FLIGHT_RAMP = 2.5;
  * speed, easing in only when it starts or resumes (the throttle rises from 0 to 1 over `ramp` seconds).
  */
 export function advanceFlight(
-  { distance, throttle }: any,
-  seconds: any,
-  { speed = FLIGHT_SPEED, ramp = FLIGHT_RAMP }: any = {}
+  { distance, throttle }: { distance: number; throttle: number },
+  seconds: number,
+  { speed = FLIGHT_SPEED, ramp = FLIGHT_RAMP }: { speed?: number; ramp?: number } = {}
 ) {
   if (![distance, throttle, seconds, speed, ramp].every(Number.isFinite) || seconds < 0 || ramp <= 0)
     throw new Error('Invalid flying tour progress');
@@ -51,7 +62,7 @@ export function advanceFlight(
 }
 
 /** Smoothstep weight for gliding from the viewer's own view onto the tour route. */
-export function blendIn(elapsed: any, duration: any) {
+export function blendIn(elapsed: number, duration: number) {
   const t = Math.max(0, Math.min(1, elapsed / duration));
   return t * t * (3 - 2 * t);
 }
@@ -61,17 +72,17 @@ export function blendIn(elapsed: any, duration: any) {
  * still clears every sample: a running maximum over `radius` samples either side, then two box blurs of half that
  * width, so the camera rises gently before a roof and settles gently after it instead of jumping.
  */
-export function smoothClearance(required: any, radius: any) {
+export function smoothClearance(required: readonly number[], radius: number) {
   const n = required.length;
-  const at = (values: any, i: any) => values[((i % n) + n) % n];
-  const widened = required.map((_: any, i: any) => {
+  const at = (values: readonly number[], i: number) => values[((i % n) + n) % n];
+  const widened = required.map((_, i) => {
     let peak = 0;
     for (let k = -radius; k <= radius; k++) peak = Math.max(peak, at(required, i + k));
     return peak;
   });
   const half = Math.max(1, Math.floor(radius / 2));
-  const blur = (values: any) =>
-    values.map((_: any, i: any) => {
+  const blur = (values: number[]) =>
+    values.map((_, i) => {
       let sum = 0;
       for (let k = -half; k <= half; k++) sum += at(values, i + k);
       return sum / (2 * half + 1);
@@ -80,7 +91,7 @@ export function smoothClearance(required: any, radius: any) {
 }
 
 /** Index of the stop the tour most recently passed, given each stop's distance along a looping route. */
-export function stopAtDistance(stopDistances: any, distance: any, total: any) {
+export function stopAtDistance(stopDistances: readonly number[], distance: number, total: number) {
   const along = ((distance % total) + total) % total;
   let index = 0;
   for (let i = 0; i < stopDistances.length; i++) if (stopDistances[i] <= along) index = i;

@@ -38,8 +38,7 @@ class SceneStats extends HTMLElement {
   #worstMs = 0;
   #windowStart = performance.now();
   #last = performance.now();
-  /** @type {Record<string, string | number>} */
-  #extra = {};
+  #extra: Record<string, string | number> = {};
 
   connectedCallback() {
     if (!this.shadowRoot) {

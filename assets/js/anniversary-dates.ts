@@ -33,21 +33,21 @@ export class DateUtils {
     };
   }
 
-  isLeapYear(year: any) {
+  isLeapYear(year: number) {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   }
 
-  daysInYear(year: any) {
+  daysInYear(year: number) {
     return this.isLeapYear(year) ? 366 : 365;
   }
 
-  getDayOfYear(day: any, month: any, year: any) {
+  getDayOfYear(day: number, month: number, year: number) {
     const date = Date.UTC(year, month - 1, day);
     const start = Date.UTC(year, 0, 0);
     return (date - start) / (1000 * 60 * 60 * 24);
   }
 
-  getRelativeDateString(daysDiff: any, referenceDate: any) {
+  getRelativeDateString(daysDiff: number, referenceDate: Date | number | string) {
     if (daysDiff === 0) return 'Today';
     if (daysDiff === 1) return 'Tomorrow';
 
@@ -60,7 +60,7 @@ export class DateUtils {
     return futureDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
   }
 
-  parseEventDate(dateString: any) {
+  parseEventDate(dateString: string) {
     const dateParts = dateString.split(' ');
     if (dateParts.length < 3) return null;
 

@@ -2,11 +2,11 @@
 export const MAP = { width: 2000, height: 882, scale: 0.32 };
 export const CHURCH_PORCH_SIDE = -1;
 export const CHURCH_PLAN = { centre: [951, 508] as [number, number], angle: 21, widthScale: 0.85 };
-export function mapPoint(x: any, y: any): [number, number] {
+export function mapPoint(x: number, y: number): [number, number] {
   return [(x - MAP.width / 2) * MAP.scale, (y - MAP.height / 2) * MAP.scale];
 }
 
-export function buildingRoofCovering(place: any, architecture: any) {
+export function buildingRoofCovering(place: string, architecture: string | undefined) {
   return architecture === 'tudor' ||
     architecture === 'vicarage' ||
     (place === 'barns' && architecture === 'stone-house') ||
@@ -15,11 +15,16 @@ export function buildingRoofCovering(place: any, architecture: any) {
     : 'tile';
 }
 
-export function timberPlinthHeight(length: any, width: any) {
+export function timberPlinthHeight(length: number, width: number) {
   return Math.max(length, width) < 40 ? 0 : 0.6096;
 }
 
-export function spacedWindowCentres(wallLength: any, glazingWidth: any, requestedCount: any, doorwayWidth = 0) {
+export function spacedWindowCentres(
+  wallLength: number,
+  glazingWidth: number,
+  requestedCount: number,
+  doorwayWidth = 0
+): number[] {
   if (
     !Number.isFinite(wallLength) ||
     wallLength <= 0 ||
@@ -34,7 +39,7 @@ export function spacedWindowCentres(wallLength: any, glazingWidth: any, requeste
   const frameWidth = glazingWidth + 0.22;
   const limit = wallLength / 2 - frameWidth / 2 - 1;
   if (limit < 0) return [];
-  const distribute = (low: any, high: any, count: any) => {
+  const distribute = (low: number, high: number, count: number): number[] => {
     if (high < low || count < 1) return [];
     const total = Math.min(count, Math.floor((high - low) / (frameWidth + 0.6)) + 1);
     if (total === 1) return [(low + high) / 2];

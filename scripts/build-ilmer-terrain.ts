@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { MAP, mapPoint } from '../assets/js/ilmer-1839-data.ts';
+import type { DetectedTreeData } from '../assets/js/ilmer-trees.ts';
 
 // Environment Agency LIDAR Composite DTM 1 m, requested in its native British National Grid (no resampling):
 // https://environment.data.gov.uk/geoservices/datasets/13787b9a-26a4-4775-8523-806d13af58fc/wcs?service=WCS
@@ -92,8 +93,10 @@ const OS_TO_GRID = [
   [0.389448222449198, 0.004908949491948983, 476463.4900127669],
   [0.004908949491948983, -0.389448222449198, 205848.52834508268]
 ];
-const trees = JSON.parse(readFileSync(new URL('../assets/ilmer-trees.json', import.meta.url), 'utf8'));
-const [[a, b, c], [d, e, f]] = trees.registration.matrix as number[][];
+const trees = JSON.parse(
+  readFileSync(new URL('../assets/ilmer-trees.json', import.meta.url), 'utf8')
+) as DetectedTreeData;
+const [[a, b, c], [d, e, f]] = trees.registration.matrix;
 const determinant = a * e - b * d;
 function titheToGrid(x: number, y: number): [number, number] {
   // Undo the OS → tithe similarity, then go OS → National Grid

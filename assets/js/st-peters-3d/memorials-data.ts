@@ -918,7 +918,7 @@ export const CHURCHYARD_MEMORIALS = [
 // Convert survey-plan (col, row) to 3D world (x, z) meters anchored to St Peter's Church footprint.
 // Church walls: row 8 -> x=-7.70 (West gable), row 28 -> x=+9.70 (East gable)
 //               col 29 -> z=+3.30 (South Nave wall), col 38 -> z=-3.30 (North Nave wall)
-export function surveyGridToWorld(col: any, row: any) {
+export function surveyGridToWorld(col: number, row: number) {
   const x = -7.7 + (row - 8) * 0.87;
   let z;
   if (col <= 29) {

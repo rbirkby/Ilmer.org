@@ -24,6 +24,7 @@ import {
   tenementGarden
 } from '../assets/js/ilmer-1839-data.ts';
 import { validateTerrain, historicalTerrain, terrainHeight } from '../assets/js/ilmer-terrain.ts';
+import type { MeasuredTerrain } from '../assets/js/ilmer-terrain.ts';
 import {
   validateTrees,
   registerMapTree,
@@ -620,7 +621,7 @@ test('terrain interpolation matches the triangles used by the rendered ground', 
 });
 
 test('authentic measured terrain places the church higher than adjoining farmyards without exaggeration', () => {
-  const data = validateTerrain(
+  const data = validateTerrain<MeasuredTerrain>(
     JSON.parse(readFileSync(new URL('../assets/ilmer-terrain.json', import.meta.url), 'utf8'))
   );
   assert.equal(data.source.sourceResolutionMetres, 1);
