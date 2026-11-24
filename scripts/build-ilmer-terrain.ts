@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { MAP, mapPoint } from '../assets/js/ilmer-1839-data.js';
+import { MAP, mapPoint } from '../assets/js/ilmer-1839-data.ts';
 
 // Environment Agency LIDAR Composite DTM 1 m, requested in its native British National Grid (no resampling):
 // https://environment.data.gov.uk/geoservices/datasets/13787b9a-26a4-4775-8523-806d13af58fc/wcs?service=WCS

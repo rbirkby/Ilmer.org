@@ -6,6 +6,8 @@ ilmer.org
 
 `npm run start`
 
+`npm run build` bundles the TypeScript with Vite, then builds the static site into `_site`. Cloudflare Pages should keep that build command and the `_site` output directory.
+
 ## Ilmer in 1839
 
 The interactive Three.js reconstruction is at `/history/ilmer-1839/`.
@@ -29,9 +31,10 @@ approximate: the historic-map registration and phone GPS are not survey-grade.
 AR controls stay hidden without a usable compass heading, except on touch devices
 that require a tap to request compass permission.
 Trees and hedges are hidden in AR and restored on exit.
-The reconstruction import map content-hashes its helper modules as well as the
-entry script, preventing older cached helpers from breaking startup after an
-update. Module-loading failures display an error instead of leaving the loading message.
+Vite bundles the reconstruction, including three.js, into minified files whose
+names include a content hash. A changed module changes the filename, so browsers
+can cache those files immutably, and an update cannot mix a new page with an old
+helper. Module-loading failures display an error instead of leaving the loading message.
 The church's east chancel has an east-facing window following the supplied
 correction; its frame and glazing arrangement are illustrative. The sagging
 roof, slipped tiles and cracked masonry still indicate the chancel's poor repair.

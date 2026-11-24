@@ -1,10 +1,7 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import { fileURLToPath } from 'node:url';
 import { runInNewContext } from 'node:vm';
-import { Liquid } from 'liquidjs';
-import { createCacheBustFilter } from '../plugins/cache-bust.ts';
 import {
   MAP,
   CHURCH_PORCH_SIDE,
@@ -25,17 +22,17 @@ import {
   churchyard,
   ponds,
   tenementGarden
-} from '../assets/js/ilmer-1839-data.js';
-import { validateTerrain, historicalTerrain, terrainHeight } from '../assets/js/ilmer-terrain.js';
+} from '../assets/js/ilmer-1839-data.ts';
+import { validateTerrain, historicalTerrain, terrainHeight } from '../assets/js/ilmer-terrain.ts';
 import {
   validateTrees,
   registerMapTree,
   historicalTrees,
   circleOverlapsTriangles,
   validatePlacedTrees
-} from '../assets/js/ilmer-trees.js';
+} from '../assets/js/ilmer-trees.ts';
 import * as THREE from 'three';
-import { buildPlacedTreesFromFiles } from '../scripts/ilmer-placed-trees.js';
+import { buildPlacedTreesFromFiles } from '../scripts/ilmer-placed-trees.ts';
 import {
   ridePath,
   ridePoint,
@@ -45,8 +42,8 @@ import {
   rideSpeed,
   rideCircuitPoint,
   rideCircuitLength
-} from '../assets/js/ilmer-ride.js';
-import { cameraFloor, cameraGroundClearance } from '../assets/js/ilmer-camera.js';
+} from '../assets/js/ilmer-ride.ts';
+import { cameraFloor, cameraGroundClearance } from '../assets/js/ilmer-camera.ts';
 import {
   flightStops,
   advanceFlight,
@@ -54,8 +51,8 @@ import {
   smoothClearance,
   stopAtDistance,
   FLIGHT_SPEED
-} from '../assets/js/ilmer-flight.js';
-import { livestockFields, withinField } from '../assets/js/ilmer-livestock.js';
+} from '../assets/js/ilmer-flight.ts';
+import { livestockFields, withinField } from '../assets/js/ilmer-livestock.ts';
 
 test('historical terrain removes only the railway embankment and keeps the measured source intact', () => {
   const measured = JSON.parse(readFileSync('assets/ilmer-terrain.json', 'utf8'));
@@ -272,13 +269,13 @@ test('cart journey controls remain separate from the existing place and map cont
   assert.match(page, /Click or tap the horse and cart/);
   assert.match(page, /id="ride-status" role="status"/);
   assert.doesNotMatch(page, /id="village-cart"/);
-  const script = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const script = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
   assert.doesNotMatch(script, /villageCart|name === 'village'.*startVillageCart/);
   assert.doesNotMatch(script, /Riding past the church and Lower Farm, turning back at each end/);
 });
 
 test('one primary click or tap rides the cart, but drags, secondary pointers and cancelled gestures do not', () => {
-  const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const scene = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
   const handlers = scene.slice(
     scene.indexOf("renderer.domElement.addEventListener('pointerdown'"),
     scene.indexOf("host.addEventListener('keydown'")
@@ -322,8 +319,11 @@ test('one primary click or tap rides the cart, but drags, secondary pointers and
 });
 
 test('AR keeps trees and hedges hidden when GPS enables the remaining features', () => {
-  const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
-  const visibility = scene.slice(scene.indexOf('function setARFeaturesVisible'), scene.indexOf('function setARStatus'));
+  const scene = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
+  // The page is TypeScript; the extracted function is executed as plain JavaScript.
+  const visibility = scene
+    .slice(scene.indexOf('function setARFeaturesVisible'), scene.indexOf('function setARStatus'))
+    .replace(/:\s*[A-Za-z_][\w.|<>[\]]*/g, '');
   const landscape = { visible: true };
   const structures = { visible: false };
   const livestock = { visible: false };
@@ -408,7 +408,7 @@ test('cottages pond traces the complete northern 1839 outline and cart has no sc
     ],
     [685, 775, 221, 333]
   );
-  const script = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const script = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
   assert.doesNotMatch(script, /cartLabel|label\('Horse & cart'/);
 });
 
@@ -421,37 +421,36 @@ test('the tenements garden is not a pond and ducks use the cottages pond', () =>
     ponds.some((pond) => withinField(pond, 895, 285)),
     false
   );
-  const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const scene = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
   assert.match(scene, /flatPolygon\(tenementGarden, material\(0xb5bc8d\)\)/);
 });
 
-test('all reconstruction helpers use content-hashed URLs, including transitive imports', async () => {
+test('the 1839 page loads one hashed Vite bundle and every helper module exists', () => {
   const root = new URL('../', import.meta.url);
-  const cacheBust = createCacheBustFilter(fileURLToPath(root));
-  const liquid = new Liquid();
-  liquid.registerFilter('cacheBust', cacheBust);
   const template = readFileSync(new URL('history/ilmer-1839.liquid', root), 'utf8');
-  const rendered = await liquid.parseAndRender(template);
-  const { imports } = JSON.parse(/<script type="importmap">([\s\S]*?)<\/script>/.exec(rendered)![1]);
-  const pending = ['/assets/js/ilmer-1839.js'];
+  assert.match(template, /'ilmer-1839' \| bundle/);
+  assert.match(template, /bundlePreloads "ilmer-1839"/);
+  assert.doesNotMatch(template, /importmap|three\.module\.js/);
+  const pending = ['/assets/js/ilmer-1839.ts'];
   const visited = new Set<string>();
   while (pending.length) {
     const module = pending.pop()!;
     if (visited.has(module)) continue;
     visited.add(module);
+    assert.ok(existsSync(new URL(module.slice(1), root)), module);
     const source = readFileSync(new URL(module.slice(1), root), 'utf8');
-    for (const [, relative] of source.matchAll(/from ['"](\.\/[^'"]+)['"]/g)) {
-      const dependency = new URL(relative, `https://example.test${module}`).pathname;
-      assert.equal(imports[dependency], cacheBust(dependency), `${module} imports ${dependency}`);
-      pending.push(dependency);
+    for (const [, relative] of source.matchAll(/from ['"](\.\.?\/[^'"]+)['"]/g)) {
+      pending.push(new URL(relative, `https://example.test${module}`).pathname);
     }
   }
-  assert.ok(visited.size > 1);
+  assert.ok(visited.has('/assets/js/ilmer-terrain.ts'));
+  assert.ok(visited.has('/assets/js/ilmer-trees.ts'));
+  assert.ok(visited.size > 5);
 });
 
 test('the experience retains accessible controls and locally served Three.js without the evidence section', () => {
   const page = readFileSync(new URL('../history/ilmer-1839.liquid', import.meta.url), 'utf8');
-  const script = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const script = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
   const styles = readFileSync(new URL('../assets/css/ilmer-1839.css', import.meta.url), 'utf8');
   for (const view of ['village', 'church', 'barns', 'middle', 'lower', 'cottages', 'tenements', 'vicarage', 'plan'])
     assert.ok(page.includes(`data-view="${view}"`));
@@ -464,7 +463,7 @@ test('the experience retains accessible controls and locally served Three.js wit
   assert.match(page, /id="map-layer"/);
   // On the original map, planting is hidden and a button shows or hides the buildings over it
   assert.match(page, /id="map-buildings" aria-pressed="true"[^>]*hidden>Buildings: Shown</);
-  const villageScript = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const villageScript = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
   assert.match(villageScript, /landscape\.visible = !showMap;/);
   assert.match(villageScript, /structures\.visible = !showMap \|\| mapBuildingsShown;/);
   assert.match(page, /id="ar-start"/);
@@ -479,7 +478,8 @@ test('the experience retains accessible controls and locally served Three.js wit
   assert.doesNotMatch(page, /id="landscape-layer"/);
   assert.match(page, /id="flight-toggle"[^>]*>Historic Tour/);
   assert.doesNotMatch(page, /data-view="(?:west|chancel)"|A rider's-eye journey|A roof-height tour/);
-  assert.match(page, /assets\/vendor\/three\/three.module.js/);
+  assert.match(page, /'ilmer-1839' \| bundle/);
+  assert.doesNotMatch(page, /three\.module\.js/);
   assert.match(page, /ilmer-placed-trees\.json/);
   assert.match(script, /renderer\.shadowMap\.autoUpdate = false/);
   assert.match(script, /mesh\.castShadow = false/);
@@ -503,7 +503,7 @@ test('the church entrance is opposite the original side and dated road evidence 
 
 test('the blocked church doorway is masonry-filled on the wall opposite the porch', () => {
   assert.match(places.church.description, /blocked-up arched doorway on the south wall facing Upper Farm/);
-  const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const scene = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
   assert.match(scene, /blockedDoorway\.position\.set\(-0\.5, 0\.05, -CHURCH_PORCH_SIDE \* 3\.62\)/);
   assert.match(scene, /if \(CHURCH_PORCH_SIDE > 0\) blockedDoorway\.rotation\.y = Math\.PI/);
   assert.match(scene, /new THREE\.Mesh\(blockedInfillGeometry, stone\)/);
@@ -588,13 +588,13 @@ test('the connected road outline has no crossed edges or folded junctions', () =
 
 test('property descriptions are not rendered over the scene in any selection state', () => {
   const page = readFileSync(new URL('../history/ilmer-1839.liquid', import.meta.url), 'utf8');
-  const script = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const script = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
   assert.doesNotMatch(page, /reconstruction-card|place-description|place-title/);
   assert.doesNotMatch(script, /place-description|place-title|BoxHelper/);
 });
 
 test('place labels render after transparent foliage without testing or writing scene depth', () => {
-  const script = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const script = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
   assert.match(script, /SpriteMaterial\(\{[^}]*depthTest: false, depthWrite: false/);
   assert.match(script, /sprite\.renderOrder = 1000/);
 });
@@ -661,7 +661,7 @@ test('the corrected houses override boarded farm architecture without invented s
     /ground-floor windows on its long elevations and ground-floor and upstairs windows on its gable ends/
   );
   assert.equal(buildings.find((building) => building.architecture === 'vicarage')?.storeys, 2);
-  const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const scene = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
   const vicarage = scene.slice(scene.indexOf('} else if (vicarage) {'), scene.indexOf('} else if (stoneHouse) {'));
   assert.match(vicarage, /const groundWindowCentre = height \/ 3/);
   assert.match(vicarage, /const upperWindowCentre = height \+ roofRise \* 0\.32/);
@@ -730,7 +730,7 @@ test('Middle Farm has two wall storeys and a third in the main roof with gable-e
   const middle = buildings.find((building) => building.architecture === 'tudor')!;
   assert.equal(middle.storeys, 3);
   assert.match(places.middle.description, /three storeys.*uppermost storey in the roof space/);
-  const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const scene = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
   const tudor = scene.slice(scene.indexOf('if (tudor) {'), scene.indexOf('} else if (vicarage) {'));
   assert.match(tudor, /if \(partIndex === 0\)/);
   assert.match(tudor, /if \(building\.storeys === 3\)/);
@@ -812,7 +812,7 @@ test('small boarded barns have no brick bases while larger ranges retain their g
     [18, 40]
   ])
     assert.equal(timberPlinthHeight(length, width), 0.6096);
-  const script = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const script = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
   assert.match(script, /barnPlinthHeight \? brick : timber/);
   assert.match(script, /height - barnPlinthHeight/);
   assert.match(script, /ivyLeavesByWall = climbingIvy\(part, l, w, height\)/);
@@ -826,7 +826,7 @@ test('named cottages and farm controls follow the apportionment without old nume
   assert.match(places.tenements.description, /Site of 3 Tenements & Gardens/);
   assert.match(places.cottages.description, /Domestic doors and framed windows/);
   assert.match(places.tenements.description, /domestic doors and framed windows/);
-  const scene = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const scene = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
   assert.match(scene, /building\.place === 'cottages' \|\| building\.place === 'tenements'/);
   assert.match(scene, /if \(!vicarage && !dwelling\)/);
   assert.match(scene, /else if \(dwelling\) \{\s*dwellingFacade\(part, l, w, group\.userData\.frontDoors\)/);
@@ -889,7 +889,7 @@ test('trees come from the Ordnance Survey map, laid over the tithe map by the ch
     .find(([, , , , , height]) => height === 7)!;
   assert.deepEqual(farmhouse.target, lowerFarmhouse.slice(0, 2));
   for (const control of data.registration.controlPoints) {
-    const registered = registerMapTree(data, ...control.source);
+    const registered = registerMapTree(data, control.source[0], control.source[1]);
     for (let axis = 0; axis < 2; axis++) assert.ok(Math.abs(registered[axis] - control.target[axis]) < 0.00001);
   }
   // The OS map is turned about 45 degrees and slightly enlarged to fit the tithe map
@@ -904,7 +904,7 @@ test('trees come from the Ordnance Survey map, laid over the tithe map by the ch
   assert.equal(new Set(trees.map((tree) => tree.detectionIndex)).size, trees.length);
   for (const tree of trees) {
     assert.ok(tree.x > 0 && tree.x < MAP.width && tree.y > 0 && tree.y < MAP.height);
-    const registered = registerMapTree(data, ...tree.source);
+    const registered = registerMapTree(data, tree.source[0], tree.source[1]);
     assert.deepEqual(registered, [tree.x, tree.y]);
     const detection = data.detections[tree.detectionIndex];
     assert.deepEqual([detection.x, detection.y], tree.source);
@@ -917,7 +917,7 @@ test('trees come from the Ordnance Survey map, laid over the tithe map by the ch
       assert.ok(Math.abs(localX) >= length / 2 + 4 || Math.abs(localY) >= width / 2 + 4);
     }
   }
-  const script = readFileSync(new URL('../assets/js/ilmer-1839-data.js', import.meta.url), 'utf8');
+  const script = readFileSync(new URL('../assets/js/ilmer-1839-data.ts', import.meta.url), 'utf8');
   assert.doesNotMatch(script, /mappedTreeRows|mappedTreeSymbols|treeRegistrationTriangles/);
 });
 
@@ -986,7 +986,7 @@ test('placed trees are the road clearance the page used to run, loaded instead o
     road: 10,
     shiftedToVerge: 73
   });
-  const page = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const page = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
   const template = readFileSync(new URL('../history/ilmer-1839.liquid', import.meta.url), 'utf8');
   assert.match(page, /validatePlacedTrees/);
   assert.doesNotMatch(page, /TREE_VERGE_SHIFT|placeDetectedTrees|for \(let shift = 0\.5/);

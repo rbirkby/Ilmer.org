@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { createLivestock, advanceLivestock, withinField } from '../assets/js/ilmer-livestock.js';
+import { createLivestock, advanceLivestock, withinField } from '../assets/js/ilmer-livestock.ts';
 
 test('body clearance and concave field boundaries are respected', () => {
   const polygon = [

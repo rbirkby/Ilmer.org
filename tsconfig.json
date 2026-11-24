@@ -18,6 +18,29 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
-  "include": [".eleventy.ts", "plugins/**/*.ts", "scripts/**/*.ts", "tests/**/*.ts", "types/**/*.d.ts"],
-  "exclude": ["node_modules", "_site"]
+  "include": [
+    ".eleventy.ts",
+    "vite.config.ts",
+    "plugins/**/*.ts",
+    "scripts/**/*.ts",
+    "tests/**/*.ts",
+    "types/shims.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "_site",
+    "scripts/ilmer-placed-trees.ts",
+    "scripts/build-ilmer-terrain.ts",
+    "scripts/build-st-peters-church-terrain.ts",
+    "tests/anniversary-dates.test.ts",
+    "tests/ilmer-1839.test.ts",
+    "tests/ilmer-ar.test.ts",
+    "tests/ilmer-horse-cart.test.ts",
+    "tests/ilmer-livestock.test.ts",
+    "tests/ilmer-ride-audio.test.ts",
+    "tests/ilmer-signpost.test.ts",
+    "tests/poppy-chat.test.ts",
+    "tests/st-peters-3d.test.ts",
+    "tests/then-now.test.ts"
+  ]
 }

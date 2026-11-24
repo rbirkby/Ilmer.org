@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "types": ["node"]
+  },
+  "include": [
+    "scripts/ilmer-placed-trees.ts",
+    "scripts/build-ilmer-terrain.ts",
+    "scripts/build-st-peters-church-terrain.ts",
+    "tests/anniversary-dates.test.ts",
+    "tests/ilmer-1839.test.ts",
+    "tests/ilmer-ar.test.ts",
+    "tests/ilmer-horse-cart.test.ts",
+    "tests/ilmer-livestock.test.ts",
+    "tests/ilmer-ride-audio.test.ts",
+    "tests/ilmer-signpost.test.ts",
+    "tests/poppy-chat.test.ts",
+    "tests/st-peters-3d.test.ts",
+    "tests/then-now.test.ts",
+    "types/browser-globals.d.ts",
+    "types/cdn-modules.d.ts"
+  ],
+  "exclude": ["node_modules", "_site", "assets/dist"]
+}

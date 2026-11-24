@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { mapPoint, roadPolygons } from '../assets/js/ilmer-1839-data.js';
-import { withinField } from '../assets/js/ilmer-livestock.js';
-import { ridePoint, rideLength } from '../assets/js/ilmer-ride.js';
-import { SIGNPOSTS, signpostPlacement } from '../assets/js/ilmer-signpost.js';
+import { mapPoint, roadPolygons } from '../assets/js/ilmer-1839-data.ts';
+import { withinField } from '../assets/js/ilmer-livestock.ts';
+import { ridePoint, rideLength } from '../assets/js/ilmer-ride.ts';
+import { SIGNPOSTS, signpostPlacement } from '../assets/js/ilmer-signpost.ts';
 
 const roads = roadPolygons.map((polygon) => polygon.map(([x, y]) => mapPoint(x, y)));
 const onRoad = (x: number, z: number) => roads.some((polygon) => withinField(polygon, x, z, 0.3));

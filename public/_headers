@@ -1,0 +1,4 @@
+# Vite emits content-hashed files. The name changes when the bytes change,
+# so these can stay cached without revalidation.
+/assets/dist/*
+  Cache-Control: public, max-age=31536000, immutable

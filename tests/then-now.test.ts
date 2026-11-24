@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { Liquid } from 'liquidjs';
-import { initThenNow, pointerToPosition, valueText } from '../assets/js/then-now.js';
+import { initThenNow, pointerToPosition, valueText } from '../assets/js/then-now.ts';
 
 const root = new URL('../', import.meta.url);
 
@@ -206,6 +206,7 @@ test('the filming page stacks three then-and-now photographs', () => {
 test('the then-and-now script loads only on pages that use the comparer', async () => {
   const liquid = new Liquid();
   liquid.registerFilter('cacheBust', (path: string) => path);
+  liquid.registerFilter('bundle', (name: string) => `/assets/dist/${name}.js`);
   const head = readFileSync(new URL('_includes/head.liquid', root), 'utf8');
   const base = {
     layout: 'post',
@@ -216,7 +217,7 @@ test('the then-and-now script loads only on pages that use the comparer', async 
     tags: [] as string[]
   };
   const withComparer = await liquid.parseAndRender(head, { ...base, content: '<figure class="then-now">' });
-  assert.match(withComparer, /<script type="module" src="\/assets\/js\/then-now\.js"><\/script>/);
+  assert.match(withComparer, /<script type="module" src="\/assets\/dist\/then-now\.js"><\/script>/);
   const without = await liquid.parseAndRender(head, { ...base, content: '<p>No comparer here.</p>' });
-  assert.doesNotMatch(without, /then-now\.js/);
+  assert.doesNotMatch(without, /then-now/);
 });

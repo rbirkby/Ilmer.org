@@ -8,8 +8,8 @@ import {
   getGroundHeight,
   getSurfaceY,
   isChristmasSeason
-} from '../assets/js/st-peters-3d/dimensions.js';
-import { CHURCHYARD_MEMORIALS } from '../assets/js/st-peters-3d/memorials-data.js';
+} from '../assets/js/st-peters-3d/dimensions.ts';
+import { CHURCHYARD_MEMORIALS } from '../assets/js/st-peters-3d/memorials-data.ts';
 
 const root = new URL('../', import.meta.url);
 
@@ -22,15 +22,13 @@ test("St Peter's 3D page lives beneath St Peter's Church with reconstruction lay
   assert.match(page, /id="church-scene"/);
 });
 
-test("every St Peter's 3D module imported by the page exists and is cache-busted in the importmap", () => {
+test("every St Peter's 3D module imported by the page exists and the page loads the Vite bundle", () => {
   const page = readFileSync(new URL('history/st-peters/3d-model.liquid', root), 'utf8');
-  const importMapMatch = page.match(/<script type="importmap">\s*([\s\S]*?)\s*<\/script>/);
-  assert.ok(importMapMatch, 'importmap script block should exist');
+  assert.match(page, /'st-peters-3d' \| bundle/);
+  assert.match(page, /bundlePreloads "st-peters-3d"/);
+  assert.doesNotMatch(page, /importmap|three\.module\.js/);
 
-  const importMap = JSON.parse(importMapMatch[1]);
-  assert.equal(importMap.imports.three, '/assets/vendor/three/three.module.js');
-
-  const pending = ['/assets/js/st-peters-3d/main.js'];
+  const pending = ['/assets/js/st-peters-3d/main.ts'];
   const seen = new Set<string>();
 
   while (pending.length > 0) {
@@ -45,33 +43,25 @@ test("every St Peter's 3D module imported by the page exists and is cache-busted
     // Both `import x from '...'` and side-effect `import '...'` (walk joystick, stats overlay)
     for (const match of source.matchAll(/(?:from|import)\s+['"]([^'"]+)['"]/g)) {
       const spec = match[1];
-      let next: string | null = null;
-      if (spec.startsWith('/assets/js/st-peters-3d/')) {
-        next = spec;
-      } else if (spec.startsWith('./') && modPath.startsWith('/assets/js/st-peters-3d/')) {
-        next = new URL(spec, `https://example.invalid${modPath}`).pathname;
-      }
-      if (!next?.startsWith('/assets/js/st-peters-3d/')) continue;
-      assert.ok(
-        importMap.imports[next]?.includes(`'${next}' | cacheBust`),
-        `module ${next} should be cache-busted in the importmap`
-      );
+      if (!spec.startsWith('./')) continue;
+      const next = new URL(spec, `https://example.invalid${modPath}`).pathname;
+      if (!next.startsWith('/assets/js/st-peters-3d/')) continue;
       pending.push(next);
     }
   }
 
   assert.equal(seen.size, 20);
-  assert.ok(seen.has('/assets/js/st-peters-3d/canvas-utils.js'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/mesh-utils.js'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/fade.js'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/static-merge.js'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/stats-overlay.js'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/belfry.js'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/stained-glass.js'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/plaques.js'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/church-terrain-data.js'));
+  assert.ok(seen.has('/assets/js/st-peters-3d/canvas-utils.ts'));
+  assert.ok(seen.has('/assets/js/st-peters-3d/mesh-utils.ts'));
+  assert.ok(seen.has('/assets/js/st-peters-3d/fade.ts'));
+  assert.ok(seen.has('/assets/js/st-peters-3d/static-merge.ts'));
+  assert.ok(seen.has('/assets/js/st-peters-3d/stats-overlay.ts'));
+  assert.ok(seen.has('/assets/js/st-peters-3d/belfry.ts'));
+  assert.ok(seen.has('/assets/js/st-peters-3d/stained-glass.ts'));
+  assert.ok(seen.has('/assets/js/st-peters-3d/plaques.ts'));
+  assert.ok(seen.has('/assets/js/st-peters-3d/church-terrain-data.ts'));
 
-  const texturesSource = readFileSync(new URL('assets/js/st-peters-3d/textures.js', root), 'utf8');
+  const texturesSource = readFileSync(new URL('assets/js/st-peters-3d/textures.ts', root), 'utf8');
   assert.doesNotMatch(texturesSource, /\/images\/monumental-inscriptions\/A[123]\.avif/);
   assert.doesNotMatch(texturesSource, /\.avif/, 'all interior memorial textures should be procedural');
 });
@@ -184,7 +174,7 @@ test('guided Church Tour visits exterior and interior, stays above ground, and o
 });
 
 test('north churchyard wrought-iron railings follow the 1839 boundary with kissing gates on the straight path', () => {
-  const churchyard = readFileSync(new URL('assets/js/st-peters-3d/churchyard.js', root), 'utf8');
+  const churchyard = readFileSync(new URL('assets/js/st-peters-3d/churchyard.ts', root), 'utf8');
   assert.match(churchyard, /export const NORTH_CHURCHYARD_RAILINGS/);
   assert.match(churchyard, /buildNorthChurchyardRailings/);
   assert.match(churchyard, /buildKissingGate/);
@@ -211,11 +201,11 @@ test('north churchyard wrought-iron railings follow the 1839 boundary with kissi
   assert.match(churchyard, /function createKissingGateAnimator/);
   // The leaf clanks as it meets its end post
   assert.match(churchyard, /this\.onStop\?\.\(rec\)/);
-  const mainSrc = readFileSync(new URL('assets/js/st-peters-3d/main.js', root), 'utf8');
+  const mainSrc = readFileSync(new URL('assets/js/st-peters-3d/main.ts', root), 'utf8');
   assert.match(mainSrc, /renderer\.compileAsync\(scene, camera\)\.then\(/);
   assert.match(mainSrc, /kissingGates\.onStop = /);
   assert.match(mainSrc, /churchAudio\.playGateClang\(/);
-  assert.match(readFileSync(new URL('assets/js/st-peters-3d/audio.js', root), 'utf8'), /function playGateClang/);
+  assert.match(readFileSync(new URL('assets/js/st-peters-3d/audio.ts', root), 'utf8'), /function playGateClang/);
   assert.match(churchyard, /RAILING_TAPER_LEN = 0\.1/); // only the top ~10 cm tapers
   // Tips taper to a small rounded end, not a sharp point
   assert.match(churchyard, /railingTipGeometry\((?:picketBaseR|baseR|radius|picketR), \d\)/);
@@ -246,7 +236,7 @@ test('north churchyard wrought-iron railings follow the 1839 boundary with kissi
   assert.match(churchyard, /applyPathGrassBanks\(groundGeo, pathX0, pathX1/);
   assert.match(churchyard, /No userData\.era — the railings stood by 1900/);
 
-  const match = churchyard.match(/export const NORTH_CHURCHYARD_RAILINGS = (\[[\s\S]*?\]);/);
+  const match = churchyard.match(/export const NORTH_CHURCHYARD_RAILINGS\b[^=]*=\s*(\[[\s\S]*?\]);/);
   assert.ok(match);
   const points = Function(`return ${match[1]}`)() as [number, number][];
   assert.ok(points.length >= 8);
@@ -259,7 +249,7 @@ test('north churchyard wrought-iron railings follow the 1839 boundary with kissi
 });
 
 test('walk mode Shift sprint matches the 1839 fly-mode boost and is documented in the UI', () => {
-  const controls = readFileSync(new URL('assets/js/st-peters-3d/controls.js', root), 'utf8');
+  const controls = readFileSync(new URL('assets/js/st-peters-3d/controls.ts', root), 'utf8');
   assert.match(controls, /export const WALK_SPEED = 2\.8/);
   assert.match(controls, /export const WALK_SPEED_SPRINT = 6\.4/);
   assert.match(controls, /walkMoveSpeed\(sprinting\)/);
@@ -272,7 +262,7 @@ test('walk mode Shift sprint matches the 1839 fly-mode boost and is documented i
 });
 
 test('the belfry hangs the three inscribed bells recorded by Cocks, and the tour climbs up to see them', () => {
-  const src = readFileSync(new URL('assets/js/st-peters-3d/belfry.js', root), 'utf8');
+  const src = readFileSync(new URL('assets/js/st-peters-3d/belfry.ts', root), 'utf8');
   for (const text of [
     'HENRI KNIGHT MADE MEE ANO 1618',
     'gloria in excelsis deo 1586',
@@ -293,7 +283,7 @@ test('the belfry hangs the three inscribed bells recorded by Cocks, and the tour
 
 test('features fade out and back in over half a second without touching shared materials', async () => {
   const THREE = await import('three');
-  const { createFader, FADE_SECONDS } = await import('../assets/js/st-peters-3d/fade.js');
+  const { createFader, FADE_SECONDS } = await import('../assets/js/st-peters-3d/fade.ts');
   assert.equal(FADE_SECONDS, 0.5);
 
   const shared = new THREE.MeshStandardMaterial({ color: 0x888888 });

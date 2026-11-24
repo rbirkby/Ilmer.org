@@ -4,13 +4,11 @@
   "compilerOptions": {
     "lib": ["esnext", "dom", "dom.iterable"],
     "types": [],
-    "checkJs": true,
-    "strict": false,
+    "strict": true,
     "paths": {
-      "/assets/vendor/three/OrbitControls.js": ["./node_modules/three/examples/jsm/controls/OrbitControls.js"],
       "/assets/*": ["./assets/*"]
     }
   },
-  "include": ["assets/js/st-peters-3d/**/*.js", "types/browser-globals.d.ts"],
-  "exclude": ["node_modules", "_site"]
+  "include": ["assets/js/**/*.ts", "types/browser-globals.d.ts", "types/cdn-modules.d.ts"],
+  "exclude": ["node_modules", "_site", "assets/dist"]
 }

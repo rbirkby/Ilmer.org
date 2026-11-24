@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { createVillageAudio, distanceGain, SOUND_REFERENCE } from '../assets/js/ilmer-ride-audio.js';
+import { createVillageAudio, distanceGain, SOUND_REFERENCE } from '../assets/js/ilmer-ride-audio.ts';
 
 class Param {
   value = 0;

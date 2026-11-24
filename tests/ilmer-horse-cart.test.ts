@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { STANCE, WALK_PHASES, walkPose } from '../assets/js/ilmer-horse-cart.js';
+import { STANCE, WALK_PHASES, walkPose } from '../assets/js/ilmer-horse-cart.ts';
 
 test('the horse walks a four-beat gait, one foot after another a quarter-stride apart', () => {
   const order = Object.entries(WALK_PHASES).sort(([, a], [, b]) => a - b);
