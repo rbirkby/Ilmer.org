@@ -328,15 +328,16 @@ test('AR keeps trees and hedges hidden when GPS enables the remaining features',
   const structures = { visible: false };
   const livestock = { visible: false };
   const waterFeatures = { visible: false };
-  runInNewContext(`${visibility}\nsetARFeaturesVisible(false); setARFeaturesVisible(true);`, {
-    landscape,
-    structures,
-    livestock,
-    waterFeatures
-  });
+  const sandbox = { landscape, structures, livestock, waterFeatures, shadowsDirty: false };
+  runInNewContext(
+    `${visibility}\nsetARFeaturesVisible(false); setARFeaturesVisible(true); shadowsDirty = false; setARFeaturesVisible(true);`,
+    sandbox
+  );
   assert.equal(landscape.visible, false);
   assert.equal(structures.visible, true);
   assert.equal(livestock.visible, true);
+  assert.equal(sandbox.shadowsDirty, false, 'a repeated GPS fix does not redraw the shadow map');
+  assert.match(scene, /webglcontextrestored[\s\S]{0,500}shadowsDirty = true/);
   assert.equal(waterFeatures.visible, true);
   assert.match(scene, /\[landscape, session\.landscapeVisible\]/);
 });

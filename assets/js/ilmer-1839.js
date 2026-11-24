@@ -2121,11 +2121,17 @@ async function start() {
   const screenFix = new THREE.Quaternion();
 
   function setARFeaturesVisible(visible) {
+    if (
+      landscape.visible !== false ||
+      structures.visible !== visible ||
+      livestock.visible !== visible ||
+      waterFeatures.visible !== visible
+    )
+      shadowsDirty = true;
     landscape.visible = false;
     structures.visible = visible;
     livestock.visible = visible;
     waterFeatures.visible = visible;
-    shadowsDirty = true;
   }
 
   function setARStatus(message) {
@@ -2511,6 +2517,8 @@ async function start() {
     flightButton.disabled = false;
     status.hidden = true;
     host.dataset.state = 'ready';
+    // The restored context has no shadow map, and autoUpdate will not draw one on its own.
+    shadowsDirty = true;
     if (rideMode === 'village') startVillageCart();
     render();
   });
