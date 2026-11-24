@@ -1,7 +1,4 @@
-import {
-  LitElement,
-  html
-} from 'https://cdn.skypack.dev/pin/lit@v3.3.1-mozE5P6MGQybGvSM4ae5/mode=imports,min/optimized/lit.js';
+import { LitElement, html } from 'lit';
 import { DateUtils } from './anniversary-dates.ts';
 
 type TimelineEvent = { id: string; date: string; title: string };

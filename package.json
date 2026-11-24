@@ -39,7 +39,6 @@
     "ajv": "^8.20.0",
     "lighthouse": "^13.4.0",
     "linkinator": "^8.0.2",
-    "lit": "^3.3.3",
     "markdownlint-cli": "^0.50.0",
     "oxfmt": "^0.79.0",
     "oxlint": "^1.74.0",
@@ -48,6 +47,8 @@
     "vite": "^8.3.8"
   },
   "dependencies": {
+    "leaflet": "^1.9.4",
+    "lit": "^3.3.3",
     "markdown-it-footnote": "^4.0.0",
     "markdown-it-github-alerts": "^1.0.1",
     "three": "^0.187.0"

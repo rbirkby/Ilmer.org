@@ -5,12 +5,13 @@
  *   <div id="ilmer-field-map" style="height: 560px"></div>
  *   <script type="module" src="https://www.ilmer.org/assets/js/ilmer-fields-embed.js"></script>
  *
- * Leaflet 1.9.4 (ESM build) is imported from unpkg; its stylesheet is injected
- * automatically. Field shapes were traced from the Ilmer estate field-map
+ * Leaflet (from npm) is bundled into the file, and its stylesheet is inlined and
+ * injected automatically. Field shapes were traced from the Ilmer estate field-map
  * diagram and georeferenced against the Chiltern Main Line and the lane to
  * the A4129. `init` is a named export of the stable file for programmatic use.
  */
-import * as L from 'https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js';
+import * as L from 'leaflet';
+import LEAFLET_CSS from 'leaflet/dist/leaflet.css?inline';
 
 interface Field {
   id: number;
@@ -421,8 +422,6 @@ const FIELDS: Field[] = [
 ];
 
 const CONTAINER_SELECTOR = '#ilmer-field-map, [data-ilmer-field-map]';
-const LEAFLET_CSS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-const LEAFLET_CSS_SRI = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
 const FILL_OPACITY = 0.5;
 
 const WIDGET_CSS = `
@@ -446,24 +445,19 @@ const WIDGET_CSS = `
 @media (max-width: 640px) { .ifm-wrap { flex-direction: column; } .ifm-legend { flex-basis: auto; max-height: 180px; border-left: none; border-top: 1px solid #ddd; } }
 `;
 
-// resolves once Leaflet's stylesheet is loaded: building before then breaks
-// tooltip positioning, which measures element sizes
-const injectStyles = () =>
-  new Promise<void>((resolve) => {
-    const style = document.createElement('style');
-    style.textContent = WIDGET_CSS;
-    document.head.appendChild(style);
+// Leaflet's stylesheet must be in place before the map is built: tooltip
+// positioning measures element sizes.
+const injectStyles = () => {
+  const style = document.createElement('style');
+  style.textContent = WIDGET_CSS;
+  document.head.appendChild(style);
 
-    if (document.querySelector(`link[href="${LEAFLET_CSS}"]`)) return resolve();
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = LEAFLET_CSS;
-    link.integrity = LEAFLET_CSS_SRI;
-    link.crossOrigin = '';
-    link.onload = () => resolve();
-    link.onerror = () => resolve();
-    document.head.appendChild(link);
-  });
+  if (document.querySelector('style[data-ilmer-leaflet-css]')) return;
+  const leafletStyle = document.createElement('style');
+  leafletStyle.dataset.ilmerLeafletCss = '';
+  leafletStyle.textContent = LEAFLET_CSS;
+  document.head.appendChild(leafletStyle);
+};
 
 const build = (container: HTMLElement) => {
   container.classList.add('ifm-wrap');
@@ -529,10 +523,9 @@ const build = (container: HTMLElement) => {
 export function init(root = document) {
   const containers = root.querySelectorAll(CONTAINER_SELECTOR);
   if (!containers.length) return;
-  injectStyles().then(() => {
-    containers.forEach((container) => {
-      if (container instanceof HTMLElement) build(container);
-    });
+  injectStyles();
+  containers.forEach((container) => {
+    if (container instanceof HTMLElement) build(container);
   });
 }
 

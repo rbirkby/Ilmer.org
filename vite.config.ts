@@ -35,7 +35,6 @@ function stableBrowserFiles(): Plugin {
             fileName: () => 'ilmer-fields-embed.js'
           },
           rolldownOptions: {
-            external: [/^https?:/],
             output: { codeSplitting: false }
           }
         }
@@ -101,7 +100,6 @@ export default defineConfig({
         anniversaries: 'assets/js/anniversaries.ts',
         'weekly-news': 'assets/js/weekly-news.ts'
       },
-      external: [/^https?:/],
       output: {
         entryFileNames: '[name]-[hash].js',
         chunkFileNames: '[name]-[hash].js',

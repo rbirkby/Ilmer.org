@@ -20,7 +20,7 @@
     "tests/st-peters-3d.test.ts",
     "tests/then-now.test.ts",
     "types/browser-globals.d.ts",
-    "types/cdn-modules.d.ts"
+    "types/vite-modules.d.ts"
   ],
   "exclude": ["node_modules", "_site", "assets/dist"]
 }
