@@ -1,0 +1,31 @@
+{% render "head"
+  , content: content
+  , lightbox: lightbox
+  , layout: layout
+  , script: script
+  , site: site
+  , url: url
+  , title: title
+  , description: description
+  , tags: tags
+  , image: image %}
+
+{% render "site-header" %}
+<main class="archive kinship">
+  <section class="kinship-body">
+    <header class="kinship-header">
+      {% render "breadcrumb.liquid"
+        , ancestorCrumb1: ancestorCrumb1
+        , ancestorCrumb2: ancestorCrumb2
+        , breadcrumbUseDate: breadcrumbUseDate
+        , page: page
+        , title: title %}
+      <h1>{{ title }}</h1>
+      {% render "archive-flourish.liquid" %}
+      <p class="kinship-description">{{ description }}</p>
+    </header>
+
+    {{ content }}
+  </section>
+</main>
+{% render "footer" %}

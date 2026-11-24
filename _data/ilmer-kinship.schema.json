@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ilmer.org/schemas/ilmer-kinship.schema.json",
+  "title": "Ilmer Kinship Network and Manorial Dynasties",
+  "description": "Curated multi-generational family trees reconstructed from St Peter's Ilmer parish registers, 1841–1921 censuses, wills, monumental inscriptions, and historical timeline records. Used to render /history/family-trees/ and to generate the downloadable GEDCOM 7.0 archive.",
+  "type": "object",
+  "required": ["version", "families", "views"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Dataset schema version"
+    },
+    "families": {
+      "type": "object",
+      "description": "Display metadata and accent colors keyed by family identifier",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["label", "color"],
+        "additionalProperties": false,
+        "properties": {
+          "label": { "type": "string", "minLength": 1 },
+          "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }
+        }
+      }
+    },
+    "views": {
+      "type": "object",
+      "required": ["village", "manor"],
+      "additionalProperties": false,
+      "properties": {
+        "village": { "$ref": "#/$defs/treeView" },
+        "manor": { "$ref": "#/$defs/treeView" }
+      }
+    }
+  },
+  "$defs": {
+    "sourceRef": {
+      "type": "object",
+      "required": ["label", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "pattern": "^/" }
+      }
+    },
+    "personMember": {
+      "type": "object",
+      "required": ["id", "name", "sex"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "name": { "type": "string", "minLength": 1 },
+        "gedcomName": { "type": "string", "minLength": 1 },
+        "sex": { "type": "string", "enum": ["M", "F", "U"] },
+        "dates": { "type": "string" },
+        "birth": { "type": "string" },
+        "baptism": { "type": "string" },
+        "death": { "type": "string" },
+        "burial": { "type": "string" },
+        "occ": { "type": "string" },
+        "place": { "type": "string" },
+        "notes": { "type": "string" },
+        "isDescentParent": { "type": "boolean" }
+      }
+    },
+    "personNode": {
+      "type": "object",
+      "required": ["id", "name", "dates", "family", "col", "gen", "occ", "place", "badges", "notes", "sources"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "name": { "type": "string", "minLength": 1 },
+        "gedcomName": {
+          "type": "string",
+          "description": "Optional GEDCOM-formatted name with /Surname/ slashes"
+        },
+        "sex": { "type": "string", "enum": ["M", "F", "U"] },
+        "groupKind": {
+          "type": "string",
+          "enum": ["couple", "siblings", "chain"],
+          "description": "When a visual card groups multiple people, specifies how its members map to individual GEDCOM INDI and FAM records"
+        },
+        "members": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/personMember" }
+        },
+        "dates": { "type": "string" },
+        "family": { "type": "string", "minLength": 1 },
+        "col": { "type": "number", "minimum": 0 },
+        "gen": { "type": "integer", "minimum": 0 },
+        "occ": { "type": "string" },
+        "place": { "type": "string" },
+        "badges": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["will", "memorial", "war-dead", "property"] }
+        },
+        "notes": { "type": "string" },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/sourceRef" }
+        }
+      }
+    },
+    "union": {
+      "type": "object",
+      "required": ["id", "p1", "p2", "year", "crossFamily"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "p1": { "type": "string", "minLength": 1 },
+        "p2": { "type": "string", "minLength": 1 },
+        "year": { "type": "string", "minLength": 1 },
+        "crossFamily": { "type": "boolean" },
+        "label": { "type": "string" }
+      }
+    },
+    "descent": {
+      "type": "object",
+      "required": ["from", "to"],
+      "additionalProperties": false,
+      "properties": {
+        "from": { "type": "string", "minLength": 1 },
+        "to": { "type": "string", "minLength": 1 },
+        "dashed": { "type": "boolean" }
+      }
+    },
+    "corridorBridge": {
+      "type": "object",
+      "required": ["from", "to", "corridorAfterGen", "laneOffset", "pillCol", "label"],
+      "additionalProperties": false,
+      "properties": {
+        "from": { "type": "string", "minLength": 1 },
+        "to": { "type": "string", "minLength": 1 },
+        "corridorAfterGen": { "type": "integer", "minimum": 0 },
+        "laneOffset": { "type": "number" },
+        "pillCol": { "type": "number" },
+        "label": { "type": "string", "minLength": 1 }
+      }
+    },
+    "gutterBridge": {
+      "type": "object",
+      "required": ["from", "to", "gutterCol", "pillGen", "label"],
+      "additionalProperties": false,
+      "properties": {
+        "from": { "type": "string", "minLength": 1 },
+        "to": { "type": "string", "minLength": 1 },
+        "gutterCol": { "type": "number" },
+        "pillGen": { "type": "number" },
+        "label": { "type": "string", "minLength": 1 }
+      }
+    },
+    "columnHeader": {
+      "type": "object",
+      "required": ["label", "family", "startCol", "endCol"],
+      "additionalProperties": false,
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "family": { "type": "string", "minLength": 1 },
+        "startCol": { "type": "number", "minimum": 0 },
+        "endCol": { "type": "number", "minimum": 0 }
+      }
+    },
+    "treeView": {
+      "type": "object",
+      "required": ["title", "subtitle", "genLabels", "columnHeaders", "nodes", "unions", "descents"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "subtitle": { "type": "string", "minLength": 1 },
+        "genLabels": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": { "type": "string" }
+          }
+        },
+        "columnHeaders": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/columnHeader" }
+        },
+        "nodes": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/personNode" }
+        },
+        "unions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/union" }
+        },
+        "bridges": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/corridorBridge" }
+        },
+        "gutterBridges": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/gutterBridge" }
+        },
+        "descents": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/descent" }
+        }
+      }
+    }
+  }
+}

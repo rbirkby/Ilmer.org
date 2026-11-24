@@ -14,6 +14,7 @@ import { censusAgePyramid } from './plugins/census-age-pyramid.ts';
 import { yearBarChart } from './plugins/year-bar-chart.ts';
 import { medianAge } from './plugins/median-age.ts';
 import { regnalYears } from './plugins/regnal-years.ts';
+import { kinshipToGedcom } from './plugins/kinship-gedcom.ts';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 
@@ -191,6 +192,7 @@ export default function (eleventyConfig: any) {
   eleventyConfig.addFilter('yearBarChart', yearBarChart);
   eleventyConfig.addFilter('medianAge', medianAge);
   eleventyConfig.addFilter('regnalYears', regnalYears);
+  eleventyConfig.addFilter('kinshipToGedcom', kinshipToGedcom);
   /**
    * Sorts a collection so items whose `url` appears in `urls` come first,
    * in that list's order. Remaining items keep their date order.
