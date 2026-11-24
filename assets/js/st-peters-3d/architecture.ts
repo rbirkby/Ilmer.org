@@ -75,7 +75,6 @@ type ChurchMaterials = {
   medOak: THREE.MeshStandardMaterial;
   quarryTile: THREE.Material;
   wax: THREE.Material;
-  stoneSlateRoof: THREE.Material;
 };
 
 type CompositeWallOptions = {
@@ -2183,7 +2182,7 @@ export function buildArchitecture(mats: ChurchMaterials): {
 
   wallsGroup.add(porchGroup);
 
-  // Porch pitched roof of stone slates (old photo) — exact geometric trapezoid per slope so it meets the Nave roof
+  // Porch pitched roof in the same clay tiles as the church — exact geometric trapezoid per slope so it meets the Nave roof
   // seamlessly on the exterior WITHOUT ever clipping inside the Nave North plaster wall!
   const porchRoofHalf = pHalfW + 0.16;
   const zNorthRoof = P.zNorthExt - 0.1;
@@ -2226,24 +2225,15 @@ export function buildArchitecture(mats: ChurchMaterials): {
     }
     const pGeo = new THREE.BufferGeometry();
     pGeo.setAttribute('position', new THREE.Float32BufferAttribute(posArr, 3));
-    // UVs for the stone-slate texture, drawn for one whole slope: u along the porch, v up from the eaves to the
-    // ridge, so its courses diminish towards the ridge as on the real roof
-    const uvArr: number[] = [];
-    for (let i = 0; i < posArr.length; i += 3) {
-      const u = (posArr[i + 2] - zNorthRoof) / (zValleyEaves - zNorthRoof);
-      const v = THREE.MathUtils.clamp((posArr[i + 1] - yEaves) / (yRidge - yEaves), 0, 1);
-      uvArr.push(side > 0 ? 1 - u : u, v);
-    }
-    pGeo.setAttribute('uv', new THREE.Float32BufferAttribute(uvArr, 2));
-    pGeo.computeVertexNormals();
-    const pMesh = new THREE.Mesh(pGeo, mats.stoneSlateRoof);
+    applyBoxUVs(pGeo, 0.55);
+    const pMesh = new THREE.Mesh(pGeo, mats.clayRoof);
     pMesh.castShadow = true;
     pMesh.receiveShadow = true;
     roofGroup.add(pMesh);
   });
 
   const porchRidgeLen = zValleyRidge - zNorthRoof;
-  const porchRidge = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, porchRidgeLen, 8), mats.stoneCapDark);
+  const porchRidge = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, porchRidgeLen, 8), mats.clayRoof);
   porchRidge.rotation.x = Math.PI / 2;
   porchRidge.position.set(P.xCenter, P.ridgeY + 0.12, zNorthRoof + porchRidgeLen * 0.5);
   roofGroup.add(porchRidge);

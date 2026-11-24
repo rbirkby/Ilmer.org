@@ -385,88 +385,6 @@ function createAshlarMaps(maxAniso: number): CanvasMapPair {
 }
 
 // 3. Weathered English Plain Clay Roof Tiles with mossy patches
-// Porch roof of stone slates (old photo of the North Porch): big, irregular grey-brown limestone slates laid in
-// diminishing courses, deepest at the eaves and smallest at the ridge, weathered with pale lichen. Drawn for one
-// whole roof slope: u runs along the porch (north to south), v up the slope from the eaves (0) to the ridge (1).
-function createStoneSlateRoofMaps(maxAniso: number): CanvasMapPair {
-  const w = 512;
-  const h = 512;
-  const col = makeCanvas(w, h);
-  const bmp = makeCanvas(w, h);
-  const ctx = canvas2d(col);
-  const bctx = canvas2d(bmp);
-  const rand = mulberry32(1879);
-
-  ctx.fillStyle = '#2e2c28';
-  ctx.fillRect(0, 0, w, h);
-  bctx.fillStyle = '#202020';
-  bctx.fillRect(0, 0, w, h);
-
-  // Course heights shrink steadily from eaves to ridge; canvas y = 0 is the ridge (texture v = 1)
-  const courses: number[][] = [];
-  let y = h;
-  let ch = h * 0.105;
-  while (y > 0) {
-    courses.push([Math.max(0, y - ch), y]);
-    y -= ch;
-    ch = Math.max(h * 0.04, ch * 0.9);
-  }
-  for (const [y0, y1] of courses) {
-    const courseH = y1 - y0;
-    let x = -rand() * courseH;
-    while (x < w) {
-      const sw = courseH * (0.9 + rand() * 1.3); // slates are random widths, roughly as wide as they are deep
-      const g = 124 + rand() * 48;
-      const warm = rand() * 14;
-      ctx.fillStyle = `rgb(${g + warm},${g + warm * 0.6},${g - 6})`;
-      // Ragged lower edge: each slate hangs a little lower or higher than its neighbours
-      const drop = (rand() - 0.3) * courseH * 0.12;
-      ctx.beginPath();
-      ctx.moveTo(x + 1.5, y0);
-      ctx.lineTo(x + sw - 1.5, y0);
-      ctx.lineTo(x + sw - 1.5 - rand() * 3, y1 - 2 + drop);
-      ctx.quadraticCurveTo(x + sw * 0.5, y1 + drop + rand() * 3, x + 1.5 + rand() * 3, y1 - 2 + drop * 0.6);
-      ctx.closePath();
-      ctx.fill();
-      bctx.beginPath();
-      bctx.moveTo(x + 1.5, y0);
-      bctx.lineTo(x + sw - 1.5, y0);
-      bctx.lineTo(x + sw - 1.5, y1 - 2 + drop);
-      bctx.lineTo(x + 1.5, y1 - 2 + drop * 0.6);
-      bctx.closePath();
-      const bv = 140 + rand() * 60;
-      bctx.fillStyle = `rgb(${bv},${bv},${bv})`;
-      bctx.fill();
-      // The slate's thick lower edge catches the light; the course above shadows its head
-      ctx.fillStyle = 'rgba(20,18,16,0.45)';
-      ctx.fillRect(x + 1.5, y0, sw - 3, courseH * 0.16);
-      bctx.fillStyle = 'rgba(235,235,235,0.9)';
-      bctx.fillRect(x + 1.5, y1 - 4 + drop, sw - 3, 3);
-      // Surface grain, and pale lichen & dark moss flecks
-      for (let i = 0; i < sw * courseH * 0.012; i++) {
-        const px = x + 2 + rand() * (sw - 4);
-        const py = y0 + courseH * 0.18 + rand() * courseH * 0.75;
-        const r = 0.6 + rand() * 2.6;
-        const t = rand();
-        ctx.fillStyle =
-          t < 0.35
-            ? 'rgba(214,206,170,0.55)'
-            : t < 0.55
-              ? 'rgba(70,74,50,0.5)'
-              : `rgba(${g - 30},${g - 32},${g - 36},0.35)`;
-        ctx.beginPath();
-        ctx.arc(px, py, r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      x += sw;
-    }
-  }
-  return {
-    map: finishTexture(col, { srgb: true, maxAniso }),
-    bumpMap: finishTexture(bmp, { srgb: false, maxAniso })
-  };
-}
-
 function createClayRoofMaps(maxAniso: number): CanvasMapPair {
   const w = 512;
   const h = 512;
@@ -1721,7 +1639,6 @@ export function createMaterials(renderer: THREE.WebGLRenderer) {
   const ashlarMaps = createAshlarMaps(maxAniso);
   const graniteMap = createGraniteMaps(maxAniso);
   const clayRoofMaps = createClayRoofMaps(maxAniso);
-  const stoneSlateMaps = createStoneSlateRoofMaps(maxAniso);
   const weatherboardMaps = createWeatherboardMaps(maxAniso);
   const shingleMaps = createShingleMaps(maxAniso);
   const quarryMaps = createQuarryTileMaps(maxAniso);
@@ -1806,12 +1723,6 @@ export function createMaterials(renderer: THREE.WebGLRenderer) {
       color: 0x76746c,
       map: ashlarMaps.map,
       roughness: 0.94
-    }),
-    stoneSlateRoof: new THREE.MeshStandardMaterial({
-      map: stoneSlateMaps.map,
-      bumpMap: stoneSlateMaps.bumpMap,
-      bumpScale: 0.06,
-      roughness: 0.93
     }),
     clayRoof: new THREE.MeshStandardMaterial({
       map: clayRoofMaps.map,
