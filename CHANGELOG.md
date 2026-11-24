@@ -6,6 +6,7 @@ Generated automatically from [Conventional Commits](https://www.conventionalcomm
 
 ### Features
 
+- Changelog generation ([884b153](https://github.com/rbirkby/Ilmer.org/commit/884b15339b32907b51079e4309cd488c51da5b95))
 - Replace CDN JS with locally managed deps ([098d566](https://github.com/rbirkby/Ilmer.org/commit/098d56657e4fbfdd275133f8ae1b55e37ec9465b))
 - Do not use typescript 'any' ([29ce1c8](https://github.com/rbirkby/Ilmer.org/commit/29ce1c8bd18c6ee54d6e3803ddea2b91ed828827))
 - Updated timeline events ([8aa57e9](https://github.com/rbirkby/Ilmer.org/commit/8aa57e94b50f370d53460459a0dd9153a71e452a))
@@ -569,3 +570,118 @@ Generated automatically from [Conventional Commits](https://www.conventionalcomm
 
 - Add an extra link to the parish records, primarily for mobile users ([363fa51](https://github.com/rbirkby/Ilmer.org/commit/363fa51292eac7a12fa97e945cf92f76494222bd))
 - Add tooltips to Now and Then photos ([994149d](https://github.com/rbirkby/Ilmer.org/commit/994149da1e01089ad0576aa37d3bbe738b631d51))
+
+## December 2025
+
+### Features
+
+- Vicarage article ([8d544f6](https://github.com/rbirkby/Ilmer.org/commit/8d544f6fda9fa61ed9253f23c91f719800e4eef4))
+- Intro to the registers and records ([6917348](https://github.com/rbirkby/Ilmer.org/commit/6917348543b76ee3a6062a4f5d5f7bcc1cb07e1e))
+- Ilmer parish records ([4e935f3](https://github.com/rbirkby/Ilmer.org/commit/4e935f38ef941d5bd27f50a9c47e62bbe8acd422))
+- Add census to Lockington ([4164b16](https://github.com/rbirkby/Ilmer.org/commit/4164b16821e37bda5a26b253f739d1d281f9c404))
+
+### Maintenance
+
+- **deps:** Bump dependencies ([977ed81](https://github.com/rbirkby/Ilmer.org/commit/977ed81f5fbd0c91c4e48f241603dedd17185e9f))
+
+## October 2025
+
+### Features
+
+- Map the timeline JSON schema against the data ([0e833a8](https://github.com/rbirkby/Ilmer.org/commit/0e833a81ae80240bdf5c941051b331be2f8e5029))
+- Add markers for important anniversaries on the timeline page ([a74fae6](https://github.com/rbirkby/Ilmer.org/commit/a74fae678f84dc10d07cb912f30afb6f6d5ceb1b))
+
+### Bug fixes
+
+- Remove test anniversary ([5f42bb1](https://github.com/rbirkby/Ilmer.org/commit/5f42bb15dda46aaca2e6aefa867a00af47b5ef8c))
+
+## September 2025
+
+### Features
+
+- Show timeline full size images in a popover lightbox ([ff46827](https://github.com/rbirkby/Ilmer.org/commit/ff468274bc67d23085d803af288d95ad021ffeda))
+- Optimise loading and rendering of timeline ([2b6b8df](https://github.com/rbirkby/Ilmer.org/commit/2b6b8df03688a8c6c7540fe50512983d2ef17193))
+- Add kilroy link to the timeline ([4448962](https://github.com/rbirkby/Ilmer.org/commit/444896203ccbbd4c473f1a079d5219aec802119b))
+- Add iOS click support on anniversary timeline tiles ([74b8b6d](https://github.com/rbirkby/Ilmer.org/commit/74b8b6d809a623c1bc7c376a4b91dd2cd19f0458))
+- Timeline anniversaries ([e3992de](https://github.com/rbirkby/Ilmer.org/commit/e3992de08a19c326e3e7f9bc4937f178571cdee6))
+- Include Social meta tags in timeline HTML ([5d27d78](https://github.com/rbirkby/Ilmer.org/commit/5d27d78b38f09032ff881155249aa3ed93f24c3e))
+- historical dates in timeline ([3c86dca](https://github.com/rbirkby/Ilmer.org/commit/3c86dcae1a1913966cb47224ad42e1bdf59171a1))
+- Improve JSON schema for timeline data ([f7ed025](https://github.com/rbirkby/Ilmer.org/commit/f7ed025935cf158fa0a9619e20bb66a4afccc8d9))
+- more timeline images ([0b22c58](https://github.com/rbirkby/Ilmer.org/commit/0b22c5829c355f74ac65c8e4457a5dbe880b508f))
+- Add JSON schema, improve timeline event quality ([e1a2ed0](https://github.com/rbirkby/Ilmer.org/commit/e1a2ed069287e2e5df217d6e8f31fcfe7a5b677b))
+- more photographs and accuracy improvements on the timeline ([148b32e](https://github.com/rbirkby/Ilmer.org/commit/148b32e3ab8c75e0ab2c4925cb8c835dca80a780))
+- many images for the timeline ([bdb33aa](https://github.com/rbirkby/Ilmer.org/commit/bdb33aa9dee999a7bb1a2873152b1b4daf196fce))
+- Expand timeline descriptions ([ead4a42](https://github.com/rbirkby/Ilmer.org/commit/ead4a4241609e1366e4fa8eacb8a4fc9b0a60f29))
+- enhance the timeline item shadow ([c4fedd5](https://github.com/rbirkby/Ilmer.org/commit/c4fedd5fbc4880b91b78d8810f8ae2fb2478df92))
+- Show number of events on timeline label selector ([8bcbc9b](https://github.com/rbirkby/Ilmer.org/commit/8bcbc9b0e61ef1fbb718ef1caabb9742896413f2))
+- Ilmer Halt timeline images ([46ced71](https://github.com/rbirkby/Ilmer.org/commit/46ced7100bd5329a317839331155cb6201159e06))
+- Timeline parchment style ([c3995c2](https://github.com/rbirkby/Ilmer.org/commit/c3995c23dd483100a60556f61b1245e332df9417))
+
+### Bug fixes
+
+- At the narrow-most viewport, ensure the anniversaries container has a large enough height ([99415da](https://github.com/rbirkby/Ilmer.org/commit/99415daba6e039860d6801e8affa5c920e848ade))
+- Fix timeline CSS so the anniversary cards render as a block element ([fddda10](https://github.com/rbirkby/Ilmer.org/commit/fddda10ec6ee26f0cf6b5f88819bd142425e9b20))
+- double spacing ([def5d18](https://github.com/rbirkby/Ilmer.org/commit/def5d18f3a894a7b9014007c1b4d53aacee7a707))
+- timeline JSON schema description for images ([0b5b3d7](https://github.com/rbirkby/Ilmer.org/commit/0b5b3d73a216576ed6f088c16f477d714e645eae))
+
+## August 2025
+
+### Features
+
+- further factual event cleanup ([050f3da](https://github.com/rbirkby/Ilmer.org/commit/050f3da03a6b3511c5a9bd495ab736e5b08143cf))
+- 5 new images on the timeline ([22c8407](https://github.com/rbirkby/Ilmer.org/commit/22c8407bbac0000696eaad10654b4d6b3245473a))
+- More historical event details ([d0cf0dd](https://github.com/rbirkby/Ilmer.org/commit/d0cf0dd5911dd980ed6517c334a6c717d032d5f5))
+- Add markdown processing of the timeline description ([26c10df](https://github.com/rbirkby/Ilmer.org/commit/26c10dff4e5add9ef95584c6e306593e5e64ef5c))
+- Ilmer timeline ([a2d0303](https://github.com/rbirkby/Ilmer.org/commit/a2d03037c905d93194fbc2427d2d1e556e9735bc))
+
+### Bug fixes
+
+- sort events in the timeline chronologically ([1a9dc39](https://github.com/rbirkby/Ilmer.org/commit/1a9dc399743865805afce75a1ee55ac87c695ab3))
+
+## April 2025
+
+### Maintenance
+
+- **deps:** Update depedencies ([0864dfd](https://github.com/rbirkby/Ilmer.org/commit/0864dfdefe8197e6f8e7ea19c52432bfe8f1538d))
+
+## February 2025
+
+### Documentation
+
+- Fix spelling mistake ([6f668fd](https://github.com/rbirkby/Ilmer.org/commit/6f668fdff297eeebe2fb16723755915b19cc0aca))
+- Expand the church article with newly discovered facts ([e8fa5bf](https://github.com/rbirkby/Ilmer.org/commit/e8fa5bf7a25d849b812ac3a962c59ddc9a460968))
+
+### Maintenance
+
+- **deps:** Update dependencies ([87b554b](https://github.com/rbirkby/Ilmer.org/commit/87b554b6f4ec7b5b3fb97ffa8c8cab85c950912b))
+
+## April 2024
+
+### Features
+
+- correction as to flue location ([57246f1](https://github.com/rbirkby/Ilmer.org/commit/57246f1d741626f9f5b9691423d2a27834c0f760))
+- Reference to the RIBA archive ([7734cb0](https://github.com/rbirkby/Ilmer.org/commit/7734cb0830503cb0ffe97cd5fbbe261edaed6ed4))
+
+### Bug fixes
+
+- italicise reference ([5d3e2f9](https://github.com/rbirkby/Ilmer.org/commit/5d3e2f95f538852d274c0f99de295ba7bf78a416))
+- Use nesting selector for compatibility with current Tesla browser ([b4612c5](https://github.com/rbirkby/Ilmer.org/commit/b4612c50425f478b14b9d638a928603e492c75a1))
+
+## March 2024
+
+### Features
+
+- Draft article on Ilmer Church history ([96b117a](https://github.com/rbirkby/Ilmer.org/commit/96b117a785989dad78d665de206d6393897a3bb0))
+- Add footnote support to the 11ty markdown processor ([056b772](https://github.com/rbirkby/Ilmer.org/commit/056b77253abcc64453d1107cc5b1a945662bd4f7))
+- Use Node v20 ([208aa36](https://github.com/rbirkby/Ilmer.org/commit/208aa361b4412fdef3f6e8806bb654fe09f31794))
+- New 11ty-based site ([07e3d23](https://github.com/rbirkby/Ilmer.org/commit/07e3d23e6148e5cc8e1fa37c10e9563b88dc5ec5))
+
+### Bug fixes
+
+- Correctly link to the Ilmer Halt image ([69de62f](https://github.com/rbirkby/Ilmer.org/commit/69de62fd5a0ab3d890ef631815c06101e9e823d5))
+- Remove unnecessary heading ([d675da3](https://github.com/rbirkby/Ilmer.org/commit/d675da363b90d000efc8ea4eba9e56f69924433e))
+- Specify default header background color ([40406d5](https://github.com/rbirkby/Ilmer.org/commit/40406d56026c66496a0d7173817ad82cca17c0e8))
+
+### Maintenance
+
+- Prettier and editorconfig ([fcafffc](https://github.com/rbirkby/Ilmer.org/commit/fcafffcc07decb587f7eb69ba59d3b5b921e5e82))
