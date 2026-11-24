@@ -1,5 +1,6 @@
 import path from 'node:path';
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import markdownItFootnote from 'markdown-it-footnote';
 import { RenderPlugin } from '@11ty/eleventy';
@@ -8,6 +9,7 @@ import type { MarkdownIt } from 'markdown-it';
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts';
 import markdownItMarginNotes from './plugins/markdown-it-margin-notes.ts';
 import { createCacheBustFilter } from './plugins/cache-bust.ts';
+import { createBundleFilters } from './plugins/js-bundle.ts';
 import { tableScroll } from './plugins/table-scroll.ts';
 import { censusOccupations } from './plugins/census-occupations.ts';
 import { censusAgePyramid } from './plugins/census-age-pyramid.ts';
@@ -31,7 +33,7 @@ interface CollectionApi {
 }
 
 interface WeeklyNewsEvent {
-  /** Free-text date parsed client-side by assets/js/anniversary-dates.js, e.g. "20 May 1575". */
+  /** Free-text date parsed client-side by assets/js/anniversary-dates.ts, e.g. "20 May 1575". */
   date: string;
   title: string;
   url: string;
@@ -160,11 +162,13 @@ function buildWeeklyNewsEvents(): WeeklyNewsEvent[] {
 
 export default function (eleventyConfig: any) {
   eleventyConfig.addPassthroughCopy({ public: '.' });
-  eleventyConfig.addPassthroughCopy('assets');
+  // Browser TypeScript is bundled by Vite into assets/dist (content-hashed). Do not publish the sources.
+  eleventyConfig.addPassthroughCopy('assets/css');
+  eleventyConfig.addPassthroughCopy('assets/fonts');
+  eleventyConfig.addPassthroughCopy('assets/pdfs');
+  eleventyConfig.addPassthroughCopy('assets/*.json');
+  eleventyConfig.addPassthroughCopy('assets/dist');
   eleventyConfig.addPassthroughCopy({
-    'node_modules/three/build/three.core.js': 'assets/vendor/three/three.core.js',
-    'node_modules/three/build/three.module.js': 'assets/vendor/three/three.module.js',
-    'node_modules/three/examples/jsm/controls/OrbitControls.js': 'assets/vendor/three/OrbitControls.js',
     'node_modules/three/LICENSE': 'assets/vendor/three/LICENSE.txt'
   });
 
@@ -172,7 +176,7 @@ export default function (eleventyConfig: any) {
     'node_modules/markdown-it-github-alerts/styles/*.css': 'assets/css'
   });
   eleventyConfig.addWatchTarget('public/assets/css/');
-  eleventyConfig.addWatchTarget('public/assets/js/');
+  eleventyConfig.addWatchTarget('assets/dist');
 
   eleventyConfig.amendLibrary('md', (mdLib: MarkdownIt) => mdLib.use(markdownItFootnote));
   eleventyConfig.amendLibrary('md', (mdLib: MarkdownIt) => mdLib.use(markdownItMarginNotes));
@@ -204,10 +208,33 @@ export default function (eleventyConfig: any) {
       return a.date.getTime() - b.date.getTime();
     });
   });
-  /** Content-hash query string for local CSS/JS so browsers fetch a new copy when the file changes. */
+  /** Content-hash query string for local CSS and JSON. Hashed JS bundles use the `bundle` filter instead. */
   const cacheBust = createCacheBustFilter(ROOT);
   eleventyConfig.addFilter('cacheBust', cacheBust);
-  eleventyConfig.on('eleventy.before', () => cacheBust.clearCache());
+  const bundles = createBundleFilters(ROOT);
+  eleventyConfig.addFilter('bundle', bundles.bundle);
+  eleventyConfig.addFilter('bundleImports', bundles.bundleImports);
+  // Liquid's `for` tag does not apply a filter to its collection, so preloads are a shortcode.
+  eleventyConfig.addShortcode('bundlePreloads', (name: string) =>
+    bundles
+      .bundleImports(name)
+      .map((href) => `<link rel="modulepreload" href="${href}">`)
+      .join('\n')
+  );
+  eleventyConfig.on('eleventy.before', () => {
+    // Production builds always rebundle. `eleventy --serve` reuses the manifest and lets `vite build --watch` refresh it.
+    const serving = process.argv.includes('--serve') || process.argv.includes('--watch');
+    const manifest = path.join(ROOT, 'assets/dist/.vite/manifest.json');
+    if (!serving || !existsSync(manifest)) {
+      const viteBin = path.join(ROOT, 'node_modules/vite/bin/vite.js');
+      const result = spawnSync(process.execPath, [viteBin, 'build'], { cwd: ROOT, stdio: 'inherit' });
+      if (result.status !== 0) {
+        throw new Error('Vite failed to bundle the site JavaScript');
+      }
+    }
+    cacheBust.clearCache();
+    bundles.bundle.clear();
+  });
   /** Root-relative site path: strips leading slashes; leaves absolute http(s) URLs unchanged. */
   eleventyConfig.addFilter('sitePath', (value: unknown) => {
     if (value == null || value === '') return '';

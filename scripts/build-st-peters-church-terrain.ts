@@ -2,13 +2,13 @@
  * Sample the village measured terrain into a church-local elevation crop for St Peter's 3D.
  *
  * Heights are relative to CHURCH_PLAN.centre so the church model stays on y = 0.
- * Writes assets/st-peters-church-terrain.json and assets/js/st-peters-3d/church-terrain-data.js.
+ * Writes assets/st-peters-church-terrain.json and assets/js/st-peters-3d/church-terrain-data.ts.
  *
  * Usage: node scripts/build-st-peters-church-terrain.ts
  */
 import { readFileSync, writeFileSync } from 'node:fs';
-import { CHURCH_PLAN, mapPoint } from '../assets/js/ilmer-1839-data.js';
-import { terrainHeight, validateTerrain } from '../assets/js/ilmer-terrain.js';
+import { CHURCH_PLAN, mapPoint } from '../assets/js/ilmer-1839-data.ts';
+import { terrainHeight, validateTerrain } from '../assets/js/ilmer-terrain.ts';
 
 const measured = validateTerrain(
   JSON.parse(readFileSync(new URL('../assets/ilmer-terrain.json', import.meta.url), 'utf8'))
@@ -65,7 +65,7 @@ const out = {
 };
 
 const jsonPath = new URL('../assets/st-peters-church-terrain.json', import.meta.url);
-const jsPath = new URL('../assets/js/st-peters-3d/church-terrain-data.js', import.meta.url);
+const jsPath = new URL('../assets/js/st-peters-3d/church-terrain-data.ts', import.meta.url);
 writeFileSync(jsonPath, `${JSON.stringify(out)}\n`);
 writeFileSync(
   jsPath,

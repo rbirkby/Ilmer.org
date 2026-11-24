@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import { applyPoppyChat, initPoppyChat } from '../assets/js/poppy-chat.js';
+import { applyPoppyChat, initPoppyChat } from '../assets/js/poppy-chat.ts';
 
 type Listener = () => void;
 
@@ -161,5 +161,5 @@ test('every page loads the chat memory script next to the popover', () => {
   assert.match(footer, /id="poppy-chat"/);
   assert.match(footer, /class="poppy-link" popovertarget="poppy-chat"/);
   assert.match(footer, /popovertarget="poppy-chat" popovertargetaction="hide"/);
-  assert.match(footer, /\/assets\/js\/poppy-chat\.js/);
+  assert.match(footer, /\{\{ 'poppy-chat' \| bundle \}\}/);
 });

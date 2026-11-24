@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { DateUtils } from '../assets/js/anniversary-dates.js';
+import { DateUtils } from '../assets/js/anniversary-dates.ts';
 
 test('parseEventDate accepts full and abbreviated month names', () => {
   const dates = new DateUtils();

@@ -1,6 +1,6 @@
 import { writeFileSync } from 'node:fs';
 import * as THREE from 'three';
-import { buildPlacedTreesFromFiles } from './ilmer-placed-trees.js';
+import { buildPlacedTreesFromFiles } from './ilmer-placed-trees.ts';
 
 const started = performance.now();
 const placed = buildPlacedTreesFromFiles(THREE);

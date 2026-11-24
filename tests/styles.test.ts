@@ -113,7 +113,7 @@ test('local stylesheet links are cache-busted and owned by the head template', (
 test('the anniversary strip fades its scroll edges more lightly than wide tables', () => {
   const timeline = readFileSync(new URL('assets/css/timeline.css', root), 'utf8');
   const archive = readFileSync(new URL('assets/css/archive.css', root), 'utf8');
-  const script = readFileSync(new URL('assets/js/anniversaries.js', root), 'utf8');
+  const script = readFileSync(new URL('assets/js/anniversaries.ts', root), 'utf8');
   assert.match(script, /class="anniversary-scroll"/);
   assert.match(script, /anniversary-scroll-shadow anniversary-scroll-shadow--left" aria-hidden="true"/);
   assert.match(script, /anniversary-scroll-shadow anniversary-scroll-shadow--right" aria-hidden="true"/);

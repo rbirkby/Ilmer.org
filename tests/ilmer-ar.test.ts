@@ -5,7 +5,7 @@ import {
   createGeoReference,
   gpsToMapPixel,
   observeCompassAvailability
-} from '../assets/js/ilmer-ar.js';
+} from '../assets/js/ilmer-ar.ts';
 
 function orientationTarget(permissionRequired = false, touch = false) {
   return Object.assign(new EventTarget(), {

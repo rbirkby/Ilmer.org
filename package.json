@@ -4,7 +4,8 @@
   "description": "Ilmer Past - local history website",
   "private": true,
   "scripts": {
-    "start": "npx @11ty/eleventy --config=.eleventy.ts --serve",
+    "start": "npm run build:js && node scripts/dev.ts",
+    "build:js": "vite build",
     "build": "npx @11ty/eleventy --config=.eleventy.ts",
     "format": "oxfmt --write .",
     "format-check": "oxfmt --check .",
@@ -35,13 +36,15 @@
     "@types/node": "^26.4.1",
     "@types/three": "^0.187.0",
     "ajv": "^8.20.0",
+    "esbuild": "^0.28.2",
     "lighthouse": "^13.4.0",
     "linkinator": "^8.0.2",
     "markdownlint-cli": "^0.50.0",
     "oxfmt": "^0.79.0",
     "oxlint": "^1.74.0",
     "pour-cli": "^0.3.0",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8"
   },
   "dependencies": {
     "markdown-it-footnote": "^4.0.0",

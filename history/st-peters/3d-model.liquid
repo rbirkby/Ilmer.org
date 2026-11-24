@@ -137,34 +137,9 @@ permalink: /history/st-peters/3d-model/index.html
 
 <noscript><p>The interactive 3D model requires JavaScript. Visit <a href="/history/church/">St Peter's Church History</a> to read about the church.</p></noscript>
 
-<script type="importmap">
-{
-  "imports": {
-    "three": "/assets/vendor/three/three.module.js",
-    "/assets/js/st-peters-3d/dimensions.js": "{{ '/assets/js/st-peters-3d/dimensions.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/church-terrain-data.js": "{{ '/assets/js/st-peters-3d/church-terrain-data.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/memorials-data.js": "{{ '/assets/js/st-peters-3d/memorials-data.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/canvas-utils.js": "{{ '/assets/js/st-peters-3d/canvas-utils.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/mesh-utils.js": "{{ '/assets/js/st-peters-3d/mesh-utils.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/stained-glass.js": "{{ '/assets/js/st-peters-3d/stained-glass.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/plaques.js": "{{ '/assets/js/st-peters-3d/plaques.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/textures.js": "{{ '/assets/js/st-peters-3d/textures.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/architecture.js": "{{ '/assets/js/st-peters-3d/architecture.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/belfry.js": "{{ '/assets/js/st-peters-3d/belfry.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/interior.js": "{{ '/assets/js/st-peters-3d/interior.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/churchyard.js": "{{ '/assets/js/st-peters-3d/churchyard.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/atmosphere.js": "{{ '/assets/js/st-peters-3d/atmosphere.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/audio.js": "{{ '/assets/js/st-peters-3d/audio.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/controls.js": "{{ '/assets/js/st-peters-3d/controls.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/walk-joystick.js": "{{ '/assets/js/st-peters-3d/walk-joystick.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/static-merge.js": "{{ '/assets/js/st-peters-3d/static-merge.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/fade.js": "{{ '/assets/js/st-peters-3d/fade.js' | cacheBust }}",
-    "/assets/js/st-peters-3d/stats-overlay.js": "{{ '/assets/js/st-peters-3d/stats-overlay.js' | cacheBust }}"
-  }
-}
-</script>
+{% bundlePreloads "st-peters-3d" %}
 <script type="module">
-  import("{{ '/assets/js/st-peters-3d/main.js' | cacheBust }}").catch((error) => {
+  import("{{ 'st-peters-3d' | bundle }}").catch((error) => {
     console.error("St Peter's 3D reconstruction modules could not load:", error);
     const scene = document.getElementById('church-scene');
     if (scene) scene.dataset.state = 'error';
