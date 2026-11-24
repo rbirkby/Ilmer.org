@@ -26,7 +26,7 @@ export default defineConfig({
         'st-peters-3d': 'assets/js/st-peters-3d/main.ts',
         'ilmer-fields-embed': 'assets/js/ilmer-fields-embed.ts',
         'colorize-images': 'assets/js/colorize-images.ts',
-        'image-lightbox': 'assets/js/image-lightbox.ts',
+        timeline: 'assets/js/timeline.ts',
         'then-now': 'assets/js/then-now.ts',
         'census-summary': 'assets/js/census-summary.ts',
         'poppy-chat': 'assets/js/poppy-chat.ts',

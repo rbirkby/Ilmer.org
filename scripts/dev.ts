@@ -4,6 +4,7 @@
  */
 import { spawn, type ChildProcess } from 'node:child_process';
 import path from 'node:path';
+import { unexpectedChildExit } from './dev-process.ts';
 
 const bin = (name: string) => path.resolve('node_modules/.bin', name);
 
@@ -24,8 +25,8 @@ process.on('SIGINT', () => shutdown(0));
 process.on('SIGTERM', () => shutdown(0));
 for (const child of children) {
   child.on('exit', (code, signal) => {
-    if (stopping) return;
-    if (signal) return;
-    shutdown(code ?? 1);
+    const exitCode = unexpectedChildExit(stopping, code, signal);
+    if (exitCode === null) return;
+    shutdown(exitCode);
   });
 }

@@ -9,6 +9,7 @@ import type { MarkdownIt } from 'markdown-it';
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts';
 import markdownItMarginNotes from './plugins/markdown-it-margin-notes.ts';
 import { createCacheBustFilter } from './plugins/cache-bust.ts';
+import { retainedGitignorePatterns } from './plugins/eleventy-watch-ignores.ts';
 import { createBundleFilters } from './plugins/js-bundle.ts';
 import { tableScroll } from './plugins/table-scroll.ts';
 import { censusOccupations } from './plugins/census-occupations.ts';
@@ -176,6 +177,14 @@ export default function (eleventyConfig: any) {
     'node_modules/markdown-it-github-alerts/styles/*.css': 'assets/css'
   });
   eleventyConfig.addWatchTarget('public/assets/css/');
+  // Eleventy skips Git-ignored paths, including added watch targets. Stop applying .gitignore,
+  // keep every other ignored path out of the watch and the template search, and watch Vite's output.
+  eleventyConfig.setUseGitIgnore(false);
+  for (const pattern of retainedGitignorePatterns(readFileSync(path.join(ROOT, '.gitignore'), 'utf8'))) {
+    eleventyConfig.ignores.add(pattern);
+    eleventyConfig.watchIgnores.add(pattern);
+    if (!pattern.includes('*')) eleventyConfig.watchIgnores.add(pattern.replace(/\/?$/, '/**'));
+  }
   eleventyConfig.addWatchTarget('assets/dist');
 
   eleventyConfig.amendLibrary('md', (mdLib: MarkdownIt) => mdLib.use(markdownItFootnote));
