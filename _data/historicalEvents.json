@@ -3371,9 +3371,12 @@
   {
     "date": "1946",
     "title": "Dudley Leuw Runs Ilmer Nurseries",
-    "description": "Dudley Scales Leuw began running Ilmer Nurseries. He eventually retired in 1969 and lived to the age of 100.",
+    "description": "Dudley Scales Leuw began running Ilmer Nurseries. Previously, he was a Royal Naval Volunteer Reserve (RNVR) officer, serving on HMS King Alfred, HMS Proserpine, HMS Raleigh, HMS Excalibur and HMS Royal Katherine. He eventually retired in 1969, moved to Newton Ferrers and then Leamington Spa, living to the age of 100.",
     "image": "/images/dudley-leuw.jpg",
-    "references": ["Leamington Spa Courier, 8 Sep 2000"],
+    "references": [
+      "Leamington Spa Courier, 8 Sep 2000",
+      "[RNVR Officers](https://www.unithistories.com/officers/RNVR_officersL.html)"
+    ],
     "labels": ["document"]
   },
   {
@@ -3766,7 +3769,7 @@
   {
     "date": "1969",
     "title": "Dudley Scales Leuw Sells Ilmer Nurseries",
-    "description": "Dudley Scales Leuw sold Ilmer Nurseries. He moved to the West Midlands and lived to the age of 100.",
+    "description": "Dudley Scales Leuw sold Ilmer Nurseries. He moved to Newton Ferrers and lived to the age of 100.",
     "references": ["Leamington Spa Courier, 8 Sep 2000"],
     "labels": ["auction", "land", "sale"]
   },
@@ -3870,7 +3873,7 @@
   {
     "date": "26 Mar. 1973",
     "title": "Eton College Buys Manor Farm",
-    "description": "Eton College bought Manor Farm from Benjamin Smith.",
+    "description": "Eton College bought Manor Farm from Benjamin Smith, a director of Blanchford's building supplies.",
     "references": ["Bucks Free Press, 27 Jul 1979", "Eton College Archives, MISC ALHC 498"],
     "labels": ["farm", "property"]
   },
@@ -3885,8 +3888,8 @@
   {
     "date": "c. 1975 (1970s)",
     "title": "Parish Room Demolished",
-    "description": "The wooden Parish Room, which had been donated by Miss Moreton in 1907 and served as a village hall and meeting space, is demolished. It had been purchased by J Pryor of the Old Vicarage in 1971.",
-    "references": [],
+    "description": "The wooden Parish Room, which had been donated by Miss Moreton in 1907 and served as a village hall and meeting space, is demolished after the floor collapsed. It had been purchased by J Pryor of the Old Vicarage in 1971.",
+    "references": ["Local resident recollection"],
     "labels": ["church", "meeting", "person"]
   },
   {
