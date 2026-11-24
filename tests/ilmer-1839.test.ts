@@ -27,7 +27,15 @@ import {
   tenementGarden
 } from '../assets/js/ilmer-1839-data.js';
 import { validateTerrain, historicalTerrain, terrainHeight } from '../assets/js/ilmer-terrain.js';
-import { validateTrees, registerMapTree, historicalTrees, circleOverlapsTriangles } from '../assets/js/ilmer-trees.js';
+import {
+  validateTrees,
+  registerMapTree,
+  historicalTrees,
+  circleOverlapsTriangles,
+  validatePlacedTrees
+} from '../assets/js/ilmer-trees.js';
+import * as THREE from 'three';
+import { buildPlacedTreesFromFiles } from '../scripts/ilmer-placed-trees.js';
 import {
   ridePath,
   ridePoint,
@@ -320,15 +328,16 @@ test('AR keeps trees and hedges hidden when GPS enables the remaining features',
   const structures = { visible: false };
   const livestock = { visible: false };
   const waterFeatures = { visible: false };
-  runInNewContext(`${visibility}\nsetARFeaturesVisible(false); setARFeaturesVisible(true);`, {
-    landscape,
-    structures,
-    livestock,
-    waterFeatures
-  });
+  const sandbox = { landscape, structures, livestock, waterFeatures, shadowsDirty: false };
+  runInNewContext(
+    `${visibility}\nsetARFeaturesVisible(false); setARFeaturesVisible(true); shadowsDirty = false; setARFeaturesVisible(true);`,
+    sandbox
+  );
   assert.equal(landscape.visible, false);
   assert.equal(structures.visible, true);
   assert.equal(livestock.visible, true);
+  assert.equal(sandbox.shadowsDirty, false, 'a repeated GPS fix does not redraw the shadow map');
+  assert.match(scene, /webglcontextrestored[\s\S]{0,500}shadowsDirty = true/);
   assert.equal(waterFeatures.visible, true);
   assert.match(scene, /\[landscape, session\.landscapeVisible\]/);
 });
@@ -471,6 +480,9 @@ test('the experience retains accessible controls and locally served Three.js wit
   assert.match(page, /id="flight-toggle"[^>]*>Historic Tour/);
   assert.doesNotMatch(page, /data-view="(?:west|chancel)"|A rider's-eye journey|A roof-height tour/);
   assert.match(page, /assets\/vendor\/three\/three.module.js/);
+  assert.match(page, /ilmer-placed-trees\.json/);
+  assert.match(script, /renderer\.shadowMap\.autoUpdate = false/);
+  assert.match(script, /mesh\.castShadow = false/);
   for (const source of ['tithe-map']) {
     assert.ok(readFileSync(new URL(`../public/images/ilmer-1839/${source}.avif`, import.meta.url)).length > 1000);
   }
@@ -950,4 +962,35 @@ test('detected tree data rejects corrupt geometry rather than silently replacing
     }
   };
   assert.throws(() => validateTrees(shifted), /misses its control points/);
+});
+
+test('placed trees are the road clearance the page used to run, loaded instead of recomputed', () => {
+  const stored = validatePlacedTrees(
+    JSON.parse(readFileSync(new URL('../assets/ilmer-placed-trees.json', import.meta.url), 'utf8'))
+  );
+  const fresh = buildPlacedTreesFromFiles(THREE);
+  assert.deepEqual(
+    fresh.trees,
+    JSON.parse(readFileSync(new URL('../assets/ilmer-placed-trees.json', import.meta.url), 'utf8')).trees
+  );
+  assert.deepEqual(fresh.excluded, stored.excluded);
+  assert.equal(fresh.crownRadius, stored.crownRadius);
+  assert.equal(fresh.detectionsSha256, stored.detectionsSha256);
+  assert.equal(fresh.terrainSha256, stored.terrainSha256);
+  assert.equal(stored.trees.length, 317);
+  assert.equal(stored.trees.filter((tree: { orchard: boolean }) => tree.orchard).length, 151);
+  assert.deepEqual(stored.excluded, {
+    outsideCrop: 195,
+    building: 1,
+    water: 10,
+    road: 10,
+    shiftedToVerge: 73
+  });
+  const page = readFileSync(new URL('../assets/js/ilmer-1839.js', import.meta.url), 'utf8');
+  const template = readFileSync(new URL('../history/ilmer-1839.liquid', import.meta.url), 'utf8');
+  assert.match(page, /validatePlacedTrees/);
+  assert.doesNotMatch(page, /TREE_VERGE_SHIFT|placeDetectedTrees|for \(let shift = 0\.5/);
+  assert.match(page, /shadowMap\.autoUpdate = false/);
+  assert.match(template, /data-placed-trees="{{ '\/assets\/ilmer-placed-trees\.json' \| cacheBust }}"/);
+  assert.throws(() => validatePlacedTrees({}), /Invalid placed-tree data/);
 });

@@ -230,6 +230,25 @@ not a census of trees surviving from 1839. Large residuals at uncertain landmark
 are recorded, not silently warped away. Place controls use the names transcribed
 in `history/fields-farming.md`.
 
+Where that registration puts a crown over a road, the cart route or a pond, the
+symbol is stepped onto the verge or left out. That clearance is not searched in
+the browser. `assets/ilmer-placed-trees.json` holds the resulting positions,
+species and the render index each crown's size and colour use. The page loads it
+with the same content-hash query string as the other assets. Every symbol meets
+the same fixed trials, so regenerating the file reproduces the forest. Run it
+again when detected symbols, the terrain, roads,
+ponds, the cart route or the crown mesh change:
+
+```sh
+node scripts/build-ilmer-placed-trees.ts
+npx oxfmt --write assets/ilmer-placed-trees.json
+```
+
+The generator reuses the page's terrain draping, so the cleared positions match
+the roads the page draws. A bounding-box test skips road triangles that cannot
+touch a crown. The page checks the file's hashes of `ilmer-trees.json` and
+`ilmer-terrain.json` and refuses to start if they have drifted.
+
 ## Stylesheets
 
 All stylesheet links live in [_includes/head.liquid](_includes/head.liquid) and local CSS uses the `cacheBust` filter.

@@ -22,7 +22,8 @@ import {
 } from './ilmer-1839-data.js';
 import { compassHeading, createGeoReference, gpsToMapPixel, observeCompassAvailability } from './ilmer-ar.js';
 import { validateTerrain, historicalTerrain, terrainHeight } from './ilmer-terrain.js';
-import { validateTrees, historicalTrees, circleOverlapsTriangles } from './ilmer-trees.js';
+import { validateTrees, validatePlacedTrees, circleOverlapsTriangles, createTreeCrown } from './ilmer-trees.js';
+import { drapeMapPolygon, drapeTrack } from './ilmer-ground-drape.js';
 import {
   rideCircuitPoint,
   rideCircuitLength,
@@ -51,14 +52,30 @@ import './st-peters-3d/walk-joystick.js';
 const host = document.getElementById('village-scene');
 const status = document.getElementById('scene-status');
 
+async function sha256Hex(text) {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+}
+
 async function start() {
   const terrainResponse = await fetch('/assets/ilmer-terrain.json');
   if (!terrainResponse.ok) throw new Error(`Measured terrain could not load: HTTP ${terrainResponse.status}`);
-  const terrain = historicalTerrain(validateTerrain(await terrainResponse.json()));
+  const terrainText = await terrainResponse.text();
+  const terrain = historicalTerrain(validateTerrain(JSON.parse(terrainText)));
   const geoReference = createGeoReference(terrain.source.landmarks);
   const treeResponse = await fetch('/assets/ilmer-trees.json');
   if (!treeResponse.ok) throw new Error(`Detected tree symbols could not load: HTTP ${treeResponse.status}`);
-  const treeData = validateTrees(await treeResponse.json());
+  const treeText = await treeResponse.text();
+  const treeData = validateTrees(JSON.parse(treeText));
+  const placedUrl = host.dataset.placedTrees;
+  if (!placedUrl) throw new Error('Placed tree data is not configured');
+  const placedResponse = await fetch(placedUrl);
+  if (!placedResponse.ok) throw new Error(`Placed trees could not load: HTTP ${placedResponse.status}`);
+  const placed = validatePlacedTrees(await placedResponse.json());
+  if (placed.detectionsSha256 !== (await sha256Hex(treeText)))
+    throw new Error('Placed trees do not match the detected tree symbols');
+  if (placed.terrainSha256 !== (await sha256Hex(terrainText)))
+    throw new Error('Placed trees do not match the measured terrain');
   const groundHeight = (x, z) => terrainHeight(terrain, x, z);
   let maxSurfaceDrapeError = 0;
   const THREE = await import('three');
@@ -67,6 +84,12 @@ async function start() {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  // Buildings, trees and hedges stand still, so the 2048² shadow map is drawn when their visibility changes
+  // (the tithe-map overlay, or AR) rather than every frame. Sheep, poultry and the horse and cart move
+  // constantly and do not cast: a frozen shadow would sit where they started, and redrawing the map for
+  // them costs about half the frame.
+  renderer.shadowMap.autoUpdate = false;
+  let shadowsDirty = true;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   // The church model's cinematic Autumn Sun look: filmic tone mapping, a low warm sun and blue haze
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -256,94 +279,15 @@ async function start() {
   const skirt = new THREE.Mesh(skirtGeometry, material(0x8a8063, { side: THREE.DoubleSide }));
   scene.add(skirt);
 
-  function surfaceGeometry(sourceGeometry, elevation, fixedHeight = null) {
-    const position = sourceGeometry.attributes.position;
-    const vertices = [];
-    const dx = terrain.width / (terrain.columns - 1);
-    const dz = terrain.depth / (terrain.rows - 1);
-    function clippedPolygon(polygon, clip) {
-      const cross = (a, b, p) => (b[0] - a[0]) * (p[1] - a[1]) - (b[1] - a[1]) * (p[0] - a[0]);
-      const sign = Math.sign(cross(clip[0], clip[1], clip[2]));
-      let result = polygon;
-      for (let edge = 0; edge < 3; edge++) {
-        const a = clip[edge];
-        const b = clip[(edge + 1) % 3];
-        const input = result;
-        result = [];
-        for (let j = 0; j < input.length; j++) {
-          const start = input[j];
-          const end = input[(j + 1) % input.length];
-          const d0 = cross(a, b, start) * sign;
-          const d1 = cross(a, b, end) * sign;
-          if (d0 >= -1e-8) result.push(start);
-          if (d0 >= -1e-8 !== d1 >= -1e-8) {
-            const t = d0 / (d0 - d1);
-            result.push([start[0] + (end[0] - start[0]) * t, start[1] + (end[1] - start[1]) * t]);
-          }
-        }
-      }
-      return result;
-    }
-    for (let i = 0; i < position.count; i += 3) {
-      const corners = [0, 1, 2].map((offset) => [position.getX(i + offset), -position.getY(i + offset)]);
-      const minCol = Math.max(0, Math.floor((Math.min(...corners.map((p) => p[0])) + terrain.width / 2) / dx));
-      const maxCol = Math.min(
-        terrain.columns - 2,
-        Math.floor((Math.max(...corners.map((p) => p[0])) + terrain.width / 2) / dx)
-      );
-      const minRow = Math.max(0, Math.floor((Math.min(...corners.map((p) => p[1])) + terrain.depth / 2) / dz));
-      const maxRow = Math.min(
-        terrain.rows - 2,
-        Math.floor((Math.max(...corners.map((p) => p[1])) + terrain.depth / 2) / dz)
-      );
-      // Clip field faces to the same triangles as the DTM, avoiding layers cutting through hills.
-      for (let row = minRow; row <= maxRow; row++) {
-        for (let col = minCol; col <= maxCol; col++) {
-          const a = [-terrain.width / 2 + col * dx, -terrain.depth / 2 + row * dz];
-          const b = [a[0], a[1] + dz];
-          const c = [a[0] + dx, a[1] + dz];
-          const d = [a[0] + dx, a[1]];
-          for (const face of [
-            [a, b, d],
-            [b, c, d]
-          ]) {
-            const polygon = clippedPolygon(corners, face);
-            for (let j = 1; j < polygon.length - 1; j++) {
-              for (const [x, z] of [polygon[0], polygon[j], polygon[j + 1]]) {
-                vertices.push(x, (fixedHeight ?? groundHeight(x, z)) + elevation, z);
-              }
-            }
-          }
-        }
-      }
-    }
-    sourceGeometry.dispose();
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-    geometry.computeVertexNormals();
-    if (fixedHeight === null) {
-      const positions = geometry.attributes.position;
-      for (let i = 0; i < positions.count; i++) {
-        maxSurfaceDrapeError = Math.max(
-          maxSurfaceDrapeError,
-          Math.abs(positions.getY(i) - groundHeight(positions.getX(i), positions.getZ(i)) - elevation)
-        );
-      }
-    }
-    return geometry;
+  function rememberDrape(draped) {
+    maxSurfaceDrapeError = Math.max(maxSurfaceDrapeError, draped.maxDrapeError);
+    return draped.geometry;
   }
 
   function flatPolygon(points, mat, elevation = 0.04, parent = mappedGround, fixedHeight = null) {
-    const shape = new THREE.Shape();
-    points.forEach(([x, y], i) => {
-      const [wx, wz] = mapPoint(x, y);
-      if (i === 0) shape.moveTo(wx, -wz);
-      else shape.lineTo(wx, -wz);
-    });
-    shape.closePath();
-    const outline = new THREE.ShapeGeometry(shape);
-    const geometry = surfaceGeometry(outline.toNonIndexed(), elevation, fixedHeight);
-    outline.dispose();
+    const geometry = rememberDrape(
+      drapeMapPolygon(THREE, terrain, groundHeight, mapPoint, points, elevation, fixedHeight)
+    );
     const mesh = new THREE.Mesh(geometry, mat);
     mesh.receiveShadow = true;
     parent.add(mesh);
@@ -365,49 +309,13 @@ async function start() {
 
   const roadTriangles = [];
   function pathMesh(points, width, mat, elevation = 0.14, road = false) {
-    const curve = new THREE.CatmullRomCurve3(
-      points.map(([x, y]) => {
-        const [wx, wz] = mapPoint(x, y);
-        return new THREE.Vector3(wx, elevation, wz);
-      }),
-      false,
-      'centripetal'
-    );
-    const samples = curve.getPoints(Math.max(points.length * 12, Math.ceil(curve.getLength())));
-    const vertices = [];
-    const indices = [];
-    samples.forEach((p, i) => {
-      const tangent = samples[Math.min(i + 1, samples.length - 1)]
-        .clone()
-        .sub(samples[Math.max(i - 1, 0)])
-        .normalize();
-      const side = new THREE.Vector3(-tangent.z, 0, tangent.x).multiplyScalar(width / 2);
-      for (const sign of [1, -1]) {
-        const x = Math.max(-terrain.width / 2, Math.min(terrain.width / 2, p.x + sign * side.x));
-        const z = Math.max(-terrain.depth / 2, Math.min(terrain.depth / 2, p.z + sign * side.z));
-        vertices.push(x, groundHeight(x, z) + elevation, z);
-      }
-      if (i < samples.length - 1) {
-        const n = i * 2;
-        indices.push(n, n + 2, n + 1, n + 1, n + 2, n + 3);
-      }
-    });
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-    geometry.setIndex(indices);
-    const flat = geometry.toNonIndexed();
-    const flatPositions = flat.attributes.position;
-    for (let i = 0; i < flatPositions.count; i++) {
-      flatPositions.setXYZ(i, flatPositions.getX(i), -flatPositions.getZ(i), 0);
-    }
-    const draped = surfaceGeometry(flat, elevation);
+    const geometry = rememberDrape(drapeTrack(THREE, terrain, groundHeight, mapPoint, points, width, elevation));
     if (road) {
-      const positions = draped.attributes.position;
+      const positions = geometry.attributes.position;
       for (let i = 0; i < positions.count; i += 3)
         roadTriangles.push([0, 1, 2].map((offset) => [positions.getX(i + offset), positions.getZ(i + offset)]));
     }
-    geometry.dispose();
-    const mesh = new THREE.Mesh(draped, mat);
+    const mesh = new THREE.Mesh(geometry, mat);
     mesh.receiveShadow = true;
     mappedGround.add(mesh);
   }
@@ -1204,114 +1112,10 @@ async function start() {
   structures.add(church);
   selectable.push(church);
 
-  const { trees: detectedTrees, excluded: excludedTrees } = historicalTrees(treeData);
-  const foliagePositions = [];
-  const foliageNormals = [];
-  const foliageColors = [];
-  function foliagePart(geometry, x, y, z, sx, sy, sz, shade) {
-    geometry.scale(sx, sy, sz);
-    geometry.translate(x, y, z);
-    const expanded = geometry.index ? geometry.toNonIndexed() : geometry;
-    foliagePositions.push(...expanded.attributes.position.array);
-    foliageNormals.push(...expanded.attributes.normal.array);
-    for (let i = 0; i < expanded.attributes.position.count; i++) foliageColors.push(shade, shade, shade);
-    geometry.dispose();
-    if (expanded !== geometry) expanded.dispose();
-  }
-  for (let i = 0; i < 9; i++) {
-    const angle = i * 2.4;
-    const radius = i === 0 ? 0 : 0.48;
-    foliagePart(
-      new THREE.IcosahedronGeometry(1, 1),
-      Math.cos(angle) * radius,
-      i === 0 ? 0.3 : Math.sin(i * 1.7) * 0.25,
-      Math.sin(angle) * radius,
-      0.64,
-      0.68,
-      0.64,
-      0.8 + (i % 3) * 0.1
-    );
-  }
-  const leavesPerCrown = 180;
-  for (let i = 0; i < leavesPerCrown; i++) {
-    const lobe = i % 9;
-    const y = 1 - (2 * (Math.floor(i / 9) + 0.5)) / (leavesPerCrown / 9);
-    const radius = Math.sqrt(1 - y * y);
-    const angle = i * 2.399963;
-    const leaf = new THREE.IcosahedronGeometry(1, 0);
-    leaf.rotateY(angle);
-    leaf.rotateZ(i * 0.7);
-    foliagePart(
-      leaf,
-      Math.cos(lobe * 2.4) * (lobe === 0 ? 0 : 0.48) + Math.cos(angle) * radius * 0.64,
-      (lobe === 0 ? 0.3 : Math.sin(lobe * 1.7) * 0.25) + y * 0.68,
-      Math.sin(lobe * 2.4) * (lobe === 0 ? 0 : 0.48) + Math.sin(angle) * radius * 0.64,
-      0.14,
-      0.055,
-      0.22,
-      0.72 + (i % 5) * 0.07
-    );
-  }
-  const treeCrown = new THREE.BufferGeometry();
-  treeCrown.setAttribute('position', new THREE.Float32BufferAttribute(foliagePositions, 3));
-  treeCrown.setAttribute('normal', new THREE.Float32BufferAttribute(foliageNormals, 3));
-  treeCrown.setAttribute('color', new THREE.Float32BufferAttribute(foliageColors, 3));
-  treeCrown.computeBoundingSphere();
-  const crownPositions = treeCrown.attributes.position;
-  let crownRadius = 0;
-  for (let i = 0; i < crownPositions.count; i++)
-    crownRadius = Math.max(crownRadius, Math.hypot(crownPositions.getX(i), crownPositions.getZ(i)));
-  const cartCorridor = [];
-  for (let distance = 0; distance < rideCircuitLength; distance += 0.5) {
-    const a = rideCircuitPoint(distance),
-      b = rideCircuitPoint(distance + 0.5);
-    const length = Math.hypot(b[0] - a[0], b[1] - a[1]);
-    const nx = (-(b[1] - a[1]) / length) * 1.2,
-      nz = ((b[0] - a[0]) / length) * 1.2;
-    const leftA = [a[0] + nx, a[1] + nz],
-      rightA = [a[0] - nx, a[1] - nz];
-    const leftB = [b[0] + nx, b[1] + nz],
-      rightB = [b[0] - nx, b[1] - nz];
-    cartCorridor.push([leftA, leftB, rightA], [rightA, leftB, rightB]);
-  }
+  // Positions were cleared of roads, the cart route and ponds when assets/ilmer-placed-trees.json was built.
+  const { trees: mappedTrees, excluded: excludedTrees } = placed;
+  const { geometry: treeCrown, leavesPerCrown } = createTreeCrown(THREE);
   const treeSize = (tree) => (tree.orchard ? 3.5 : 5.5 + (tree.renderIndex % 3) * 0.5);
-  const dryTrees = detectedTrees.filter(
-    (tree) => !pondPolygons.some((polygon) => withinField(polygon, ...mapPoint(tree.x, tree.y)))
-  );
-  excludedTrees.water = detectedTrees.length - dryTrees.length;
-  // Hedgerow trees on the Ordnance Survey map line the road verges. Where the overlay puts one over the road, step
-  // it back onto the verge (up to TREE_VERGE_SHIFT metres, about the overlay's accuracy) rather than losing it.
-  const TREE_VERGE_SHIFT = 5;
-  const clearOfRoad = (x, z, radius) =>
-    !circleOverlapsTriangles(x, z, radius, roadTriangles) && !circleOverlapsTriangles(x, z, radius, cartCorridor);
-  let shiftedTrees = 0;
-  const mappedTrees = dryTrees
-    .map((tree, renderIndex) => ({ ...tree, renderIndex }))
-    .flatMap((tree) => {
-      const [x, z] = mapPoint(tree.x, tree.y);
-      const radius = treeSize(tree) * (tree.conifer ? 0.3 : 0.4 * crownRadius);
-      if (clearOfRoad(x, z, radius)) return [tree];
-      for (let shift = 0.5; shift <= TREE_VERGE_SHIFT; shift += 0.5)
-        for (let step = 0; step < 16; step++) {
-          const angle = (step / 16) * Math.PI * 2;
-          const sx = x + Math.cos(angle) * shift;
-          const sz = z + Math.sin(angle) * shift;
-          if (
-            clearOfRoad(sx, sz, radius) &&
-            !pondPolygons.some((polygon) => withinField(polygon, sx, sz)) &&
-            Math.abs(sx) < terrain.width / 2 - 1 &&
-            Math.abs(sz) < terrain.depth / 2 - 1
-          ) {
-            shiftedTrees++;
-            return [
-              { ...tree, x: sx / MAP.scale + MAP.width / 2, y: sz / MAP.scale + MAP.height / 2, vergeShift: shift }
-            ];
-          }
-        }
-      return [];
-    });
-  excludedTrees.road = dryTrees.length - mappedTrees.length;
-  excludedTrees.shiftedToVerge = shiftedTrees;
   const treeTrunks = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), trunkMaterial, mappedTrees.length);
   const treeCrowns = leafMaterials.map(
     (mat, index) =>
@@ -1493,7 +1297,9 @@ async function start() {
     const animals = herds.filter((herd) => herd.species === species).flatMap((herd) => herd.animals);
     const mesh = new THREE.InstancedMesh(geometry, mat, animals.length);
     mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-    mesh.castShadow = mesh.receiveShadow = true;
+    // Moving animals stay out of the frozen shadow map; they still receive the trees' and buildings' shadows.
+    mesh.castShadow = false;
+    mesh.receiveShadow = true;
     mesh.frustumCulled = false;
     if (mat === feathers) {
       const palette = [0xc3a17b, 0x9c633c, 0xe9dfbd, 0x8c704e];
@@ -2113,6 +1919,10 @@ async function start() {
     scene.fog = ar ? null : villageFog;
     sky.mesh.position.copy(camera.position);
     sky.material.uniforms.uTime.value = performance.now() / 1000;
+    if (shadowsDirty) {
+      renderer.shadowMap.needsUpdate = true;
+      shadowsDirty = false;
+    }
     renderer.render(scene, camera);
   }
   function freeFlightAvailable() {
@@ -2244,6 +2054,7 @@ async function start() {
     waterFeatures.visible = !showMap;
     landscape.visible = !showMap;
     structures.visible = !showMap || mapBuildingsShown;
+    shadowsDirty = true;
     syncMapButton();
   }
   function toggleMapLayer() {
@@ -2310,6 +2121,13 @@ async function start() {
   const screenFix = new THREE.Quaternion();
 
   function setARFeaturesVisible(visible) {
+    if (
+      landscape.visible !== false ||
+      structures.visible !== visible ||
+      livestock.visible !== visible ||
+      waterFeatures.visible !== visible
+    )
+      shadowsDirty = true;
     landscape.visible = false;
     structures.visible = visible;
     livestock.visible = visible;
@@ -2442,6 +2260,7 @@ async function start() {
       [labels, session.labelsVisible],
       [livestock, session.livestockVisible]
     ].forEach(([object, visible]) => (object.visible = visible));
+    shadowsDirty = true;
     renderer.domElement.style.pointerEvents = '';
     document.body.classList.remove('ar-active');
     arOverlay.hidden = true;
@@ -2698,6 +2517,8 @@ async function start() {
     flightButton.disabled = false;
     status.hidden = true;
     host.dataset.state = 'ready';
+    // The restored context has no shadow map, and autoUpdate will not draw one on its own.
+    shadowsDirty = true;
     if (rideMode === 'village') startVillageCart();
     render();
   });
@@ -2867,6 +2688,6 @@ if (host) {
     host.dataset.state = 'error';
     status.hidden = false;
     status.textContent =
-      'The 3D view could not load its graphics, measured terrain or detected tree data. It needs WebGL and a browser supporting JavaScript modules and import maps. Visit Fields & farming for the tithe apportionment.';
+      'The 3D view could not load its graphics, measured terrain or tree data. It needs WebGL and a browser supporting JavaScript modules and import maps. Visit Fields & farming for the tithe apportionment.';
   });
 }
