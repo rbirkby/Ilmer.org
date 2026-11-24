@@ -1,10 +1,22 @@
 import * as THREE from 'three';
-import { canvasTexture, makeCanvas } from './canvas-utils.ts';
+import { canvas2d, canvasTexture, makeCanvas } from './canvas-utils.ts';
 import { DIM } from './dimensions.ts';
+
+type Vec3 = [number, number, number];
+type ShaftColors = { colorA: number; colorB: number; colorC: number; baseOpacity?: number };
+type ShaftSpec = ShaftColors & {
+  origin: Vec3;
+  target: Vec3;
+  startW: number;
+  startH: number;
+  endScale?: number;
+};
+type PoolStop = [number, number, number, string];
+type MoodKey = 'autumn' | 'golden' | 'evensong';
 
 // Volumetric stained-glass sunbeam shader with smooth Fresnel edge feathering,
 // multi-hue stained-glass streaks, and distance falloff (no hard edges from any angle).
-function createShaftShaderMaterial({ colorA, colorB, colorC, baseOpacity = 0.22 }) {
+function createShaftShaderMaterial({ colorA, colorB, colorC, baseOpacity = 0.22 }: ShaftColors): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
     transparent: true,
     depthWrite: false,
@@ -80,7 +92,7 @@ function buildWindowShaft({
   colorB,
   colorC,
   baseOpacity = 0.22
-}) {
+}: ShaftSpec): { group: THREE.Group; materials: THREE.ShaderMaterial[] } {
   const g = new THREE.Group();
   const start = new THREE.Vector3(...origin);
   const end = new THREE.Vector3(...target);
@@ -101,7 +113,7 @@ function buildWindowShaft({
   // Inner crossed volumetric sheets so the shaft stays richly visible even when looking nearly side-on
   const innerMat = mat.clone();
   innerMat.uniforms.uOpacity.value = baseOpacity * 0.72;
-  const makeCurtain = (wTop, wBot, rotY) => {
+  const makeCurtain = (wTop: number, wBot: number, rotY: number) => {
     const pos = new Float32Array([
       -wBot * 0.5,
       -length * 0.5,
@@ -209,10 +221,10 @@ function buildDustMotes() {
 }
 
 // Create a soft stained-glass colored light pool decal (for Sanctuary steps & Nave floor)
-function createColorPoolTexture(colors) {
+function createColorPoolTexture(colors: readonly PoolStop[]): THREE.CanvasTexture {
   const s = 256;
   const c = makeCanvas(s, s);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   ctx.clearRect(0, 0, s, s);
 
   colors.forEach(([x, y, r, rgba]) => {
@@ -234,12 +246,12 @@ export function buildAtmosphere() {
   const C = DIM.chancel;
   const W = DIM.windows;
 
-  const shaftMaterials = [];
-  const windowBounceLights = [];
-  const poolMaterials = [];
+  const shaftMaterials: THREE.ShaderMaterial[] = [];
+  const windowBounceLights: { light: THREE.PointLight; baseInt: number }[] = [];
+  const poolMaterials: { mat: THREE.MeshBasicMaterial; baseOp: number }[] = [];
 
   // 1. Volumetric Stained-Glass Sunbeam Shafts pouring diagonally into the church
-  const shaftSpecs = [
+  const shaftSpecs: ShaftSpec[] = [
     // A1: South Nave "Sower" Window (primary dramatic SW sunbeam crossing the Nave onto the North wall!)
     {
       origin: [W.w4.x, 1.98, N.zSouthInt + 0.05],
@@ -321,7 +333,7 @@ export function buildAtmosphere() {
   });
 
   // 2. Warm Colored Bounce Lights right inside the 3 Stained Glass Windows
-  const addWindowBounce = (x, y, z, color, baseInt, dist) => {
+  const addWindowBounce = (x: number, y: number, z: number, color: number, baseInt: number, dist: number) => {
     const lt = new THREE.PointLight(color, baseInt, dist, 1.6);
     lt.position.set(x, y, z);
     group.add(lt);
@@ -379,7 +391,7 @@ export function buildAtmosphere() {
 
   return {
     group,
-    setMood(moodKey) {
+    setMood(moodKey: MoodKey) {
       const m = MOOD_PRESETS[moodKey] || MOOD_PRESETS.autumn;
       shaftMaterials.forEach((mat) => {
         mat.uniforms.uIntensity.value = m.shaftInt;
@@ -394,7 +406,7 @@ export function buildAtmosphere() {
       dust.material.uniforms.uIntensity.value = m.dustInt;
       dust.material.uniforms.uColor.value.setHex(m.tint);
     },
-    update(elapsed) {
+    update(elapsed: number) {
       shaftMaterials.forEach((mat) => {
         mat.uniforms.uTime.value = elapsed;
       });

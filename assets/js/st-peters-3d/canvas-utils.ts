@@ -7,7 +7,7 @@ import * as THREE from 'three';
  * @param {number} seed
  * @returns {() => number}
  */
-export function mulberry32(seed) {
+export function mulberry32(seed: number) {
   let a = seed >>> 0;
   return () => {
     a = (a + 0x6d2b79f5) >>> 0;
@@ -22,11 +22,22 @@ export function mulberry32(seed) {
  * @param {number} width
  * @param {number} height
  */
-export function makeCanvas(width, height) {
+export function makeCanvas(width: number, height: number) {
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
   return canvas;
+}
+
+/** 2D drawing context for a procedural texture. These maps are not drawn when a browser cannot provide one. */
+export function canvas2d(canvas: HTMLCanvasElement): CanvasRenderingContext2D;
+export function canvas2d(canvas: OffscreenCanvas): OffscreenCanvasRenderingContext2D;
+export function canvas2d(
+  canvas: HTMLCanvasElement | OffscreenCanvas
+): CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D {
+  const context = canvas.getContext('2d');
+  if (!context) throw new Error('2D canvas context is unavailable');
+  return context;
 }
 
 /**
@@ -36,9 +47,9 @@ export function makeCanvas(width, height) {
  * @param {{ srgb?: boolean, anisotropy?: number, repeat?: [number, number] }} [options]
  */
 export function canvasTexture(
-  canvas,
+  canvas: HTMLCanvasElement,
   { srgb = true, anisotropy, repeat }: { srgb?: boolean; anisotropy?: number; repeat?: [number, number] } = {}
-) {
+): THREE.CanvasTexture {
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace;
   if (anisotropy !== undefined) texture.anisotropy = anisotropy;

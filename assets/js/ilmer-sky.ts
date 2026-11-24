@@ -21,7 +21,7 @@ export const AUTUMN_SUN = {
  * @param {typeof import('three')} THREE
  * @param {number} radius sky sphere radius, inside the camera's far plane
  */
-export function createVillageSky(THREE, radius) {
+export function createVillageSky(THREE: typeof import('three'), radius: number) {
   const mood = AUTUMN_SUN;
   const material = new THREE.ShaderMaterial({
     side: THREE.BackSide,

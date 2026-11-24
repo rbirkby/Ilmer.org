@@ -3,11 +3,11 @@ import { DateUtils } from './anniversary-dates.ts';
 const WEEKDAY_LABELS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const MONTH_LABELS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
-function categoryClass(category) {
+function categoryClass(category: string) {
   return (category || '').toLowerCase().replace(/[^a-z]+/g, '-');
 }
 
-function buildEventRow(match) {
+function buildEventRow(match: { category: string; url?: string; title: string; year: string; yearsAgo: number }) {
   const item = document.createElement('li');
   item.className = 'weekly-news-event';
 
@@ -37,7 +37,11 @@ function buildEventRow(match) {
   return item;
 }
 
-function buildDayGroup(daysDiff, dayDate, matches) {
+function buildDayGroup(
+  daysDiff: number,
+  dayDate: Date,
+  matches: Array<{ category: string; url?: string; title: string; year: string; yearsAgo: number }>
+) {
   const group = document.createElement('div');
   group.className = 'weekly-news-day';
 
@@ -69,7 +73,7 @@ function buildDayGroup(daysDiff, dayDate, matches) {
 }
 
 /** Renders the "on this day" list for one `[data-weekly-news]` container, grouped by day, into archive-styled markup. */
-function renderWeeklyNews(container) {
+function renderWeeklyNews(container: HTMLElement) {
   const eventsScript = container.querySelector('script[data-events]');
   const lookAheadDays = Number(container.dataset.lookAheadDays) || 7;
   if (!eventsScript) return;
@@ -125,4 +129,6 @@ function renderWeeklyNews(container) {
   container.replaceChildren(section);
 }
 
-document.querySelectorAll('[data-weekly-news]').forEach(renderWeeklyNews);
+document.querySelectorAll('[data-weekly-news]').forEach((container) => {
+  if (container instanceof HTMLElement) renderWeeklyNews(container);
+});

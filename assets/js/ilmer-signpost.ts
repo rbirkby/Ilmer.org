@@ -1,3 +1,5 @@
+import { canvas2d } from './st-peters-3d/canvas-utils.ts';
+
 // Wooden fingerposts where the road leaves the map, pointing to the next villages. Turnpike-era posts were
 // white-painted oak with black capitals on a pointed arm.
 
@@ -65,7 +67,7 @@ export function createFingerpost(THREE: any, text: any) {
   const canvas = document.createElement('canvas');
   canvas.width = 512;
   canvas.height = 96;
-  const ctx = canvas.getContext('2d')!;
+  const ctx = canvas2d(canvas)!;
   ctx.fillStyle = '#1b1a18';
   ctx.font = 'bold 64px Georgia, serif';
   ctx.textAlign = 'center';

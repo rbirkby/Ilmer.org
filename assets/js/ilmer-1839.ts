@@ -1,4 +1,3 @@
-// @ts-nocheck -- scene code ported from unchecked JavaScript; three.js calls are validated at runtime.
 import {
   MAP,
   CHURCH_PORCH_SIDE,
@@ -48,14 +47,106 @@ import { AUTUMN_SUN, createVillageSky } from './ilmer-sky.ts';
 import { createHorseAndCart, HORSE_OFFSET } from './ilmer-horse-cart.ts';
 import { livestockFields, createLivestock, advanceLivestock, withinField } from './ilmer-livestock.ts';
 import { bindFullscreenToggle } from './scene-fullscreen.ts';
+import { canvas2d } from './st-peters-3d/canvas-utils.ts';
 import './st-peters-3d/walk-joystick.ts';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-const host = document.getElementById('village-scene');
-const status = document.getElementById('scene-status');
+type DeviceOrientationEventConstructor = typeof DeviceOrientationEvent & {
+  requestPermission?: () => Promise<PermissionState>;
+};
 
-async function sha256Hex(text) {
+interface DrapedSurface {
+  geometry: THREE.BufferGeometry;
+  maxDrapeError: number;
+}
+
+interface GableParts {
+  roofMesh: THREE.Mesh;
+  endMesh: THREE.Mesh;
+}
+
+interface PlacedTree {
+  x: number;
+  y: number;
+  renderIndex: number;
+  orchard: boolean;
+  conifer: boolean;
+  source: number[];
+}
+
+interface AnimalState {
+  id: string;
+  x: number;
+  z: number;
+  heading: number;
+  mode: string;
+  phase: number;
+  travelled: number;
+}
+
+interface AnimalBatch {
+  species: string;
+  animals: AnimalState[];
+  mesh: THREE.InstancedMesh;
+  position: [number, number, number];
+  scale: [number, number, number];
+  motion: string;
+  rotation: number;
+}
+
+interface ViewFlight {
+  from: THREE.Vector3;
+  to: THREE.Vector3;
+  fromTarget: THREE.Vector3;
+  toTarget: THREE.Vector3;
+  elapsed: number;
+  time: number | null;
+  duration: number;
+  arc: number;
+}
+
+interface FlightBlend {
+  position: THREE.Vector3;
+  target: THREE.Vector3;
+  elapsed: number;
+  duration: number;
+}
+
+interface ARSession {
+  cameraPosition: THREE.Vector3;
+  cameraQuaternion: THREE.Quaternion;
+  cameraTarget: THREE.Vector3;
+  cameraFov: number;
+  controlsEnabled: boolean;
+  clearAlpha: number;
+  groundVisible: boolean;
+  baseVisible: boolean;
+  skirtVisible: boolean;
+  mappedGroundVisible: boolean;
+  mapPlaneVisible: boolean;
+  waterFeaturesVisible: boolean;
+  landscapeVisible: boolean;
+  structuresVisible: boolean;
+  labelsVisible: boolean;
+  livestockVisible: boolean;
+  watchId: number | null;
+  stream: MediaStream | null;
+  fullscreenActive: boolean;
+  resolveLocation: ((position: GeolocationPosition) => void) | null;
+  rejectLocation: ((reason?: unknown) => void) | null;
+  resolveOrientation: (() => void) | null;
+  rejectOrientation: ((reason?: unknown) => void) | null;
+  orientationObserved: boolean;
+  locationTimeout: number | null;
+  orientationTimeout: number | null;
+}
+
+// The village page always includes the scene host, status line and control buttons.
+const host = document.getElementById('village-scene')!;
+const status = document.getElementById('scene-status')!;
+
+async function sha256Hex(text: string) {
   const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
   return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
 }
@@ -79,7 +170,7 @@ async function start() {
     throw new Error('Placed trees do not match the detected tree symbols');
   if (placed.terrainSha256 !== (await sha256Hex(terrainText)))
     throw new Error('Placed trees do not match the measured terrain');
-  const groundHeight = (x, z) => terrainHeight(terrain, x, z);
+  const groundHeight = (x: number, z: number): number => terrainHeight(terrain, x, z);
   let maxSurfaceDrapeError = 0;
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -131,19 +222,21 @@ async function start() {
   scene.add(sky.mesh);
   scene.add(new THREE.HemisphereLight(AUTUMN_SUN.hemiSky, AUTUMN_SUN.hemiGround, AUTUMN_SUN.hemiIntensity));
   const sun = new THREE.DirectionalLight(AUTUMN_SUN.sunColor, AUTUMN_SUN.sunIntensity);
-  sun.position.set(...AUTUMN_SUN.sunDirection).setLength(420);
+  const [sunX, sunY, sunZ] = AUTUMN_SUN.sunDirection;
+  sun.position.set(sunX, sunY, sunZ).setLength(420);
   sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
   Object.assign(sun.shadow.camera, { left: -380, right: 380, top: 330, bottom: -330, near: 1, far: 900 });
   sun.shadow.bias = -0.0008;
   sun.shadow.normalBias = 0.3;
   scene.add(sun);
-  const material = (color, extra = {}) => new THREE.MeshStandardMaterial({ color, roughness: 1, ...extra });
+  const material = (color: number, extra: THREE.MeshStandardMaterialParameters = {}) =>
+    new THREE.MeshStandardMaterial({ color, roughness: 1, ...extra });
 
-  function texture(kind) {
+  function texture(kind: string) {
     const canvas = document.createElement('canvas');
     canvas.width = canvas.height = 128;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas2d(canvas);
     if (kind === 'brick') {
       ctx.fillStyle = '#b6a18d';
       ctx.fillRect(0, 0, 128, 128);
@@ -280,12 +373,18 @@ async function start() {
   const skirt = new THREE.Mesh(skirtGeometry, material(0x8a8063, { side: THREE.DoubleSide }));
   scene.add(skirt);
 
-  function rememberDrape(draped) {
+  function rememberDrape(draped: DrapedSurface) {
     maxSurfaceDrapeError = Math.max(maxSurfaceDrapeError, draped.maxDrapeError);
     return draped.geometry;
   }
 
-  function flatPolygon(points, mat, elevation = 0.04, parent = mappedGround, fixedHeight = null) {
+  function flatPolygon(
+    points: readonly (readonly number[])[],
+    mat: THREE.Material,
+    elevation = 0.04,
+    parent: THREE.Object3D = mappedGround,
+    fixedHeight: null = null
+  ) {
     const geometry = rememberDrape(
       drapeMapPolygon(THREE, terrain, groundHeight, mapPoint, points, elevation, fixedHeight)
     );
@@ -299,7 +398,7 @@ async function start() {
   flatPolygon(livestockFields[0].outline, material(0xb5bc8d));
   flatPolygon(churchyard, material(0xb4bf94), 0.09);
   flatPolygon(tenementGarden, material(0xb5bc8d));
-  const pondSurfaces = [];
+  const pondSurfaces: THREE.Mesh[] = [];
   const pondPolygons = ponds.map((pond) => pond.map(([x, y]) => mapPoint(x, y)));
   for (const pond of ponds) {
     // Ponds follow the modern ground: a flat surface at the lowest vertex would bury most of a pond on a slope.
@@ -308,8 +407,14 @@ async function start() {
     );
   }
 
-  const roadTriangles = [];
-  function pathMesh(points, width, mat, elevation = 0.14, road = false) {
+  const roadTriangles: number[][][] = [];
+  function pathMesh(
+    points: readonly (readonly number[])[],
+    width: number,
+    mat: THREE.Material,
+    elevation = 0.14,
+    road = false
+  ) {
     const geometry = rememberDrape(drapeTrack(THREE, terrain, groundHeight, mapPoint, points, width, elevation));
     if (road) {
       const positions = geometry.attributes.position;
@@ -328,7 +433,16 @@ async function start() {
   }
   for (const track of tracks) pathMesh(track, 1.5, material(0xc8ba97, { side: THREE.DoubleSide }), 0.14, true);
 
-  function box(parent, w, h, d, x, y, z, mat) {
+  function box(
+    parent: THREE.Object3D,
+    w: number,
+    h: number,
+    d: number,
+    x: number,
+    y: number,
+    z: number,
+    mat: THREE.Material
+  ) {
     const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
     if (mat === brick) {
       const { position, normal, uv } = mesh.geometry.attributes;
@@ -345,7 +459,14 @@ async function start() {
     return mesh;
   }
 
-  function foundation(parent, length, width, addPlinth = true, plinthMaterial = stone, aboveGround = 0) {
+  function foundation(
+    parent: THREE.Object3D,
+    length: number,
+    width: number,
+    addPlinth = true,
+    plinthMaterial: THREE.Material = stone,
+    aboveGround = 0
+  ) {
     const supportPoints = [
       [0, 0],
       [-length / 2, -width / 2],
@@ -376,7 +497,16 @@ async function start() {
     return top - bottom;
   }
 
-  function gable(parent, length, width, height, mat, rise = width * 0.46, roofMaterial = roof, westHalfHip = false) {
+  function gable(
+    parent: THREE.Object3D,
+    length: number,
+    width: number,
+    height: number,
+    mat: THREE.Material,
+    rise = width * 0.46,
+    roofMaterial: THREE.Material = roof,
+    westHalfHip = false
+  ): GableParts {
     box(parent, length, height, width, 0, height / 2, 0, mat);
     const overhang = roofMaterial === thatch ? 0.55 : 0.2;
     const l = length / 2 + overhang;
@@ -575,21 +705,27 @@ async function start() {
     return { roofMesh, endMesh };
   }
 
-  function beam(parent, a, b, thickness, mat) {
-    const start = new THREE.Vector3(...a);
-    const end = new THREE.Vector3(...b);
+  function beam(
+    parent: THREE.Object3D,
+    a: readonly number[],
+    b: readonly number[],
+    thickness: number,
+    mat: THREE.Material
+  ) {
+    const start = new THREE.Vector3(a[0], a[1], a[2]);
+    const end = new THREE.Vector3(b[0], b[1], b[2]);
     const mesh = box(parent, thickness, start.distanceTo(end), thickness, 0, 0, 0, mat);
     mesh.position.copy(start.clone().add(end).multiplyScalar(0.5));
     mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), end.sub(start).normalize());
     return mesh;
   }
 
-  function distressedChancel(parent, originalRoof) {
+  function distressedChancel(parent: THREE.Object3D, originalRoof: THREE.Mesh) {
     parent.remove(originalRoof);
     originalRoof.geometry.dispose();
     const vertices = [];
     const uvs = [];
-    const roofHeight = (x, t) => 5 + 3.8 * t - 0.7 * Math.sin((x / 5.6 + 0.5) * Math.PI) * t;
+    const roofHeight = (x: number, t: number) => 5 + 3.8 * t - 0.7 * Math.sin((x / 5.6 + 0.5) * Math.PI) * t;
     for (const side of [-1, 1]) {
       for (let i = 0; i < 12; i++) {
         for (let j = 0; j < 4; j++) {
@@ -597,7 +733,7 @@ async function start() {
           const x1 = x0 + 5.6 / 12;
           const t0 = j / 4;
           const t1 = (j + 1) / 4;
-          const point = (x, t) => [x, roofHeight(x, t), side * 3.2 * (1 - t)];
+          const point = (x: number, t: number) => [x, roofHeight(x, t), side * 3.2 * (1 - t)];
           vertices.push(
             ...point(x0, t0),
             ...point(x1, t0),
@@ -672,7 +808,7 @@ async function start() {
     return damaged;
   }
 
-  function windowPanel(parent, x, y, z, width = 1.3, height = 1.5) {
+  function windowPanel(parent: THREE.Object3D, x: number, y: number, z: number, width = 1.3, height = 1.5) {
     box(parent, width + 0.22, height + 0.22, 0.08, x, y, z, whiteboard);
     box(parent, width, height, 0.1, x, y, z + Math.sign(z) * 0.05, dark);
     for (const offset of [-width / 4, width / 4]) {
@@ -681,7 +817,7 @@ async function start() {
     box(parent, width, 0.06, 0.14, x, y, z + Math.sign(z) * 0.08, whiteboard);
   }
 
-  function dwellingFacade(parent, length, width, frontDoors) {
+  function dwellingFacade(parent: THREE.Object3D, length: number, width: number, frontDoors: number) {
     const doorZ = width / 2 + 0.12;
     const bayLength = length / frontDoors;
     const doors = Array.from({ length: frontDoors }, (_, i) => -length / 2 + bayLength * (i + 0.5));
@@ -708,7 +844,7 @@ async function start() {
     }
   }
 
-  function tudorFacade(parent, length, width, height) {
+  function tudorFacade(parent: THREE.Object3D, length: number, width: number, height: number) {
     for (const side of [-1, 1]) {
       const z = side * (width / 2 + 0.07);
       for (const level of [0.3, height * 0.45, height * 0.57, height - 0.15]) {
@@ -735,7 +871,7 @@ async function start() {
     }
   }
 
-  function climbingIvy(parent, length, width, height) {
+  function climbingIvy(parent: THREE.Object3D, length: number, width: number, height: number) {
     const shape = new THREE.Shape();
     shape.moveTo(0, -0.22);
     for (const [x, y] of [
@@ -759,13 +895,14 @@ async function start() {
     const direction = new THREE.Vector3();
     const dummy = new THREE.Object3D();
     const colour = new THREE.Color();
-    const counts = [];
-    for (const [span, x, z, angle, end] of [
+    const counts: number[] = [];
+    const ivyWalls: [number, number, number, number, boolean][] = [
       [length, 0, width / 2 + 0.08, 0, false],
       [length, 0, -width / 2 - 0.08, Math.PI, false],
       [width, length / 2 + 0.08, 0, Math.PI / 2, true],
       [width, -length / 2 - 0.08, 0, -Math.PI / 2, true]
-    ]) {
+    ];
+    for (const [span, x, z, angle, end] of ivyWalls) {
       const wall = new THREE.Group();
       wall.position.set(x, 0, z);
       wall.rotation.y = angle;
@@ -773,7 +910,7 @@ async function start() {
       const points = [];
       const columns = Math.ceil(span / 0.22);
       const rows = Math.ceil((height + (end ? width * 0.46 : 0)) / 0.22);
-      const opening = (u, v) =>
+      const opening = (u: number, v: number) =>
         (end ? [0] : [-length * 0.3, length * 0.3]).some(
           (centre) =>
             Math.abs(u - centre) < 0.83 && [height * 0.25, height * 0.73].some((level) => Math.abs(v - level) < 0.9)
@@ -828,7 +965,7 @@ async function start() {
     return counts;
   }
 
-  const selectable = [];
+  const selectable: THREE.Group[] = [];
   for (const building of buildings) {
     const group = new THREE.Group();
     group.userData.place = building.place;
@@ -980,7 +1117,7 @@ async function start() {
       const w = width * MAP.scale;
       const wallMaterial = building.architecture === 'tudor' ? plaster : building.architecture ? stone : timber;
       foundation(part, l, w, true, wallMaterial);
-      const top = (z) => height - 0.35 * (1 + (fall * z) / (w / 2));
+      const top = (z: number) => height - 0.35 * (1 + (fall * z) / (w / 2));
       const profile = new THREE.Shape();
       profile.moveTo(-w / 2, 0);
       profile.lineTo(w / 2, 0);
@@ -1116,26 +1253,27 @@ async function start() {
   // Positions were cleared of roads, the cart route and ponds when assets/ilmer-placed-trees.json was built.
   const { trees: mappedTrees, excluded: excludedTrees } = placed;
   const { geometry: treeCrown, leavesPerCrown } = createTreeCrown(THREE);
-  const treeSize = (tree) => (tree.orchard ? 3.5 : 5.5 + (tree.renderIndex % 3) * 0.5);
+  const treeSize = (tree: PlacedTree) => (tree.orchard ? 3.5 : 5.5 + (tree.renderIndex % 3) * 0.5);
   const treeTrunks = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), trunkMaterial, mappedTrees.length);
   const treeCrowns = leafMaterials.map(
     (mat, index) =>
       new THREE.InstancedMesh(
         treeCrown,
         mat,
-        mappedTrees.filter((tree) => !tree.conifer && tree.renderIndex % leafMaterials.length === index).length
+        mappedTrees.filter((tree: PlacedTree) => !tree.conifer && tree.renderIndex % leafMaterials.length === index)
+          .length
       )
   );
   const coniferCrowns = new THREE.InstancedMesh(
     new THREE.ConeGeometry(1, 1, 8),
     material(0x34582b, { transparent: true, opacity: 0.38, depthWrite: false }),
-    mappedTrees.filter((tree) => tree.conifer).length
+    mappedTrees.filter((tree: PlacedTree) => tree.conifer).length
   );
   const treeTransform = new THREE.Object3D();
   const crownCounts = leafMaterials.map(() => 0);
   let coniferCount = 0;
   let maxTreeGroundingError = 0;
-  mappedTrees.forEach((tree, index) => {
+  mappedTrees.forEach((tree: PlacedTree, index: number) => {
     const { x, y, conifer, renderIndex } = tree;
     const [wx, wz] = mapPoint(x, y);
     const groundY = groundHeight(wx, wz);
@@ -1166,13 +1304,13 @@ async function start() {
     mesh.receiveShadow = true;
     landscape.add(mesh);
   }
-  const hedgeVertices = [];
+  const hedgeVertices: number[] = [];
   let maxHedgeAlignmentError = 0;
   const mappedRoadPolygons = roadPolygons.map((polygon) => polygon.map(([x, y]) => mapPoint(x, y)));
   const hedgeFootprints = buildings.flatMap((building) => [...building.parts, ...(building.projections ?? [])]);
-  const hedgeLine = (a, b) => {
-    const [ax, az] = mapPoint(...a);
-    const [bx, bz] = mapPoint(...b);
+  const hedgeLine = (a: readonly number[], b: readonly number[]) => {
+    const [ax, az] = mapPoint(a[0], a[1]);
+    const [bx, bz] = mapPoint(b[0], b[1]);
     const length = Math.hypot(bx - ax, bz - az);
     if (length < 1e-8) return;
     const pieces = Math.ceil(length / 0.6);
@@ -1238,8 +1376,10 @@ async function start() {
   // Fingerposts at the two ends of the village road: east past Lower Farm to Longwick, west to Towersey
   const signposts = SIGNPOSTS.map(({ id, end, text }) => {
     const [endDistance, inwardDistance] = end === 'east' ? [rideLength - 3, rideLength - 9] : [3, 9];
-    const { x, z, heading } = signpostPlacement(ridePoint(endDistance), ridePoint(inwardDistance), (px, pz) =>
-      mappedRoadPolygons.some((polygon) => withinField(polygon, px, pz, 0.3))
+    const { x, z, heading } = signpostPlacement(
+      ridePoint(endDistance),
+      ridePoint(inwardDistance),
+      (px: number, pz: number) => mappedRoadPolygons.some((polygon) => withinField(polygon, px, pz, 0.3))
     );
     const post = createFingerpost(THREE, text);
     post.name = `signpost-${id}`;
@@ -1271,8 +1411,8 @@ async function start() {
     })
   );
   const buildingBounds = selectable.map((group) => new THREE.Box3().setFromObject(group));
-  const treeCentres = mappedTrees.map(({ x, y }) => mapPoint(x, y));
-  const animalBlocked = (x, z, radius, field) =>
+  const treeCentres: [number, number][] = mappedTrees.map(({ x, y }: PlacedTree) => mapPoint(x, y));
+  const animalBlocked = (x: number, z: number, radius: number, field: string) =>
     circleOverlapsTriangles(x, z, radius, fieldObstacles.get(field)) ||
     buildingBounds.some(
       (bounds) =>
@@ -1293,8 +1433,16 @@ async function start() {
   const animalSphere = new THREE.IcosahedronGeometry(1, 1);
   const animalCube = new THREE.BoxGeometry(1, 1, 1);
   const animalCone = new THREE.ConeGeometry(1, 1, 5);
-  const animalBatches = [];
-  function animalPart(species, geometry, mat, position, scale, motion = 'body', rotation = 0) {
+  const animalBatches: AnimalBatch[] = [];
+  function animalPart(
+    species: string,
+    geometry: THREE.BufferGeometry,
+    mat: THREE.Material,
+    position: [number, number, number],
+    scale: [number, number, number],
+    motion = 'body',
+    rotation = 0
+  ) {
     const animals = herds.filter((herd) => herd.species === species).flatMap((herd) => herd.animals);
     const mesh = new THREE.InstancedMesh(geometry, mat, animals.length);
     mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
@@ -1349,7 +1497,7 @@ async function start() {
   const animalMatrix = new THREE.Matrix4();
   function updateAnimalMeshes() {
     for (const batch of animalBatches) {
-      batch.animals.forEach((animal, index) => {
+      batch.animals.forEach((animal: AnimalState, index: number) => {
         const sheep = batch.species === 'sheep';
         const walking = animal.mode === 'walking';
         const bob = Math.sin(animal.phase);
@@ -1400,11 +1548,11 @@ async function start() {
   }
   updateAnimalMeshes();
 
-  function label(text, x, y) {
+  function label(text: string, x: number, y: number) {
     const canvas = document.createElement('canvas');
     canvas.width = 512;
     canvas.height = 96;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas2d(canvas);
     ctx.fillStyle = '#f7f4e7';
     ctx.fillRect(0, 0, 512, 96);
     ctx.strokeStyle = '#c5c5a9';
@@ -1456,16 +1604,16 @@ async function start() {
   const reins = new THREE.LineSegments(reinsGeometry, new THREE.LineBasicMaterial({ color: 0x392a22 }));
   scene.add(reins);
   reins.visible = false;
-  const rideButton = document.getElementById('ride-pause');
-  const rideStatus = document.getElementById('ride-status');
+  const rideButton = document.getElementById('ride-pause') as HTMLButtonElement;
+  const rideStatus = document.getElementById('ride-status')!;
   // Village sounds, like the church's organ: they start with your first click, tap or key press (browsers
   // block sound until then) and the speaker button mutes them. Each comes from its source and grows louder
   // as the camera nears it.
   const villageAudio = createVillageAudio();
-  const soundButton = document.getElementById('btn-sound');
-  const soundOnIcon = soundButton.querySelector('[data-icon="sound-on"]');
-  const soundOffIcon = soundButton.querySelector('[data-icon="sound-off"]');
-  function setSoundMuted(isMuted) {
+  const soundButton = document.getElementById('btn-sound')!;
+  const soundOnIcon = soundButton.querySelector('[data-icon="sound-on"]')!;
+  const soundOffIcon = soundButton.querySelector('[data-icon="sound-off"]')!;
+  function setSoundMuted(isMuted: boolean) {
     villageAudio.setMuted(isMuted);
     soundButton.setAttribute('aria-pressed', String(isMuted));
     const label = isMuted ? 'Unmute village sounds' : 'Mute village sounds';
@@ -1488,7 +1636,7 @@ async function start() {
   function removeUnlockListeners() {
     for (const type of UNLOCK_EVENTS) window.removeEventListener(type, unlockVillageAudio, true);
   }
-  function unlockVillageAudio(event) {
+  function unlockVillageAudio(event: Event) {
     if (villageAudio.isMuted() || villageAudio.isRunning()) {
       removeUnlockListeners();
       return;
@@ -1529,8 +1677,8 @@ async function start() {
   let rideState = 'idle';
   let rideDistance = rideStart;
   let rideFrame = 0;
-  let ridePreviousTime: any = null;
-  function seatOnRoad(group, distance) {
+  let ridePreviousTime: number | null = null;
+  function seatOnRoad(group: THREE.Object3D, distance: number) {
     const [x, z] = rideCircuitPoint(distance);
     const [ax, az] = rideCircuitPoint(distance - 0.1);
     const [bx, bz] = rideCircuitPoint(distance + 0.1);
@@ -1585,7 +1733,7 @@ async function start() {
     rideButton.setAttribute('aria-pressed', 'false');
     rideStatus.textContent = '';
   }
-  function advanceRide(time) {
+  function advanceRide(time: number) {
     if (!riding) return;
     if (ridePreviousTime !== null)
       rideDistance = (rideDistance + Math.min((time - ridePreviousTime) / 1000, 0.15) * rideSpeed) % rideCircuitLength;
@@ -1652,13 +1800,11 @@ async function start() {
     }
   });
 
-  let selected: any = null;
-  function select(group) {
+  let selected: THREE.Object3D | null = null;
+  function select(group: THREE.Object3D) {
     selected = group;
-    host.setAttribute(
-      'aria-label',
-      `Interactive 3D reconstruction of Ilmer. Selected: ${places[group.userData.place].title}`
-    );
+    const place = group.userData.place as keyof typeof places;
+    host.setAttribute('aria-label', `Interactive 3D reconstruction of Ilmer. Selected: ${places[place].title}`);
   }
   const views = {
     village: { target: [0, 0, 48], position: [155, 185, 255] },
@@ -1673,14 +1819,14 @@ async function start() {
     tenements: { target: [-8, 3, -46], position: [30, 27, -10], place: 'tenements' },
     plan: { target: [0, 0, 0], position: [0, 490, 0.1] }
   };
-  let activeView = 'village';
+  let activeView: keyof typeof views = 'village';
   let viewFrame = 0;
-  let viewTransition: any = null;
+  let viewTransition: ViewFlight | null = null;
   function stopViewFlight() {
     cancelAnimationFrame(viewFrame);
     viewTransition = null;
   }
-  function advanceViewFlight(time) {
+  function advanceViewFlight(time: number) {
     if (!viewTransition) return;
     const flight = viewTransition;
     if (flight.time !== null) flight.elapsed += Math.max(0, Math.min((time - flight.time) / 1000, 0.1));
@@ -1707,8 +1853,8 @@ async function start() {
       controls.update();
     } else viewFrame = requestAnimationFrame(advanceViewFlight);
   }
-  const flightButton = document.getElementById('flight-toggle');
-  const flightStatus = document.getElementById('flight-status');
+  const flightButton = document.getElementById('flight-toggle') as HTMLButtonElement;
+  const flightStatus = document.getElementById('flight-status')!;
   const stops = flightStops();
   const flightPoints = stops.map((stop) => {
     const [x, y, z] = stop.position;
@@ -1748,7 +1894,7 @@ async function start() {
     }),
     Math.ceil((30 / flightLength) * clearanceSamples)
   );
-  function flightPose(distance, position, target) {
+  function flightPose(distance: number, position: THREE.Vector3, target: THREE.Vector3) {
     const u = (((distance % flightLength) + flightLength) % flightLength) / flightLength;
     flightCurve.getPointAt(u, position);
     const sample = u * clearanceSamples;
@@ -1756,14 +1902,14 @@ async function start() {
     const lift =
       clearance[i % clearanceSamples] * (1 - (sample - i)) + clearance[(i + 1) % clearanceSamples] * (sample - i);
     position.y += lift;
-    targetCurve.getPoint(flightCurve.getUtoTmapping(u), target);
+    targetCurve.getPoint(flightCurve.getUtoTmapping(u, 0), target);
   }
   let flying = false;
   let flightState = 'idle';
   let flightElapsed = 0;
   let flightTravel = { distance: 0, throttle: 0 };
-  let flightBlend: any = null;
-  let flightTime: any = null;
+  let flightBlend: FlightBlend | null = null;
+  let flightTime: number | null = null;
   let flightFrame = 0;
   const flightPosition = new THREE.Vector3();
   const flightTarget = new THREE.Vector3();
@@ -1790,7 +1936,7 @@ async function start() {
     flightButton.setAttribute('aria-pressed', 'false');
     flightStatus.textContent = 'Flight paused. Resume, explore, or choose another view.';
   }
-  function advanceFlight(time) {
+  function advanceFlight(time: number) {
     if (!flying) return;
     const seconds = flightTime === null ? 0 : Math.max(0, Math.min((time - flightTime) / 1000, 0.1));
     flightTime = time;
@@ -1859,7 +2005,7 @@ async function start() {
     flightButton.setAttribute('aria-pressed', 'true');
     advanceFlight(performance.now());
   }
-  function setView(name, animate = true) {
+  function setView(name: keyof typeof views, animate = true) {
     applyNavigationMode('orbit');
     movementKeys.clear();
     stopViewFlight();
@@ -1867,8 +2013,8 @@ async function start() {
     stopRide();
     rideMode = 'village';
     activeView = name;
-    labels.visible = !mapPlane.visible && !views[name].place;
     const view = views[name];
+    labels.visible = !mapPlane.visible && !('place' in view && view.place);
     const targetY = groundHeight(view.target[0], view.target[2]);
     const destination = new THREE.Vector3(view.position[0], view.position[1] + targetY, view.position[2]);
     const target = new THREE.Vector3(view.target[0], view.target[1] + targetY, view.target[2]);
@@ -1892,10 +2038,11 @@ async function start() {
       controls.update();
     }
     for (const button of document.querySelectorAll('[data-view]')) {
+      if (!(button instanceof HTMLElement)) continue;
       button.setAttribute('aria-pressed', String(button.dataset.view === name));
     }
     setPresetsExpanded(false);
-    if (view.place) select(selectable.find((group) => group.userData.place === view.place));
+    if ('place' in view && view.place) select(selectable.find((group) => group.userData.place === view.place)!);
     else {
       selected = null;
       host.setAttribute('aria-label', 'Interactive 3D reconstruction of Ilmer');
@@ -1931,7 +2078,7 @@ async function start() {
       navigationMode === 'fly' && !viewTransition && !flying && rideMode !== 'rider' && host.dataset.state !== 'error'
     );
   }
-  function rotateFreeCamera(yaw, pitch) {
+  function rotateFreeCamera(yaw: number, pitch: number) {
     const direction = camera.getWorldDirection(new THREE.Vector3());
     const rotation = new THREE.Euler(
       Math.max(-1.5, Math.min(1.5, Math.asin(direction.y) + pitch)),
@@ -1942,11 +2089,12 @@ async function start() {
     camera.quaternion.setFromEuler(rotation);
     controls.target.copy(camera.position).addScaledVector(camera.getWorldDirection(direction), 50);
   }
-  function advanceFreeFlight(seconds) {
+  function advanceFreeFlight(seconds: number) {
     const stickPush = Math.hypot(flyStick.x, flyStick.y);
     const stickActive = stickPush > 0.08;
     if (!freeFlightAvailable() || (!movementKeys.size && !stickActive)) return;
-    const value = (positive, negative) => Number(movementKeys.has(positive)) - Number(movementKeys.has(negative));
+    const value = (positive: string, negative: string) =>
+      Number(movementKeys.has(positive)) - Number(movementKeys.has(negative));
     rotateFreeCamera(value('arrowleft', 'arrowright') * seconds, value('arrowup', 'arrowdown') * seconds);
     const direction = camera.getWorldDirection(new THREE.Vector3());
     const right = new THREE.Vector3().crossVectors(direction, camera.up).normalize();
@@ -1975,35 +2123,38 @@ async function start() {
     }
   }
   // Updates the navigation mode and its overlay controls, like the church model's Orbit/Walk toggle
-  function applyNavigationMode(mode) {
+  function applyNavigationMode(mode: string) {
     if (mode !== navigationMode) movementKeys.clear();
     navigationMode = mode;
     const isFly = mode === 'fly';
     controls.enabled = !isFly;
-    const modeButton = document.getElementById('btn-fly');
+    const modeButton = document.getElementById('btn-fly')!;
     modeButton.setAttribute('aria-pressed', String(isFly));
     modeButton.textContent = isFly ? 'Mode: Fly' : 'Mode: Orbit';
-    document.getElementById('fly-hint').hidden = !isFly;
+    document.getElementById('fly-hint')!.hidden = !isFly;
     // The thumb stick only shows on touch screens (see CSS); it flies where the camera looks, so tilting climbs
-    document.getElementById('fly-joystick').hidden = !isFly;
+    document.getElementById('fly-joystick')!.hidden = !isFly;
     if (!isFly) flyStick.x = flyStick.y = 0;
   }
-  function setNavigationMode(mode) {
+  function setNavigationMode(mode: string) {
     stopViewFlight();
     stopFlight();
     stopRide();
     rideMode = 'village';
     applyNavigationMode(mode);
-    labels.visible = !mapPlane.visible && !views[activeView].place;
+    const currentView = views[activeView];
+    labels.visible = !mapPlane.visible && !('place' in currentView && currentView.place);
     startVillageCart();
     render();
   }
-  document.getElementById('btn-fly').addEventListener('click', () => {
+  document.getElementById('btn-fly')!.addEventListener('click', () => {
     setNavigationMode(navigationMode === 'fly' ? 'orbit' : 'fly');
   });
-  document.getElementById('fly-joystick').addEventListener('joystickmove', (event) => {
-    flyStick.x = event.detail.x;
-    flyStick.y = event.detail.y;
+  document.getElementById('fly-joystick')!.addEventListener('joystickmove', (event: Event) => {
+    if (!(event instanceof CustomEvent)) return;
+    const detail = event.detail as { x: number; y: number };
+    flyStick.x = detail.x;
+    flyStick.y = detail.y;
   });
   window.addEventListener('keyup', (event) => movementKeys.delete(event.key.toLowerCase()));
   window.addEventListener('blur', () => movementKeys.clear());
@@ -2024,24 +2175,25 @@ async function start() {
   });
   resize.observe(host);
   for (const button of document.querySelectorAll('[data-view]')) {
-    button.addEventListener('click', () => setView(button.dataset.view));
+    if (!(button instanceof HTMLElement)) continue;
+    button.addEventListener('click', () => setView(button.dataset.view as keyof typeof views));
   }
 
   // On narrow screens the views collapse behind a "Views: …" toggle, as on the church model
-  const presetBar = document.getElementById('preset-bar');
-  const presetsToggleButton = document.getElementById('btn-presets-toggle');
-  function setPresetsExpanded(expanded) {
+  const presetBar = document.getElementById('preset-bar')!;
+  const presetsToggleButton = document.getElementById('btn-presets-toggle')!;
+  function setPresetsExpanded(expanded: boolean) {
     presetBar.classList.toggle('is-expanded', expanded);
     presetsToggleButton.setAttribute('aria-expanded', String(expanded));
     const active = presetBar.querySelector('[data-view][aria-pressed="true"]');
-    presetsToggleButton.textContent = `Views: ${active ? active.textContent.trim() : 'Select'} ${expanded ? '▴' : '▾'}`;
+    presetsToggleButton.textContent = `Views: ${active ? active.textContent!.trim() : 'Select'} ${expanded ? '▴' : '▾'}`;
   }
   presetsToggleButton.addEventListener('click', () => setPresetsExpanded(!presetBar.classList.contains('is-expanded')));
 
-  const mapButton = document.getElementById('map-layer');
+  const mapButton = document.getElementById('map-layer')!;
   // On the original map the trees, hedges and other planting are hidden so the 1839 drawing shows through; the
   // buildings can be shown or hidden over it
-  const mapBuildingsButton = document.getElementById('map-buildings');
+  const mapBuildingsButton = document.getElementById('map-buildings')!;
   let mapBuildingsShown = true;
   function syncMapButton() {
     mapButton.setAttribute('aria-pressed', String(mapPlane.visible));
@@ -2049,7 +2201,7 @@ async function start() {
     mapBuildingsButton.setAttribute('aria-pressed', String(mapBuildingsShown));
     mapBuildingsButton.textContent = mapBuildingsShown ? 'Buildings: Shown' : 'Buildings: Hidden';
   }
-  function setMapLayer(showMap) {
+  function setMapLayer(showMap: boolean) {
     mapPlane.visible = showMap;
     mappedGround.visible = !showMap;
     waterFeatures.visible = !showMap;
@@ -2062,7 +2214,8 @@ async function start() {
     const showMap = !mapPlane.visible;
     if (rideMode === 'rider' || flightState !== 'idle') setView(activeView);
     setMapLayer(showMap);
-    labels.visible = !mapPlane.visible && !views[activeView].place;
+    const currentView = views[activeView];
+    labels.visible = !mapPlane.visible && !('place' in currentView && currentView.place);
     render();
   }
   function toggleMapBuildings() {
@@ -2073,13 +2226,15 @@ async function start() {
   mapButton.addEventListener('click', toggleMapLayer);
   mapBuildingsButton.addEventListener('click', toggleMapBuildings);
 
+  const fullscreenButton = document.getElementById('btn-fullscreen');
   const fullscreen = bindFullscreenToggle({
-    button: document.getElementById('btn-fullscreen'),
-    stage: host.closest('.reconstruction-stage') || host
+    button: fullscreenButton instanceof HTMLButtonElement ? fullscreenButton : null,
+    stage: host.closest('.reconstruction-stage') || host,
+    onChange: undefined
   });
 
   // Keyboard shortcuts work anywhere on the page, as on the church model
-  function isEditableTarget(target) {
+  function isEditableTarget(target: EventTarget | null) {
     return (
       target instanceof HTMLElement &&
       (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable)
@@ -2105,23 +2260,23 @@ async function start() {
     else return;
     event.preventDefault();
   });
-  const arStartButton = document.getElementById('ar-start');
-  const arStartStatus = document.getElementById('ar-start-status');
-  const arOverlay = document.getElementById('ar-overlay');
-  const arLiveStatus = document.getElementById('ar-live-status');
-  if (window.isSecureContext && navigator.mediaDevices?.getUserMedia && navigator.geolocation) {
+  const arStartButton = document.getElementById('ar-start') as HTMLButtonElement;
+  const arStartStatus = document.getElementById('ar-start-status')!;
+  const arOverlay = document.getElementById('ar-overlay')!;
+  const arLiveStatus = document.getElementById('ar-live-status')!;
+  if (window.isSecureContext && typeof navigator.mediaDevices?.getUserMedia === 'function' && navigator.geolocation) {
     const stopObservingCompass = observeCompassAvailability(window, () => {
-      document.getElementById('ar-controls').hidden = false;
+      document.getElementById('ar-controls')!.hidden = false;
     });
     window.addEventListener('pagehide', stopObservingCompass, { once: true });
   }
-  let arSession: any = null;
+  let arSession: ARSession | null = null;
   const deviceEuler = new THREE.Euler(0, 0, 0, 'YXZ');
   const deviceFix = new THREE.Quaternion(-Math.SQRT1_2, 0, 0, Math.SQRT1_2);
   const screenAxis = new THREE.Vector3(0, 0, 1);
   const screenFix = new THREE.Quaternion();
 
-  function setARFeaturesVisible(visible) {
+  function setARFeaturesVisible(visible: boolean) {
     if (
       landscape.visible !== false ||
       structures.visible !== visible ||
@@ -2135,25 +2290,25 @@ async function start() {
     waterFeatures.visible = visible;
   }
 
-  function setARStatus(message) {
+  function setARStatus(message: string) {
     arLiveStatus.textContent = message;
   }
 
-  function handleAROrientation(event) {
+  function handleAROrientation(event: DeviceOrientationEvent) {
     if (!arSession) return;
     const alpha = compassHeading(event);
     if (alpha === null) return;
 
     const radians = Math.PI / 180;
     const screenAngle = window.screen.orientation?.angle ?? 0;
-    deviceEuler.set(event.beta * radians, alpha * radians, -event.gamma * radians, 'YXZ');
+    deviceEuler.set((event.beta ?? 0) * radians, alpha * radians, -(event.gamma ?? 0) * radians, 'YXZ');
     camera.quaternion
       .setFromEuler(deviceEuler)
       .multiply(deviceFix)
       .multiply(screenFix.setFromAxisAngle(screenAxis, (-screenAngle * Math.PI) / 180));
     controls.target.copy(camera.position).addScaledVector(camera.getWorldDirection(new THREE.Vector3()), 50);
     if (arSession.resolveOrientation) {
-      clearTimeout(arSession.orientationTimeout);
+      clearTimeout(arSession.orientationTimeout as number);
       arSession.resolveOrientation();
       arSession.resolveOrientation = null;
       arSession.rejectOrientation = null;
@@ -2162,7 +2317,7 @@ async function start() {
     render();
   }
 
-  function updateARLocation(position) {
+  function updateARLocation(position: GeolocationPosition) {
     if (!arSession) return;
     const { latitude, longitude, accuracy } = position.coords;
     if (!Number.isFinite(accuracy) || accuracy > 30) {
@@ -2187,7 +2342,7 @@ async function start() {
     render();
   }
 
-  function watchARLocation(session) {
+  function watchARLocation(session: ARSession) {
     return new Promise((resolve, reject) => {
       session.resolveLocation = resolve;
       session.rejectLocation = reject;
@@ -2200,7 +2355,7 @@ async function start() {
         (position) => {
           updateARLocation(position);
           if (session.resolveLocation) {
-            clearTimeout(session.locationTimeout);
+            clearTimeout(session.locationTimeout as number);
             session.resolveLocation(position);
             session.resolveLocation = null;
             session.rejectLocation = null;
@@ -2212,7 +2367,7 @@ async function start() {
               ? 'Location permission is required for the AR view.'
               : `GPS location is unavailable: ${error.message}`;
           if (session.rejectLocation) {
-            clearTimeout(session.locationTimeout);
+            clearTimeout(session.locationTimeout as number);
             session.rejectLocation(new Error(message));
             session.rejectLocation = null;
           } else setARStatus(message);
@@ -2226,12 +2381,12 @@ async function start() {
     const session = arSession;
     if (!session) return;
     arSession = null;
-    clearTimeout(session.locationTimeout);
-    clearTimeout(session.orientationTimeout);
+    clearTimeout(session.locationTimeout as number);
+    clearTimeout(session.orientationTimeout as number);
     if (session.watchId !== null) navigator.geolocation.clearWatch(session.watchId);
     window.removeEventListener('deviceorientation', handleAROrientation);
     window.removeEventListener('deviceorientationabsolute', handleAROrientation);
-    if (session.stream) session.stream.getTracks().forEach((track) => track.stop());
+    if (session.stream) session.stream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
     arVideo.pause();
     arVideo.srcObject = null;
     if (session.rejectLocation) {
@@ -2249,7 +2404,7 @@ async function start() {
     controls.target.copy(session.cameraTarget);
     controls.enabled = session.controlsEnabled;
     renderer.setClearAlpha(session.clearAlpha);
-    [
+    const restoredVisibility: [THREE.Object3D, boolean][] = [
       [ground, session.groundVisible],
       [base, session.baseVisible],
       [skirt, session.skirtVisible],
@@ -2260,7 +2415,8 @@ async function start() {
       [structures, session.structuresVisible],
       [labels, session.labelsVisible],
       [livestock, session.livestockVisible]
-    ].forEach(([object, visible]) => (object.visible = visible));
+    ];
+    for (const [object, visible] of restoredVisibility) object.visible = visible;
     shadowsDirty = true;
     renderer.domElement.style.pointerEvents = '';
     document.body.classList.remove('ar-active');
@@ -2284,13 +2440,17 @@ async function start() {
       arStartStatus.textContent = 'Camera AR requires a secure HTTPS connection.';
       return;
     }
-    if (!navigator.mediaDevices?.getUserMedia || !navigator.geolocation || !window.DeviceOrientationEvent) {
+    if (
+      typeof navigator.mediaDevices?.getUserMedia !== 'function' ||
+      !navigator.geolocation ||
+      !window.DeviceOrientationEvent
+    ) {
       arStartStatus.textContent = 'This browser needs camera, GPS location and device-compass support for AR.';
       return;
     }
 
-    const orientationApi = window.DeviceOrientationEvent;
-    const session = {
+    const orientationApi: DeviceOrientationEventConstructor = window.DeviceOrientationEvent;
+    const session: ARSession = {
       cameraPosition: camera.position.clone(),
       cameraQuaternion: camera.quaternion.clone(),
       cameraTarget: controls.target.clone(),
@@ -2364,16 +2524,16 @@ async function start() {
       const permission = await orientationPermission;
       if (arSession !== session) return;
       if (permission !== 'granted') {
-        document.getElementById('ar-controls').hidden = true;
+        document.getElementById('ar-controls')!.hidden = true;
         throw new Error('Compass permission is required for the AR view.');
       }
-      const orientationReady = new Promise((resolve, reject) => {
+      const orientationReady = new Promise<void>((resolve, reject) => {
         if (session.orientationObserved) resolve();
         else {
           session.resolveOrientation = resolve;
           session.rejectOrientation = reject;
           session.orientationTimeout = setTimeout(() => {
-            document.getElementById('ar-controls').hidden = true;
+            document.getElementById('ar-controls')!.hidden = true;
             session.rejectOrientation?.(
               new Error('A compass heading is unavailable. Enable device motion and compass access, then try again.')
             );
@@ -2406,14 +2566,14 @@ async function start() {
   }
 
   arStartButton.addEventListener('click', startAR);
-  document.getElementById('ar-exit').addEventListener('click', () => void stopAR());
+  document.getElementById('ar-exit')!.addEventListener('click', () => void stopAR());
   document.addEventListener('fullscreenchange', () => {
     if (arSession?.fullscreenActive && !document.fullscreenElement) void stopAR();
   });
   const raycaster = new THREE.Raycaster();
-  let pointerStart: any = null;
-  let flyDrag: any = null;
-  function pointAtScene(event) {
+  let pointerStart: [number, number] | null = null;
+  let flyDrag: { id: number; x: number; y: number } | null = null;
+  function pointAtScene(event: PointerEvent) {
     const rect = renderer.domElement.getBoundingClientRect();
     raycaster.setFromCamera(
       new THREE.Vector2(
@@ -2525,8 +2685,8 @@ async function start() {
   });
   rideDistance = rideLength * 0.48;
   setView('village', false);
-  let animalTime: any = null;
-  function animateAnimals(time) {
+  let animalTime: number | null = null;
+  function animateAnimals(time: number) {
     if (!document.hidden && host.dataset.state !== 'error') {
       const seconds = animalTime === null ? 0 : Math.max(0, Math.min((time - animalTime) / 1000, 0.1));
       advanceFreeFlight(seconds);
@@ -2544,7 +2704,7 @@ async function start() {
   host.dataset.buildings = String(selectable.length);
   host.dataset.engine = `Three.js r${THREE.REVISION}`;
   // Read-only scene diagnostics make browser validation independent of screenshots.
-  window.ilmer1839 = () => ({
+  const ilmer1839 = () => ({
     navigationMode,
     livestock: herds.map((herd) => ({
       field: herd.id,
@@ -2604,7 +2764,7 @@ async function start() {
       leavesPerCrown,
       foliageOpacity: leafMaterials[0].opacity,
       transparentFoliage: leafMaterials.every((mat) => mat.transparent && !mat.depthWrite),
-      orchard: mappedTrees.filter((tree) => tree.orchard).length,
+      orchard: mappedTrees.filter((tree: PlacedTree) => tree.orchard).length,
       sourceMap: treeData.source.map,
       detected: treeData.detections.length,
       excluded: excludedTrees,
@@ -2613,7 +2773,7 @@ async function start() {
       trunkInstances: treeTrunks.count,
       crownInstances: treeCrowns.reduce((sum, mesh) => sum + mesh.count, coniferCrowns.count),
       maxGroundingError: maxTreeGroundingError,
-      sourceSymbols: mappedTrees.map((tree) => tree.source)
+      sourceSymbols: mappedTrees.map((tree: PlacedTree) => tree.source)
     },
     selected: selected?.userData.place ?? null,
     mapVisible: mapPlane.visible,
@@ -2657,7 +2817,7 @@ async function start() {
     churchGeometry: {
       westRoofVertices: nave.roofMesh.geometry.attributes.position.count,
       westRoofNormals: nave.roofMesh.geometry.attributes.normal.count,
-      westRoofTriangles: nave.roofMesh.geometry.index.count / 3,
+      westRoofTriangles: nave.roofMesh.geometry.index!.count / 3,
       westGableVertices: nave.endMesh.geometry.attributes.position.count,
       westGableNormals: nave.endMesh.geometry.attributes.normal.count,
       turretAttached: turret.parent === church,
@@ -2681,6 +2841,7 @@ async function start() {
       projections: group.userData.projections ?? []
     }))
   });
+  (window as Window & { ilmer1839?: typeof ilmer1839 }).ilmer1839 = ilmer1839;
 }
 
 if (host) {

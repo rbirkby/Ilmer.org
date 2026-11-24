@@ -1,12 +1,32 @@
-// @ts-nocheck -- scene code ported from unchecked JavaScript; three.js calls are validated at runtime.
 import * as THREE from 'three';
-import { canvasTexture, makeCanvas, mulberry32 } from './canvas-utils.ts';
+import { canvas2d, canvasTexture, makeCanvas, mulberry32 } from './canvas-utils.ts';
 import { addBox, boxMesh } from './mesh-utils.ts';
 import { DIM } from './dimensions.ts';
 
+type BellName = 'Treble' | 'Second' | 'Tenor';
+type BellLettering = 'roman' | 'blackletter' | 'lombardic';
+type Bell = {
+  number: number;
+  name: BellName;
+  diameterIn: number;
+  year: number;
+  founder: string;
+  lettering: BellLettering;
+  inscription: string;
+  waist: string | null;
+};
+type InscriptionToken = { cross?: boolean; fleur?: boolean; shield?: boolean; text?: string };
+type BelfryMats = {
+  iron: THREE.Material;
+  medOak: THREE.MeshStandardMaterial;
+  darkOak: THREE.Material;
+  wheelOak?: THREE.MeshStandardMaterial;
+};
+type RopeCurve = THREE.Curve<THREE.Vector3>;
+
 // The ring of three, from A. H. Cocks, "The Church Bells of Buckinghamshire" (1897), Ilmer entry, with the
 // diameters he measured. The 1981 restoration by Whites of Appleton rehung them for swing chiming.
-const ILMER_BELLS = [
+const ILMER_BELLS: Bell[] = [
   {
     number: 1,
     name: 'Treble',
@@ -50,7 +70,7 @@ export function createRopeMaterial() {
 // Pass a curve to lay the rope along it (it is built straight, then each ring is carried onto the curve).
 // A bell-rope sally: the tufted woollen hand grip woven into the fall, twisted in spiral cream, red & blue stripes
 // and tapering into the rope at each end. Built along +Y, centred on the origin.
-export function buildSally(length, radius, ropeRadius) {
+export function buildSally(length: number, radius: number, ropeRadius: number): THREE.Mesh {
   const radial = 24;
   const rows = Math.max(16, Math.round(length / 0.005));
   const geo = new THREE.CylinderGeometry(radius, radius, length, radial, rows, true);
@@ -93,7 +113,12 @@ export function buildSally(length, radius, ropeRadius) {
   return sally;
 }
 
-export function buildTwistedRope(length, radius, material, curve = null) {
+export function buildTwistedRope(
+  length: number,
+  radius: number,
+  material: THREE.Material,
+  curve: RopeCurve | null = null
+): THREE.Mesh {
   if (curve) length = curve.getLength();
   const strands = 3;
   const layLength = radius * 7; // one full twist of a strand
@@ -169,13 +194,13 @@ const BAND = 4; // inscription band runs from profile point 4 to 5
 const WAIST_BAND = 6;
 const INSIDE_FROM = 14;
 
-function drawCrossPatee(ctx, x, y, s) {
+function drawCrossPatee(ctx: CanvasRenderingContext2D, x: number, y: number, s: number) {
   ctx.beginPath();
   for (let k = 0; k < 4; k++) {
     const a = (k * Math.PI) / 2;
     const c = Math.cos(a);
     const sn = Math.sin(a);
-    const p = (u, v) => [x + u * c - v * sn, y + u * sn + v * c];
+    const p = (u: number, v: number): [number, number] => [x + u * c - v * sn, y + u * sn + v * c];
     const pts = [p(0.12 * s, -0.08 * s), p(0.5 * s, -0.3 * s), p(0.5 * s, 0.3 * s), p(0.12 * s, 0.08 * s)];
     pts.forEach(([px, py], i) => (i === 0 && k === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py)));
   }
@@ -185,7 +210,7 @@ function drawCrossPatee(ctx, x, y, s) {
 }
 
 // A pair of little fleurs-de-lys, the stops between William Knight's words
-function drawFleurStop(ctx, x, y, s) {
+function drawFleurStop(ctx: CanvasRenderingContext2D, x: number, y: number, s: number) {
   [-0.32, 0.32].forEach((dx) => {
     const cx = x + dx * s;
     ctx.beginPath();
@@ -197,7 +222,7 @@ function drawFleurStop(ctx, x, y, s) {
   });
 }
 
-function drawShield(ctx, x, y, s) {
+function drawShield(ctx: CanvasRenderingContext2D, x: number, y: number, s: number) {
   ctx.beginPath();
   ctx.moveTo(x - 0.3 * s, y - 0.36 * s);
   ctx.lineTo(x + 0.3 * s, y - 0.36 * s);
@@ -210,17 +235,17 @@ function drawShield(ctx, x, y, s) {
 }
 
 // Cast bronze with a dull brown-green patina, and the inscription standing proud round the shoulder (map + bump)
-function createBellMaps(bell, circumferenceM) {
+function createBellMaps(bell: Bell, circumferenceM: number) {
   const W = 2048;
   const H = ROW * (BELL_PROFILE.length - 1);
   const col = makeCanvas(W, H);
   const bmp = makeCanvas(W, H);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rng = mulberry32(1500 + bell.number * 37);
 
   // LatheGeometry runs v from the crown (v=0, the canvas's bottom row once flipped) to the inner crown (v=1)
-  const rowY = (j) => H - j * ROW;
+  const rowY = (j: number) => H - j * ROW;
   ctx.fillStyle = '#d6ad52'; // bright polished brass-gold
   ctx.fillRect(0, 0, W, H);
   bctx.fillStyle = '#808080';
@@ -249,7 +274,7 @@ function createBellMaps(bell, circumferenceM) {
   ctx.fillRect(0, 0, W, rowY(INSIDE_FROM));
 
   // Moulding wires either side of the inscription band and at the sound bow
-  const wire = (j, frac) => {
+  const wire = (j: number, frac: number) => {
     const y = rowY(j) - frac * ROW;
     ctx.fillStyle = 'rgba(150,120,70,0.7)';
     ctx.fillRect(0, y - 3, W, 6);
@@ -268,15 +293,14 @@ function createBellMaps(bell, circumferenceM) {
     blackletter: `bold italic ${letterPx * 0.95}px "Old English Text MT", "UnifrakturMaguntia", Georgia, serif`,
     lombardic: `bold ${letterPx}px "Lombardic", "Palatino Linotype", Georgia, serif`
   };
-  /** @type {{ cross?: boolean, fleur?: boolean, shield?: boolean, text?: string }[]} */
-  const tokens = [{ cross: true }];
-  bell.inscription.split(' ').forEach((wd, i, arr) => {
+  const tokens: InscriptionToken[] = [{ cross: true }];
+  bell.inscription.split(' ').forEach((wd: string, i: number, arr: string[]) => {
     tokens.push({ text: wd });
     if (bell.lettering === 'blackletter' && i < arr.length - 2) tokens.push({ fleur: true });
   });
   if (bell.lettering === 'lombardic') tokens.push({ shield: true });
 
-  const paint = (c, fill, shadow) => {
+  const paint = (c: CanvasRenderingContext2D, fill: string, shadow: string | null) => {
     c.save();
     c.translate(0, rowY(BAND) - ROW * 0.5);
     c.scale(1, -1);
@@ -289,7 +313,7 @@ function createBellMaps(bell, circumferenceM) {
     const gap = Math.max(letterPx * 0.5, (usable - widths.reduce((a, b) => a + b, 0)) / tokens.length);
     let x = W * 0.06;
     tokens.forEach((t, i) => {
-      const passes = shadow
+      const passes: [number, number, string][] = shadow
         ? [
             [3, 3, shadow],
             [0, 0, fill]
@@ -305,18 +329,19 @@ function createBellMaps(bell, circumferenceM) {
       });
       x += widths[i] + gap;
     });
-    if (bell.waist) {
+    const waist = bell.waist;
+    if (waist) {
       c.font = `bold ${letterPx * 0.9}px Georgia, serif`;
       c.translate(0, -(rowY(WAIST_BAND) - rowY(BAND)));
-      (shadow
+      const waistPasses: [number, number, string][] = shadow
         ? [
             [3, 3, shadow],
             [0, 0, fill]
           ]
-        : [[0, 0, fill]]
-      ).forEach(([dx, dy, style]) => {
+        : [[0, 0, fill]];
+      waistPasses.forEach(([dx, dy, style]) => {
         c.fillStyle = style;
-        c.fillText(bell.waist, W * 0.06 + dx, dy);
+        c.fillText(waist, W * 0.06 + dx, dy);
       });
     }
     c.restore();
@@ -330,16 +355,16 @@ function createBellMaps(bell, circumferenceM) {
 
 // A small cube map of the bell chamber for the bronze to reflect: daylight through the louvres in bright bands on
 // the boarded walls, the pale ceiling above and the dark oak floor below. Shared by all three bells.
-let belfryEnvMap: any = null;
-function getBelfryEnvMap() {
+let belfryEnvMap: THREE.CubeTexture | null = null;
+function getBelfryEnvMap(): THREE.CubeTexture {
   if (belfryEnvMap) return belfryEnvMap;
   const size = 128;
-  const face = (draw) => {
+  const face = (draw: (ctx: CanvasRenderingContext2D) => void) => {
     const c = makeCanvas(size, size);
-    draw(c.getContext('2d'));
+    draw(canvas2d(c));
     return c;
   };
-  const wall = (ctx) => {
+  const wall = (ctx: CanvasRenderingContext2D) => {
     const g = ctx.createLinearGradient(0, 0, 0, size);
     g.addColorStop(0, '#c9b89a');
     g.addColorStop(0.55, '#7a6448');
@@ -352,11 +377,11 @@ function getBelfryEnvMap() {
       ctx.fillRect(size * 0.34, size * (0.08 + k * 0.05), size * 0.32, size * 0.022);
     }
   };
-  const top = (ctx) => {
+  const top = (ctx: CanvasRenderingContext2D) => {
     ctx.fillStyle = '#b8a88a';
     ctx.fillRect(0, 0, size, size);
   };
-  const bottom = (ctx) => {
+  const bottom = (ctx: CanvasRenderingContext2D) => {
     ctx.fillStyle = '#3b2818';
     ctx.fillRect(0, 0, size, size);
   };
@@ -366,7 +391,7 @@ function getBelfryEnvMap() {
   return belfryEnvMap;
 }
 
-function buildBell(bell) {
+function buildBell(bell: Bell) {
   const D = bell.diameterIn * IN;
   const top = BELL_PROFILE[0][1];
   const pts = BELL_PROFILE.map(([r, y]) => new THREE.Vector2(Math.max(r * D, 0.0005), (y - top) * D));
@@ -393,7 +418,11 @@ function buildBell(bell) {
 
 // One bell hung for swing chiming: elm headstock on iron gudgeons in plummer blocks, a full wheel on one side
 // with the rope leaving it, canon straps, and an iron clapper inside. The group's origin is the gudgeon axis.
-function buildHungBell(bell, { pitHalf, wheelX, wheelR, headX }, mats) {
+function buildHungBell(
+  bell: Bell,
+  { pitHalf, wheelX, wheelR, headX }: { pitHalf: number; wheelX: number; wheelR: number; headX: number },
+  mats: BelfryMats
+) {
   const g = new THREE.Group();
   const { group: bellG, D, height } = buildBell(bell);
   const crownDrop = 0.085;
@@ -486,14 +515,14 @@ function buildHungBell(bell, { pitHalf, wheelX, wheelR, headX }, mats) {
 }
 
 /** A box casting and receiving shadows, at (x, y, z). */
-function box(w, h, d, mat, x, y, z) {
+function box(w: number, h: number, d: number, mat: THREE.Material, x: number, y: number, z: number) {
   return boxMesh([w, h, d], mat, [x, y, z], { cast: true, receive: true });
 }
 
 // Bell chamber inside the weatherboarded turret: boarded floor and ceiling, studs, a two-tier oak frame with the
 // second and tenor side by side below and the treble above, and the three ropes running down to the holes in the
 // tower ceiling (their positions below are fixed by interior.js). Returns { shell, frame }.
-export function buildBellChamber(mats) {
+export function buildBellChamber(mats: BelfryMats) {
   const g = new THREE.Group(); // boarding, floor & ceiling: hidden with the roof in the floorplan cutaway
   const frame = new THREE.Group(); // bell frame, bells & ropes: stay visible in the cutaway
   const T = DIM.tower;
@@ -585,8 +614,7 @@ export function buildBellChamber(mats) {
 
   // --- The bells ---------------------------------------------------------------------------------------------
   const ropeMat = createRopeMaterial();
-  /** @type {[typeof ILMER_BELLS[number], number, number, number, number, number, number][]} */
-  const hangs = [
+  const hangs: [Bell, number, number, number, number, number, number][] = [
     // [bell, pit between frame sides xa..xb, axle height, axle z, wheel side (+1 east / -1 west), wheel radius]
     [ILMER_BELLS[2], frameXs[0], frameXs[1], lowTop, -0.53, 1, 0.62],
     [ILMER_BELLS[1], frameXs[1], frameXs[2], lowTop, -0.25, -1, 0.58],
@@ -598,7 +626,7 @@ export function buildBellChamber(mats) {
   const cellW = bay / 3;
   const cellD = 3.45 / 3;
   const cZ0 = -3.45 * 0.5;
-  const holes = {
+  const holes: Record<BellName, [number, number]> = {
     Tenor: [cX0 + cellW * 2.45, cZ0 + cellD * 0.5],
     Treble: [cX0 + cellW * 1.35, cZ0 + cellD * 0.64],
     Second: [cX0 + cellW * 0.75, cZ0 + cellD * 0.78]
@@ -629,7 +657,7 @@ export function buildBellChamber(mats) {
     belfryRope.userData.era = 'today';
     frame.add(belfryRope);
     // Garter: the rope's last quarter-turn in the wheel's groove, from the bottom of the sole round to its North side
-    const garterPts = [];
+    const garterPts: THREE.Vector3[] = [];
     for (let k = 0; k <= 8; k++) {
       const a = (k / 8) * (Math.PI / 2);
       garterPts.push(
@@ -694,14 +722,14 @@ const STRIKE_GAP = SWING_HALF / 3; // even spacing of the three bells within a r
 const CLAPPER_LAG = 0.2;
 const RING_LENGTH = 4 * SWING_HALF;
 
-function smooth01(x) {
+function smooth01(x: number) {
   const t = Math.min(1, Math.max(0, x));
   return t * t * (3 - 2 * t);
 }
 
 // Swing angle of one bell, tau seconds after it was set going: builds up over a swing and a half, holds for the
 // two strokes (at 1.5 and 2.5 half-swings, the tops of the swing), then settles back to hang mouth down
-function swingAngle(tau) {
+function swingAngle(tau: number) {
   if (tau <= 0 || tau >= RING_LENGTH) return 0;
   const env = smooth01(tau / (1.5 * SWING_HALF)) * (1 - smooth01((tau - 2.6 * SWING_HALF) / (1.4 * SWING_HALF)));
   return SWING_AMPLITUDE * env * Math.sin((Math.PI * tau) / SWING_HALF);
@@ -716,45 +744,46 @@ const HAMMER_TAIL = 0.16; // metres from the pivot to the cord on the hammer's t
 const VESTRY_PULL = 1.6; // radians the vestry cord swings out towards the ringer per metre of hammer-tail travel
 
 // frame: the belfry; extraRoots: other groups holding the 1900 chiming frame's vestry cords (userData.chimeCord = n)
-export function createBellRinger(frame, ...extraRoots) {
-  const hung = [];
+export function createBellRinger(frame: THREE.Object3D, ...extraRoots: THREE.Object3D[]) {
+  const hung: THREE.Object3D[] = [];
   frame.traverse((o) => {
     if (o.userData.bell && o.userData.clapper) hung.push(o);
   });
   // Rounds run from the treble down to the tenor
-  hung.sort((a, b) => a.userData.bell.number - b.userData.bell.number);
-  let startedAt: any = null;
+  hung.sort((a, b) => (a.userData.bell as Bell).number - (b.userData.bell as Bell).number);
+  let startedAt: number | null = null;
   let mode = 'swing'; // 'swing' (today) or 'chime' (1900: hammers on bells hung dead)
-  let chimes = []; // [{ hung, at }] hammer blows of the current chime, times relative to startedAt
+  let chimes: { hung: THREE.Object3D; at: number }[] = []; // hammer blows of the current chime, times relative to startedAt
 
-  function chime(now) {
+  function chime(now: number) {
     if (startedAt !== null) return [];
     startedAt = now;
     // Two rounds, treble to tenor, then the tenor tolled once more to finish
     chimes = [];
     const order = [...hung, ...hung, hung[hung.length - 1]];
     order.forEach((h, i) => chimes.push({ hung: h, at: i * CHIME_GAP + (i >= hung.length * 2 ? CHIME_GAP : 0) }));
-    return chimes.map((c) => ({ bell: c.hung.userData.bell, delay: c.at + HAMMER_LIFT }));
+    return chimes.map((c) => ({ bell: c.hung.userData.bell as Bell, delay: c.at + HAMMER_LIFT }));
   }
 
   // Vestry chiming-frame cords by bell number: each hangs from the ceiling, and the ringer pulls its foot out
   // towards them (+X) to work the hammer
-  const vestryCords = new Map();
+  const vestryCords = new Map<number, { o: THREE.Object3D; half: number; top: THREE.Vector3 }>();
   for (const root of extraRoots) {
     root.traverse((o) => {
       if (typeof o.userData.chimeCord !== 'number') return;
-      const half = (o.geometry?.parameters?.height ?? 1) / 2;
+      const geo = (o as THREE.Mesh).geometry as THREE.CylinderGeometry | undefined;
+      const half = (geo?.parameters?.height ?? 1) / 2;
       vestryCords.set(o.userData.chimeCord, { o, half, top: o.position.clone().setY(o.position.y + half) });
     });
   }
   // Pose a hammer: its cord (on the tail) and the matching vestry cord follow it down as it strikes
-  function poseHammer(h, angle) {
+  function poseHammer(h: THREE.Object3D, angle: number) {
     const pivot = h.userData.hammer;
     if (!pivot) return;
     pivot.rotation.x = angle;
     const drop = HAMMER_TAIL * (Math.sin(angle) - Math.sin(HAMMER_REST)); // how far the tail has come down
     if (h.userData.hammerCord) h.userData.hammerCord.position.y = -HAMMER_TAIL * Math.sin(angle);
-    const v = vestryCords.get(h.userData.bell.number);
+    const v = vestryCords.get((h.userData.bell as Bell).number);
     if (v) {
       const phi = drop * VESTRY_PULL;
       v.o.rotation.z = phi;
@@ -762,8 +791,8 @@ export function createBellRinger(frame, ...extraRoots) {
     }
   }
 
-  function updateChime(now) {
-    const t = now - startedAt;
+  function updateChime(now: number, start: number) {
+    const t = now - start;
     hung.forEach((h) => {
       // Hammer swings in towards the bell, strikes, and falls back away from it
       let a = 0;
@@ -784,7 +813,7 @@ export function createBellRinger(frame, ...extraRoots) {
     }
   }
 
-  function setMode(m) {
+  function setMode(m: string) {
     mode = m;
     startedAt = null;
     hung.forEach((h) => {
@@ -794,23 +823,26 @@ export function createBellRinger(frame, ...extraRoots) {
     });
   }
 
-  function ring(now) {
+  function ring(now: number) {
     if (mode === 'chime') return chime(now);
     if (startedAt !== null && now - startedAt < RING_LENGTH + STRIKE_GAP * 2) return [];
     startedAt = now;
-    const strikes = [];
+    const strikes: { bell: Bell; delay: number }[] = [];
     [1.5, 2.5].forEach((stroke) => {
       hung.forEach((h, i) => {
-        strikes.push({ bell: h.userData.bell, delay: i * STRIKE_GAP + stroke * SWING_HALF + CLAPPER_LAG * 0.5 });
+        strikes.push({
+          bell: h.userData.bell as Bell,
+          delay: i * STRIKE_GAP + stroke * SWING_HALF + CLAPPER_LAG * 0.5
+        });
       });
     });
     return strikes.sort((a, b) => a.delay - b.delay);
   }
 
-  function update(now) {
+  function update(now: number) {
     if (startedAt === null) return;
     if (mode === 'chime') {
-      updateChime(now);
+      updateChime(now, startedAt);
       return;
     }
     const t = now - startedAt;
@@ -838,4 +870,4 @@ export function createBellRinger(frame, ...extraRoots) {
 
 // Strike tone of each bell: nominal frequency in Hz. The ring is untuned medieval and Jacobean work, so these are
 // representative of bells of these diameters rather than measured.
-export const BELL_NOMINAL_HZ = { 1: 830, 2: 740, 3: 660 };
+export const BELL_NOMINAL_HZ: Record<number, number> = { 1: 830, 2: 740, 3: 660 };

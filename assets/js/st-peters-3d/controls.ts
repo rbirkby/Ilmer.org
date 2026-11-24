@@ -1,19 +1,17 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { getSurfaceY, groundOutlineRadius } from './dimensions.ts';
+import { getSurfaceY, groundOutlineRadius, type TourWaypoint } from './dimensions.ts';
 
-/**
- * @typedef {object} CameraPreset
- * @property {string} label
- * @property {string} group
- * @property {[number, number, number]} pos
- * @property {[number, number, number]} target
- * @property {boolean} cutaway
- * @property {boolean} doorsOpen
- */
+export type CameraPreset = {
+  label: string;
+  group: string;
+  pos: [number, number, number];
+  target: [number, number, number];
+  cutaway: boolean;
+  doorsOpen: boolean;
+};
 
-/** @type {Record<string, CameraPreset>} */
-export const CAMERA_PRESETS = {
+export const CAMERA_PRESETS: Record<string, CameraPreset> = {
   'exterior-nw': {
     label: 'Exterior NW',
     group: 'Exterior',
@@ -127,11 +125,11 @@ export const CAMERA_PRESETS = {
 export const WALK_SPEED = 2.8;
 export const WALK_SPEED_SPRINT = 6.4;
 
-export function walkMoveSpeed(shiftHeld) {
+export function walkMoveSpeed(shiftHeld: boolean) {
   return shiftHeld ? WALK_SPEED_SPRINT : WALK_SPEED;
 }
 
-export function createCameraController(camera, domElement) {
+export function createCameraController(camera: THREE.PerspectiveCamera, domElement: HTMLElement) {
   const orbit = new OrbitControls(camera, domElement);
   orbit.enableDamping = true;
   orbit.dampingFactor = 0.07;
@@ -141,15 +139,30 @@ export function createCameraController(camera, domElement) {
   orbit.target.set(...CAMERA_PRESETS['exterior-nw'].target);
 
   let mode = 'orbit'; // 'orbit' | 'walk'
-  let transition: any = null;
-  let tour: any = null;
+  let transition: {
+    startPos: THREE.Vector3;
+    startTarget: THREE.Vector3;
+    endPos: THREE.Vector3;
+    endTarget: THREE.Vector3;
+    t: number;
+    duration: number;
+  } | null = null;
+  let tour: {
+    waypoints: TourWaypoint[];
+    posNodes: THREE.Vector3[];
+    targetNodes: THREE.Vector3[];
+    idx: number;
+    t: number;
+    onStep?: (waypoint: TourWaypoint, index: number, count: number) => void;
+    onEnd?: (completed: boolean) => void;
+  } | null = null;
 
-  const keys = new Set();
+  const keys = new Set<string>();
   let shiftHeld = false;
   let yaw = 0;
   let pitch = 0;
   let draggingLook = false;
-  let lookPointerId: any = null;
+  let lookPointerId: number | null = null;
   // Analog walk input from the on-screen joystick (x: right, y: forward, each -1..1)
   const stick = { x: 0, y: 0 };
   let lastMouseX = 0;
@@ -175,7 +188,15 @@ export function createCameraController(camera, domElement) {
   }
 
   // Evaluate a smooth C1 cubic Catmull-Rom segment between p1 and p2 with neighbor control points p0 and p3
-  function evalCatmullRomVec3(out, p0, p1, p2, p3, t, tension = 0.42) {
+  function evalCatmullRomVec3(
+    out: THREE.Vector3,
+    p0: THREE.Vector3,
+    p1: THREE.Vector3,
+    p2: THREE.Vector3,
+    p3: THREE.Vector3,
+    t: number,
+    tension = 0.42
+  ) {
     const t2 = t * t;
     const t3 = t2 * t;
     const s = (1 - tension) * 0.5;
@@ -199,11 +220,16 @@ export function createCameraController(camera, domElement) {
     );
   }
 
-  /**
-   * @param {any[]} waypoints
-   * @param {{ onStep?: (waypoint: any, index: number, count: number) => void, onEnd?: (completed: boolean) => void }} [callbacks]
-   */
-  function startTour(waypoints, { onStep, onEnd }: any = {}) {
+  function startTour(
+    waypoints: TourWaypoint[],
+    {
+      onStep,
+      onEnd
+    }: {
+      onStep?: (waypoint: TourWaypoint, index: number, count: number) => void;
+      onEnd?: (completed: boolean) => void;
+    } = {}
+  ) {
     if (!waypoints || waypoints.length === 0) return;
     stopTour(false);
     if (mode === 'walk') {
@@ -231,7 +257,7 @@ export function createCameraController(camera, domElement) {
     if (onStep) onStep(waypoints[startIdx], startIdx, waypoints.length);
   }
 
-  function setMode(newMode) {
+  function setMode(newMode: string) {
     if (newMode === mode) return;
     stopTour(false);
     mode = newMode;
@@ -252,7 +278,7 @@ export function createCameraController(camera, domElement) {
     }
   }
 
-  function goToPreset(presetKey, onPresetMeta) {
+  function goToPreset(presetKey: string, onPresetMeta?: (preset: CameraPreset) => void) {
     const p = CAMERA_PRESETS[presetKey];
     if (!p) return;
     stopTour(false);
@@ -271,7 +297,11 @@ export function createCameraController(camera, domElement) {
     orbit.maxPolarAngle = p.group === 'Interior' ? Math.PI * 0.85 : Math.PI * 0.72;
   }
 
-  function focusOn(endPos, endTarget, { duration = 0.85, maxPolarAngle = Math.PI * 0.72 } = {}) {
+  function focusOn(
+    endPos: THREE.Vector3,
+    endTarget: THREE.Vector3,
+    { duration = 0.85, maxPolarAngle = Math.PI * 0.72 }: { duration?: number; maxPolarAngle?: number } = {}
+  ) {
     stopTour(false);
     if (mode === 'walk') {
       setMode('orbit');
@@ -329,8 +359,8 @@ export function createCameraController(camera, domElement) {
 
   orbit.addEventListener('change', clampCameraAboveGround);
 
-  function isEditableTarget(target) {
-    if (!target) return false;
+  function isEditableTarget(target: EventTarget | null) {
+    if (!(target instanceof HTMLElement)) return false;
     const tag = target.tagName;
     return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.isContentEditable;
   }
@@ -387,7 +417,7 @@ export function createCameraController(camera, domElement) {
     yaw -= dx * 0.0038;
     pitch = THREE.MathUtils.clamp(pitch - dy * 0.0034, -1.25, 1.25);
   });
-  const endLook = (e) => {
+  const endLook = (e: PointerEvent) => {
     if (e.pointerId !== lookPointerId) return;
     draggingLook = false;
     lookPointerId = null;
@@ -395,7 +425,7 @@ export function createCameraController(camera, domElement) {
   window.addEventListener('pointerup', endLook);
   window.addEventListener('pointercancel', endLook);
 
-  function update(dt) {
+  function update(dt: number) {
     if (tour) {
       const n = tour.waypoints.length;
       const wp = tour.waypoints[tour.idx];
@@ -531,7 +561,7 @@ export function createCameraController(camera, domElement) {
     isTouring: () => Boolean(tour),
     // A tour or a glide to a viewpoint is moving the camera
     isBusy: () => Boolean(tour || transition),
-    setMoveInput(x, y) {
+    setMoveInput(x: number, y: number) {
       stick.x = x;
       stick.y = y;
     },

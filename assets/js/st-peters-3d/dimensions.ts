@@ -182,7 +182,7 @@ export function isChristmasSeason(date = new Date(), search = '') {
 }
 
 /** Same triangle interpolation as ilmer-terrain.js, clamped to the church-local crop. */
-function sampleChurchTerrain(x: any, z: any) {
+function sampleChurchTerrain(x: number, z: number) {
   const data = churchTerrain;
   const col = (x / data.width + 0.5) * (data.columns - 1);
   const row = (z / data.depth + 0.5) * (data.rows - 1);
@@ -192,7 +192,7 @@ function sampleChurchTerrain(x: any, z: any) {
   const iy = Math.min(Math.floor(v), data.rows - 2);
   const dx = u - ix;
   const dy = v - iy;
-  const sample = (i: any, j: any) => data.elevations[j * data.columns + i];
+  const sample = (i: number, j: number) => data.elevations[j * data.columns + i];
   return dx + dy <= 1
     ? sample(ix, iy) * (1 - dx - dy) + sample(ix + 1, iy) * dx + sample(ix, iy + 1) * dy
     : sample(ix, iy + 1) * (1 - dx) + sample(ix + 1, iy) * (1 - dy) + sample(ix + 1, iy + 1) * (dx + dy - 1);
@@ -202,7 +202,7 @@ function sampleChurchTerrain(x: any, z: any) {
  * Soft pad under the church footprint: masonry and floors stay on y = 0 while the
  * surrounding churchyard and fields follow the measured 1839/LIDAR terrain.
  */
-function buildingPadWeight(x: any, z: any) {
+function buildingPadWeight(x: number, z: number) {
   const N = DIM.nave;
   const C = DIM.chancel;
   const P = DIM.porch;
@@ -220,14 +220,14 @@ function buildingPadWeight(x: any, z: any) {
 }
 
 // Measured exterior terrain elevation (relative to the church). Flat under the building pad.
-export function getGroundHeight(x: any, z: any) {
+export function getGroundHeight(x: number, z: number) {
   const measured = sampleChurchTerrain(x, z);
   const pad = buildingPadWeight(x, z);
   return measured * (1 - pad);
 }
 
 // Minimum walkable/camera floor surface at (x, z): interior church floors or exterior ground
-export function getSurfaceY(x: any, z: any) {
+export function getSurfaceY(x: number, z: number) {
   if (x > 7.38 && x < 9.0 && Math.abs(z) < 2.0) return DIM.sanctuaryStep2Y;
   if (x > 6.23 && x < 9.0 && Math.abs(z) < 2.0) return DIM.sanctuaryStep1Y;
   if (x > 3.2 && x < 9.0 && Math.abs(z) < 2.0) return DIM.chancelFloorY;
@@ -237,7 +237,7 @@ export function getSurfaceY(x: any, z: any) {
 }
 
 // Spatial church acoustics: louder & brighter inside the church, quietly stone-muffled outside
-export function computeChurchAcoustics(pos: any, doorsOpen = false) {
+export function computeChurchAcoustics(pos: { x: number; y: number; z: number }, doorsOpen = false) {
   const { x, y, z } = pos;
   const N = DIM.nave;
   const C = DIM.chancel;
@@ -277,8 +277,19 @@ export function computeChurchAcoustics(pos: any, doorsOpen = false) {
   return { inside: false, gain, cutoffHz };
 }
 
+export type TourWaypoint = {
+  label: string;
+  pos: [number, number, number];
+  target: [number, number, number];
+  duration?: number;
+  hold?: number;
+  doorsOpen?: boolean | 'approach';
+  ringBells?: number;
+  cutaway?: boolean;
+};
+
 // Choreographed exterior-and-interior guided Church Tour waypoints (opens North Porch doors before entering)
-export const CHURCH_TOUR_WAYPOINTS = [
+export const CHURCH_TOUR_WAYPOINTS: TourWaypoint[] = [
   {
     label: 'Exterior NW & Broach Spire',
     pos: [-22.5, 4.8, -9.5], // looking in past the west kissing gate, between the churchyard trees
@@ -496,6 +507,6 @@ export const CHURCH_TOUR_WAYPOINTS = [
  * Edge of the churchyard's surrounding land, in metres from the church centre at bearing θ (atan2(z, x)): a few
  * gentle waves on a ~52 m circle, so the perimeter is irregular but smooth, never beyond the 60 m terrain grid.
  */
-export function groundOutlineRadius(theta: any) {
+export function groundOutlineRadius(theta: number) {
   return 52 + 3.6 * Math.sin(2 * theta + 0.7) + 2.4 * Math.sin(3 * theta + 2.1) + 1.4 * Math.sin(5 * theta + 0.4);
 }

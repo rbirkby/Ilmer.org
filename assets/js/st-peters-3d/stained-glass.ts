@@ -1,8 +1,9 @@
-// @ts-nocheck -- scene code ported from unchecked JavaScript; three.js calls are validated at runtime.
-import { canvasTexture, makeCanvas, mulberry32 } from './canvas-utils.ts';
+import { canvas2d, canvasTexture, makeCanvas, mulberry32 } from './canvas-utils.ts';
+
+type GlassFill = string | CanvasGradient | CanvasPattern;
 
 // Subtle mottled antique cathedral-glass luminosity & kiln-fired shading
-function addAntiqueGlassMottle(ctx, w, h, seed, alpha = 0.08) {
+function addAntiqueGlassMottle(ctx: CanvasRenderingContext2D, w: number, h: number, seed: number, alpha = 0.08) {
   const rng = mulberry32(seed);
   ctx.save();
   for (let i = 0; i < 420; i++) {
@@ -22,7 +23,13 @@ function addAntiqueGlassMottle(ctx, w, h, seed, alpha = 0.08) {
 }
 
 // Fill weathered dressed limestone tracery surround so luminous stained glass stands out cleanly
-function fillWeatheredStoneSurround(ctx, w, h, seed, baseHex = '#968b79') {
+function fillWeatheredStoneSurround(
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  h: number,
+  seed: number,
+  baseHex = '#968b79'
+) {
   const rng = mulberry32(seed);
   const grad = ctx.createLinearGradient(0, 0, w, h);
   grad.addColorStop(0, baseHex);
@@ -45,7 +52,13 @@ function fillWeatheredStoneSurround(ctx, w, h, seed, baseHex = '#968b79') {
 }
 
 // Helper: draw a leaded glass piece with smooth shading gradient & dark lead came outline
-function drawLeadedPiece(ctx, drawPath, fillStyle, leadW = 4.5, strokeStyle = '#191716') {
+function drawLeadedPiece(
+  ctx: CanvasRenderingContext2D,
+  drawPath: () => void,
+  fillStyle: GlassFill,
+  leadW = 4.5,
+  strokeStyle = '#191716'
+) {
   ctx.save();
   ctx.beginPath();
   drawPath();
@@ -63,13 +76,13 @@ function drawLeadedPiece(ctx, drawPath, fillStyle, leadW = 4.5, strokeStyle = '#
 
 // Helper: draw a classic English stained-glass diamond quarry grid with delicate central floral rosettes
 function drawDiamondQuarries(
-  ctx,
-  x0,
-  y0,
-  x1,
-  y1,
-  stepX,
-  stepY,
+  ctx: CanvasRenderingContext2D,
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number,
+  stepX: number,
+  stepY: number,
   { bg = '#eef4f5', lead = '#201e1c', leadW = 3, rosette = true, tintBlue = false } = {}
 ) {
   ctx.save();
@@ -139,7 +152,7 @@ function drawDiamondQuarries(
 }
 
 // Helper: draw horizontal iron saddle bars across a stained-glass light
-function drawSaddleBars(ctx, x0, x1, ys, thickness = 6.5) {
+function drawSaddleBars(ctx: CanvasRenderingContext2D, x0: number, x1: number, ys: number[], thickness = 6.5) {
   ctx.save();
   ctx.fillStyle = '#151413';
   for (const y of ys) {
@@ -153,11 +166,11 @@ function drawSaddleBars(ctx, x0, x1, ys, thickness = 6.5) {
 
 // Helper: draw painted stained-glass head with classical medieval facial linework
 function drawPaintedFace(
-  ctx,
-  cx,
-  cy,
-  rx,
-  ry,
+  ctx: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  rx: number,
+  ry: number,
   {
     facing = 0, // -1 left, 0 front, +1 right
     beard = true,
@@ -261,9 +274,9 @@ function drawPaintedFace(
 
 // Shared leaded-glass drawing kit: smooth Catmull-Rom outlines, leaded pieces, painted trace lines & hatching,
 // crazy-paving quarries and leaves. `rng` drives the random hatching and leaf jitter.
-function createGlassKit(ctx, rng, LEAD = '#1a1714') {
+function createGlassKit(ctx: CanvasRenderingContext2D, rng: () => number, LEAD = '#1a1714') {
   // Smooth closed Catmull-Rom outline through points
-  const smooth = (pts) => () => {
+  const smooth = (pts: number[][]) => () => {
     const n = pts.length;
     ctx.moveTo(pts[0][0], pts[0][1]);
     for (let i = 0; i < n; i++) {
@@ -282,21 +295,21 @@ function createGlassKit(ctx, rng, LEAD = '#1a1714') {
     }
     ctx.closePath();
   };
-  const polyPath = (pts) => () => {
+  const polyPath = (pts: number[][]) => () => {
     ctx.moveTo(pts[0][0], pts[0][1]);
     for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
     ctx.closePath();
   };
   // Glass with a soft streaky gradient between two tones
-  const glass = (x0, y0, x1, y1, a, b) => {
+  const glass = (x0: number, y0: number, x1: number, y1: number, a: string, b: string) => {
     const g = ctx.createLinearGradient(x0, y0, x1, y1);
     g.addColorStop(0, a);
     g.addColorStop(1, b);
     return g;
   };
-  const piece = (path, fill, leadW = 3.6) => drawLeadedPiece(ctx, path, fill, leadW, LEAD);
+  const piece = (path: () => void, fill: GlassFill, leadW = 3.6) => drawLeadedPiece(ctx, path, fill, leadW, LEAD);
   // Vitreous paint: fine trace lines & hatching fired onto the glass
-  const paint = (lines, color = 'rgba(48,30,20,0.55)', width = 1.4) => {
+  const paint = (lines: number[][][], color = 'rgba(48,30,20,0.55)', width = 1.4) => {
     ctx.save();
     ctx.strokeStyle = color;
     ctx.lineWidth = width;
@@ -310,8 +323,18 @@ function createGlassKit(ctx, rng, LEAD = '#1a1714') {
     }
     ctx.restore();
   };
-  const hatch = (x0, y0, x1, y1, n, dx, dy, color, width = 1.2) => {
-    const lines = [];
+  const hatch = (
+    x0: number,
+    y0: number,
+    x1: number,
+    y1: number,
+    n: number,
+    dx: number,
+    dy: number,
+    color: string,
+    width = 1.2
+  ) => {
+    const lines: number[][][] = [];
     for (let i = 0; i < n; i++) {
       const x = x0 + rng() * (x1 - x0);
       const y = y0 + rng() * (y1 - y0);
@@ -323,11 +346,19 @@ function createGlassKit(ctx, rng, LEAD = '#1a1714') {
     paint(lines, color, width);
   };
   // Crazy-paving of irregular leaded quarries (jittered grid) filling a band
-  const crazyPaving = (x0, y0, x1, y1, cell, tones, seed) => {
+  const crazyPaving = (
+    x0: number,
+    y0: number,
+    x1: number,
+    y1: number,
+    cell: number,
+    tones: string[][],
+    seed: number
+  ) => {
     const r = mulberry32(seed);
     const cols = Math.ceil((x1 - x0) / cell) + 1;
     const rows = Math.ceil((y1 - y0) / (cell * 0.6)) + 1;
-    const grid = [];
+    const grid: number[][][] = [];
     for (let j = 0; j <= rows; j++) {
       grid.push([]);
       for (let i = 0; i <= cols; i++) {
@@ -345,7 +376,7 @@ function createGlassKit(ctx, rng, LEAD = '#1a1714') {
       }
     }
   };
-  const leaf = (x, y, len, ang, tone) => {
+  const leaf = (x: number, y: number, len: number, ang: number, tone: string[]) => {
     piece(
       () => ctx.ellipse(x, y, len, len * 0.42, ang, 0, Math.PI * 2),
       glass(x - len, y - len, x + len, y + len, tone[0], tone[1]),
@@ -382,7 +413,7 @@ export function createEastStainedGlassTexture(maxAniso = 8) {
   const w = 1024;
   const h = 1536;
   const c = makeCanvas(w, h);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   const rng = mulberry32(1909);
   const LEAD = '#191613';
   const { smooth, polyPath, glass, piece, paint, hatch } = createGlassKit(ctx, rng, LEAD);
@@ -405,7 +436,7 @@ export function createEastStainedGlassTexture(maxAniso = 8) {
   // ---- Upper cusped quatrefoil: four rounded-pointed lobes, red ribbon cross & central roundel ----
   const qx = w * 0.5;
   const qy = 190;
-  const traceQuatrefoil = (R, wave = 0) => {
+  const traceQuatrefoil = (R: number, wave = 0) => {
     ctx.beginPath();
     for (let i = 0; i <= 240; i++) {
       const t = (i / 240) * Math.PI * 2;
@@ -432,10 +463,11 @@ export function createEastStainedGlassTexture(maxAniso = 8) {
     rosette: true,
     tintBlue: true
   });
-  for (const [col, lw] of /** @type {[string, number][]} */ ([
+  const quatrefoilStrokes: [string, number][] = [
     [LEAD, 18],
     ['#d02430', 11]
-  ])) {
+  ];
+  for (const [col, lw] of quatrefoilStrokes) {
     ctx.strokeStyle = col;
     ctx.lineWidth = lw;
     ctx.lineJoin = 'round';
@@ -482,7 +514,7 @@ export function createEastStainedGlassTexture(maxAniso = 8) {
     [1166, 1400],
     [1216, botY]
   ];
-  const mapY = (py) => {
+  const mapY = (py: number) => {
     for (let i = 1; i < KY.length; i++) {
       if (py <= KY[i][0] || i === KY.length - 1) {
         const [a0, b0] = KY[i - 1];
@@ -495,29 +527,29 @@ export function createEastStainedGlassTexture(maxAniso = 8) {
   let pcx = 0;
   let ccx = 0;
   const SX = lancetHW / 101;
-  const M = ([px, py]) => [ccx + (px - pcx) * SX, mapY(py)];
-  const bbox = (pts) => {
+  const M = ([px, py]: number[]) => [ccx + (px - pcx) * SX, mapY(py)];
+  const bbox = (pts: number[][]) => {
     const xs = pts.map((p) => p[0]);
     const ys = pts.map((p) => p[1]);
     return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
   };
-  const S = (pts, a, b = a, lw = 3.4) => {
+  const S = (pts: number[][], a: string, b = a, lw = 3.4) => {
     const m = pts.map(M);
     const [x0, y0, x1, y1] = bbox(m);
     piece(smooth(m), glass(x0, y0, x1, y1, a, b), lw);
   };
-  const P = (pts, a, b = a, lw = 3.4) => {
+  const P = (pts: number[][], a: string, b = a, lw = 3.4) => {
     const m = pts.map(M);
     const [x0, y0, x1, y1] = bbox(m);
     piece(polyPath(m), glass(x0, y0, x1, y1, a, b), lw);
   };
-  const L = (lines, color, width) =>
+  const L = (lines: number[][][], color: string, width: number) =>
     paint(
       lines.map((ln) => ln.map(M)),
       color,
       width
     );
-  const rect = (x0, y0, x1, y1, a, b = a, lw = 3.2) =>
+  const rect = (x0: number, y0: number, x1: number, y1: number, a: string, b = a, lw = 3.2) =>
     P(
       [
         [x0, y0],
@@ -532,8 +564,8 @@ export function createEastStainedGlassTexture(maxAniso = 8) {
   // Ogee-cusped head: two small side lobes and a tall pointed ogee centre (photo offsets from the light's axis)
   const traceHead = (inset = 0) => {
     const k = 1 - inset / 101;
-    const X = (dx) => ccx + dx * k * SX;
-    const Y = (py) => mapY(236 + (py - 236) * 1) + inset * 0.9;
+    const X = (dx: number) => ccx + dx * k * SX;
+    const Y = (py: number) => mapY(236 + (py - 236) * 1) + inset * 0.9;
     ctx.moveTo(X(-101), botY + 20);
     ctx.lineTo(X(-101), Y(356));
     ctx.bezierCurveTo(X(-104), Y(326), X(-98), Y(300), X(-80), Y(302));
@@ -545,9 +577,9 @@ export function createEastStainedGlassTexture(maxAniso = 8) {
     ctx.lineTo(X(101), botY + 20);
     ctx.closePath();
   };
-  const skin = (pts, lw = 3) => S(pts, '#fbf0e2', '#e5c8aa', lw);
-  const white = (pts, lw = 3.4) => S(pts, '#fbfbf5', '#d3d5cf', lw);
-  const halo = (x, y, r) => {
+  const skin = (pts: number[][], lw = 3) => S(pts, '#fbf0e2', '#e5c8aa', lw);
+  const white = (pts: number[][], lw = 3.4) => S(pts, '#fbfbf5', '#d3d5cf', lw);
+  const halo = (x: number, y: number, r: number) => {
     const [mx, my] = M([x, y]);
     const rr = r * SX * 0.86;
     piece(
@@ -564,7 +596,7 @@ export function createEastStainedGlassTexture(maxAniso = 8) {
     ctx.restore();
   };
   // Face (3/4 view) with painted features, hair & optional beard
-  const face = (x, y, r, { hair = '#8a5a2c', beard = true, turn = 0 } = {}) => {
+  const face = (x: number, y: number, r: number, { hair = '#8a5a2c', beard = true, turn = 0 } = {}) => {
     S(
       [
         [x - r * 1.05, y - r * 0.3],
@@ -622,7 +654,7 @@ export function createEastStainedGlassTexture(maxAniso = 8) {
       1.6
     );
   };
-  const netMesh = (pts) => {
+  const netMesh = (pts: number[][]) => {
     S(pts, '#e9c98a', '#b88a3c', 3);
     const m = pts.map(M);
     const [x0, y0, x1, y1] = bbox(m);
@@ -642,9 +674,9 @@ export function createEastStainedGlassTexture(maxAniso = 8) {
     }
     ctx.restore();
   };
-  const tree = (cxp, cyp, r, trunk) => {
+  const tree = (cxp: number, cyp: number, r: number, trunk: number[][]) => {
     P(trunk, '#b07a3a', '#6a4018', 3);
-    const pts = [];
+    const pts: number[][] = [];
     for (let k = 0; k < 9; k++) {
       const a = (k / 9) * Math.PI * 2;
       const rr = r * (0.85 + rng() * 0.25);
@@ -682,10 +714,11 @@ export function createEastStainedGlassTexture(maxAniso = 8) {
     const [hx0, hy0] = M([x0, 230]);
     const [hx1, hy1] = M([x1, 440]);
     drawDiamondQuarries(ctx, hx0, hy0, hx1, hy1, 36, 46, { bg: '#f1f6f7', leadW: 2.8, rosette: true, tintBlue: true });
-    for (const [col, lw] of /** @type {[string, number][]} */ ([
+    const headStrokes: [string, number][] = [
       [LEAD, 19],
       ['#d22430', 12]
-    ])) {
+    ];
+    for (const [col, lw] of headStrokes) {
       ctx.save();
       ctx.strokeStyle = col;
       ctx.lineWidth = lw;
@@ -1277,7 +1310,7 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
   const w = 1024;
   const h = 1180;
   const c = makeCanvas(w, h);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   const rng = mulberry32(1991);
 
   fillWeatheredStoneSurround(ctx, w, h, 1991, '#948a78');
@@ -1311,7 +1344,7 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
   const { smooth, polyPath, glass, piece, paint, hatch, crazyPaving, leaf, LEAVES } = createGlassKit(ctx, rng, LEAD);
 
   // A leafy bough: dark twig with leaves alternating along it
-  const bough = (pts, len, density = 1) => {
+  const bough = (pts: number[][], len: number, density = 1) => {
     paint([pts], '#2a221a', 5.5);
     for (let i = 0; i < pts.length - 1; i++) {
       const [ax, ay] = pts[i];
@@ -1334,7 +1367,7 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
     }
   };
   // Alternating cobalt & amber border squares down the outer edge of a light
-  const border = (bx) => {
+  const border = (bx: number) => {
     const bw = 22;
     const step = 30;
     let k = 0;
@@ -1354,7 +1387,7 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
     }
   };
   // Timber barn: grey tiled roof, salmon tie-beam, posts & braces against the pink sky
-  const barn = (x0, x1, postXs) => {
+  const barn = (x0: number, x1: number, postXs: number[]) => {
     piece(
       polyPath([
         [x0, 150],
@@ -1365,7 +1398,7 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
       glass(x0, 150, x0, 214, '#e8eaec', '#b9bcc2'),
       3.4
     );
-    const tiles = [];
+    const tiles: number[][][] = [];
     for (let y = 164; y < 214; y += 14)
       tiles.push([
         [x0, y],
@@ -1427,7 +1460,7 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
     }
   };
   // Pink-mauve evening sky of streaky glass pieces
-  const pinkSky = (x0, x1, y0, y1) => {
+  const pinkSky = (x0: number, x1: number, y0: number, y1: number) => {
     const tones = [
       ['#f3b9dd', '#d98bc2'],
       ['#e7a2d0', '#c77ab5'],
@@ -1454,7 +1487,7 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
       y += hh;
     }
   };
-  const caption = (x0, x1, text, size) => {
+  const caption = (x0: number, x1: number, text: string, size: number) => {
     piece(
       polyPath([
         [x0, captionY],
@@ -1480,7 +1513,7 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
     ['#b8683f', '#8e4429'],
     ['#dca088', '#b97456']
   ];
-  const cornfield = (x0, x1, y0, y1) => {
+  const cornfield = (x0: number, x1: number, y0: number, y1: number) => {
     piece(
       polyPath([
         [x0, y0],
@@ -1491,7 +1524,7 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
       glass(x0, y0, x0, y1, '#f3dca8', '#d9b77a'),
       3.2
     );
-    const stalks = [];
+    const stalks: number[][][] = [];
     for (let i = 0; i < 70; i++) {
       const x = x0 + rng() * (x1 - x0);
       const y = y0 + rng() * (y1 - y0);
@@ -1502,9 +1535,9 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
     }
     paint(stalks, 'rgba(120,80,30,0.5)', 1.3);
   };
-  const grass = (path, x0, y0, x1, y1) => {
+  const grass = (path: () => void, x0: number, y0: number, x1: number, y1: number) => {
     piece(path, glass(x0, y0, x0, y1, '#b8ec8c', '#5fb64e'), 3.2);
-    const blades = [];
+    const blades: number[][][] = [];
     for (let i = 0; i < 90; i++) {
       const x = x0 + rng() * (x1 - x0);
       const y = y0 + rng() * (y1 - y0);
@@ -1515,7 +1548,7 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
     }
     paint(blades, 'rgba(30,80,30,0.45)', 1.2);
   };
-  const sky = (x0, x1) =>
+  const sky = (x0: number, x1: number) =>
     piece(
       polyPath([
         [x0, 0],
@@ -1605,7 +1638,7 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
   crazyPaving(xOuterL - 20, 880, xMidL + 20, captionY + 20, 62, EARTH, 711);
 
   // Two little yellow-green birds pecking seed on the earth
-  const finch = (bx, by, dir) => {
+  const finch = (bx: number, by: number, dir: number) => {
     piece(
       smooth([
         [bx - dir * 26, by + 2],
@@ -2007,7 +2040,7 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
   );
 
   // White cow above, facing left with short horns
-  const cowBody = (pts, tone) =>
+  const cowBody = (pts: number[][], tone: string[]) =>
     piece(smooth(pts), glass(pts[0][0], pts[0][1], pts[3][0], pts[3][1], tone[0], tone[1]), 3.6);
   cowBody(
     [
@@ -2157,7 +2190,7 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
   );
 
   // Two horned sheep, heads to the right
-  const sheep = (bx, by, scale) => {
+  const sheep = (bx: number, by: number, scale: number) => {
     piece(
       smooth([
         [bx - 120 * scale, by],
@@ -2171,7 +2204,7 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
       glass(bx - 120, by - 40, bx + 90, by + 50, '#fdfbf2', '#ddd6c4'),
       3.6
     );
-    const curls = [];
+    const curls: number[][][] = [];
     for (let k = 0; k < 18; k++) {
       const x = bx - 100 * scale + rng() * 170 * scale;
       const y = by - 30 * scale + rng() * 70 * scale;
@@ -2470,10 +2503,10 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
 
 // Cinquefoil lancet head: tall round central lobe, two upper side lobes and two shoulder lobes
 // dropping to the springing line (offsets measured from the photograph, scaled to the light's half-width).
-function traceCinquefoilLancetPath(ctx, cx, hw, topY, botY) {
+function traceCinquefoilLancetPath(ctx: CanvasRenderingContext2D, cx: number, hw: number, topY: number, botY: number) {
   const s = hw / 180;
-  const X = (dx) => cx + dx * s;
-  const Y = (dy) => topY + dy * s;
+  const X = (dx: number) => cx + dx * s;
+  const Y = (dy: number) => topY + dy * s;
   ctx.moveTo(X(-180), botY);
   ctx.lineTo(X(-180), Y(244));
   ctx.bezierCurveTo(X(-184), Y(200), X(-170), Y(164), X(-136), Y(158));
@@ -2493,7 +2526,7 @@ export function createJaquesStainedGlassTexture(maxAniso = 8) {
   const w = 1024;
   const h = 1280;
   const c = makeCanvas(w, h);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   const rng = mulberry32(1933);
   const LEAD = '#191613';
   const { smooth, polyPath, glass, piece, paint, hatch, leaf } = createGlassKit(ctx, rng, LEAD);
@@ -2513,7 +2546,7 @@ export function createJaquesStainedGlassTexture(maxAniso = 8) {
   ];
 
   // ---- local drawing helpers ----------------------------------------------
-  const bbox = (pts) => {
+  const bbox = (pts: number[][]) => {
     let x0 = Infinity;
     let y0 = Infinity;
     let x1 = -Infinity;
@@ -2527,24 +2560,24 @@ export function createJaquesStainedGlassTexture(maxAniso = 8) {
     return [x0, y0, x1, y1];
   };
   // Smooth leaded piece shaded from tone a (top-left) to tone b (bottom-right)
-  const S = (pts, a, b = a, lw = 3.4) => {
+  const S = (pts: number[][], a: string, b = a, lw = 3.4) => {
     const [x0, y0, x1, y1] = bbox(pts);
     piece(smooth(pts), glass(x0, y0, x1, y1, a, b), lw);
   };
-  const P = (pts, a, b = a, lw = 3.4) => {
+  const P = (pts: number[][], a: string, b = a, lw = 3.4) => {
     const [x0, y0, x1, y1] = bbox(pts);
     piece(polyPath(pts), glass(x0, y0, x1, y1, a, b), lw);
   };
-  const qPoint = (p0, q, p1, t) => [
+  const qPoint = (p0: number[], q: number[], p1: number[], t: number) => [
     (1 - t) * (1 - t) * p0[0] + 2 * (1 - t) * t * q[0] + t * t * p1[0],
     (1 - t) * (1 - t) * p0[1] + 2 * (1 - t) * t * q[1] + t * t * p1[1]
   ];
   // Curved parchment scroll with its lettering laid along the curve
-  const ribbon = (p0, q, p1, half, text, size = 22) => {
+  const ribbon = (p0: number[], q: number[], p1: number[], half: number, text: string, size = 22) => {
     const n = 28;
-    const top = [];
-    const bot = [];
-    const mid = [];
+    const top: number[][] = [];
+    const bot: number[][] = [];
+    const mid: number[][] = [];
     for (let i = 0; i <= n; i++) {
       const t = i / n;
       const p = qPoint(p0, q, p1, t);
@@ -2590,10 +2623,10 @@ export function createJaquesStainedGlassTexture(maxAniso = 8) {
     });
     ctx.restore();
   };
-  const gold = (pts) => S(pts, '#f6e27a', '#d9a823', 3.2);
+  const gold = (pts: number[][]) => S(pts, '#f6e27a', '#d9a823', 3.2);
   // Six-pointed white star flower with a gold eye
-  const star = (x, y, r) => {
-    const pts = [];
+  const star = (x: number, y: number, r: number) => {
+    const pts: number[][] = [];
     for (let k = 0; k < 12; k++) {
       const a = (k / 12) * Math.PI * 2 + 0.3;
       const rr = k % 2 ? r * 0.42 : r;
@@ -2609,7 +2642,7 @@ export function createJaquesStainedGlassTexture(maxAniso = 8) {
     ['#9fe8c0', '#3aa070']
   ];
   // Flowering evergreen: deep green ground filled with narrow pointed leaves & white stars
-  const shrub = (pts, nLeaves, nStars, leafLen = 15) => {
+  const shrub = (pts: number[][], nLeaves: number, nStars: number, leafLen = 15) => {
     const [x0, y0, x1, y1] = bbox(pts);
     S(pts, '#185c3c', '#0d3a26', 3.6);
     ctx.save();
@@ -2626,7 +2659,7 @@ export function createJaquesStainedGlassTexture(maxAniso = 8) {
     ctx.restore();
   };
   // Rounded pale pebbles on the roadside
-  const pebbles = (x0, y0, x1, y1, n) => {
+  const pebbles = (x0: number, y0: number, x1: number, y1: number, n: number) => {
     const tones = [
       ['#f7f3e8', '#d8d0bf'],
       ['#efe6c8', '#c9b98e'],
@@ -2645,7 +2678,7 @@ export function createJaquesStainedGlassTexture(maxAniso = 8) {
       );
     }
   };
-  const grass = (x0, x1, y0, y1) => {
+  const grass = (x0: number, x1: number, y0: number, y1: number) => {
     P(
       [
         [x0, y0 + 6],
@@ -2657,7 +2690,7 @@ export function createJaquesStainedGlassTexture(maxAniso = 8) {
       '#2e9a3c',
       3.2
     );
-    const blades = [];
+    const blades: number[][][] = [];
     for (let x = x0 + 3; x < x1; x += 4 + rng() * 4) {
       const lean = (rng() - 0.5) * 8;
       blades.push([
@@ -2667,7 +2700,7 @@ export function createJaquesStainedGlassTexture(maxAniso = 8) {
     }
     paint(blades, 'rgba(20,80,30,0.6)', 1.3);
   };
-  const blueFlowers = (x0, y0, x1, y1, n) => {
+  const blueFlowers = (x0: number, y0: number, x1: number, y1: number, n: number) => {
     ctx.save();
     for (let i = 0; i < n; i++) {
       const x = x0 + rng() * (x1 - x0);
@@ -2680,7 +2713,7 @@ export function createJaquesStainedGlassTexture(maxAniso = 8) {
     ctx.restore();
   };
   // Bare-branched little tree with autumn-gold leaves
-  const sapling = (x, y, hgt, tint = '#e0a040') => {
+  const sapling = (x: number, y: number, hgt: number, tint = '#e0a040') => {
     paint(
       [
         [
@@ -2709,7 +2742,7 @@ export function createJaquesStainedGlassTexture(maxAniso = 8) {
     }
     ctx.restore();
   };
-  const cypress = (x, y, hgt, wid) =>
+  const cypress = (x: number, y: number, hgt: number, wid: number) =>
     S(
       [
         [x, y - hgt],
@@ -2722,8 +2755,8 @@ export function createJaquesStainedGlassTexture(maxAniso = 8) {
       '#1d5a32',
       2.4
     );
-  const skin = (pts, lw = 3.2) => S(pts, '#fbf0e2', '#e7cdb2', lw);
-  const white = (pts, lw = 3.4) => S(pts, '#fbfbf7', '#cfd2cd', lw);
+  const skin = (pts: number[][], lw = 3.2) => S(pts, '#fbf0e2', '#e7cdb2', lw);
+  const white = (pts: number[][], lw = 3.4) => S(pts, '#fbfbf7', '#cfd2cd', lw);
 
   for (const { cx, side } of lights) {
     const xL = cx - hw;
@@ -4173,7 +4206,7 @@ export function createJaquesStainedGlassTexture(maxAniso = 8) {
       ctx.fill();
     }
     ctx.restore();
-    const panel = (x0, x1, lines, size = 21) => {
+    const panel = (x0: number, x1: number, lines: [string, number, number][], size = 21) => {
       P(
         [
           [x0, textY],
@@ -4313,7 +4346,7 @@ export function createWilsonStainedGlassTexture(maxAniso = 8) {
   const w = 500;
   const h = 2048;
   const c = makeCanvas(w, h);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   const rng = mulberry32(2007);
   const LEAD = '#1a1714';
   const { smooth, polyPath, glass, piece, paint } = createGlassKit(ctx, rng, LEAD);
@@ -4325,20 +4358,20 @@ export function createWilsonStainedGlassTexture(maxAniso = 8) {
   const sy = h / (1722 - py0);
   ctx.setTransform(sx, 0, 0, sy, -px0 * sx, -py0 * sy);
 
-  const bbox = (pts) => {
+  const bbox = (pts: number[][]) => {
     const xs = pts.map((p) => p[0]);
     const ys = pts.map((p) => p[1]);
     return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
   };
-  const S = (pts, a, b = a, lw = 3) => {
+  const S = (pts: number[][], a: string, b = a, lw = 3) => {
     const [x0, y0, x1, y1] = bbox(pts);
     piece(smooth(pts), glass(x0, y0, x1, y1, a, b), lw);
   };
-  const P = (pts, a, b = a, lw = 3) => {
+  const P = (pts: number[][], a: string, b = a, lw = 3) => {
     const [x0, y0, x1, y1] = bbox(pts);
     piece(polyPath(pts), glass(x0, y0, x1, y1, a, b), lw);
   };
-  const clipTo = (path, draw) => {
+  const clipTo = (path: () => void, draw: () => void) => {
     ctx.save();
     ctx.beginPath();
     path();
@@ -4346,8 +4379,8 @@ export function createWilsonStainedGlassTexture(maxAniso = 8) {
     draw();
     ctx.restore();
   };
-  const star = (x, y, r, fill = '#ffffff') => {
-    const pts = [];
+  const star = (x: number, y: number, r: number, fill = '#ffffff') => {
+    const pts: number[][] = [];
     for (let k = 0; k < 10; k++) {
       const a = -Math.PI / 2 + (k * Math.PI) / 5;
       const rr = k % 2 ? r * 0.42 : r;
@@ -4355,8 +4388,8 @@ export function createWilsonStainedGlassTexture(maxAniso = 8) {
     }
     P(pts, fill, fill, 1.2);
   };
-  const cloud = (x, y, wid, hgt) => {
-    const pts = [];
+  const cloud = (x: number, y: number, wid: number, hgt: number) => {
+    const pts: number[][] = [];
     const n = 9;
     for (let k = 0; k < n; k++) {
       const a = Math.PI + (k / (n - 1)) * Math.PI;
@@ -4365,12 +4398,12 @@ export function createWilsonStainedGlassTexture(maxAniso = 8) {
     }
     pts.push([x + wid * 0.48, y + hgt * 0.25], [x - wid * 0.48, y + hgt * 0.25]);
     S(pts, '#ffffff', '#c8d4e4', 2.6);
-    const arcs = [];
+    const arcs: number[][][] = [];
     for (let k = 0; k < 5; k++) {
       const cx = x - wid * 0.38 + (k * wid * 0.76) / 4;
       const cy = y - hgt * (0.25 + 0.35 * Math.sin((k / 4) * Math.PI));
       const r = hgt * 0.38;
-      const arc = [];
+      const arc: number[][] = [];
       for (let j = 0; j <= 8; j++) {
         const a = Math.PI * 1.05 + (j / 8) * Math.PI * 0.9;
         arc.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r]);
@@ -4413,12 +4446,12 @@ export function createWilsonStainedGlassTexture(maxAniso = 8) {
     const rightWing = [[272, 470], [440, 470], [440, 900], [400, 860], [255, 705], ...divider.slice().reverse()];
     P(leftWing, '#e2d6f4', '#9a86c4', 3.4);
     P(rightWing, '#ddd0f2', '#9480c0', 3.4);
-    const feathers = (path, x0, x1, y0, y1, dir) =>
+    const feathers = (path: number[][], x0: number, x1: number, y0: number, y1: number, dir: number) =>
       clipTo(polyPath(path), () => {
-        const lines = [];
+        const lines: number[][][] = [];
         for (let k = -30; k < 40; k++) {
           const bx = x0 + k * 9;
-          const ln = [];
+          const ln: number[][] = [];
           for (let j = 0; j <= 10; j++) {
             const t = j / 10;
             ln.push([bx + dir * (t * t * (x1 - x0) * 0.7 + Math.sin(t * 2.6) * 22), y0 + t * (y1 - y0)]);
@@ -4466,12 +4499,12 @@ export function createWilsonStainedGlassTexture(maxAniso = 8) {
     cloud(384, 1090, 110, 30);
 
     // ---- Lilac crags framing the sky, a peak in the centre ----
-    const crag = (pts, seed) => {
+    const crag = (pts: number[][], seed: number) => {
       P(pts, '#ddd0ee', '#8e7cb8', 3.4);
       const r = mulberry32(seed);
       const [x0, y0, x1, y1] = bbox(pts);
       clipTo(polyPath(pts), () => {
-        const lines = [];
+        const lines: number[][][] = [];
         for (let k = 0; k < 70; k++) {
           const x = x0 + r() * (x1 - x0);
           const y = y0 + r() * (y1 - y0);
@@ -4648,8 +4681,8 @@ export function createWilsonStainedGlassTexture(maxAniso = 8) {
     ctx.fillText('J.A.N.', 428, 1684);
     ctx.restore();
     // Curling flourishes around the script
-    const spiral = (x, y, r, turns, dir) => {
-      const pts = [];
+    const spiral = (x: number, y: number, r: number, turns: number, dir: number) => {
+      const pts: number[][] = [];
       for (let k = 0; k <= 40; k++) {
         const t = k / 40;
         const a = dir * t * turns * Math.PI * 2;
@@ -4717,7 +4750,7 @@ export function createWilsonStainedGlassTexture(maxAniso = 8) {
       star(x, y, 8, '#f6d24a');
     const cx = 266;
     const cy = 392;
-    const ring = (rx, ry) => () => ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+    const ring = (rx: number, ry: number) => () => ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
     piece(ring(112, 100), glass(cx - 112, cy - 100, cx + 112, cy + 100, '#3048c8', '#14228a'), 4);
     ctx.save();
     ctx.strokeStyle = '#f2d25a';
@@ -4760,7 +4793,7 @@ export function createWilsonStainedGlassTexture(maxAniso = 8) {
         [cx + s * 12, 394]
       ];
       S(wing, '#fff2a8', '#d4a62c', 2.6);
-      const quills = [];
+      const quills: number[][][] = [];
       for (let k = 0; k < 7; k++) {
         const x = cx + s * (26 + k * 10);
         quills.push([

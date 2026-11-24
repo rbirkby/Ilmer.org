@@ -5,8 +5,8 @@ class AIColorizeToggle extends HTMLElement {
   constructor() {
     super();
 
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = `
+    const root = this.attachShadow({ mode: 'open' });
+    root.innerHTML = `
       <style>
         :host {
           --progress: 0%;
@@ -161,7 +161,7 @@ class AIColorizeToggle extends HTMLElement {
       </button>
     `;
 
-    this.button = this.shadowRoot.querySelector('button');
+    this.button = root.querySelector('button');
   }
 
   get disabled() {

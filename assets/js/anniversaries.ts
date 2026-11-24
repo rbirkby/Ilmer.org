@@ -4,6 +4,9 @@ import {
 } from 'https://cdn.skypack.dev/pin/lit@v3.3.1-mozE5P6MGQybGvSM4ae5/mode=imports,min/optimized/lit.js';
 import { DateUtils } from './anniversary-dates.ts';
 
+type TimelineEvent = { id: string; date: string; title: string };
+type Anniversary = { daysDiff: number; year: number; yearsAgo: number; id: string; title: string };
+
 // Anniversary Web Component using LitElement
 class TimelineAnniversary extends LitElement {
   static properties = {
@@ -66,7 +69,7 @@ class TimelineAnniversaries extends LitElement {
     const eventsScript = this.querySelector('script[data-events]');
     if (eventsScript) {
       try {
-        this.events = JSON.parse(eventsScript.textContent).map((event) => ({
+        this.events = JSON.parse(eventsScript.textContent || '[]').map((event: TimelineEvent) => ({
           id: event.id,
           date: event.date,
           title: event.title
@@ -79,10 +82,10 @@ class TimelineAnniversaries extends LitElement {
   }
 
   calculateAndSetAnniversaries() {
-    const anniversaries = [];
+    const anniversaries: Anniversary[] = [];
     const todayDayOfYear = this.dateUtils.getDayOfYear(this.currentDay, this.currentMonth, this.currentYear);
 
-    this.events.forEach((event) => {
+    this.events.forEach((event: TimelineEvent) => {
       const parsedDate = this.dateUtils.parseEventDate(event.date);
       if (!parsedDate || parsedDate.year >= this.currentYear) return;
 
@@ -114,10 +117,10 @@ class TimelineAnniversaries extends LitElement {
 
   // Anniversaries sharing a day are shown together under one date
   groupByDay() {
-    const groups = new Map();
-    for (const anniversary of this.anniversaries) {
+    const groups = new Map<number, Anniversary[]>();
+    for (const anniversary of this.anniversaries as Anniversary[]) {
       if (!groups.has(anniversary.daysDiff)) groups.set(anniversary.daysDiff, []);
-      groups.get(anniversary.daysDiff).push(anniversary);
+      groups.get(anniversary.daysDiff)?.push(anniversary);
     }
     return [...groups].map(([daysDiff, items]) => {
       const date = new Date(this.now);
@@ -127,12 +130,12 @@ class TimelineAnniversaries extends LitElement {
   }
 
   // Local calendar date; toISOString() would shift to UTC and can land on the wrong day
-  isoDate(date) {
-    const pad = (n) => String(n).padStart(2, '0');
+  isoDate(date: Date) {
+    const pad = (n: number) => String(n).padStart(2, '0');
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
   }
 
-  weekdayLabel(daysDiff, date) {
+  weekdayLabel(daysDiff: number, date: Date) {
     if (daysDiff === 0) return 'Today';
     if (daysDiff === 1) return 'Tomorrow';
     return date.toLocaleDateString('en-GB', { weekday: 'long' });
@@ -161,7 +164,7 @@ class TimelineAnniversaries extends LitElement {
                           </time>
                           <ul class="anniversary-entries">
                             ${items.map(
-                              (anniversary) => html`
+                              (anniversary: Anniversary) => html`
                                 <li>
                                   <timeline-anniversary
                                     label="${anniversary.title}"

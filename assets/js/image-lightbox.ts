@@ -7,10 +7,11 @@ export function initImageLightbox({ triggerSelector = '.timeline-image-link' } =
     return;
   }
 
-  let lastTrigger: any = null;
+  let lastTrigger: HTMLElement | null = null;
 
-  const onClick = (event) => {
-    const trigger = event.target.closest(triggerSelector);
+  const onClick = (event: MouseEvent) => {
+    const target = event.target;
+    const trigger = target instanceof Element ? target.closest(triggerSelector) : null;
     if (!trigger) {
       return;
     }
@@ -32,6 +33,7 @@ export function initImageLightbox({ triggerSelector = '.timeline-image-link' } =
     lightboxImage.alt = caption;
     lightboxCaption.textContent = caption;
 
+    if (!(trigger instanceof HTMLElement)) return;
     lastTrigger = trigger;
 
     if (typeof lightbox.showPopover === 'function') {
@@ -39,7 +41,7 @@ export function initImageLightbox({ triggerSelector = '.timeline-image-link' } =
     }
   };
 
-  const onToggle = (event) => {
+  const onToggle = (event: ToggleEvent) => {
     if (event.newState !== 'closed' || !lastTrigger) {
       return;
     }

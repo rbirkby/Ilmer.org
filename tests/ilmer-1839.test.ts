@@ -320,7 +320,10 @@ test('one primary click or tap rides the cart, but drags, secondary pointers and
 
 test('AR keeps trees and hedges hidden when GPS enables the remaining features', () => {
   const scene = readFileSync(new URL('../assets/js/ilmer-1839.ts', import.meta.url), 'utf8');
-  const visibility = scene.slice(scene.indexOf('function setARFeaturesVisible'), scene.indexOf('function setARStatus'));
+  // The page is TypeScript; the extracted function is executed as plain JavaScript.
+  const visibility = scene
+    .slice(scene.indexOf('function setARFeaturesVisible'), scene.indexOf('function setARStatus'))
+    .replace(/:\s*[A-Za-z_][\w.|<>[\]]*/g, '');
   const landscape = { visible: true };
   const structures = { visible: false };
   const livestock = { visible: false };

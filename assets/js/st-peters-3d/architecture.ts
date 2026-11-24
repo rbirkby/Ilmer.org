@@ -1,12 +1,128 @@
-// @ts-nocheck -- scene code ported from unchecked JavaScript; three.js calls are validated at runtime.
 import * as THREE from 'three';
+import { canvas2d } from './canvas-utils.ts';
 import { addBox, boxMesh } from './mesh-utils.ts';
 import { DIM } from './dimensions.ts';
 import { createChancelReliefHeightMaps } from './plaques.ts';
 import { buildBellChamber } from './belfry.ts';
 
+type Vec2 = [number, number];
+type Vec3 = [number, number, number];
+
+type NaveShell = typeof DIM.nave;
+
+/** Pointed openings use springY/apexY; the square-headed north window uses topY. */
+type OpeningSpec = {
+  width: number;
+  sillY: number;
+  type?: string;
+  topY?: number;
+  springY?: number;
+  apexY?: number;
+};
+
+type CarvedPanel = {
+  side: number;
+  canvas: HTMLCanvasElement;
+  material: THREE.Material;
+};
+
+type CarvedJambs = {
+  y: [number, number];
+  depth: number;
+  panels: CarvedPanel[];
+};
+
+type WallOpening = {
+  u: number;
+  spec: OpeningSpec;
+  isDoor?: boolean;
+  splayW?: number;
+  splayTop?: number;
+  splayBot?: number;
+  quoinSkipY?: [number, number];
+  carvedJambs?: CarvedJambs;
+  seat?: { y0: number; carvedJambs?: CarvedJambs };
+};
+
+type Niche = {
+  u: number;
+  spec: OpeningSpec;
+  depth: number;
+};
+
+type ChurchMaterials = {
+  glassClear: THREE.Material;
+  glassEast: THREE.Material;
+  glassSower: THREE.Material;
+  glassNorthNave: THREE.Material;
+  glassWilson: THREE.Material;
+  ashlarWarm: THREE.Material;
+  ashlar: THREE.Material;
+  stoneCapDark: THREE.Material;
+  iron: THREE.Material;
+  clayRoof: THREE.Material;
+  plaster: THREE.Material;
+  stoneWall: THREE.Material;
+  weatherboard: THREE.Material;
+  weatherboardWide: THREE.Material;
+  darkOak: THREE.Material;
+  shingles: THREE.Material;
+  stoneWallWestLower: THREE.Material;
+  stoneWallWestUpper: THREE.Material;
+  dedicationStone1860: THREE.Material;
+  glassShade: THREE.Material;
+  porchGateGrey: THREE.Material;
+  medOak: THREE.MeshStandardMaterial;
+  quarryTile: THREE.Material;
+  wax: THREE.Material;
+  stoneSlateRoof: THREE.Material;
+};
+
+type CompositeWallOptions = {
+  outlinePts?: Vec2[];
+  outerOutlinePts?: Vec2[];
+  innerOutlinePts?: Vec2[];
+  outerMaterial?: THREE.Material | null;
+  outerThick: number;
+  innerThick: number;
+  openings?: WallOpening[];
+  niches?: Niche[];
+  mats: ChurchMaterials;
+};
+
+type RoofCut = { x0: number; x1: number; zHalf: number };
+
+type PitchedRoofOptions = {
+  xStart: number;
+  xEnd: number;
+  zHalfExt: number;
+  eavesY: number;
+  ridgeY: number;
+  overhang: number;
+  mats: ChurchMaterials;
+  hasGutters?: boolean;
+  cut?: RoofCut | null;
+};
+
+type GableCopingOptions = {
+  xPos: number;
+  zHalf: number;
+  eavesY: number;
+  ridgeY: number;
+  mats: ChurchMaterials;
+};
+
+type BenchmarkMark = { u: number; v: number };
+type CornerCarve = { index: number; mark: BenchmarkMark };
+
+type DoorPivots = {
+  gateLeft: THREE.Group;
+  gateRight: THREE.Group;
+  mainDoor: THREE.Group;
+};
+
 // Box-projected world-space UVs so masonry & roof tiles never stretch on ExtrudeGeometry
-export function applyBoxUVs(geometry, scale = 0.45) {
+export function applyBoxUVs(geometry: THREE.BufferGeometry, scale = 0.45): THREE.BufferGeometry {
   geometry.computeVertexNormals();
   const pos = geometry.attributes.position;
   const norm = geometry.attributes.normal;
@@ -40,20 +156,20 @@ export function applyBoxUVs(geometry, scale = 0.45) {
 }
 
 // Helper: sample points along a pointed Gothic arch or rectangular window contour (2D in local u, v)
-function sampleOpeningPoints(spec, splayW = 0, splayTop = 0, splayBot = 0) {
+function sampleOpeningPoints(spec: OpeningSpec, splayW = 0, splayTop = 0, splayBot = 0): Vec2[] {
   const hw = spec.width * 0.5 + splayW;
   const bot = spec.sillY - splayBot;
-  const pts = [];
+  const pts: Vec2[] = [];
 
   if (spec.type === 'north-square-stained') {
-    const top = spec.topY + splayTop;
+    const top = (spec.topY as number) + splayTop;
     pts.push([-hw, bot], [hw, bot], [hw, top], [-hw, top]);
     return pts;
   }
 
   // Pointed Gothic arch
-  const spring = spec.springY + splayTop * 0.35;
-  const apex = spec.apexY + splayTop;
+  const spring = (spec.springY as number) + splayTop * 0.35;
+  const apex = (spec.apexY as number) + splayTop;
   pts.push([-hw, bot], [hw, bot], [hw, spring]);
 
   // Right arch curve from (hw, spring) to (0, apex)
@@ -76,7 +192,7 @@ function sampleOpeningPoints(spec, splayW = 0, splayTop = 0, splayBot = 0) {
 }
 
 // Convert 2D opening points into a THREE.Path hole centered at `centerU`
-function makeOpeningHole(centerU, pts) {
+function makeOpeningHole(centerU: number, pts: Vec2[]): THREE.Path {
   const path = new THREE.Path();
   path.moveTo(centerU + pts[0][0], pts[0][1]);
   for (let i = 1; i < pts.length; i++) {
@@ -89,16 +205,25 @@ function makeOpeningHole(centerU, pts) {
 // Build a clean splayed reveal tunnel connecting two 2D contours along Z (local z0 -> z1).
 // Faces point into the opening (towards the viewer looking through it). `gapY` = [y0, y1] leaves a horizontal
 // band of the two vertical jamb faces open so carved panels can be set into them.
-function buildRevealTunnel(centerU, ptsOuter, zOuter, ptsInner, zInner, material, uvScale = 0.5, gapY = null) {
-  const positions = [];
-  const uvs = [];
+function buildRevealTunnel(
+  centerU: number,
+  ptsOuter: Vec2[],
+  zOuter: number,
+  ptsInner: Vec2[],
+  zInner: number,
+  material: THREE.Material,
+  uvScale = 0.5,
+  gapY: [number, number] | null = null
+): THREE.Mesh {
+  const positions: number[] = [];
+  const uvs: number[] = [];
   const n = ptsOuter.length;
 
-  const pushQuad = (a, b, c, d) => {
+  const pushQuad = (a: Vec3, b: Vec3, c: Vec3, d: Vec3) => {
     positions.push(...a, ...b, ...c, ...a, ...c, ...d);
     uvs.push(0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1);
   };
-  const pushFace = (a, b, c, d) => {
+  const pushFace = (a: Vec3, b: Vec3, c: Vec3, d: Vec3) => {
     if (zInner > zOuter) {
       pushQuad(b, a, d, c);
     } else {
@@ -106,14 +231,14 @@ function buildRevealTunnel(centerU, ptsOuter, zOuter, ptsInner, zInner, material
     }
   };
   // Point on a vertical edge (p -> q) at height y
-  const atY = (p, q, y) => [p[0], y, p[2]];
+  const atY = (p: Vec3, q: Vec3, y: number): Vec3 => [p[0], y, p[2]];
 
   for (let i = 0; i < n; i++) {
     const j = (i + 1) % n;
-    const a = [centerU + ptsOuter[i][0], ptsOuter[i][1], zOuter];
-    const b = [centerU + ptsOuter[j][0], ptsOuter[j][1], zOuter];
-    const c = [centerU + ptsInner[j][0], ptsInner[j][1], zInner];
-    const d = [centerU + ptsInner[i][0], ptsInner[i][1], zInner];
+    const a: Vec3 = [centerU + ptsOuter[i][0], ptsOuter[i][1], zOuter];
+    const b: Vec3 = [centerU + ptsOuter[j][0], ptsOuter[j][1], zOuter];
+    const c: Vec3 = [centerU + ptsInner[j][0], ptsInner[j][1], zInner];
+    const d: Vec3 = [centerU + ptsInner[i][0], ptsInner[i][1], zInner];
     const verticalJamb = a[0] === b[0] && c[0] === d[0];
     if (gapY && verticalJamb) {
       const [y0, y1] = gapY;
@@ -148,15 +273,23 @@ function buildRevealTunnel(centerU, ptsOuter, zOuter, ptsInner, zInner, material
 // Carved relief cut into a flat face: a plane subdivided every ~2.5mm whose surface is flush with the face (z = 0)
 // where the height field is 255 and sunk up to `depth` behind it where it is 0. The canvas is fitted into the face
 // between `marginL` and `marginR` (metres); everything outside it is plain flush stone.
-function buildCarvedFace(canvas, width, height, depth, marginL, marginR, material) {
+function buildCarvedFace(
+  canvas: HTMLCanvasElement,
+  width: number,
+  height: number,
+  depth: number,
+  marginL: number,
+  marginR: number,
+  material: THREE.Material
+): THREE.Mesh {
   const cw = canvas.width;
   const ch = canvas.height;
-  const px = canvas.getContext('2d').getImageData(0, 0, cw, ch).data;
+  const px = canvas2d(canvas).getImageData(0, 0, cw, ch).data;
   let hf = new Float32Array(cw * ch);
   for (let i = 0; i < cw * ch; i++) hf[i] = px[i * 4] / 255;
 
   // Two passes of a 5x5 box blur soften the drawn shapes into worn, rounded stone
-  const blur = (src) => {
+  const blur = (src: Float32Array<ArrayBuffer>): Float32Array<ArrayBuffer> => {
     const tmp = new Float32Array(src.length);
     const out = new Float32Array(src.length);
     for (let y = 0; y < ch; y++) {
@@ -195,7 +328,7 @@ function buildCarvedFace(canvas, width, height, depth, marginL, marginR, materia
   const avail = width - marginL - marginR;
   const carvedW = Math.min(avail, cw * 0.001);
   const left = marginL + (avail - carvedW) * 0.5;
-  const sample = (s, t) => {
+  const sample = (s: number, t: number): number => {
     // s across the face (0..1), t down the face (0..1)
     const u = (s * width - left) / carvedW;
     if (u <= 0 || u >= 1) return 1;
@@ -235,7 +368,7 @@ function buildCarvedFace(canvas, width, height, depth, marginL, marginR, materia
 }
 
 // Build window glass, stone surround, and tracery mullions inside a window aperture
-function buildWindowInsert(spec, mats) {
+function buildWindowInsert(spec: OpeningSpec, mats: ChurchMaterials): THREE.Group {
   const group = new THREE.Group();
   const hw = spec.width * 0.5;
   const pts = sampleOpeningPoints(spec, 0, 0, 0);
@@ -249,7 +382,7 @@ function buildWindowInsert(spec, mats) {
   const glassGeo = new THREE.ShapeGeometry(glassShape, 12);
   // Normalize glass UVs 0..1 across window bounding box so stained glass fills perfectly!
   const pos = glassGeo.attributes.position;
-  const topY = spec.type === 'north-square-stained' ? spec.topY : spec.apexY;
+  const topY = (spec.type === 'north-square-stained' ? spec.topY : spec.apexY) as number;
   const h = topY - spec.sillY;
   const uvs = new Float32Array(pos.count * 2);
   for (let i = 0; i < pos.count; i++) {
@@ -294,14 +427,14 @@ function buildWindowInsert(spec, mats) {
   // Square-headed outer stone hood mould above Window 6 (North Nave Jaques Window, A3)
   // A1 (Sower), A2 (Altar/East) and A3 (Jaques) render procedurally painted stained-glass & stone tracery textures cleanly.
   if (spec.type === 'north-square-stained') {
-    addBox(group, [spec.width + 0.34, 0.09, 0.12], mats.ashlarWarm, [0, spec.topY + 0.1, -0.08]);
+    addBox(group, [spec.width + 0.34, 0.09, 0.12], mats.ashlarWarm, [0, topY + 0.1, -0.08]);
   }
 
   return group;
 }
 
 // Build a stepped medieval ashlar stone buttress with sloped weathered caps
-function buildButtress(width, depth, height, mats) {
+function buildButtress(width: number, depth: number, height: number, mats: ChurchMaterials): THREE.Group {
   const g = new THREE.Group();
 
   // Base plinth
@@ -338,7 +471,7 @@ function buildButtress(width, depth, height, mats) {
 }
 
 // Build a black cast-iron rainwater pipe (RWP) with hopper head
-function buildRWP(height, mats) {
+function buildRWP(height: number, mats: ChurchMaterials): THREE.Group {
   const g = new THREE.Group();
   const pipe = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, height, 10), mats.iron);
   pipe.position.set(0, height * 0.5, 0.09);
@@ -361,17 +494,16 @@ function buildRWP(height, mats) {
 // beneath it pointing up to the bar, and a drilled hole at its North end. Returns a replacement quoin box whose
 // West face is finely subdivided and pushed in along V-cut grooves, darkened towards the bottom of each cut.
 // (u, v) on that face: u runs along +Z from the face centre, v up from the stone's centre.
-function buildBenchmarkQuoin(qx, qy, qz, mat, mark) {
+function buildBenchmarkQuoin(qx: number, qy: number, qz: number, mat: THREE.Material, mark: BenchmarkMark): THREE.Mesh {
   const geo = new THREE.BoxGeometry(qx, qy, qz, 1, Math.round(qy / 0.0015), Math.round(qz / 0.0015));
-  const segs = [
+  const segs: [number, number, number, number][] = [
     [mark.u - 0.065, mark.v, mark.u + 0.065, mark.v], // bar
     [mark.u, mark.v - 0.018, mark.u, mark.v - 0.11], // arrow shaft
     [mark.u, mark.v - 0.018, mark.u - 0.04, mark.v - 0.1], // arrow legs
     [mark.u, mark.v - 0.018, mark.u + 0.04, mark.v - 0.1]
   ];
   const holeU = mark.u - 0.078;
-  /** @type {(u: number, v: number, seg: number[]) => number} */
-  const segDist = (u, v, [u0, v0, u1, v1]) => {
+  const segDist = (u: number, v: number, [u0, v0, u1, v1]: [number, number, number, number]): number => {
     const du = u1 - u0;
     const dv = v1 - v0;
     const t = Math.min(1, Math.max(0, ((u - u0) * du + (v - v0) * dv) / (du * du + dv * dv)));
@@ -379,7 +511,7 @@ function buildBenchmarkQuoin(qx, qy, qz, mat, mark) {
   };
   const halfW = 0.0065; // 13mm wide V-cuts
   const cutDepth = 0.0075;
-  const depthAt = (u, v) => {
+  const depthAt = (u: number, v: number): number => {
     let d = 0;
     for (const sg of segs) {
       const r = segDist(u, v, sg);
@@ -411,7 +543,7 @@ function buildBenchmarkQuoin(qx, qy, qz, mat, mark) {
 
 // Stove chimney (1900 era only): a pale cylindrical flue pipe rising through the South roof slope just above the
 // wall head, with a lead flashing collar where it meets the tiles and a conical rain cap on top
-function buildStoveChimney(x, N, mats) {
+function buildStoveChimney(x: number, N: NaveShell, mats: ChurchMaterials): THREE.Group {
   const g = new THREE.Group();
   g.userData.era = '1900';
   g.visible = false;
@@ -419,7 +551,7 @@ function buildStoveChimney(x, N, mats) {
   const zc = N.zSouthInt + 0.2;
   const run = N.zSouthExt + N.overhang;
   const roofRise = (N.ridgeY - N.eavesY) / run;
-  const roofTopAt = (z) => N.eavesY + roofRise * (run - z) + 0.17; // tile surface (buildPitchedRoof slab top)
+  const roofTopAt = (z: number): number => N.eavesY + roofRise * (run - z) + 0.17; // tile surface (buildPitchedRoof slab top)
   const baseY = N.eavesY;
   const topY = roofTopAt(zc) + 0.95;
   const pipeR = 0.09;
@@ -536,7 +668,7 @@ function buildChimneySmoke(count = 28) {
 // The West end's half hip as it was before the 1909 rebuild ('1900' era): a tiled hip slab rising from the old gable
 // head at y = halfHipY to the ridge, stopping at the belfry's West wall. While it shows, main.js clips the clay
 // roof slopes and ridge (mats.clayRoof) along the hip's plane, stored here as userData.clipPlane.
-function buildHalfHip(N, halfHipY, mats) {
+function buildHalfHip(N: NaveShell, halfHipY: number, mats: ChurchMaterials): THREE.Group {
   const g = new THREE.Group();
   g.userData.era = '1900';
   g.visible = false;
@@ -583,7 +715,7 @@ function buildHalfHip(N, halfHipY, mats) {
 }
 
 // Build a carved limestone gable cross (East gable & North Porch gable)
-function buildGableCross(scale, mats) {
+function buildGableCross(scale: number, mats: ChurchMaterials): THREE.Group {
   const g = new THREE.Group();
   const plinth = addBox(g, [0.28 * scale, 0.22 * scale, 0.24 * scale], mats.ashlar);
   plinth.position.y = 0.11 * scale;
@@ -599,7 +731,15 @@ function buildGableCross(scale, mats) {
 
 // Carved panels sunk into the two splayed jamb faces of an opening or recess, centred on u. Each jamb face runs
 // from (±outerHW, zOuter) at the back to (±innerHW, zInner) at the room face.
-function addCarvedJambPanels(group, u, outerHW, zOuter, innerHW, zInner, carved) {
+function addCarvedJambPanels(
+  group: THREE.Object3D,
+  u: number,
+  outerHW: number,
+  zOuter: number,
+  innerHW: number,
+  zInner: number,
+  carved: CarvedJambs
+): void {
   const [y0, y1] = carved.y;
   for (const jamb of carved.panels) {
     const sx = jamb.side; // -1 = left (low u) jamb, +1 = right jamb
@@ -639,24 +779,17 @@ function addCarvedJambPanels(group, u, outerHW, zOuter, innerHW, zInner, carved)
 }
 
 // Helper to build a two-layer pierced wall (outer limestone rubble + inner cream plaster + splayed window reveals)
-/**
- * @param {{
- *   outlinePts?: number[][], outerOutlinePts?: number[][], innerOutlinePts?: number[][],
- *   outerMaterial?: THREE.Material | null, outerThick: number, innerThick: number,
- *   openings?: any[], niches?: any[], mats: any
- * }} options
- */
 function buildCompositeWall({
   outlinePts,
-  outerOutlinePts = outlinePts,
-  innerOutlinePts = outlinePts,
+  outerOutlinePts = outlinePts as Vec2[],
+  innerOutlinePts = outlinePts as Vec2[],
   outerMaterial = null,
   outerThick,
   innerThick,
   openings = [], // [{ u, spec, isDoor, splayW, splayTop, splayBot, quoinSkipY, carvedJambs, seat }]
   niches = [], // [{ u, spec, depth }]: recesses cut into the inner leaf only (e.g. the chancel piscina)
   mats
-}) {
+}: CompositeWallOptions): THREE.Group {
   const group = new THREE.Group();
 
   // Outer masonry shape (z: 0 to outerThick)
@@ -678,7 +811,8 @@ function buildCompositeWall({
     // A window with a stone seat beneath it: the glazing stays where it is, but the embrasure (its splayed jambs
     // and the inner opening) is carried down to the seat, with a plain stone back below the glass
     const seatY = op.seat?.y0 ?? null;
-    const dropSill = (pts) => (seatY === null ? pts : pts.map(([x, y], k) => (k < 2 ? [x, seatY] : [x, y])));
+    const dropSill = (pts: Vec2[]): Vec2[] =>
+      seatY === null ? pts : pts.map(([x, y], k): Vec2 => (k < 2 ? [x, seatY] : [x, y]));
     const carved = op.carvedJambs ?? op.seat?.carvedJambs ?? null;
 
     outerShape.holes.push(makeOpeningHole(op.u, outerPts));
@@ -688,10 +822,10 @@ function buildCompositeWall({
     const revealMat = op.isDoor ? mats.ashlarWarm : mats.plaster;
     const zIn = outerThick + innerThick;
     // A doorway's level reveal floor would lie exactly on the plaster leaf's sill face and flicker; lift it 3mm
-    const liftFloor = (pts) => {
+    const liftFloor = (pts: Vec2[]): Vec2[] => {
       if (!op.isDoor) return pts;
       const minY = Math.min(...pts.map((p) => p[1]));
-      return pts.map(([x, y]) => [x, y <= minY + 1e-6 ? y + 0.003 : y]);
+      return pts.map(([x, y]): Vec2 => [x, y <= minY + 1e-6 ? y + 0.003 : y]);
     };
     const reveal = buildRevealTunnel(
       op.u,
@@ -712,14 +846,15 @@ function buildCompositeWall({
 
     if (op.seat) {
       // Plain dressed stone filling the embrasure's back beneath the glass, down to the seat
+      const seatBase = op.seat.y0;
       const backW = outerPts[1][0] * 2;
-      const backGeo = new THREE.PlaneGeometry(backW, op.spec.sillY - seatY);
+      const backGeo = new THREE.PlaneGeometry(backW, op.spec.sillY - seatBase);
       const backUV = backGeo.attributes.uv;
       for (let i = 0; i < backUV.count; i++) {
-        backUV.setXY(i, backUV.getX(i) * backW * 0.45, backUV.getY(i) * (op.spec.sillY - seatY) * 0.45);
+        backUV.setXY(i, backUV.getX(i) * backW * 0.45, backUV.getY(i) * (op.spec.sillY - seatBase) * 0.45);
       }
       const back = new THREE.Mesh(backGeo, mats.ashlarWarm);
-      back.position.set(op.u, (seatY + op.spec.sillY) * 0.5, outerThick + 0.002);
+      back.position.set(op.u, (seatBase + op.spec.sillY) * 0.5, outerThick + 0.002);
       group.add(back);
       // The seat: a dressed slab across the embrasure floor with a rounded nose just proud of the plaster
       const seatT = 0.07;
@@ -729,12 +864,12 @@ function buildCompositeWall({
         group,
         [seatW, seatT, seatD],
         mats.ashlarWarm,
-        [op.u, seatY - seatT * 0.5 + 0.002, outerThick + seatD * 0.5],
+        [op.u, seatBase - seatT * 0.5 + 0.002, outerThick + seatD * 0.5],
         { cast: true, receive: true }
       );
       const nose = new THREE.Mesh(new THREE.CylinderGeometry(seatT * 0.5, seatT * 0.5, seatW, 12), mats.ashlarWarm);
       nose.rotation.z = Math.PI / 2;
-      nose.position.set(op.u, seatY - seatT * 0.5 + 0.002, zIn + 0.05);
+      nose.position.set(op.u, seatBase - seatT * 0.5 + 0.002, zIn + 0.05);
       group.add(nose);
     }
 
@@ -752,7 +887,7 @@ function buildCompositeWall({
 
       // Decorative pale limestone interior quoin blocks along splayed reveal edge (seen in IMG_3938, 3949, 3950)
       const qBot = seatY ?? op.spec.sillY;
-      const qH = (op.spec.topY ?? op.spec.springY) - qBot;
+      const qH = ((op.spec.topY ?? op.spec.springY) as number) - qBot;
       const qCount = Math.max(3, Math.round(qH / 0.34));
       for (let q = 0; q < qCount; q++) {
         const qy = qBot + (q + 0.5) * (qH / qCount);
@@ -845,7 +980,17 @@ function buildCompositeWall({
 
 // Build pitched roof slopes with overhang, ridge tiles, and eaves gutters
 // cut: optional { x0, x1, zHalf } footprint (e.g. the belfry) that the slopes and ridge leave open
-function buildPitchedRoof({ xStart, xEnd, zHalfExt, eavesY, ridgeY, overhang, mats, hasGutters = true, cut = null }) {
+function buildPitchedRoof({
+  xStart,
+  xEnd,
+  zHalfExt,
+  eavesY,
+  ridgeY,
+  overhang,
+  mats,
+  hasGutters = true,
+  cut = null
+}: PitchedRoofOptions): THREE.Group {
   const g = new THREE.Group();
   const len = xEnd - xStart;
   const run = zHalfExt + overhang;
@@ -906,7 +1051,7 @@ function buildPitchedRoof({ xStart, xEnd, zHalfExt, eavesY, ridgeY, overhang, ma
 }
 
 // Build gable stone coping stones along the two pitched edges of a gable triangle
-function buildGableCoping({ xPos, zHalf, eavesY, ridgeY, mats }) {
+function buildGableCoping({ xPos, zHalf, eavesY, ridgeY, mats }: GableCopingOptions): THREE.Group {
   const g = new THREE.Group();
   const rise = ridgeY - eavesY;
   const slopeLen = Math.hypot(zHalf + 0.12, rise + 0.08);
@@ -926,7 +1071,7 @@ function buildGableCoping({ xPos, zHalf, eavesY, ridgeY, mats }) {
 }
 
 // Build the iconic Timber Weatherboarded Bell-Turret & Oak-Shingled Broach Spire
-function buildTowerAndSpire(mats) {
+function buildTowerAndSpire(mats: ChurchMaterials): THREE.Group {
   const g = new THREE.Group();
   const t = DIM.tower;
   const s = t.size;
@@ -936,7 +1081,7 @@ function buildTowerAndSpire(mats) {
   // Square timber weatherboarded belfry: four boarded walls 10cm thick, open behind each louvre so daylight
   // and the bells' sound pass through, enclosing the bell chamber (belfry.js)
   const wallT = 0.1;
-  const openings = [
+  const openings: [(along: boolean) => Vec2[]] = [
     // [local hole outline in (along-wall, y)], N/S get a pointed head, E/W are square
     (along) =>
       along
@@ -955,12 +1100,13 @@ function buildTowerAndSpire(mats) {
           ]
   ];
   const belfryWalls = new THREE.Group();
-  /** @type {[number, boolean][]} */ ([
+  const belfryFaces: [number, boolean][] = [
     [0, true],
     [Math.PI, true],
     [Math.PI / 2, false],
     [-Math.PI / 2, false]
-  ]).forEach(([rotY, northSouth]) => {
+  ];
+  belfryFaces.forEach(([rotY, northSouth]) => {
     const shape = new THREE.Shape();
     shape.moveTo(-hsBox, t.baseY);
     shape.lineTo(hsBox, t.baseY);
@@ -1077,8 +1223,8 @@ function buildTowerAndSpire(mats) {
   const rOctBase = 0.98;
   const rOctTop = 0.086;
 
-  const octRing = (radius, y) => {
-    const pts = [];
+  const octRing = (radius: number, y: number): THREE.Vector3[] => {
+    const pts: THREE.Vector3[] = [];
     for (let i = 0; i < 8; i++) {
       const ang = -Math.PI / 8 + (i * Math.PI) / 4;
       pts.push(new THREE.Vector3(Math.sin(ang) * radius, y, Math.cos(ang) * radius));
@@ -1095,11 +1241,17 @@ function buildTowerAndSpire(mats) {
     new THREE.Vector3(-halfEaves, t.eavesY, -halfEaves) // NW
   ];
 
-  const positions = [];
-  const uvs = [];
+  const positions: number[] = [];
+  const uvs: number[] = [];
   const uvScale = 0.62;
 
-  const pushFlatTri = (a, b, c, refOrigin, horizAxis) => {
+  const pushFlatTri = (
+    a: THREE.Vector3,
+    b: THREE.Vector3,
+    c: THREE.Vector3,
+    refOrigin: THREE.Vector3,
+    horizAxis: THREE.Vector3
+  ) => {
     const ab = new THREE.Vector3().subVectors(b, a);
     const ac = new THREE.Vector3().subVectors(c, a);
     const normal = new THREE.Vector3().crossVectors(ab, ac).normalize();
@@ -1112,7 +1264,7 @@ function buildTowerAndSpire(mats) {
     }
   };
 
-  const pushFlatQuad = (a, b, c, d) => {
+  const pushFlatQuad = (a: THREE.Vector3, b: THREE.Vector3, c: THREE.Vector3, d: THREE.Vector3) => {
     const horiz = new THREE.Vector3().subVectors(b, a);
     pushFlatTri(a, b, c, a, horiz);
     pushFlatTri(a, c, d, a, horiz);
@@ -1200,12 +1352,7 @@ function buildTowerAndSpire(mats) {
     });
   });
   // Today's louvred openings were boarded over: weatherboard infill shaped to each hole
-  /** @type {[number, boolean][]} */ ([
-    [0, true],
-    [Math.PI, true],
-    [Math.PI / 2, false],
-    [-Math.PI / 2, false]
-  ]).forEach(([rotY, northSouth]) => {
+  belfryFaces.forEach(([rotY, northSouth]) => {
     const fill = new THREE.Shape();
     openings[0](northSouth).forEach(([x, y], i) => (i === 0 ? fill.moveTo(x, y) : fill.lineTo(x, y)));
     fill.closePath();
@@ -1342,10 +1489,14 @@ function buildTowerAndSpire(mats) {
 }
 
 // Build the complete exterior architecture + masonry shell
-export function buildArchitecture(mats) {
+export function buildArchitecture(mats: ChurchMaterials): {
+  wallsGroup: THREE.Group;
+  roofGroup: THREE.Group;
+  doorPivots: DoorPivots;
+} {
   const wallsGroup = new THREE.Group();
   const roofGroup = new THREE.Group();
-  const doorPivots = {};
+  const doorPivots = {} as DoorPivots;
 
   const N = DIM.nave;
   const C = DIM.chancel;
@@ -1492,7 +1643,7 @@ export function buildArchitecture(mats) {
   apexStone.userData.era = 'today'; // 1909 rebuild: in 1900 the gable was half-hipped above y = 4.42
   westWall.add(apexStone);
 
-  const slopeHalfZ = (y) => N.zSouthExt * (1 - (y - N.eavesY) / (N.ridgeY - N.eavesY));
+  const slopeHalfZ = (y: number): number => N.zSouthExt * (1 - (y - N.eavesY) / (N.ridgeY - N.eavesY));
   const shY0 = halfHipY + (N.ridgeY - halfHipY) * 0.34;
   const shY1 = shY0 + 0.34;
   const shoulderShape = new THREE.Shape();
@@ -1709,10 +1860,10 @@ export function buildArchitecture(mats) {
   // -------------------------------------------------------
   // The plaster leaf's gable top must clear the chancel's barrel vault (rise 0.94 x half-span) where it meets
   // the east wall; a plain triangle dips below the vault's haunches and leaves the roof tiles visible above the altar.
-  function chancelEastInnerOutline() {
+  function chancelEastInnerOutline(): Vec2[] {
     const gableTop = C.ridgeY - 0.18;
     const vaultRise = C.zSouthInt * 0.94 + 0.12;
-    const top = [];
+    const top: Vec2[] = [];
     const segs = 24;
     for (let i = 0; i <= segs; i++) {
       const a = (i / segs) * Math.PI;
@@ -1721,7 +1872,8 @@ export function buildArchitecture(mats) {
       const gableY = C.eavesY + (1 - Math.abs(z) / C.zSouthInt) * (gableTop - C.eavesY);
       top.push([z, Math.max(arcY, gableY)]);
     }
-    return [[-C.zSouthInt, 0], [C.zSouthInt, 0], ...top];
+    const outline: Vec2[] = [[-C.zSouthInt, 0], [C.zSouthInt, 0], ...top];
+    return outline;
   }
   const eastWall = buildCompositeWall({
     outerOutlinePts: [
@@ -1757,7 +1909,14 @@ export function buildArchitecture(mats) {
   wallsGroup.add(eastCross);
 
   // Corner ashlar quoins on East & West corners (projecting uniformly 1.8cm proud of both exterior faces)
-  const addCornerQuoins = (cornerX, cornerZ, sx, sz, height, carved = null) => {
+  const addCornerQuoins = (
+    cornerX: number,
+    cornerZ: number,
+    sx: number,
+    sz: number,
+    height: number,
+    carved: CornerCarve | null = null
+  ) => {
     const count = Math.floor(height / 0.34);
     const proud = 0.018;
     for (let i = 0; i < count; i++) {
@@ -1882,7 +2041,7 @@ export function buildArchitecture(mats) {
   porchGroup.add(lanternBulb);
 
   // Grey-painted Double Gothic Wooden Picket Gates inside Porch arch (IMG_3928, IMG_3935)
-  const buildPorchGateLeaf = (isRight) => {
+  const buildPorchGateLeaf = (isRight: boolean): THREE.Group => {
     const pivot = new THREE.Group();
     const leafW = P.outerArchW * 0.48;
     const sign = isRight ? -1 : 1;
@@ -2051,8 +2210,9 @@ export function buildArchitecture(mats) {
       [xRidge, yRidge, zValleyRidge],
       [xEaves, yEaves, zValleyEaves]
     ];
-    const posArr = [];
-    const pushQuad = (a, b, c, d) => posArr.push(...a, ...b, ...c, ...a, ...c, ...d);
+    const posArr: number[] = [];
+    const pushQuad = (a: number[], b: number[], c: number[], d: number[]) =>
+      posArr.push(...a, ...b, ...c, ...a, ...c, ...d);
     if (side > 0) {
       pushQuad(topPts[0], topPts[1], topPts[2], topPts[3]); // Top face
       pushQuad(botPts[3], botPts[2], botPts[1], botPts[0]); // Bottom soffit
@@ -2068,7 +2228,7 @@ export function buildArchitecture(mats) {
     pGeo.setAttribute('position', new THREE.Float32BufferAttribute(posArr, 3));
     // UVs for the stone-slate texture, drawn for one whole slope: u along the porch, v up from the eaves to the
     // ridge, so its courses diminish towards the ridge as on the real roof
-    const uvArr = [];
+    const uvArr: number[] = [];
     for (let i = 0; i < posArr.length; i += 3) {
       const u = (posArr[i + 2] - zNorthRoof) / (zValleyEaves - zNorthRoof);
       const v = THREE.MathUtils.clamp((posArr[i + 1] - yEaves) / (yRidge - yEaves), 0, 1);
@@ -2092,7 +2252,7 @@ export function buildArchitecture(mats) {
   // 9. ALL 6 STEPPED STONE BUTTRESSES (verified against floorplan + photos!)
   // -------------------------------------------------------
   // North side buttresses (facing -Z)
-  const addButtress = (x, z, rotY, w, d, h) => {
+  const addButtress = (x: number, z: number, rotY: number, w: number, d: number, h: number): THREE.Group => {
     const b = buildButtress(w, d, h, mats);
     b.position.set(x, 0, z + (rotY === 0 ? -0.02 : 0.02));
     b.rotation.y = rotY;
@@ -2118,7 +2278,7 @@ export function buildArchitecture(mats) {
   // -------------------------------------------------------
   // 10. ALL 5 CAST-IRON RAINWATER PIPES (RWPs, verified on floorplan + photos!)
   // -------------------------------------------------------
-  const addRWP = (x, z, rotY, h) => {
+  const addRWP = (x: number, z: number, rotY: number, h: number): void => {
     const rwp = buildRWP(h, mats);
     rwp.position.set(x, 0, z);
     rwp.rotation.y = rotY;
@@ -2188,9 +2348,9 @@ export function buildArchitecture(mats) {
 // shadowSide stays BackSide so shadow casting is unchanged. The roof space is a real void and is left alone.
 // Written after colour-space conversion, so given directly in sRGB
 const SOLID_CORE_COLOUR = new THREE.Vector3(0x6b / 255, 0x63 / 255, 0x58 / 255);
-export function capSolidMasonry(root, coreColour = SOLID_CORE_COLOUR) {
-  const capped = new Map();
-  const capMaterial = (m) => {
+export function capSolidMasonry(root: THREE.Object3D, coreColour: THREE.Vector3 = SOLID_CORE_COLOUR): void {
+  const capped = new Map<THREE.Material, THREE.Material>();
+  const capMaterial = (m: THREE.Material): THREE.Material => {
     if (!m || m.transparent || m.side !== THREE.FrontSide || m.userData.noSolidCap) return m;
     let c = capped.get(m);
     if (c) return c;
@@ -2211,7 +2371,8 @@ export function capSolidMasonry(root, coreColour = SOLID_CORE_COLOUR) {
     return c;
   };
   root.traverse((o) => {
-    if (!o.isMesh) return;
-    o.material = Array.isArray(o.material) ? o.material.map(capMaterial) : capMaterial(o.material);
+    const mesh = o as THREE.Mesh;
+    if (!mesh.isMesh) return;
+    mesh.material = Array.isArray(mesh.material) ? mesh.material.map(capMaterial) : capMaterial(mesh.material);
   });
 }

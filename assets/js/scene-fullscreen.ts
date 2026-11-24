@@ -9,7 +9,17 @@
  * @param {string} [options.lockClass] Class added to <body> to stop the page scrolling behind a pseudo-fullscreen stage.
  * @param {() => void} [options.onChange] Called whenever the stage enters or leaves fullscreen.
  */
-export function bindFullscreenToggle({ button, stage, lockClass = 'st-peters-fs-lock', onChange }) {
+export function bindFullscreenToggle({
+  button,
+  stage,
+  lockClass = 'st-peters-fs-lock',
+  onChange
+}: {
+  button: HTMLButtonElement | null;
+  stage: HTMLElement;
+  lockClass?: string;
+  onChange?: () => void;
+}) {
   let isPseudoFullscreen = false;
 
   const nativeElement = () => document.fullscreenElement || document.webkitFullscreenElement || null;
@@ -28,7 +38,7 @@ export function bindFullscreenToggle({ button, stage, lockClass = 'st-peters-fs-
     onChange?.();
   }
 
-  function setPseudoFullscreen(enabled) {
+  function setPseudoFullscreen(enabled: boolean) {
     isPseudoFullscreen = Boolean(enabled);
     stage.classList.toggle('is-pseudo-fullscreen', isPseudoFullscreen);
     document.body.classList.toggle(lockClass, isPseudoFullscreen);
@@ -37,7 +47,8 @@ export function bindFullscreenToggle({ button, stage, lockClass = 'st-peters-fs-
 
   function enter() {
     const request = stage.requestFullscreen || stage.webkitRequestFullscreen;
-    const canNative = Boolean(request && (document.fullscreenEnabled || document.webkitFullscreenEnabled));
+    const canNative =
+      typeof request === 'function' && Boolean(document.fullscreenEnabled || document.webkitFullscreenEnabled);
     if (!canNative) {
       setPseudoFullscreen(true);
       return;

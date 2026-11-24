@@ -47,15 +47,16 @@ TEMPLATE.innerHTML = `
 `;
 
 class WalkJoystick extends HTMLElement {
-  #knob: any = null;
-  #pointerId: any = null;
+  #knob: HTMLElement | null = null;
+  #pointerId: number | null = null;
   #x = 0;
   #y = 0;
 
   connectedCallback() {
     if (!this.shadowRoot) {
-      this.attachShadow({ mode: 'open' }).appendChild(TEMPLATE.content.cloneNode(true));
-      this.#knob = this.shadowRoot.querySelector('.knob');
+      const root = this.attachShadow({ mode: 'open' });
+      root.appendChild(TEMPLATE.content.cloneNode(true));
+      this.#knob = root.querySelector<HTMLElement>('.knob');
       this.addEventListener('pointerdown', this.#onDown);
       this.addEventListener('pointermove', this.#onMove);
       this.addEventListener('pointerup', this.#onUp);
@@ -71,7 +72,7 @@ class WalkJoystick extends HTMLElement {
     return { x: this.#x, y: this.#y };
   }
 
-  #onDown = (e) => {
+  #onDown = (e: PointerEvent) => {
     if (this.#pointerId !== null) return;
     this.#pointerId = e.pointerId;
     this.setPointerCapture(e.pointerId);
@@ -81,20 +82,20 @@ class WalkJoystick extends HTMLElement {
     this.#track(e);
   };
 
-  #onMove = (e) => {
+  #onMove = (e: PointerEvent) => {
     if (e.pointerId !== this.#pointerId) return;
     e.preventDefault();
     this.#track(e);
   };
 
-  #onUp = (e) => {
+  #onUp = (e: PointerEvent) => {
     if (e.pointerId !== this.#pointerId) return;
     this.#pointerId = null;
     this.removeAttribute('active');
     this.#set(0, 0);
   };
 
-  #track(e) {
+  #track(e: PointerEvent) {
     const rect = this.getBoundingClientRect();
     const radius = rect.width * 0.5;
     let dx = (e.clientX - (rect.left + radius)) / radius;
@@ -107,7 +108,7 @@ class WalkJoystick extends HTMLElement {
     this.#set(dx, -dy);
   }
 
-  #set(x, y) {
+  #set(x: number, y: number) {
     this.#x = x;
     this.#y = y;
     if (this.#knob) {

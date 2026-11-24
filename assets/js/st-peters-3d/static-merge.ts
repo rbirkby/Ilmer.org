@@ -14,25 +14,34 @@ import * as THREE from 'three';
 const CELL = 4; // metres: keeps merged meshes small enough for frustum culling to still do useful work
 const BASE_BEFORE_RENDER = THREE.Object3D.prototype.onBeforeRender;
 
-function hasUserData(o) {
+function hasUserData(o: THREE.Object3D) {
   for (const _ in o.userData) return true;
   return false;
 }
 
-function attributeSignature(geo) {
+function attributeSignature(geo: THREE.BufferGeometry) {
   const parts = [];
   for (const name of Object.keys(geo.attributes).sort()) {
     const a = geo.attributes[name];
-    if (a.isInterleavedBufferAttribute) return null;
+    if (!a || ('isInterleavedBufferAttribute' in a && a.isInterleavedBufferAttribute)) return null;
     parts.push(`${name}:${a.itemSize}:${a.array.constructor.name}:${a.normalized}`);
   }
   return parts.join(',');
 }
 
-function isMergeable(mesh) {
+// Mesh subclasses set these flags; the Mesh type itself does not declare them.
+type MeshFlags = THREE.Mesh & { isInstancedMesh?: boolean; isBatchedMesh?: boolean; isSkinnedMesh?: boolean };
+
+function isAnyMesh(obj: THREE.Object3D): obj is MeshFlags {
+  return (obj as MeshFlags).isMesh === true;
+}
+
+function isMergeable(
+  mesh: MeshFlags
+): mesh is MeshFlags & { material: THREE.Material; geometry: THREE.BufferGeometry } {
   // InstancedMesh & BatchedMesh report type 'Mesh' too: they draw many copies from per-instance matrices, which
   // baking would throw away (the hymn-book piles became one giant spine each)
-  if (!mesh.isMesh || mesh.isInstancedMesh || mesh.isBatchedMesh || mesh.isSkinnedMesh) return false;
+  if (mesh.isInstancedMesh || mesh.isBatchedMesh || mesh.isSkinnedMesh) return false;
   if (Array.isArray(mesh.material) || !mesh.material || !mesh.material.visible) return false;
   // Sorted blending is per object: merging transparent meshes could change how they overlap
   if (mesh.material.transparent) return false;
@@ -53,25 +62,30 @@ function isMergeable(mesh) {
  * @param {{ dynamic?: Set<THREE.Object3D> }} [options] objects that move at run time; each becomes a container
  * @returns {{ before: number, after: number, merged: number }} mesh counts, for the stats overlay
  */
-export function mergeStaticMeshes(roots, { dynamic = new Set() } = {}) {
-  const isContainer = (o, root) => o === root || dynamic.has(o) || hasUserData(o);
+export function mergeStaticMeshes(
+  roots: THREE.Object3D[],
+  { dynamic = new Set<THREE.Object3D>() }: { dynamic?: Set<THREE.Object3D> } = {}
+) {
+  const isContainer = (o: THREE.Object3D, root: THREE.Object3D) => o === root || dynamic.has(o) || hasUserData(o);
   /** @type {Map<string, { container: THREE.Object3D, meshes: THREE.Mesh[] }>} */
   const buckets = new Map();
   let before = 0;
 
   for (const root of roots) {
     root.updateMatrixWorld(true);
-    const walk = (obj, container, shown) => {
+    const walk = (obj: THREE.Object3D, container: THREE.Object3D, shown: boolean) => {
       for (const child of obj.children) {
         const childContainer = isContainer(child, root) ? child : container;
         // Visibility below the container must be static & on; the container's own visibility can change freely
         const childShown = childContainer === child ? true : shown && child.visible;
-        if (child.isMesh) before++;
-        if (child.isMesh && childContainer !== child && childShown && isMergeable(child)) {
+        if (isAnyMesh(child)) before++;
+        if (isAnyMesh(child) && childContainer !== child && childShown && isMergeable(child)) {
           const geo = child.geometry;
           const c = new THREE.Vector3();
           if (!geo.boundingSphere) geo.computeBoundingSphere();
-          c.copy(geo.boundingSphere.center).applyMatrix4(child.matrixWorld);
+          const sphere = geo.boundingSphere;
+          if (!sphere) continue;
+          c.copy(sphere.center).applyMatrix4(child.matrixWorld);
           const cell = `${Math.floor(c.x / CELL)},${Math.floor(c.y / CELL)},${Math.floor(c.z / CELL)}`;
           const key = [
             container.id,
@@ -113,7 +127,7 @@ export function mergeStaticMeshes(roots, { dynamic = new Set() } = {}) {
       indexCount += g.index ? g.index.count : g.attributes.position.count;
     }
     const out = new THREE.BufferGeometry();
-    const arrays = {};
+    const arrays: Record<string, THREE.TypedArray> = {};
     for (const name of names) {
       const a = first.attributes[name];
       const ArrayType = /** @type {new (length: number) => THREE.TypedArray} */ (a.array.constructor);
@@ -197,14 +211,18 @@ export function mergeStaticMeshes(roots, { dynamic = new Set() } = {}) {
  * @param {() => void} settle brings the animators back to rest afterwards
  * @returns {Set<THREE.Object3D>}
  */
-export function findAnimatedObjects(roots, exercise, settle) {
-  const snap = new Map();
+export function findAnimatedObjects(
+  roots: THREE.Object3D[],
+  exercise: (checkpoint: () => void) => void,
+  settle: (notes?: { manual: Set<number>; pedal: Set<number> } | null) => void
+) {
+  const snap = new Map<THREE.Object3D, [THREE.Vector3, THREE.Quaternion, THREE.Vector3, boolean]>();
   for (const root of roots) {
-    root.traverse((o) => {
+    root.traverse((o: THREE.Object3D) => {
       snap.set(o, [o.position.clone(), o.quaternion.clone(), o.scale.clone(), o.visible]);
     });
   }
-  const moved = new Set();
+  const moved = new Set<THREE.Object3D>();
   const checkpoint = () => {
     for (const [o, [p, q, s, v]] of snap) {
       if (

@@ -2,13 +2,13 @@ import { initImageLightbox } from './image-lightbox.ts';
 import colorizeSwUrl from './colorize-sw.ts?worker&url';
 
 let workerRequestId = 0;
-let colorizeWorker;
+let colorizeWorker: Worker | undefined;
 const workerRequests = new Map();
 const imageState = new WeakMap();
 const progressAnimations = new WeakMap();
 const colorizedObjectUrls = new Set<string>();
 
-function parseImageTags(img) {
+function parseImageTags(img: HTMLImageElement) {
   const src = img.getAttribute('src') ?? '';
   const hashIndex = src.indexOf('#');
 
@@ -23,7 +23,7 @@ function parseImageTags(img) {
     .filter(Boolean);
 }
 
-function stripHashFromImageSrc(src) {
+function stripHashFromImageSrc(src: string | null) {
   const value = src ?? '';
   const hashIndex = value.indexOf('#');
 
@@ -41,7 +41,7 @@ function revokeColorizedObjectUrls() {
   colorizedObjectUrls.clear();
 }
 
-function setButtonProgress(button, progress) {
+function setButtonProgress(button: HTMLElement, progress: number) {
   const safeProgress = Math.max(0, Math.min(100, Number.isFinite(progress) ? progress : 0));
   const targetProgress = safeProgress > 0 && safeProgress < 12 ? 12 : safeProgress;
   const previous = progressAnimations.get(button) ?? {
@@ -57,7 +57,7 @@ function setButtonProgress(button, progress) {
   const startTime = performance.now();
   const duration = 220;
 
-  const animate = (now) => {
+  const animate = (now: number) => {
     const elapsed = now - startTime;
     const t = Math.min(1, elapsed / duration);
     const nextValue = startValue + (targetProgress - startValue) * t;
@@ -78,7 +78,7 @@ function setButtonProgress(button, progress) {
   progressAnimations.set(button, { value: startValue, frameId });
 }
 
-function updateButtonState(button, state, title, progress?) {
+function updateButtonState(button: HTMLElement, state: string, title: string, progress?: number) {
   button.dataset.state = state;
   button.title = title;
   button.setAttribute('aria-busy', state === 'loading' ? 'true' : 'false');
@@ -91,7 +91,7 @@ function waitForPaint() {
   return new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
 }
 
-async function ensureImageReady(img) {
+async function ensureImageReady(img: HTMLImageElement) {
   if (img.complete && img.naturalWidth > 0) {
     if (typeof img.decode === 'function') {
       await img.decode().catch(() => {});
@@ -158,8 +158,8 @@ function getColorizeWorker() {
 }
 
 function requestWorkerColorization(
-  src,
-  onProgress: (progress?: any, label?: string) => void = () => {}
+  src: string,
+  onProgress: (progress?: number, label?: string) => void = () => {}
 ): Promise<{ blob: Blob }> {
   return new Promise((resolve, reject) => {
     const id = `colorize-${++workerRequestId}`;
@@ -178,7 +178,10 @@ function requestWorkerColorization(
   });
 }
 
-async function colorizeImage(img, onProgress: (progress?: any, label?: string) => void = () => {}) {
+async function colorizeImage(
+  img: HTMLImageElement,
+  onProgress: (progress?: number, label?: string) => void = () => {}
+) {
   await ensureImageReady(img);
 
   const sourceUrl = img.currentSrc || img.src || img.getAttribute('src');
@@ -190,7 +193,11 @@ async function colorizeImage(img, onProgress: (progress?: any, label?: string) =
   return URL.createObjectURL(blob);
 }
 
-async function toggleColorization(img, button, container) {
+async function toggleColorization(
+  img: HTMLImageElement,
+  button: HTMLElement & { disabled: boolean },
+  container: HTMLElement
+) {
   const state = imageState.get(img);
   if (!state || state.loading) {
     return;
@@ -218,7 +225,7 @@ async function toggleColorization(img, button, container) {
     state.loading = true;
     button.disabled = true;
 
-    const reportProgress = (progress, label = 'AI colourising image…') => {
+    const reportProgress = (progress = 0, label = 'AI colourising image…') => {
       const boundedProgress = Math.max(0, Math.min(100, progress));
       updateButtonState(button, 'loading', `${label} (${Math.round(boundedProgress)}%)`, boundedProgress);
     };
@@ -251,10 +258,11 @@ async function toggleColorization(img, button, container) {
   }
 }
 
-async function registerColorizeButton(img, container) {
+async function registerColorizeButton(img: HTMLImageElement, container: HTMLElement) {
   await import('./ai-colorize-toggle.ts');
 
-  const button = document.createElement('ai-colorize-toggle');
+  // The imported custom element defines `disabled`; createElement still returns a plain HTMLElement.
+  const button = document.createElement('ai-colorize-toggle') as HTMLElement & { disabled: boolean };
   button.setAttribute('aria-pressed', 'false');
   button.setAttribute('aria-label', `Toggle AI colourisation for ${img.alt || 'this image'}`);
 
@@ -267,7 +275,7 @@ function enhanceArticleImages() {
   const articleSection = document.querySelector('section.article') as HTMLElement | null;
   const articleImages = document.querySelectorAll('section.article img') as NodeListOf<HTMLImageElement>;
   const lightboxAllEnabled = articleSection?.dataset.lightboxAll === 'true';
-  const colorizeRegistrations = [];
+  const colorizeRegistrations: Array<Promise<void>> = [];
 
   articleImages.forEach((img) => {
     const tags = parseImageTags(img);
@@ -323,7 +331,7 @@ function enhanceArticleImages() {
         link.setAttribute('data-caption', caption);
         link.setAttribute('aria-label', `Open image: ${caption || 'image'}`);
 
-        img.parentNode.insertBefore(link, img);
+        img.parentNode?.insertBefore(link, img);
         link.appendChild(img);
       }
     }

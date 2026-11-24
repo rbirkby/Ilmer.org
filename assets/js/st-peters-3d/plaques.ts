@@ -1,13 +1,51 @@
-// @ts-nocheck -- scene code ported from unchecked JavaScript; three.js calls are validated at runtime.
-import { canvasTexture, makeCanvas, mulberry32 } from './canvas-utils.ts';
+import { canvas2d, canvasTexture, makeCanvas, mulberry32 } from './canvas-utils.ts';
 
 // Procedurally painted interior wall memorials of St Peter's Church, Ilmer:
 //  - A7: Carved oak plaque to Robert Harold Attenborough (1880–1968)
 //  - Roll of Honour: Great War memorial stone tablet (South Nave wall)
 //  - A4: Framed hand-lettered List of Donors for Mrs Jaques's Memorial Window
 
+interface TextRun {
+  t: string;
+  sup?: boolean;
+}
+
+type FontForSize = (size: number) => string;
+
+type RunAlign = 'center' | 'left' | 'right';
+
+type RunPaint = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number) => void;
+
+interface IncisedPainter {
+  color: RunPaint;
+  bump: (text: string, x: number, y: number) => void;
+}
+
+type ReliefPath = (ctx: CanvasRenderingContext2D) => void;
+
+type ReliefForm = (path: ReliefPath, peak: number, edge: number, cx?: number, cy?: number, r?: number) => void;
+
+type ReliefCut = (path: ReliefPath, width: number, alpha?: number) => void;
+
+interface ReliefFrame {
+  l: number;
+  r: number;
+  t: number;
+  b: number;
+}
+
+interface PlaqueMaps {
+  map: ReturnType<typeof canvasTexture>;
+  bumpMap: ReturnType<typeof canvasTexture>;
+}
+
+interface ChancelReliefHeightMaps {
+  crucifixion: HTMLCanvasElement;
+  stChristopher: HTMLCanvasElement;
+}
+
 // Measure a run list: [{ t: 'TEXT', sup?: true }]
-function measureRuns(ctx, runs, font, size) {
+function measureRuns(ctx: CanvasRenderingContext2D, runs: TextRun[], font: FontForSize, size: number) {
   let total = 0;
   for (const r of runs) {
     ctx.font = font(r.sup ? size * 0.58 : size);
@@ -18,7 +56,17 @@ function measureRuns(ctx, runs, font, size) {
 
 // Draw a line made of text runs (with optional superscripts), squeezed to maxWidth if needed.
 // align: 'center' | 'left' | 'right'. paint(ctx, text, x, y) does the actual drawing per run.
-function drawRuns(ctx, runs, x, y, size, font, maxWidth, align, paint) {
+function drawRuns(
+  ctx: CanvasRenderingContext2D,
+  runs: TextRun[],
+  x: number,
+  y: number,
+  size: number,
+  font: FontForSize,
+  maxWidth: number,
+  align: RunAlign,
+  paint: RunPaint
+) {
   const natural = measureRuns(ctx, runs, font, size);
   const squeeze = natural > maxWidth ? maxWidth / natural : 1;
   const width = natural * squeeze;
@@ -41,9 +89,14 @@ function drawRuns(ctx, runs, x, y, size, font, maxWidth, align, paint) {
 }
 
 // Paint incised (V-cut) lettering: dark shadowed groove, a light lower-right catch edge, and a bump-map groove
-function incisedPainter(shadow, catchLight, fill, bctx) {
+function incisedPainter(
+  shadow: string,
+  catchLight: string,
+  fill: string,
+  bctx: CanvasRenderingContext2D
+): IncisedPainter {
   return {
-    color(ctx, text, x, y) {
+    color(ctx: CanvasRenderingContext2D, text: string, x: number, y: number) {
       ctx.fillStyle = catchLight;
       ctx.fillText(text, x + 1.4, y + 1.8);
       ctx.fillStyle = shadow;
@@ -51,7 +104,7 @@ function incisedPainter(shadow, catchLight, fill, bctx) {
       ctx.fillStyle = fill;
       ctx.fillText(text, x, y);
     },
-    bump(text, x, y) {
+    bump(text: string, x: number, y: number) {
       bctx.fillStyle = '#1e1e1e';
       bctx.fillText(text, x, y);
     }
@@ -59,7 +112,18 @@ function incisedPainter(shadow, catchLight, fill, bctx) {
 }
 
 // Draw a line on both colour & bump canvases using the same transform logic
-function drawIncisedLine(ctx, bctx, runs, x, y, size, font, maxWidth, align, painter) {
+function drawIncisedLine(
+  ctx: CanvasRenderingContext2D,
+  bctx: CanvasRenderingContext2D,
+  runs: TextRun[],
+  x: number,
+  y: number,
+  size: number,
+  font: FontForSize,
+  maxWidth: number,
+  align: RunAlign,
+  painter: IncisedPainter
+) {
   drawRuns(ctx, runs, x, y, size, font, maxWidth, align, (c, t, px, py) => painter.color(c, t, px, py));
   drawRuns(bctx, runs, x, y, size, font, maxWidth, align, (c, t, px, py) => {
     c.fillStyle = '#1e1e1e';
@@ -70,13 +134,13 @@ function drawIncisedLine(ctx, bctx, runs, x, y, size, font, maxWidth, align, pai
 // -------------------------------------------------------------------------
 // A7: Carved oak memorial plaque — Robert Harold Attenborough
 // -------------------------------------------------------------------------
-export function createAttenboroughPlaqueMaps(maxAniso = 8) {
+export function createAttenboroughPlaqueMaps(maxAniso = 8): PlaqueMaps {
   const w = 1320;
   const h = 640;
   const col = makeCanvas(w, h);
   const bmp = makeCanvas(w, h);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rand = mulberry32(1968);
 
   // Limed / weathered mid-oak base
@@ -159,7 +223,8 @@ export function createAttenboroughPlaqueMaps(maxAniso = 8) {
   bctx.fillRect(w - bevel, 0, bevel, h);
 
   // Carved Arts-and-Crafts roman capitals (dark incised grooves with gilt-catching lower edges)
-  const font = (s) => `600 ${s}px "Copperplate", "Copperplate Gothic Light", "Trajan Pro", "Times New Roman", serif`;
+  const font = (s: number) =>
+    `600 ${s}px "Copperplate", "Copperplate Gothic Light", "Trajan Pro", "Times New Roman", serif`;
   const painter = incisedPainter('rgba(28,20,8,0.9)', 'rgba(222,200,140,0.75)', '#4a3a1c', bctx);
   const cx = w * 0.5;
   const maxW = w - 150;
@@ -188,13 +253,13 @@ export function createAttenboroughPlaqueMaps(maxAniso = 8) {
 // -------------------------------------------------------------------------
 // Roll of Honour: Great War memorial stone tablet
 // -------------------------------------------------------------------------
-export function createRollOfHonourMaps(maxAniso = 8) {
+export function createRollOfHonourMaps(maxAniso = 8): PlaqueMaps {
   const w = 1600;
   const h = 980;
   const col = makeCanvas(w, h);
   const bmp = makeCanvas(w, h);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rand = mulberry32(1918);
 
   // Cool grey-buff limestone / Hopton Wood stone with soft mottling and darker weathered edges
@@ -249,7 +314,7 @@ export function createRollOfHonourMaps(maxAniso = 8) {
   bctx.fillRect(w - m, 0, m, h);
 
   // Incised, darkened Arts-and-Crafts sans capitals
-  const font = (s) => `500 ${s}px "Gill Sans", "Gill Sans MT", Optima, Candara, "Trebuchet MS", sans-serif`;
+  const font = (s: number) => `500 ${s}px "Gill Sans", "Gill Sans MT", Optima, Candara, "Trebuchet MS", sans-serif`;
   const painter = incisedPainter('rgba(18,16,12,0.85)', 'rgba(214,208,192,0.55)', '#2f2b24', bctx);
   const left = 92;
   const right = w - 92;
@@ -455,11 +520,11 @@ const DONOR_COLUMNS = [
   ]
 ];
 
-export function createJaquesDonorsTexture(maxAniso = 8) {
+export function createJaquesDonorsTexture(maxAniso = 8): ReturnType<typeof canvasTexture> {
   const w = 1024;
   const h = 1536;
   const c = makeCanvas(w, h);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   const rand = mulberry32(1933);
 
   // Pale grey-green card mount, slightly aged, with a few foxing spots
@@ -501,14 +566,14 @@ export function createJaquesDonorsTexture(maxAniso = 8) {
   ctx.fillStyle = '#f4f3ec';
   ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
 
-  const ropeRect = (inset) => {
+  const ropeRect = (inset: number): [number, number, number, number] => {
     const rx0 = x0 + inset;
     const ry0 = y0 + inset;
     const rx1 = x1 - inset;
     const ry1 = y1 - inset;
     return [rx0, ry0, rx1, ry1];
   };
-  const drawRopeEdge = (ax, ay, bx, by) => {
+  const drawRopeEdge = (ax: number, ay: number, bx: number, by: number) => {
     const len = Math.hypot(bx - ax, by - ay);
     const n = Math.floor(len / 9);
     const ux = (bx - ax) / len;
@@ -557,9 +622,10 @@ export function createJaquesDonorsTexture(maxAniso = 8) {
   // Title (Art Nouveau capitals with enlarged initials)
   const titleY = by0 + 92;
   const ruleY = by0 + 170;
-  const titleFont = (s) => `${s}px "Luminari", "Papyrus", "Herculanum", "Palatino Linotype", Palatino, Georgia, serif`;
+  const titleFont = (s: number) =>
+    `${s}px "Luminari", "Papyrus", "Herculanum", "Palatino Linotype", Palatino, Georgia, serif`;
   ctx.fillStyle = '#1f1d18';
-  const titleRuns = (text, big) =>
+  const titleRuns = (text: string, big: number) =>
     text.split(' ').flatMap((word, i, arr) => {
       const runs = [
         { t: word[0], s: big },
@@ -568,7 +634,7 @@ export function createJaquesDonorsTexture(maxAniso = 8) {
       if (i < arr.length - 1) runs.push({ t: ' ', s: big * 0.74 });
       return runs;
     });
-  const drawTitle = (text, y, big) => {
+  const drawTitle = (text: string, y: number, big: number) => {
     const runs = titleRuns(text, big);
     let total = 0;
     for (const r of runs) {
@@ -636,28 +702,30 @@ export function createJaquesDonorsTexture(maxAniso = 8) {
 // displaces a finely subdivided plane with them so the worn relief is real geometry that catches light.
 // -------------------------------------------------------------------------
 // Shared height-field drawing helpers for the carved reliefs below
-const grey = (v) => `rgb(${v},${v},${v})`;
+const grey = (v: number) => `rgb(${v},${v},${v})`;
 
 // Raise a rounded form: radial-gradient dome clipped to the path, merged with 'lighten' (higher wins)
-const makeForm = (ctx) => (path, peak, edge, cx?, cy?, r?) => {
-  ctx.save();
-  ctx.globalCompositeOperation = 'lighten';
-  ctx.beginPath();
-  path(ctx);
-  if (r) {
-    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-    g.addColorStop(0, grey(peak));
-    g.addColorStop(1, grey(edge));
-    ctx.fillStyle = g;
-  } else {
-    ctx.fillStyle = grey(peak);
-  }
-  ctx.fill();
-  ctx.restore();
-};
+const makeForm =
+  (ctx: CanvasRenderingContext2D): ReliefForm =>
+  (path, peak, edge, cx, cy, r) => {
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighten';
+    ctx.beginPath();
+    path(ctx);
+    if (r && cx !== undefined && cy !== undefined) {
+      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+      g.addColorStop(0, grey(peak));
+      g.addColorStop(1, grey(edge));
+      ctx.fillStyle = g;
+    } else {
+      ctx.fillStyle = grey(peak);
+    }
+    ctx.fill();
+    ctx.restore();
+  };
 // Cut a groove / fold (darken locally by a fixed amount)
 const makeCut =
-  (ctx) =>
+  (ctx: CanvasRenderingContext2D): ReliefCut =>
   (path, width, alpha = 0.35) => {
     ctx.save();
     ctx.globalCompositeOperation = 'source-over';
@@ -671,20 +739,24 @@ const makeCut =
     ctx.restore();
   };
 const ellipse =
-  (x, y, rx, ry, rot = 0) =>
+  (x: number, y: number, rx: number, ry: number, rot = 0): ReliefPath =>
   (c) =>
     c.ellipse(x, y, rx, ry, rot, 0, Math.PI * 2);
-const poly = (pts) => (c) => {
-  c.moveTo(pts[0][0], pts[0][1]);
-  for (let i = 1; i < pts.length; i++) c.lineTo(pts[i][0], pts[i][1]);
-  c.closePath();
-};
-const line = (pts) => (c) => {
-  c.moveTo(pts[0][0], pts[0][1]);
-  for (let i = 1; i < pts.length; i++) c.lineTo(pts[i][0], pts[i][1]);
-};
+const poly =
+  (pts: number[][]): ReliefPath =>
+  (c) => {
+    c.moveTo(pts[0][0], pts[0][1]);
+    for (let i = 1; i < pts.length; i++) c.lineTo(pts[i][0], pts[i][1]);
+    c.closePath();
+  };
+const line =
+  (pts: number[][]): ReliefPath =>
+  (c) => {
+    c.moveTo(pts[0][0], pts[0][1]);
+    for (let i = 1; i < pts.length; i++) c.lineTo(pts[i][0], pts[i][1]);
+  };
 // A limb / staff as a capsule between two points
-const limb = (form, a, b, r, peak, edge) => {
+const limb = (form: ReliefForm, a: number[], b: number[], r: number, peak: number, edge: number) => {
   const ang = Math.atan2(b[1] - a[1], b[0] - a[0]);
   const nx = -Math.sin(ang) * r;
   const ny = Math.cos(ang) * r;
@@ -703,7 +775,7 @@ const limb = (form, a, b, r, peak, edge) => {
     Math.hypot(b[0] - a[0], b[1] - a[1]) / 2 + r
   );
 };
-const rosette = (form, cut, x, y, r) => {
+const rosette = (form: ReliefForm, cut: ReliefCut, x: number, y: number, r: number) => {
   for (let p = 0; p < 5; p++) {
     const a = (p / 5) * Math.PI * 2 - Math.PI / 2;
     const px = x + Math.cos(a) * r * 0.55;
@@ -713,7 +785,7 @@ const rosette = (form, cut, x, y, r) => {
   form(ellipse(x, y, r * 0.3, r * 0.3), 218, 170, x, y, r * 0.32);
   cut((c) => c.arc(x, y, r * 0.3, 0, Math.PI * 2), 2, 0.25);
 };
-const background = (ctx, w, h, frame) => {
+const background = (ctx: CanvasRenderingContext2D, w: number, h: number, frame: ReliefFrame) => {
   ctx.fillStyle = grey(255);
   ctx.fillRect(0, 0, w, h);
   // Recessed field with a soft chamfer into the frame
@@ -726,7 +798,7 @@ const background = (ctx, w, h, frame) => {
   ctx.fillRect(frame.l, frame.t, w - frame.l - frame.r, h - frame.t - frame.b);
 };
 // Pitting & erosion: the carvings are badly worn clunch
-const weather = (ctx, w, h, seed) => {
+const weather = (ctx: CanvasRenderingContext2D, w: number, h: number, seed: number) => {
   const rand = mulberry32(seed);
   for (let i = 0; i < 1400; i++) {
     const x = rand() * w;
@@ -739,13 +811,13 @@ const weather = (ctx, w, h, seed) => {
   }
 };
 
-export function createChancelReliefHeightMaps() {
+export function createChancelReliefHeightMaps(): ChancelReliefHeightMaps {
   // ---- 1. THE CRUCIFIXION (west splayed jamb, 280 x 420 mm) ----
   const cw = 280;
   const ch = 420;
   const crux = makeCanvas(cw, ch);
   {
-    const ctx = crux.getContext('2d');
+    const ctx = canvas2d(crux);
     const form = makeForm(ctx);
     const cut = makeCut(ctx);
     background(ctx, cw, ch, { l: 46, r: 40, t: 16, b: 12 });
@@ -989,7 +1061,7 @@ export function createChancelReliefHeightMaps() {
   const corner = 246;
   const chris = makeCanvas(sw, sh);
   {
-    const ctx = chris.getContext('2d');
+    const ctx = canvas2d(chris);
     const form = makeForm(ctx);
     const cut = makeCut(ctx);
     background(ctx, sw, sh, { l: 14, r: 12, t: 16, b: 10 });
@@ -1300,11 +1372,11 @@ export function createChancelReliefHeightMaps() {
 // a frontal, nimbed angel with outspread feathered wings, robed, holding a scroll across the body,
 // standing on a small lobed base. Height field (1px = 1mm, 800 x 420); 0 = cut away (transparent).
 // -------------------------------------------------------------------------
-export function createCarvedAngelHeightMap() {
+export function createCarvedAngelHeightMap(): HTMLCanvasElement {
   const aw = 800;
   const ah = 420;
   const canvas = makeCanvas(aw, ah);
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas2d(canvas);
   ctx.fillStyle = grey(0);
   ctx.fillRect(0, 0, aw, ah);
   const form = makeForm(ctx);
@@ -1315,7 +1387,7 @@ export function createCarvedAngelHeightMap() {
   // Outspread wings: broad, overlapping primaries fanning down and outwards beneath a thick covert mass
   // that sweeps up to an upturned outer tip
   [-1, 1].forEach((s) => {
-    const armAt = (t) => [cx + s * (70 + t * 300), 182 - t * 120 - Math.sin(t * Math.PI) * 26];
+    const armAt = (t: number): number[] => [cx + s * (70 + t * 300), 182 - t * 120 - Math.sin(t * Math.PI) * 26];
     for (let k = 0; k < 13; k++) {
       const t = 0.08 + (k / 12) * 0.92;
       const [px, py] = armAt(t);
@@ -1332,8 +1404,8 @@ export function createCarvedAngelHeightMap() {
         0.25
       ); // feather shaft
     }
-    const top = [];
-    const bot = [];
+    const top: number[][] = [];
+    const bot: number[][] = [];
     for (let k = 0; k <= 10; k++) {
       const t = k / 10;
       const [px, py] = armAt(t);
@@ -1421,7 +1493,7 @@ export function createCarvedAngelHeightMap() {
     110
   );
   for (const y of [254, 270, 284]) {
-    const pts = [];
+    const pts: number[][] = [];
     for (let x = cx - 86; x <= cx + 84; x += 8) pts.push([x, y + Math.sin(x / 7) * 2]);
     cut(line(pts), 1.6, 0.35); // worn lettering
   }

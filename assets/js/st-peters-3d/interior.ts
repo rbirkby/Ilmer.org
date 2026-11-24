@@ -1,14 +1,140 @@
-// @ts-nocheck -- scene code ported from unchecked JavaScript; three.js calls are validated at runtime.
 import * as THREE from 'three';
-import { canvasTexture, makeCanvas } from './canvas-utils.ts';
+import { canvas2d, canvasTexture, makeCanvas } from './canvas-utils.ts';
 import { addBox, boxMesh } from './mesh-utils.ts';
 import { DIM } from './dimensions.ts';
 import { applyBoxUVs, capSolidMasonry } from './architecture.ts';
 import { createCarvedAngelHeightMap } from './plaques.ts';
 import { buildSally, buildTwistedRope, createRopeMaterial } from './belfry.ts';
 
+type ChurchMaterials = {
+  altarFrontal: THREE.Material;
+  ashlar: THREE.Material;
+  ashlarWarm: THREE.Material;
+  attenboroughPlaque: THREE.Material;
+  brass: THREE.Material;
+  carpetCrimson: THREE.Material;
+  carpetGold: THREE.Material;
+  causticDecal: THREE.Material;
+  chancelPlaster: THREE.Material;
+  cushionCrimson: THREE.Material;
+  darkOak: THREE.Material;
+  glassShade: THREE.Material;
+  iron: THREE.Material;
+  jaquesDonors: THREE.Material;
+  kneelerCord: THREE.Material;
+  kneelerFabric: THREE.Material;
+  laceCloth: THREE.Material;
+  medOak: THREE.MeshStandardMaterial;
+  naveCeilingBlue: THREE.Material;
+  opalGlass: THREE.Material;
+  opalGlassLip: THREE.Material;
+  parquetryOak: THREE.Material;
+  plaster: THREE.Material;
+  purpleCloth: THREE.Material;
+  quarryTile: THREE.Material;
+  rollOfHonour: THREE.Material;
+  sanctuaryTile: THREE.Material;
+  stoneCapDark: THREE.Material;
+  warmOak: THREE.Material;
+  wax: THREE.Material;
+};
+
+type KneelerGeometries = {
+  body: THREE.BufferGeometry;
+  stem: THREE.BufferGeometry;
+  hook: THREE.BufferGeometry;
+  loop: THREE.BufferGeometry;
+  height: number;
+};
+
+type PendantGeometries = {
+  shadeGeo: THREE.BufferGeometry;
+  lipGeo: THREE.BufferGeometry;
+  capGeo: THREE.BufferGeometry;
+  bulbGeo: THREE.BufferGeometry;
+  linkGeo: THREE.BufferGeometry;
+  armGeo: THREE.BufferGeometry;
+  upperScrollGeo: THREE.BufferGeometry;
+  underScrollGeo: THREE.BufferGeometry;
+  fleurGeo: THREE.BufferGeometry;
+  collarGeo: THREE.BufferGeometry;
+  ringGeo: THREE.BufferGeometry;
+  bossGeo: THREE.BufferGeometry;
+  roseGeo: THREE.BufferGeometry;
+  hookGeo: THREE.BufferGeometry;
+};
+
+type FlowerAssets = {
+  laurelLeafGeo: THREE.BufferGeometry;
+  ivyLeafGeo: THREE.BufferGeometry;
+  sprayLeafletGeo: THREE.BufferGeometry;
+  daisyPetalGeo: THREE.BufferGeometry;
+  mumPetalGeo: THREE.BufferGeometry;
+  rosePetalGeo: THREE.BufferGeometry;
+  smallPetalGeo: THREE.BufferGeometry;
+  calyxGeo: THREE.BufferGeometry;
+  centerGeo: THREE.BufferGeometry;
+  stemUnitGeo: THREE.BufferGeometry;
+  trayMat: THREE.Material;
+  stemMat: THREE.Material;
+  leafMats: THREE.Material[];
+  yellowBrightMat: THREE.Material;
+  yellowGoldMat: THREE.Material;
+  orangeVibrantMat: THREE.Material;
+  orangeWarmMat: THREE.Material;
+  apricotMat: THREE.Material;
+  creamMat: THREE.Material;
+  centerDarkMat: THREE.Material;
+  centerGoldMat: THREE.Material;
+};
+
+type OilLampAssets = {
+  fontGeo: THREE.BufferGeometry;
+  chimneyGeo: THREE.BufferGeometry;
+  burnerGeo: THREE.BufferGeometry;
+  flameGeo: THREE.BufferGeometry;
+  chimneyMat: THREE.Material;
+  flameMat: THREE.Material;
+};
+
+type HymnBookLayer = { t: number; colour: number };
+
+type StackedHymnBook = {
+  y: number;
+  t: number;
+  side: number;
+  rot: number;
+  dx: number;
+  dz: number;
+};
+
+type LitCandle = {
+  flamePivot: THREE.Group;
+  flameMat: THREE.ShaderMaterial;
+  halo: THREE.Sprite;
+  light: THREE.PointLight;
+  scale: number;
+  phase: number;
+  baseIntensity: number;
+  baseHalo: number;
+};
+
+type OilFlame = {
+  flameMat: THREE.ShaderMaterial;
+  light: THREE.PointLight;
+  phase: number;
+};
+
+type Vec3Pair = [THREE.Vector3, THREE.Vector3];
+type Seam = [number, number, number, number];
+type OrganNotes = { manual: Set<number>; pedal: Set<number> };
+
 // Helper to create a warm varnished oak pew with scalloped ends, crimson seat cushion & blue kneelers
-function buildPew(length, mats, { includeKneelers = true } = {}) {
+function buildPew(
+  length: number,
+  mats: ChurchMaterials,
+  { includeKneelers = true }: { includeKneelers?: boolean } = {}
+) {
   const g = new THREE.Group();
   const seatH = 0.44;
   const seatD = 0.42;
@@ -91,10 +217,10 @@ function buildPew(length, mats, { includeKneelers = true } = {}) {
 
 // Open visitor book: red cloth boards, two cream ruled pages bowing up from the spine with lines of signatures,
 // and a ballpoint pen lying across the right-hand page
-function buildVisitorBook(mats, x, y, z) {
+function buildVisitorBook(mats: ChurchMaterials, x: number, y: number, z: number) {
   const g = new THREE.Group();
   const c = makeCanvas(256, 192);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   ctx.fillStyle = '#f4eedc';
   ctx.fillRect(0, 0, 256, 192);
   let seed = 77;
@@ -183,7 +309,7 @@ function buildAnglepoiseLamp() {
   const g = new THREE.Group();
   const white = new THREE.MeshStandardMaterial({ color: 0xf2f0ea, roughness: 0.35, metalness: 0.05 });
   const steel = new THREE.MeshStandardMaterial({ color: 0xb8bcc0, roughness: 0.35, metalness: 0.8 });
-  const add = (mesh) => {
+  const add = (mesh: THREE.Mesh) => {
     mesh.castShadow = true;
     g.add(mesh);
     return mesh;
@@ -197,7 +323,7 @@ function buildAnglepoiseLamp() {
   knuckle.position.y = 0.058;
 
   // An arm section of two parallel bars from a to b, with a coiled spring alongside
-  const arm = (a, b) => {
+  const arm = (a: THREE.Vector3, b: THREE.Vector3) => {
     const d = b.clone().sub(a);
     const len = d.length();
     const mid = a.clone().add(b).multiplyScalar(0.5);
@@ -207,7 +333,7 @@ function buildAnglepoiseLamp() {
       bar.position.set(mid.x, mid.y, z);
       bar.rotation.z = ang;
     });
-    const springPts = [];
+    const springPts: THREE.Vector3[] = [];
     const turns = 22;
     for (let i = 0; i <= turns * 8; i++) {
       const t = i / (turns * 8);
@@ -260,7 +386,7 @@ function buildAnglepoiseLamp() {
   return g;
 }
 
-function buildDonationPlate(mats) {
+function buildDonationPlate(mats: ChurchMaterials) {
   // Landscape black iron plate: two coin slots along the top, keyhole on the left, hinged on the right, and a
   // white paper "Donations" label taped across the middle
   const g = new THREE.Group();
@@ -299,9 +425,9 @@ function buildDonationPlate(mats) {
   });
   // Paper label with clear tape over each end
   const c = makeCanvas(512, 128);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   // Lettered in gothic blackletter (UnifrakturMaguntia, OFL), redrawn into the texture once the font has loaded
-  const drawLabel = (family) => {
+  const drawLabel = (family: string) => {
     ctx.fillStyle = '#f6f4ee';
     ctx.fillRect(0, 0, 512, 128);
     ctx.fillStyle = '#1a1a1a';
@@ -345,7 +471,7 @@ function buildDonationPlate(mats) {
 }
 
 // Shared hassock geometries: a plump pillow (thickest in the middle, softly rounded to its seams) plus hook & loop
-let kneelerGeoCache: any = null;
+let kneelerGeoCache: KneelerGeometries | null = null;
 function getKneelerGeometries() {
   if (kneelerGeoCache) return kneelerGeoCache;
   const depth = 0.1;
@@ -376,7 +502,7 @@ function getKneelerGeometries() {
 }
 
 // Shared geometries for the Edwardian wrought-iron pendant lamps (built once, reused by every fixture)
-let pendantGeoCache: any = null;
+let pendantGeoCache: PendantGeometries | null = null;
 function getPendantGeometries() {
   if (pendantGeoCache) return pendantGeoCache;
 
@@ -413,7 +539,7 @@ function getPendantGeometries() {
   shadeGeo.computeVertexNormals();
 
   // Thin clear-glass crimped lip around the very edge of the frill
-  const lipPts = [];
+  const lipPts: THREE.Vector3[] = [];
   for (let i = 0; i <= 96; i++) {
     const theta = (i / 96) * Math.PI * 2;
     const r = 0.114 * (1 + 0.035 * Math.cos(theta * 11));
@@ -442,8 +568,16 @@ function getPendantGeometries() {
   const armGeo = new THREE.TubeGeometry(armCurve, 40, 0.0085, 6, false);
 
   // Spiral C-scroll curls forming the lateral petals of the wrought-iron fleur-de-lys bracket
-  const spiralCurve = (cx, cy, startAng, r0, r1, turns, dir) => {
-    const pts = [];
+  const spiralCurve = (
+    cx: number,
+    cy: number,
+    startAng: number,
+    r0: number,
+    r1: number,
+    turns: number,
+    dir: number
+  ) => {
+    const pts: THREE.Vector3[] = [];
     const n = 28;
     for (let i = 0; i <= n; i++) {
       const t = i / n;
@@ -524,7 +658,7 @@ function getPendantGeometries() {
 // Build a 3-light Edwardian wrought-iron pendant:
 // ceiling rose & hook, 3 forged link chains descending to the central circular mount ring, and 3 equidistant
 // lamps spaced 120° apart around the ring with wrought-iron fleur-de-lys brackets connecting the ring to each lamp.
-function buildChandelier(dropHeight, mats, lightIntensity = 1.6) {
+function buildChandelier(dropHeight: number, mats: ChurchMaterials, lightIntensity = 1.6) {
   const g = new THREE.Group();
   const geo = getPendantGeometries();
   const ringY = -dropHeight;
@@ -538,7 +672,7 @@ function buildChandelier(dropHeight, mats, lightIntensity = 1.6) {
   g.add(hook);
 
   // Opal glass shade + clear crimped lip + iron gallery cap + glowing lamp inside
-  const addShade = (x, y, z, scale) => {
+  const addShade = (x: number, y: number, z: number, scale: number) => {
     const sg = new THREE.Group();
     const cap = new THREE.Mesh(geo.capGeo, mats.iron);
     cap.position.y = 0.006;
@@ -564,7 +698,7 @@ function buildChandelier(dropHeight, mats, lightIntensity = 1.6) {
 
   // 3 equidistant lamps (120° apart) around the central circular mount ring,
   // each connected from the ring by a scrolled wrought-iron arm + fleur-de-lys motif
-  const chainRuns = [];
+  const chainRuns: Vec3Pair[] = [];
   for (let i = 0; i < 3; i++) {
     const ang = (i * Math.PI * 2) / 3 + Math.PI / 6;
     const cosA = Math.cos(ang);
@@ -652,10 +786,10 @@ function buildChandelier(dropHeight, mats, lightIntensity = 1.6) {
 }
 
 // Helper to build a smoothly curved, subtly creased botanical blade (leaf or cupped flower petal)
-function createCurvedBladeGeo(width, length, arch, cup) {
+function createCurvedBladeGeo(width: number, length: number, arch: number, cup: number) {
   const segs = 4;
-  const positions = [];
-  const indices = [];
+  const positions: number[] = [];
+  const indices: number[] = [];
   for (let i = 0; i <= segs; i++) {
     const t = i / segs;
     const halfW = width * 0.5 * Math.sin(Math.pow(t, 0.78) * Math.PI);
@@ -678,7 +812,7 @@ function createCurvedBladeGeo(width, length, arch, cup) {
 }
 
 // Shared botanical geometries & materials for realistic sanctuary floral arrangements (IMG_3938)
-let flowerAssetsCache: any = null;
+let flowerAssetsCache: FlowerAssets | null = null;
 function getFlowerAssets() {
   if (flowerAssetsCache) return flowerAssetsCache;
   flowerAssetsCache = {
@@ -733,7 +867,7 @@ function buildFlowerArrangement(seed = 1) {
   oasis.position.set(0.02, 0.055, 0);
   g.add(oasis);
 
-  function addStem(start, end, radiusScale = 1.0) {
+  function addStem(start: THREE.Vector3, end: THREE.Vector3, radiusScale = 1.0) {
     const dir = new THREE.Vector3().subVectors(end, start);
     const len = dir.length();
     if (len < 0.01) return;
@@ -744,7 +878,14 @@ function buildFlowerArrangement(seed = 1) {
     g.add(stem);
   }
 
-  function addLeafBlade(pos, dir, geo, mat, scale = 1.0, roll = 0) {
+  function addLeafBlade(
+    pos: THREE.Vector3,
+    dir: THREE.Vector3,
+    geo: THREE.BufferGeometry,
+    mat: THREE.Material,
+    scale = 1.0,
+    roll = 0
+  ) {
     const leaf = new THREE.Mesh(geo, mat);
     leaf.position.copy(pos);
     leaf.quaternion.setFromUnitVectors(FWD, dir.clone().normalize());
@@ -810,7 +951,7 @@ function buildFlowerArrangement(seed = 1) {
   });
 
   // Helper to construct a realistic multi-petal flower head (chrysanthemum, gerbera, rose, or spray daisy)
-  function createFlowerHead(kind, scale = 1.0) {
+  function createFlowerHead(kind: string, scale = 1.0) {
     const head = new THREE.Group();
 
     const calyx = new THREE.Mesh(a.calyxGeo, a.stemMat);
@@ -961,7 +1102,14 @@ function buildFlowerArrangement(seed = 1) {
 }
 
 // Helper to trace a miniature trefoil-headed vertical tracery cutout hole (CW winding)
-function createTrefoilLightHole(uL, uR, vBotL, vBotR, vTop, bottomCurveFn = null) {
+function createTrefoilLightHole(
+  uL: number,
+  uR: number,
+  vBotL: number,
+  vBotR: number,
+  vTop: number,
+  bottomCurveFn: ((u: number) => number) | null = null
+) {
   const path = new THREE.Path();
   const uMid = (uL + uR) * 0.5;
   const hw = (uR - uL) * 0.5;
@@ -991,7 +1139,7 @@ function createTrefoilLightHole(uL, uR, vBotL, vBotR, vTop, bottomCurveFn = null
 }
 
 // Build the Medieval 15th-Century Carved Oak Rood Screen & Dwarf Wall (IMG_3936, 3937, 3939, 3940)
-function buildRoodScreen(mats) {
+function buildRoodScreen(mats: ChurchMaterials) {
   const g = new THREE.Group();
   const xPos = DIM.nave.xEastInt + 0.02;
   const baseY = DIM.naveFloorY;
@@ -1004,7 +1152,7 @@ function buildRoodScreen(mats) {
   const maxZ = DIM.chancel.zSouthInt; // 2.00m: the North end, against the chancel arch wall
   // The South end runs on past the chancel arch to meet the nave's South wall
   const southMaxZ = DIM.nave.zSouthInt - 0.004;
-  const endZ = (side) => (side > 0 ? southMaxZ : maxZ);
+  const endZ = (side: number) => (side > 0 ? southMaxZ : maxZ);
   const postW = 0.12;
   const sideStart = openHalfW + postW; // 0.73m
   const sideEnd = maxZ - postW; // 1.88m
@@ -1077,7 +1225,7 @@ function buildRoodScreen(mats) {
   applyBoxUVs(sideHeadGeo, 0.45);
 
   // Helper to build a stepped/moulded heavy oak structural standard post
-  function addMouldedStandard(zCenter, yBot, yTop) {
+  function addMouldedStandard(zCenter: number, yBot: number, yTop: number) {
     const h = yTop - yBot;
     const midY = (yBot + yTop) * 0.5;
     addBox(g, [0.16, h, postW], mats.darkOak, [xPos, midY, zCenter], { cast: true, receive: true });
@@ -1164,7 +1312,7 @@ function buildRoodScreen(mats) {
   const doorH = beamBottomY - doorY0; // 0.92m
   const archSpanHW = openHalfW + 0.005;
   const archRise = 0.5; // Crown at y = 2.12m
-  const doorArchCurve = (u) => {
+  const doorArchCurve = (u: number) => {
     const norm = Math.min(1, Math.abs(u) / archSpanHW);
     return archRise * Math.pow(Math.max(0, 1 - Math.pow(norm, 1.85)), 0.58);
   };
@@ -1185,7 +1333,7 @@ function buildRoodScreen(mats) {
   const doorInnerSpan = (openHalfW - 0.032) * 2;
   const doorCellW = doorInnerSpan / doorLights;
   const doorLightGap = 0.014;
-  const doorBotFn = (u) => doorArchCurve(u) + 0.052;
+  const doorBotFn = (u: number) => doorArchCurve(u) + 0.052;
   for (let i = 0; i < doorLights; i++) {
     const uL = -doorInnerSpan * 0.5 + i * doorCellW + doorLightGap;
     const uR = uL + doorCellW - doorLightGap * 2;
@@ -1209,7 +1357,7 @@ function buildRoodScreen(mats) {
   g.add(doorHead);
 
   // Projecting moulded oak inner rib following the central Tudor doorway arch
-  const archPts = [];
+  const archPts: THREE.Vector3[] = [];
   for (let i = 0; i <= 24; i++) {
     const u = -openHalfW + (i / 24) * (openHalfW * 2);
     archPts.push(new THREE.Vector3(0, doorY0 + doorArchCurve(u) + 0.018, u));
@@ -1280,9 +1428,9 @@ function buildRoodScreen(mats) {
 
 // A hymn board number card: cream-painted board with dark numerals, standing on a rail (railTopY) against the
 // board's face (-X)
-function buildHymnNumberCard(text, railTopY) {
+function buildHymnNumberCard(text: string, railTopY: number) {
   const canvas = makeCanvas(512, 192);
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas2d(canvas);
   ctx.fillStyle = '#f1ead8';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.strokeStyle = '#cfc4a8';
@@ -1307,13 +1455,18 @@ function buildHymnNumberCard(text, railTopY) {
 // Pierced (cut-out) carving: a plane subdivided every ~4mm and displaced by a height-field canvas (1px = 1mm),
 // with everything below a small height cut away through an alpha mask. Front faces +Z, back flat at z = 0.
 // A finer map (pxPerMm > 1) keeps small details crisp, since the softening blur works in pixels.
-function buildPiercedCarving(canvas, depth, material, pxPerMm = 1) {
+function buildPiercedCarving(
+  canvas: HTMLCanvasElement,
+  depth: number,
+  material: THREE.MeshStandardMaterial,
+  pxPerMm = 1
+) {
   const cw = canvas.width;
   const ch = canvas.height;
-  const px = canvas.getContext('2d').getImageData(0, 0, cw, ch).data;
+  const px = canvas2d(canvas).getImageData(0, 0, cw, ch).data;
   let hf = new Float32Array(cw * ch);
   for (let i = 0; i < cw * ch; i++) hf[i] = px[i * 4] / 255;
-  const blur = (src) => {
+  const blur = (src: Float32Array) => {
     const out = new Float32Array(src.length);
     for (let y = 0; y < ch; y++) {
       for (let x = 0; x < cw; x++) {
@@ -1338,7 +1491,7 @@ function buildPiercedCarving(canvas, depth, material, pxPerMm = 1) {
 
   // Alpha mask from the softened silhouette
   const mask = makeCanvas(cw, ch);
-  const mctx = mask.getContext('2d');
+  const mctx = canvas2d(mask);
   const img = mctx.createImageData(cw, ch);
   for (let i = 0; i < cw * ch; i++) {
     const v = hf[i] > 0.12 ? 255 : 0;
@@ -1381,7 +1534,7 @@ function buildPiercedCarving(canvas, depth, material, pxPerMm = 1) {
 // Victorian "Glastonbury" oak sanctuary chair (chancel-chair photo): X-frame side legs, plain plank seat,
 // broad arm boards sweeping from the top of the back down to the front of the seat with rolled scroll ends,
 // and a raked back with a diamond-parquetry panel. Local space: sitter faces -X, back at +X, width along Z.
-function buildGlastonburyChair(mats) {
+function buildGlastonburyChair(mats: ChurchMaterials) {
   const chair = new THREE.Group();
   const oak = mats.warmOak;
   const seatY = 0.45;
@@ -1489,7 +1642,7 @@ function buildGlastonburyChair(mats) {
 // A large old leather-bound Bible lying closed: worn dark-brown leather boards with a blind-tooled border, a rounded
 // spine with raised bands, aged gilt page edges, brass corner pieces and a brass clasp across the fore-edge.
 // Spine along -X, origin at the centre of its base.
-function buildOldBible(mats) {
+function buildOldBible(mats: ChurchMaterials) {
   const g = new THREE.Group();
   const W = 0.28; // spine to fore-edge
   const D = 0.36; // head to tail
@@ -1497,7 +1650,7 @@ function buildOldBible(mats) {
   const bt = 0.008; // board thickness
 
   const cv = makeCanvas(256, 256);
-  const c = cv.getContext('2d');
+  const c = canvas2d(cv);
   c.fillStyle = '#3a2218';
   c.fillRect(0, 0, 256, 256);
   let a = 1611;
@@ -1518,7 +1671,7 @@ function buildOldBible(mats) {
   c.fillRect(0, 0, 256, 256);
   // Blind-tooled double border, and "HOLY BIBLE" embossed inside a six-pointed star with bulging, rounded points.
   // The cover is taller than wide, so the emblem is drawn squashed vertically to come out true on the board.
-  const drawCover = (ctx, line, fill) => {
+  const drawCover = (ctx: CanvasRenderingContext2D, line: string, fill: string) => {
     ctx.strokeStyle = line;
     ctx.lineWidth = 3;
     ctx.strokeRect(18, 18, 220, 220);
@@ -1531,7 +1684,7 @@ function buildOldBible(mats) {
     ctx.beginPath();
     const tipR = 88;
     const valleyR = 50;
-    const at = (ang, r) => [Math.cos(ang) * r, Math.sin(ang) * r];
+    const at = (ang: number, r: number) => [Math.cos(ang) * r, Math.sin(ang) * r];
     for (let i = 0; i < 6; i++) {
       const tipA = (i / 6) * Math.PI * 2 - Math.PI / 2;
       const valA = tipA + Math.PI / 6;
@@ -1561,7 +1714,7 @@ function buildOldBible(mats) {
   const leatherTex = canvasTexture(cv);
   // Bump: the border lines and star outline pressed in, the letters raised
   const bv = makeCanvas(256, 256);
-  const bc = bv.getContext('2d');
+  const bc = canvas2d(bv);
   bc.fillStyle = '#808080';
   bc.fillRect(0, 0, 256, 256);
   drawCover(bc, '#303030', '#e0e0e0');
@@ -1620,7 +1773,13 @@ function buildOldBible(mats) {
 // keep the pile level: blue boards overhanging a cream page block (its edges ruled with leaves), a rounded spine
 // with gilt bands, each book a little askew. Instanced, so the whole pile is four draw calls.
 // `books` optionally fixes the pile instead: [{ t, colour }] from the bottom up, each with its own cloth colour.
-function buildHymnBookPile(x, baseY, z, height, { books: spec = null, seed = 3944 } = {}) {
+function buildHymnBookPile(
+  x: number,
+  baseY: number,
+  z: number,
+  height: number,
+  { books: spec = null, seed = 3944 }: { books?: HymnBookLayer[] | null; seed?: number } = {}
+) {
   const g = new THREE.Group();
   const rng = (() => {
     let a = seed;
@@ -1632,7 +1791,7 @@ function buildHymnBookPile(x, baseY, z, height, { books: spec = null, seed = 394
   const W = 0.135; // across, spine to fore-edge
   const D = 0.2; // head to tail
   const board = 0.0028;
-  const books = [];
+  const books: StackedHymnBook[] = [];
   let y = 0;
   while (spec ? books.length < spec.length : y < height - 0.02) {
     const t = spec ? spec[books.length].t : 0.026 + rng() * 0.008;
@@ -1647,7 +1806,7 @@ function buildHymnBookPile(x, baseY, z, height, { books: spec = null, seed = 394
     y += t;
   }
   const pageCanvas = makeCanvas(64, 64);
-  const pctx = pageCanvas.getContext('2d');
+  const pctx = canvas2d(pageCanvas);
   pctx.fillStyle = '#ece2c8';
   pctx.fillRect(0, 0, 64, 64);
   for (let i = 0; i < 64; i += 2) {
@@ -1752,7 +1911,7 @@ function buildWaterExtinguisher() {
   wBase.position.y = 0.01;
   waterG.add(wBase);
   const wCanvas = makeCanvas(256, 256);
-  const wctx = wCanvas.getContext('2d');
+  const wctx = canvas2d(wCanvas);
   wctx.fillStyle = '#f4f2ec';
   wctx.fillRect(0, 0, 256, 256);
   wctx.fillStyle = '#c8161d';
@@ -1808,7 +1967,7 @@ function buildWaterExtinguisher() {
 }
 
 // Build the West Timber Tower Substructure, Diagonal Bracing, Coffered Belfry Ceiling & Vestry
-function buildWestTowerInterior(mats, ceilingGroup) {
+function buildWestTowerInterior(mats: ChurchMaterials, ceilingGroup: THREE.Group) {
   const g = new THREE.Group();
   const T = DIM.tower;
   const N = DIM.nave;
@@ -1817,9 +1976,9 @@ function buildWestTowerInterior(mats, ceilingGroup) {
   // Underside of the nave roof slopes (with a little clearance): the tower frame must stay beneath it, or its
   // timbers break out through the tiles either side of the belfry
   const roofRun = N.zSouthExt + 0.32;
-  const roofUnderY = (z) => N.ridgeY - (Math.abs(z) / roofRun) * (N.ridgeY - N.eavesY) - 0.2;
+  const roofUnderY = (z: number) => N.ridgeY - (Math.abs(z) / roofRun) * (N.ridgeY - N.eavesY) - 0.2;
   const sideTopY = roofUnderY(N.zSouthInt); // highest the wall-side framing can rise
-  const kneeZ = (y) => ((N.ridgeY - 0.2 - y) / (N.ridgeY - N.eavesY)) * roofRun; // where the roof drops to y
+  const kneeZ = (y: number) => ((N.ridgeY - 0.2 - y) / (N.ridgeY - N.eavesY)) * roofRun; // where the roof drops to y
   const postH = sideTopY - floorY;
 
   // 1. Four massive medieval dark oak vertical posts (0.30m x 0.30m)
@@ -1835,7 +1994,7 @@ function buildWestTowerInterior(mats, ceilingGroup) {
 
   // Top tie-beams connecting the 4 posts: level under the belfry ceiling, their ends cranked down beneath the
   // roof slopes onto the post heads
-  const buildTieBeam = (depth, width) => {
+  const buildTieBeam = (depth: number, width: number) => {
     const half = (N.zSouthInt - N.zNorthInt - 0.05) * 0.5;
     const kz = Math.min(half - 0.1, kneeZ(ceilY));
     const endTop = roofUnderY(half);
@@ -1949,8 +2108,8 @@ function buildWestTowerInterior(mats, ceilingGroup) {
 
   const boardSeamW = 0.008;
   const boardPitch = 0.115;
-  const seams = [];
-  const hatchSeams = [];
+  const seams: Seam[] = [];
+  const hatchSeams: Seam[] = [];
   for (let ix = 0; ix < 3; ix++) {
     for (let iz = 0; iz < 3; iz++) {
       const cx = cX0 + (ix + 0.5) * cellW;
@@ -2241,7 +2400,7 @@ function buildWestTowerInterior(mats, ceilingGroup) {
 
   // Curved UK BS EN 3 CO2 front label decal (black CO2 band + white instruction graphic)
   const lblCanvas = makeCanvas(256, 256);
-  const lctx = lblCanvas.getContext('2d');
+  const lctx = canvas2d(lblCanvas);
   lctx.fillStyle = '#c8161d';
   lctx.fillRect(0, 0, 256, 256);
   // Black CO2 identification band
@@ -2326,7 +2485,7 @@ function buildWestTowerInterior(mats, ceilingGroup) {
 
   // Small UK CO2 fire-extinguisher wall sign mounted right above it on the vestry partition (IMG_3942)
   const signCanvas = makeCanvas(128, 96);
-  const sctx = signCanvas.getContext('2d');
+  const sctx = canvas2d(signCanvas);
   sctx.fillStyle = '#f2f0ea';
   sctx.fillRect(0, 0, 128, 96);
   sctx.fillStyle = '#141618';
@@ -2359,7 +2518,7 @@ function buildWestTowerInterior(mats, ceilingGroup) {
 
   // Matching water-extinguisher ID sign above it on the partition
   const wsCanvas = makeCanvas(128, 96);
-  const wsctx = wsCanvas.getContext('2d');
+  const wsctx = canvas2d(wsCanvas);
   wsctx.fillStyle = '#f2f0ea';
   wsctx.fillRect(0, 0, 128, 96);
   wsctx.fillStyle = '#c8161d';
@@ -2386,11 +2545,11 @@ function buildWestTowerInterior(mats, ceilingGroup) {
 }
 
 // Main interior builder
-export function buildInterior(mats) {
+export function buildInterior(mats: ChurchMaterials) {
   const interiorGroup = new THREE.Group();
   const ceilingGroup = new THREE.Group();
-  const chandelierLights = [];
-  const oilLights = []; // 1900 paraffin lamps (main.js)
+  const chandelierLights: THREE.PointLight[] = [];
+  const oilLights: THREE.PointLight[] = []; // 1900 paraffin lamps (main.js)
 
   const N = DIM.nave;
   const C = DIM.chancel;
@@ -2455,7 +2614,7 @@ export function buildInterior(mats) {
   // Warm cream-gold carpet runner through Rood Screen & up the Sanctuary steps (IMG_3937, 3938)
   // One width all the way from the doorway to the altar, filling the screen opening between its quoins
   const runW = 1.2;
-  const addRunner = (x0, x1, y, w = runW) => {
+  const addRunner = (x0: number, x1: number, y: number, w = runW) => {
     const r = boxMesh([x1 - x0, 0.018, w], mats.carpetGold, [(x0 + x1) * 0.5, y + 0.01, 0], { receive: true });
     r.userData.era = 'today'; // no carpet in 1900
     interiorGroup.add(r);
@@ -2504,7 +2663,7 @@ export function buildInterior(mats) {
     new THREE.Vector2(1.68, 4.38),
     new THREE.Vector2(N.zSouthInt, N.eavesY)
   ];
-  const naveCeilPos = [];
+  const naveCeilPos: number[] = [];
   for (let i = 0; i < naveCeilPts.length - 1; i++) {
     const a = naveCeilPts[i];
     const b = naveCeilPts[i + 1];
@@ -2593,7 +2752,7 @@ export function buildInterior(mats) {
       { srcX: halfW, x: doorX + 0.22 + halfW * 0.0005 } // right half (East wing) East of the door
     ].forEach(({ srcX, x }) => {
       const half = makeCanvas(halfW, full.height);
-      half.getContext('2d').drawImage(full, srcX, 0, halfW, full.height, 0, 0, halfW, full.height);
+      canvas2d(half).drawImage(full, srcX, 0, halfW, full.height, 0, 0, halfW, full.height);
       const h = buildPiercedCarving(half, 0.045, angelMat);
       h.matrix.makeBasis(nAcross, nUp, nInto);
       h.matrix.setPosition(nCentre.clone().setX(x));
@@ -2609,7 +2768,7 @@ export function buildInterior(mats) {
   const vaultR = C.zSouthInt; // 2.00m half-span
   const vaultRise = vaultR * 0.94;
   const vSegs = 24;
-  const vaultPos = [];
+  const vaultPos: number[] = [];
   for (let i = 0; i < vSegs; i++) {
     const a0 = (i / vSegs) * Math.PI;
     const a1 = ((i + 1) / vSegs) * Math.PI;
@@ -2754,7 +2913,7 @@ export function buildInterior(mats) {
   const emberGeo = new THREE.SphereGeometry(0.0025, 8, 6);
   const emberMat = new THREE.MeshBasicMaterial({ color: 0xff6b1c, toneMapped: false });
 
-  function createFlameShaderMaterial(phase) {
+  function createFlameShaderMaterial(phase: number) {
     return new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
@@ -2850,7 +3009,7 @@ export function buildInterior(mats) {
   }
 
   const haloCanvas = makeCanvas(64, 64);
-  const hctx = haloCanvas.getContext('2d');
+  const hctx = canvas2d(haloCanvas);
   const hGrad = hctx.createRadialGradient(32, 32, 0, 32, 32, 32);
   hGrad.addColorStop(0.0, 'rgba(255, 244, 196, 0.72)');
   hGrad.addColorStop(0.24, 'rgba(255, 174, 60, 0.36)');
@@ -2862,7 +3021,7 @@ export function buildInterior(mats) {
 
   // Smooth top-to-bottom gradient texture so the subsurface wax glow fades seamlessly down the shaft
   const waxGlowCanvas = makeCanvas(4, 64);
-  const wgCtx = waxGlowCanvas.getContext('2d');
+  const wgCtx = canvas2d(waxGlowCanvas);
   const wgGrad = wgCtx.createLinearGradient(0, 0, 0, 64);
   wgGrad.addColorStop(0.0, 'rgba(255, 198, 96, 0.9)');
   wgGrad.addColorStop(0.35, 'rgba(255, 168, 62, 0.42)');
@@ -2880,24 +3039,37 @@ export function buildInterior(mats) {
     toneMapped: false
   });
 
-  const litCandles = [];
+  const litCandles: LitCandle[] = [];
   // 1900 paraffin lamps: the lamp's flame becomes the same flickering shader flame as the candles, and its light
   // flickers with it (main.js keeps the mood level in light.userData.moodIntensity)
-  const oilFlames = [];
-  function addOilFlame({ flame, light }) {
+  const oilFlames: OilFlame[] = [];
+  function addOilFlame({ flame, light }: { flame: THREE.Mesh; light: THREE.PointLight }) {
     const phase = oilFlames.length * 1.9 + 0.7;
+    const flameMat = createFlameShaderMaterial(phase);
     flame.geometry = flameGeo;
-    flame.material = createFlameShaderMaterial(phase);
+    flame.material = flameMat;
     flame.renderOrder = 3;
     flame.position.y = 0.176; // wick top in the burner
     flame.scale.set(1.05, 0.8, 1.05);
-    oilFlames.push({ flameMat: flame.material, light, phase });
+    oilFlames.push({ flameMat, light, phase });
   }
   function addLitCandleFlame(
-    x,
-    topY,
-    z,
-    { scale = 1.0, phase = 0, baseIntensity = 0.65, distance = 3.2, waxRadius = 0.022 } = {}
+    x: number,
+    topY: number,
+    z: number,
+    {
+      scale = 1.0,
+      phase = 0,
+      baseIntensity = 0.65,
+      distance = 3.2,
+      waxRadius = 0.022
+    }: {
+      scale?: number;
+      phase?: number;
+      baseIntensity?: number;
+      distance?: number;
+      waxRadius?: number;
+    } = {}
   ) {
     // Charred wick + glowing orange ember tip visible through the translucent blue flame base
     const wick = new THREE.Mesh(wickGeo, wickMat);
@@ -3045,7 +3217,7 @@ export function buildInterior(mats) {
   const pan = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.06, 0.025, 20), mats.iron);
   pan.position.y = standTop - 0.012;
   paschalStand.add(pan);
-  const scroll = (pts) =>
+  const scroll = (pts: THREE.Vector3[]) =>
     new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 48, 0.008, 6), mats.iron);
   for (let k = 0; k < 3; k++) {
     const ang = (k / 3) * Math.PI * 2;
@@ -3066,7 +3238,7 @@ export function buildInterior(mats) {
     }
     leg.add(scroll(legPts));
     // C-scroll swirl between the leg and the shaft
-    const cPts = [];
+    const cPts: THREE.Vector3[] = [];
     for (let i = 0; i <= 16; i++) {
       const t = (i / 16) * Math.PI * 1.7;
       const r = 0.05 * (1 - i / 26);
@@ -3074,7 +3246,7 @@ export function buildInterior(mats) {
     }
     leg.add(scroll(cPts));
     // Facing C-scroll curling the other way, so the pair forms a lyre beside the shaft
-    const c2Pts = [];
+    const c2Pts: THREE.Vector3[] = [];
     for (let i = 0; i <= 16; i++) {
       const t = (i / 16) * Math.PI * 1.7;
       const r = 0.042 * (1 - i / 26);
@@ -3107,7 +3279,7 @@ export function buildInterior(mats) {
     paschalStand.add(bracket);
   }
   // Barley-twist iron wrapped around the middle of the shaft
-  const twistPts = [];
+  const twistPts: THREE.Vector3[] = [];
   for (let i = 0; i <= 120; i++) {
     const t = i / 120;
     const a = t * Math.PI * 2 * 6;
@@ -3364,7 +3536,7 @@ export function buildInterior(mats) {
   addBox(pulpitDeskG, [0.46, 0.38, 0.024], mats.altarFrontal, [0, -0.17, 0.052], { cast: true });
 
   // Pair of small brass candlesticks with lit flickering white taper candles on the pulpit rail
-  const pulpitCandleSticks = [];
+  const pulpitCandleSticks: THREE.Group[] = [];
   [-0.24, 0.24].forEach((cx) => {
     const cStick = new THREE.Group();
     const cFoot = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.032, 0.025, 10), mats.brass);
@@ -3448,7 +3620,7 @@ export function buildInterior(mats) {
   const fontG = new THREE.Group();
 
   // Helper to build crisp flat-faceted 8-sided carved limestone lathe geometry aligned with cardinal faces
-  const makeOctagonalStone = (pts, mat) => {
+  const makeOctagonalStone = (pts: THREE.Vector2[], mat: THREE.Material) => {
     const raw = new THREE.LatheGeometry(pts, 8);
     raw.rotateY(Math.PI / 8);
     const geo = raw.toNonIndexed();
@@ -3569,9 +3741,9 @@ export function buildInterior(mats) {
   addBox(organG, [0.26, 0.03, 1.16], mats.medOak, [-0.45, 0.825, 0]);
   // Five-octave manual, C (MIDI 36) to C (96). Each key hangs from a pivot at its back end so it can dip when
   // played; the player sits at -X, so low notes (their left) are at +Z
-  const isSharpMidi = (m) => [1, 3, 6, 8, 10].includes(m % 12);
+  const isSharpMidi = (m: number) => [1, 3, 6, 8, 10].includes(m % 12);
   const manualKeys = new Map();
-  const naturalsBefore = (lo, m) => {
+  const naturalsBefore = (lo: number, m: number) => {
     let n = 0;
     for (let k = lo; k < m; k++) if (!isSharpMidi(k)) n++;
     return n;
@@ -3716,7 +3888,7 @@ export function buildInterior(mats) {
   // when it stops they come to rest and the tambour rolls shut. `notes` is { manual: Set, pedal: Set } of MIDI.
   let tambourOpen = 0;
   const organAnimator = {
-    update(dt, playing, notes) {
+    update(dt: number, playing: boolean, notes?: OrganNotes | null) {
       const openTarget = playing ? 1 : 0;
       const step = dt / 1.4; // ~1.4s to roll fully open or shut
       tambourOpen += Math.max(-step, Math.min(step, openTarget - tambourOpen));
@@ -3914,7 +4086,7 @@ export function buildInterior(mats) {
   let candleFlameBoost = 1.0;
 
   const candleEffect = {
-    setMood(moodKey) {
+    setMood(moodKey: string) {
       if (moodKey === 'evensong') {
         candleLightScale = 1.95;
         candleHaloScale = 1.45;
@@ -3932,7 +4104,7 @@ export function buildInterior(mats) {
         c.flameMat.uniforms.uBoost.value = candleFlameBoost;
       }
     },
-    update(elapsed) {
+    update(elapsed: number) {
       for (const c of litCandles) {
         const p = c.phase;
         c.flameMat.uniforms.uTime.value = elapsed;
@@ -3948,7 +4120,7 @@ export function buildInterior(mats) {
         c.light.intensity = c.baseIntensity * candleLightScale * (0.78 + flicker * 0.26);
       }
       for (const o of oilFlames) {
-        if (!o.light.parent.visible) continue; // 1900 only
+        if (!(o.light.parent as THREE.Object3D).visible) continue; // 1900 only
         const p = o.phase;
         o.flameMat.uniforms.uTime.value = elapsed;
         const flicker =
@@ -3969,7 +4141,13 @@ export function buildInterior(mats) {
  * Gathered cloth curtain skirting a table on all four sides. Origin is the rail
  * at the top of the curtain, centred on the table; the cloth hangs down by `drop`.
  */
-function buildTableCurtain(width, depth, drop, clothMat, railMat) {
+function buildTableCurtain(
+  width: number,
+  depth: number,
+  drop: number,
+  clothMat: THREE.Material,
+  railMat: THREE.Material
+) {
   const g = new THREE.Group();
   const foldPitch = 0.055;
   const foldDepth = 0.012;
@@ -4024,8 +4202,8 @@ function buildTableCurtain(width, depth, drop, clothMat, railMat) {
  * (0 = straight below the centre, measured anticlockwise) and sweeping `sweep` radians in direction `dir`,
  * tightening by `tighten` towards the end.
  */
-function spiralPts(cx, cy, r0, a0, sweep, dir = 1, tighten = 0.55) {
-  const pts = [];
+function spiralPts(cx: number, cy: number, r0: number, a0: number, sweep: number, dir = 1, tighten = 0.55) {
+  const pts: THREE.Vector3[] = [];
   const n = 18;
   for (let i = 0; i <= n; i++) {
     const f = i / n;
@@ -4040,7 +4218,7 @@ function spiralPts(cx, cy, r0, a0, sweep, dir = 1, tighten = 0.55) {
  * A black theatre-style spotlight on a ceiling plate: a short drop rod, a yoke and a cylindrical can with a warm
  * lens, aimed at `aim`. `mountPos` is the point on the ceiling surface and `inward` its unit normal into the room.
  */
-function buildCeilingSpotlight(aim, mountPos, inward) {
+function buildCeilingSpotlight(aim: THREE.Vector3, mountPos: THREE.Vector3, inward: THREE.Vector3) {
   const black = new THREE.MeshStandardMaterial({ color: 0x141414, roughness: 0.45, metalness: 0.55 });
   const lensMat = new THREE.MeshStandardMaterial({
     color: 0xfff1d6,
@@ -4111,15 +4289,15 @@ function buildCeilingSpotlight(aim, mountPos, inward) {
  * sunk roundels at the corners and, in the centre, a pierced roundel holding a cross crosslet, ringed with studs and
  * a laurel wreath tied at the bottom with a ribbon bow. Black is cut right through; brighter is higher.
  */
-function createLecternPanelHeightMap(w, h, pxPerMm = 1) {
+function createLecternPanelHeightMap(w: number, h: number, pxPerMm = 1) {
   const c = makeCanvas(w * pxPerMm, h * pxPerMm);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   ctx.scale(pxPerMm, pxPerMm);
-  const tone = (v) => {
+  const tone = (v: number) => {
     const g = Math.round(Math.max(0, Math.min(1, v)) * 255);
     return `rgb(${g},${g},${g})`;
   };
-  const circle = (x, y, r, v) => {
+  const circle = (x: number, y: number, r: number, v: number) => {
     ctx.fillStyle = tone(v);
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
@@ -4134,7 +4312,7 @@ function createLecternPanelHeightMap(w, h, pxPerMm = 1) {
   ctx.strokeRect(9, 9, w - 18, h - 18);
 
   // Pierced quatrefoil with its lobes on the diagonals, as a path for filling or stroking
-  const quatrefoilPath = (cx, cy, lobeR, lobeD, coreR) => {
+  const quatrefoilPath = (cx: number, cy: number, lobeR: number, lobeD: number, coreR: number) => {
     ctx.beginPath();
     for (let k = 0; k < 4; k++) {
       const a = Math.PI / 4 + (k * Math.PI) / 2;
@@ -4238,7 +4416,7 @@ function createLecternPanelHeightMap(w, h, pxPerMm = 1) {
  * Sloping lectern book desk on top of the stem at `baseY`. The tall front edge faces the congregation (-X) and is
  * the pierced, carved panel; the desk slopes down towards the reader at +X onto a book ledge.
  */
-function buildLecternDesk(oak, baseY) {
+function buildLecternDesk(oak: THREE.MeshStandardMaterial, baseY: number) {
   const g = new THREE.Group();
   const deskW = 0.58; // along Z
   const deskD = 0.4; // along X
@@ -4289,14 +4467,14 @@ function buildLecternDesk(oak, baseY) {
 // The church c. 1900 ('1900' era: hidden until main.js switches eras)
 // ---------------------------------------------------------------------------------------------------------------
 
-function markEra1900(obj) {
+function markEra1900<T extends THREE.Object3D>(obj: T): T {
   obj.userData.era = '1900';
   obj.visible = false;
   return obj;
 }
 
 // Brass paraffin lamp: a round font with its burner, a tall glass chimney and a flame. Origin at the font's base.
-let oilLampAssets: any = null;
+let oilLampAssets: OilLampAssets | null = null;
 function getOilLampAssets() {
   if (oilLampAssets) return oilLampAssets;
   const fontProfile = [
@@ -4336,7 +4514,7 @@ function getOilLampAssets() {
   return oilLampAssets;
 }
 
-function buildParaffinLamp(mats) {
+function buildParaffinLamp(mats: ChurchMaterials) {
   const a = getOilLampAssets();
   const g = new THREE.Group();
   const font = new THREE.Mesh(a.fontGeo, mats.brass);
@@ -4357,7 +4535,7 @@ function buildParaffinLamp(mats) {
 
 // The nave & chancel pendants as they were lit by paraffin: the same three-armed wrought-iron saddle turned the
 // other way up, its three arm ends chained to the ceiling rose and a single lamp standing in the central ring
-function buildOilPendant(dropHeight, mats) {
+function buildOilPendant(dropHeight: number, mats: ChurchMaterials) {
   const g = markEra1900(new THREE.Group());
   const geo = getPendantGeometries();
   const ringY = -dropHeight + 0.35; // the lamp stands above the ring, so the ring hangs a little higher
@@ -4372,7 +4550,7 @@ function buildOilPendant(dropHeight, mats) {
   // Saddle: ring, bosses and the three scrolled arms with their fleurs-de-lys, then turned upside down
   const saddle = new THREE.Group();
   saddle.add(new THREE.Mesh(geo.ringGeo, mats.iron));
-  const tips = [];
+  const tips: THREE.Vector3[] = [];
   for (let i = 0; i < 3; i++) {
     const ang = (i * Math.PI * 2) / 3 + Math.PI / 6;
     const midAng = ang + Math.PI / 3;
@@ -4450,7 +4628,7 @@ function buildOilPendant(dropHeight, mats) {
 
 // Paraffin bracket lamp on a wall (faces +Z, back on the wall at z = 0): iron back plate with a silvered
 // reflector, a scrolled arm and a ring holding the lamp
-function buildOilWallLamp(mats) {
+function buildOilWallLamp(mats: ChurchMaterials) {
   const g = markEra1900(new THREE.Group());
   addBox(g, [0.1, 0.22, 0.012], mats.iron, [0, 0.02, 0.006]);
   const reflector = new THREE.Mesh(
@@ -4488,22 +4666,22 @@ function buildOilWallLamp(mats) {
 
 // Octagonal cast-iron 'Tortoise' slow-combustion stove (Charles Portway & Son, Halstead), its feed door facing the
 // aisle (-Z). The flue leaves the back, rises to three-quarters of the way up the South wall and turns into it.
-function buildTortoiseStove(mats, x, floorY, z, wallZ) {
+function buildTortoiseStove(mats: ChurchMaterials, x: number, floorY: number, z: number, wallZ: number) {
   const g = markEra1900(new THREE.Group());
   const ironBlack = new THREE.MeshStandardMaterial({ color: 0x1c1c1e, roughness: 0.5, metalness: 0.55 });
-  const add = (mesh, px, py, pz) => {
+  const add = (mesh: THREE.Object3D, px: number, py: number, pz: number) => {
     mesh.position.set(px, py, pz);
     mesh.castShadow = true;
     mesh.receiveShadow = true;
     g.add(mesh);
     return mesh;
   };
-  const oct = (r0, r1, h) => {
+  const oct = (r0: number, r1: number, h: number) => {
     const geo = new THREE.CylinderGeometry(r1, r0, h, 8);
     geo.rotateY(Math.PI / 8); // flat faces to the cardinal directions
     return geo;
   };
-  const flat = (f) => f / Math.cos(Math.PI / 8); // circumradius for a given centre-to-face distance
+  const flat = (f: number) => f / Math.cos(Math.PI / 8); // circumradius for a given centre-to-face distance
   // Stepped, moulded base; panelled octagonal body; heavy moulded cornice; small raised collar on top
   add(new THREE.Mesh(oct(flat(0.29), flat(0.285), 0.06), ironBlack), x, floorY + 0.03, z);
   add(new THREE.Mesh(oct(flat(0.27), flat(0.25), 0.1), ironBlack), x, floorY + 0.11, z);
@@ -4517,9 +4695,9 @@ function buildTortoiseStove(mats, x, floorY, z, wallZ) {
 
   // Cast relief panels on the eight faces: a climbing scroll of linked foliate roundels on the four square
   // faces, a grid of square rosette tiles on the four corner faces (from the maker's catalogue drawing)
-  const panelMap = (kind) => {
+  const panelMap = (kind: string) => {
     const c = makeCanvas(64, 256);
-    const ctx = c.getContext('2d');
+    const ctx = canvas2d(c);
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, 64, 256);
     ctx.strokeStyle = '#fff';
@@ -4566,7 +4744,7 @@ function buildTortoiseStove(mats, x, floorY, z, wallZ) {
     }
     return new THREE.CanvasTexture(c);
   };
-  const panelMats = {};
+  const panelMats: Record<string, THREE.MeshStandardMaterial> = {};
   ['scroll', 'tiles'].forEach((kind) => {
     const bump = panelMap(kind);
     panelMats[kind] = new THREE.MeshStandardMaterial({
@@ -4594,7 +4772,7 @@ function buildTortoiseStove(mats, x, floorY, z, wallZ) {
 
   // Hinged maker's plate ('Tortoise Stove') hanging on a front corner face near the bottom
   const c = makeCanvas(128, 96);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   ctx.fillStyle = '#2a2a2c';
   ctx.fillRect(0, 0, 128, 96);
   ctx.strokeStyle = '#77777a';
@@ -4634,13 +4812,14 @@ function buildTortoiseStove(mats, x, floorY, z, wallZ) {
   const outY = floorY + 0.58;
   const riseZ = z + 0.48;
   const topY = floorY + DIM.nave.eavesY * 0.75;
-  const pipe = (a, b) => {
+  const pipe = (a: THREE.Vector3, b: THREE.Vector3) => {
     const len = a.distanceTo(b);
     const m = add(new THREE.Mesh(new THREE.CylinderGeometry(pipeR, pipeR, len, 16, 1, true), ironBlack), 0, 0, 0);
     m.position.copy(a).lerp(b, 0.5);
     m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
   };
-  const elbow = (p) => add(new THREE.Mesh(new THREE.SphereGeometry(pipeR * 1.05, 16, 12), ironBlack), p.x, p.y, p.z);
+  const elbow = (p: THREE.Vector3) =>
+    add(new THREE.Mesh(new THREE.SphereGeometry(pipeR * 1.05, 16, 12), ironBlack), p.x, p.y, p.z);
   const p0 = new THREE.Vector3(x, outY, z + 0.2);
   const p1 = new THREE.Vector3(x, outY, riseZ);
   const p2 = new THREE.Vector3(x, topY - (wallZ - riseZ), riseZ);
@@ -4677,7 +4856,7 @@ function buildTortoiseStove(mats, x, floorY, z, wallZ) {
 
 // Ellacombe-style chiming frame on the vestry's West wall: a ringer pulls the three cords in turn, each lifting a
 // hammer against its hanging bell above (belfry.js). Clicking it chimes the bells (main.js).
-function buildChimingFrame(mats, floorY) {
+function buildChimingFrame(mats: ChurchMaterials, floorY: number) {
   const g = markEra1900(new THREE.Group());
   g.userData.ringsBells = true;
   const x = DIM.nave.xWestInt + 0.03;
@@ -4707,7 +4886,7 @@ function buildChimingFrame(mats, floorY) {
     g.add(pulley);
     // Number plate above each cord (1 treble, 2, 3 tenor)
     const nc = makeCanvas(64, 64);
-    const nctx = nc.getContext('2d');
+    const nctx = canvas2d(nc);
     nctx.fillStyle = '#d8c48a';
     nctx.fillRect(0, 0, 64, 64);
     nctx.fillStyle = '#2a2018';
@@ -4727,9 +4906,9 @@ function buildChimingFrame(mats, floorY) {
 }
 
 // Fretwork panel texture: pierced oak lattice over a dark red cloth backing
-function createFretworkTexture(kind) {
+function createFretworkTexture(kind: string) {
   const c = makeCanvas(256, 128);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   ctx.fillStyle = '#5a1e18';
   ctx.fillRect(0, 0, 256, 128);
   ctx.strokeStyle = '#a8743e';
@@ -4767,11 +4946,18 @@ function createFretworkTexture(kind) {
 
 // Victorian oak pedal harmonium (American-style parlour reed organ, c. 1890) with its keys on pivots so they can
 // follow the music; front faces +Z. Returns { group, keys: Map(midi -> { pivot, angle }), treadles }.
-function buildHarmonium(mats) {
+function buildHarmonium(mats: ChurchMaterials) {
   const g = new THREE.Group();
   const oak = mats.medOak;
   const dark = mats.darkOak;
-  const add = (geo, mat, x, y, z, parent = g) => {
+  const add = (
+    geo: THREE.BufferGeometry,
+    mat: THREE.Material,
+    x: number,
+    y: number,
+    z: number,
+    parent: THREE.Object3D = g
+  ) => {
     const m = new THREE.Mesh(geo, mat);
     m.position.set(x, y, z);
     m.castShadow = true;
@@ -4810,7 +4996,7 @@ function buildHarmonium(mats) {
   });
   // Five-octave keyboard, C (MIDI 36) to C (96), keys pivoted at their back ends; low notes at -X (player's left)
   const keys = new Map();
-  const isSharp = (m) => [1, 3, 6, 8, 10].includes(m % 12);
+  const isSharp = (m: number) => [1, 3, 6, 8, 10].includes(m % 12);
   let naturals = 0;
   for (let m = 36; m <= 96; m++) if (!isSharp(m)) naturals++;
   const span = W - 0.2;
@@ -4895,7 +5081,7 @@ function buildHarmonium(mats) {
   add(crestGeo, oak, 0, 2.09, -0.2);
   // Two treadles, carpeted with a lyre pattern, hinged at their heels
   const tc = makeCanvas(64, 128);
-  const tctx = tc.getContext('2d');
+  const tctx = canvas2d(tc);
   tctx.fillStyle = '#6a1820';
   tctx.fillRect(0, 0, 64, 128);
   tctx.strokeStyle = '#d6b87a';

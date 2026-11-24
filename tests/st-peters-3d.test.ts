@@ -236,7 +236,7 @@ test('north churchyard wrought-iron railings follow the 1839 boundary with kissi
   assert.match(churchyard, /applyPathGrassBanks\(groundGeo, pathX0, pathX1/);
   assert.match(churchyard, /No userData\.era — the railings stood by 1900/);
 
-  const match = churchyard.match(/export const NORTH_CHURCHYARD_RAILINGS = (\[[\s\S]*?\]);/);
+  const match = churchyard.match(/export const NORTH_CHURCHYARD_RAILINGS\b[^=]*=\s*(\[[\s\S]*?\]);/);
   assert.ok(match);
   const points = Function(`return ${match[1]}`)() as [number, number][];
   assert.ok(points.length >= 8);

@@ -1,12 +1,33 @@
+import { canvas2d } from './st-peters-3d/canvas-utils.ts';
+
 const ONNX_RUNTIME_URL = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js';
 const ONNX_WASM_BASE_URL = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/';
 const MODEL_URL = 'https://raw.githubusercontent.com/linmingren/openmodels/main/models/deoldify/deoldify.quant.onnx';
 const MODEL_INPUT_SIZE = 256;
 const MAX_OUTPUT_WIDTH = 1600;
 
-let ortRuntimePromise;
-let modelBufferPromise;
-let sessionPromise;
+// `importScripts` installs this on `self`. Only the members this worker uses are described here.
+type OrtTensor = { dims: number[]; data: ArrayLike<number> & Iterable<number> };
+type OrtSession = {
+  inputNames: string[];
+  outputNames: string[];
+  run(feeds: Record<string, unknown>): Promise<Record<string, OrtTensor | undefined>>;
+};
+type OrtRuntime = {
+  env?: { wasm?: { wasmPaths: string; numThreads: number } };
+  Tensor: new (type: string, data: Float32Array, dims: number[]) => unknown;
+  InferenceSession: {
+    create(
+      buffer: Uint8Array,
+      options: { executionProviders: string[]; graphOptimizationLevel: string }
+    ): Promise<OrtSession>;
+  };
+};
+type ProgressReporter = (progress: number, label?: string) => void;
+
+let ortRuntimePromise: Promise<OrtRuntime> | undefined;
+let modelBufferPromise: Promise<Uint8Array> | undefined;
+let sessionPromise: Promise<OrtSession> | undefined;
 let activeExecutionProvider = 'wasm';
 
 self.addEventListener('message', (event) => {
@@ -21,26 +42,26 @@ self.addEventListener('message', (event) => {
   });
 });
 
-function postProgress(id, progress, label) {
+function postProgress(id: string, progress: number, label?: string) {
   self.postMessage({ id, type: 'progress', progress, label });
 }
 
-function postResult(id, blob) {
+function postResult(id: string, blob: Blob) {
   self.postMessage({ id, type: 'result', blob, executionProvider: activeExecutionProvider });
 }
 
-function postError(id, message) {
+function postError(id: string, message: string) {
   self.postMessage({ id, type: 'error', message });
 }
 
-function configureOrt(ort) {
+function configureOrt(ort: OrtRuntime | undefined) {
   if (ort?.env?.wasm) {
     ort.env.wasm.wasmPaths = ONNX_WASM_BASE_URL;
     ort.env.wasm.numThreads = Math.min(4, self.navigator?.hardwareConcurrency || 1);
   }
 }
 
-async function ensureOrtRuntime() {
+async function ensureOrtRuntime(): Promise<OrtRuntime> {
   if (self.ort) {
     configureOrt(self.ort);
     return self.ort;
@@ -51,6 +72,7 @@ async function ensureOrtRuntime() {
       .then(() => {
         importScripts(ONNX_RUNTIME_URL);
         configureOrt(self.ort);
+        if (!self.ort) throw new Error('ONNX runtime did not load.');
         return self.ort;
       })
       .catch((error) => {
@@ -62,7 +84,7 @@ async function ensureOrtRuntime() {
   return ortRuntimePromise;
 }
 
-async function fetchModelBuffer(reportProgress) {
+async function fetchModelBuffer(reportProgress: ProgressReporter) {
   if (!modelBufferPromise) {
     modelBufferPromise = (async () => {
       reportProgress(12, 'Downloading AI model…');
@@ -80,7 +102,7 @@ async function fetchModelBuffer(reportProgress) {
       }
 
       const reader = response.body.getReader();
-      const chunks = [];
+      const chunks: Uint8Array[] = [];
       let receivedBytes = 0;
 
       while (true) {
@@ -123,14 +145,14 @@ async function fetchModelBuffer(reportProgress) {
   return modelBufferPromise;
 }
 
-async function createSession(ort, modelBuffer, executionProviders) {
+async function createSession(ort: OrtRuntime, modelBuffer: Uint8Array, executionProviders: string[]) {
   return ort.InferenceSession.create(modelBuffer, {
     executionProviders,
     graphOptimizationLevel: 'all'
   });
 }
 
-async function getColorizationSession(reportProgress) {
+async function getColorizationSession(reportProgress: ProgressReporter) {
   if (!sessionPromise) {
     sessionPromise = (async () => {
       reportProgress(4, 'Loading AI runtime…');
@@ -166,7 +188,7 @@ async function getColorizationSession(reportProgress) {
   return sessionPromise;
 }
 
-function preprocess(imageData, width, height) {
+function preprocess(imageData: ImageData, width: number, height: number) {
   const channelSize = width * height;
   const tensorData = new Float32Array(channelSize * 3);
 
@@ -184,8 +206,10 @@ function preprocess(imageData, width, height) {
   return tensorData;
 }
 
-function postprocess(tensor) {
-  const [, channels, height, width] = tensor.dims;
+function postprocess(tensor: OrtTensor) {
+  const channels = tensor.dims[1] ?? 0;
+  const height = tensor.dims[2] ?? 0;
+  const width = tensor.dims[3] ?? 0;
   const tensorData = tensor.data;
   const output = new ImageData(width, height);
 
@@ -224,7 +248,7 @@ function postprocess(tensor) {
   return output;
 }
 
-async function colorizeSourceImage(src, reportProgress) {
+async function colorizeSourceImage(src: string, reportProgress: ProgressReporter) {
   if (typeof OffscreenCanvas === 'undefined' || typeof createImageBitmap !== 'function') {
     throw new Error('This browser cannot run AI colourisation in a background worker.');
   }
@@ -275,7 +299,7 @@ async function colorizeSourceImage(src, reportProgress) {
   reportProgress(94, 'Rendering colour image…');
   const colorizedData = postprocess(outputTensor);
   const colorizedCanvas = new OffscreenCanvas(MODEL_INPUT_SIZE, MODEL_INPUT_SIZE);
-  const colorizedContext = colorizedCanvas.getContext('2d');
+  const colorizedContext = canvas2d(colorizedCanvas);
   if (!colorizedContext) {
     throw new Error('Canvas rendering is not available in this browser.');
   }
@@ -288,7 +312,7 @@ async function colorizeSourceImage(src, reportProgress) {
   const targetHeight = Math.max(1, Math.round((targetWidth / sourceWidth) * sourceHeight));
 
   const finalCanvas = new OffscreenCanvas(targetWidth, targetHeight);
-  const finalContext = finalCanvas.getContext('2d');
+  const finalContext = canvas2d(finalCanvas);
   if (!finalContext) {
     throw new Error('Canvas export is not available in this browser.');
   }
@@ -299,8 +323,8 @@ async function colorizeSourceImage(src, reportProgress) {
   return finalCanvas.convertToBlob({ type: 'image/jpeg', quality: 0.92 });
 }
 
-async function handleColorizeRequest(id, src) {
-  const reportProgress = (progress, label) => postProgress(id, progress, label);
+async function handleColorizeRequest(id: string, src: string) {
+  const reportProgress = (progress: number, label?: string) => postProgress(id, progress, label);
   const blob = await colorizeSourceImage(src, reportProgress);
   postResult(id, blob);
 }

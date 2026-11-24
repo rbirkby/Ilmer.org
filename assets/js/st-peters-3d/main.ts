@@ -1,4 +1,3 @@
-// @ts-nocheck -- scene code ported from unchecked JavaScript; three.js calls are validated at runtime.
 import * as THREE from 'three';
 import { createMaterials, createPlainGlazingMaterial } from './textures.ts';
 import { buildArchitecture } from './architecture.ts';
@@ -14,13 +13,13 @@ import { findAnimatedObjects, mergeStaticMeshes } from './static-merge.ts';
 import { createFader } from './fade.ts';
 import './stats-overlay.ts';
 
-/** @param {string} selector */
-const allHTMLElements = (selector) => /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll(selector));
+const allHTMLElements = (selector: string) => document.querySelectorAll<HTMLElement>(selector);
 
 const stage = document.getElementById('church-scene');
 const statusEl = document.getElementById('scene-status');
 
 if (stage) {
+  const stageEl = stage;
   const initialW = Math.max(stage.clientWidth, 320);
   const initialH = Math.max(stage.clientHeight, 320);
 
@@ -42,10 +41,12 @@ if (stage) {
   stage.prepend(renderer.domElement);
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0xc4d8eb, 0.0095);
+  const fog = new THREE.FogExp2(0xc4d8eb, 0.0095);
+  scene.fog = fog;
 
   const camera = new THREE.PerspectiveCamera(48, initialW / initialH, 0.08, 220);
-  camera.position.set(...CAMERA_PRESETS['exterior-nw'].pos);
+  const openingPos = CAMERA_PRESETS['exterior-nw'].pos;
+  camera.position.set(openingPos[0], openingPos[1], openingPos[2]);
 
   // Sky & Lighting Rig
   const sky = createSkyDome();
@@ -76,7 +77,12 @@ if (stage) {
 
   // Build Church, Churchyard & Cinematic Stained-Glass Atmosphere
   const mats = createMaterials(renderer);
-  const { wallsGroup, roofGroup, doorPivots } = buildArchitecture(mats);
+  const { wallsGroup, roofGroup, doorPivots: doorPivotBag } = buildArchitecture(mats);
+  const doorPivots = doorPivotBag as {
+    gateLeft?: THREE.Object3D;
+    gateRight?: THREE.Object3D;
+    mainDoor?: THREE.Object3D;
+  };
   const { interiorGroup, ceilingGroup, chandelierLights, oilLights, causticMesh, candleEffect, organAnimator } =
     buildInterior(mats);
   const {
@@ -96,7 +102,7 @@ if (stage) {
   scene.add(atmosphere.group);
 
   const controller = createCameraController(camera, renderer.domElement);
-  controller.goToPreset('exterior-nw');
+  controller.goToPreset('exterior-nw', undefined);
 
   const state = {
     cutaway: false,
@@ -106,14 +112,29 @@ if (stage) {
     gatesTriggered: false,
     gateAnim: 0,
     mainDoorAnim: 0,
-    lighting: 'autumn',
-    era: 'today',
-    activePreset: 'exterior-nw',
-    ringBellsAt: null // elapsed time at which the tour sets the bells ringing
+    lighting: 'autumn' as MoodKey,
+    era: 'today' as 'today' | '1900',
+    activePreset: 'exterior-nw' as string | null,
+    ringBellsAt: null as number | null // elapsed time at which the tour sets the bells ringing
   };
 
-  /** @type {Record<string, { sunPos: [number, number, number] } & Record<string, any>>} */
-  const LIGHTING_MOODS = {
+  type MoodKey = 'autumn' | 'golden' | 'evensong';
+  type LightingMood = {
+    sunPos: [number, number, number];
+    sunColor: number;
+    sunInt: number;
+    hemiSky: number;
+    hemiGround: number;
+    hemiInt: number;
+    skyTop: number;
+    skyHorizon: number;
+    fogColor: number;
+    chandelierScale: number;
+    glassGlow: number;
+    causticOp: number;
+    exposure: number;
+  };
+  const LIGHTING_MOODS: Record<MoodKey, LightingMood> = {
     autumn: {
       sunPos: [-16, 15, 20],
       sunColor: 0xfff1d6,
@@ -161,9 +182,9 @@ if (stage) {
     }
   };
 
-  function applyLighting(moodKey) {
+  function applyLighting(moodKey: string | undefined) {
+    if (moodKey !== 'autumn' && moodKey !== 'golden' && moodKey !== 'evensong') return;
     const m = LIGHTING_MOODS[moodKey];
-    if (!m) return;
     state.lighting = moodKey;
     shadowsDirty = true;
     sunLight.position.set(...m.sunPos);
@@ -182,7 +203,7 @@ if (stage) {
     );
     sky.material.uniforms.cloudStrength.value = moodKey === 'evensong' ? 0.22 : 0.4;
     sky.material.uniforms.starStrength.value = moodKey === 'evensong' ? 0.85 : 0.0;
-    scene.fog.color.setHex(m.fogColor);
+    fog.color.setHex(m.fogColor);
     renderer.toneMappingExposure = m.exposure;
 
     // 1900 paraffin lamps: dimmer & warmer than today's electric pendants
@@ -214,17 +235,18 @@ if (stage) {
   // Today / 1900: objects tagged userData.era = 'today' or '1900' show only in their own era. In 1900 the
   // stained-glass windows are plainly glazed, the West end is half-hipped (its hip clips the clay roof slopes),
   // and the bells are chimed by hammers rather than swung.
-  const eraObjects = [];
-  const stainedGlass = [];
-  const halfHipClipped = [];
-  const wideBoarded = [];
+  const eraObjects: THREE.Object3D[] = [];
+  const stainedGlass: THREE.Mesh[] = [];
+  const halfHipClipped: THREE.Mesh[] = [];
+  const wideBoarded: THREE.Mesh[] = [];
   scene.traverse((o) => {
     if (o.userData.era) eraObjects.push(o);
-    if (o.userData.wideBoards1900) wideBoarded.push(o);
-    if (o.userData.clipIn1900) halfHipClipped.push(o);
+    if (o.userData.wideBoards1900) wideBoarded.push(o as THREE.Mesh);
+    if (o.userData.clipIn1900) halfHipClipped.push(o as THREE.Mesh);
     if (o.userData.stainedGlass) {
-      o.userData.stainedMat = /** @type {THREE.Mesh} */ (o).material;
-      stainedGlass.push(o);
+      const mesh = o as THREE.Mesh;
+      mesh.userData.stainedMat = mesh.material;
+      stainedGlass.push(mesh);
     }
   });
   const halfHipClip = roofGroup.userData.halfHipClipPlane;
@@ -232,8 +254,10 @@ if (stage) {
 
   function syncPlainGlass() {
     for (const g of stainedGlass) {
-      if (g.material !== g.userData.stainedMat) {
-        g.material.emissiveIntensity = g.userData.stainedMat.emissiveIntensity * 0.75;
+      const mat = g.material as THREE.MeshStandardMaterial;
+      const stained = g.userData.stainedMat as THREE.MeshStandardMaterial;
+      if (mat !== stained) {
+        mat.emissiveIntensity = stained.emissiveIntensity * 0.75;
       }
     }
   }
@@ -241,7 +265,7 @@ if (stage) {
   // Features fade in & out over half a second when the era or the cutaway changes (fade.js)
   const fader = createFader();
 
-  function setEra(era, instant = false) {
+  function setEra(era: 'today' | '1900', instant = false) {
     state.era = era;
     shadowsDirty = true;
     for (const o of eraObjects) fader.setVisible(o, o.userData.era === era, instant);
@@ -257,14 +281,14 @@ if (stage) {
     }
   }
 
-  function applyEraMaterials(era) {
+  function applyEraMaterials(era: 'today' | '1900') {
     mats.railingPaint.userData.rust.value = era === '1900' ? 0 : 1; // freshly painted railings in 1900
     for (const g of stainedGlass) {
       g.material = era === '1900' ? createPlainGlazingMaterial(g.userData.stainedMat) : g.userData.stainedMat;
     }
     syncPlainGlass();
-    for (const mat of [mats.clayRoof, ...halfHipClipped.map((o) => o.material)]) {
-      mat.clippingPlanes = era === '1900' && halfHipClip ? [halfHipClip] : [];
+    for (const mat of [mats.clayRoof as THREE.Material, ...halfHipClipped.map((o) => o.material as THREE.Material)]) {
+      mat.clippingPlanes = era === '1900' && halfHipClip ? [halfHipClip as THREE.Plane] : [];
       mat.needsUpdate = true;
     }
     // 1900 belfry boarding: twice-deep boards, keeping the wall's solid-cut material settings
@@ -283,7 +307,7 @@ if (stage) {
     }
   }
 
-  function setCutaway(enabled) {
+  function setCutaway(enabled: boolean) {
     state.cutaway = enabled;
     shadowsDirty = true;
     for (const g of [roofGroup, ceilingGroup, atmosphere.group]) fader.setVisible(g, !enabled);
@@ -291,7 +315,7 @@ if (stage) {
     if (btn) btn.setAttribute('aria-pressed', String(enabled));
   }
 
-  function setDoorsOpen(open) {
+  function setDoorsOpen(open: boolean) {
     state.doorsOpen = open;
     state.doorsOnApproach = false;
     if (!open) state.gatesTriggered = false;
@@ -302,7 +326,7 @@ if (stage) {
     }
   }
 
-  function setWalkMode(isWalk) {
+  function setWalkMode(isWalk: boolean) {
     controller.setMode(isWalk ? 'walk' : 'orbit');
     if (isWalk) setDoorsOpen(true);
     const btn = document.getElementById('btn-walk');
@@ -318,17 +342,18 @@ if (stage) {
     if (!isWalk) controller.setMoveInput(0, 0);
   }
 
-  document.getElementById('walk-joystick')?.addEventListener('joystickmove', (e) => {
-    const { x, y } = /** @type {CustomEvent<{ x: number, y: number }>} */ (e).detail;
+  const onJoystickMove = (e: CustomEvent<{ x: number; y: number }>) => {
+    const { x, y } = e.detail;
     controller.setMoveInput(x, y);
-  });
+  };
+  document.getElementById('walk-joystick')?.addEventListener('joystickmove', onJoystickMove as EventListener);
 
   // Inside the nave (East of the vestry partition) or the chancel, at standing height, the view switches to Walk
   // mode: when the camera comes in from outside, or lands there from a viewpoint button. Choosing Orbit again
   // while inside (or focusing on a memorial) is left alone until the camera next leaves and comes back.
-  let wasInside: any = null;
+  let wasInside: boolean | null = null;
   let presetLanding = false;
-  function inNaveOrChancel(p) {
+  function inNaveOrChancel(p: THREE.Vector3) {
     if (p.y > 3.0) return false;
     const N = DIM.nave;
     const C = DIM.chancel;
@@ -347,7 +372,7 @@ if (stage) {
   const presetBar = document.getElementById('preset-bar');
   const presetsToggleBtn = document.getElementById('btn-presets-toggle');
 
-  function setPresetsExpanded(expanded) {
+  function setPresetsExpanded(expanded: boolean) {
     if (!presetBar || !presetsToggleBtn) return;
     presetBar.classList.toggle('is-expanded', expanded);
     presetsToggleBtn.setAttribute('aria-expanded', String(expanded));
@@ -361,14 +386,14 @@ if (stage) {
     setPresetsExpanded(!isExp);
   });
 
-  function selectPreset(key) {
-    if (!CAMERA_PRESETS[key]) return;
+  function selectPreset(key: string | undefined) {
+    if (!key || !(key in CAMERA_PRESETS)) return;
     state.activePreset = key;
     allHTMLElements('[data-preset]').forEach((b) => {
       b.setAttribute('aria-pressed', String(b.dataset.preset === key));
     });
     setPresetsExpanded(false);
-    controller.goToPreset(key, (meta) => {
+    controller.goToPreset(key, (meta: { cutaway?: boolean; doorsOpen?: boolean }) => {
       setCutaway(Boolean(meta.cutaway));
       if (meta.doorsOpen) setDoorsOpen(true);
       setWalkMode(false);
@@ -380,7 +405,7 @@ if (stage) {
   const tourBtn = document.getElementById('btn-tour');
   const tourBanner = document.getElementById('tour-banner');
 
-  function setTourUI(active, label = '') {
+  function setTourUI(active: boolean, label = '') {
     if (tourBtn) {
       tourBtn.setAttribute('aria-pressed', String(active));
       tourBtn.textContent = active ? 'Stop Tour' : 'Church Tour';
@@ -402,7 +427,7 @@ if (stage) {
     setWalkMode(false);
     setCutaway(false);
     controller.startTour(CHURCH_TOUR_WAYPOINTS, {
-      onStep(wp) {
+      onStep(wp: { label?: string; cutaway?: boolean; doorsOpen?: boolean | 'approach'; ringBells?: number }) {
         if (typeof wp.cutaway === 'boolean') setCutaway(wp.cutaway);
         if (wp.doorsOpen === 'approach') {
           if (!state.doorsOpen) state.doorsOnApproach = true;
@@ -410,7 +435,7 @@ if (stage) {
         if (typeof wp.ringBells === 'number') state.ringBellsAt = elapsed + wp.ringBells;
         setTourUI(true, wp.label);
       },
-      onEnd(completed) {
+      onEnd(completed: boolean) {
         state.doorsOnApproach = false;
         state.gatesTriggered = state.doorsOpen;
         setTourUI(false);
@@ -465,7 +490,7 @@ if (stage) {
   const soundOnIcon = soundBtn?.querySelector('[data-icon="sound-on"]');
   const soundOffIcon = soundBtn?.querySelector('[data-icon="sound-off"]');
 
-  function setSoundMuted(isMuted) {
+  function setSoundMuted(isMuted: boolean) {
     churchAudio.setMuted(isMuted);
     if (soundBtn) {
       soundBtn.setAttribute('aria-pressed', String(isMuted));
@@ -497,7 +522,7 @@ if (stage) {
       window.removeEventListener(evt, unlockChurchAudio, true);
     }
   }
-  function unlockChurchAudio(e) {
+  function unlockChurchAudio(e: Event) {
     if (churchAudio.isMuted()) return;
     if (churchAudio.isRunning()) {
       removeUnlockListeners();
@@ -536,7 +561,7 @@ if (stage) {
     fsExitIcon?.toggleAttribute('hidden', !isFs);
   }
 
-  function setPseudoFullscreen(enabled) {
+  function setPseudoFullscreen(enabled: boolean) {
     isPseudoFullscreen = Boolean(enabled);
     stageWrapper.classList.toggle('is-pseudo-fullscreen', isPseudoFullscreen);
     document.body.classList.toggle('st-peters-fs-lock', isPseudoFullscreen);
@@ -606,8 +631,8 @@ if (stage) {
   // The three bells: click one (or reach them on the tour) to swing-chime two rounds. Each wheel draws its rope
   // up and lets it back as the bell swings, so the falls & tails in the vestry rise and drop in step.
   const bellRinger = createBellRinger(wallsGroup, interiorGroup); // interior: the 1900 vestry chiming cords
-  const bellRopeParts = [];
-  const bellRopeGroups = [];
+  const bellRopeParts: THREE.Object3D[] = [];
+  const bellRopeGroups: THREE.Object3D[] = [];
   interiorGroup.traverse((o) => {
     if (o.userData.bellRope) bellRopeParts.push(o);
     if (o.userData.ringsBells) bellRopeGroups.push(o);
@@ -646,7 +671,7 @@ if (stage) {
     }
   }
 
-  function findBell(obj) {
+  function findBell(obj: THREE.Object3D | null): THREE.Object3D | null {
     let cur = obj;
     while (cur) {
       if ((cur.userData?.bell && cur.userData?.clapper) || cur.userData?.ringsBells) return cur;
@@ -659,7 +684,7 @@ if (stage) {
   const raycaster = new THREE.Raycaster();
   const pointerNdc = new THREE.Vector2();
   // Hymn number cards (one board per era): clicking a card plays its hymn on the organ
-  const hymnBoards = [];
+  const hymnBoards: THREE.Object3D[] = [];
   interiorGroup.traverse((o) => {
     if (o.userData.hymnNumber) hymnBoards.push(o);
   });
@@ -669,25 +694,25 @@ if (stage) {
   let downTime = 0;
   let pointerActive = false;
 
-  function isShown(obj) {
+  function isShown(obj: THREE.Object3D | null): boolean {
     for (let cur = obj; cur; cur = cur.parent) if (!cur.visible) return false;
     return true;
   }
 
-  function findHymnBoard(obj) {
+  function findHymnBoard(obj: THREE.Object3D | null): THREE.Object3D | null {
     for (let cur = obj; cur; cur = cur.parent) if (cur.userData?.hymnNumber) return cur;
     return null;
   }
 
   // Unmute if need be (the click unlocks the audio), then play the hymn on the organ
-  function playHymn(number) {
+  function playHymn(number: number) {
     if (churchAudio.isMuted()) setSoundMuted(false);
     churchAudio.start().then((ok) => {
       if (ok) churchAudio.playHymn(number);
     });
   }
 
-  function findMemorialGroup(obj) {
+  function findMemorialGroup(obj: THREE.Object3D | null): THREE.Object3D | null {
     let cur = obj;
     while (cur) {
       if (cur.userData?.memorialFocus) return cur;
@@ -696,7 +721,7 @@ if (stage) {
     return null;
   }
 
-  function pickMemorialAtEvent(e) {
+  function pickMemorialAtEvent(e: PointerEvent) {
     const rect = renderer.domElement.getBoundingClientRect();
     if (rect.width <= 0 || rect.height <= 0) return null;
     pointerNdc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
@@ -709,11 +734,11 @@ if (stage) {
     return findMemorialGroup(hit.object) || findBell(hit.object) || findHymnBoard(hit.object);
   }
 
-  function focusMemorial(memorialGroup) {
+  function focusMemorial(memorialGroup: THREE.Object3D) {
     const { localTarget, localCam } = memorialGroup.userData.memorialFocus;
     memorialGroup.updateWorldMatrix(true, false);
-    const worldTarget = memorialGroup.localToWorld(new THREE.Vector3(...localTarget));
-    const worldCam = memorialGroup.localToWorld(new THREE.Vector3(...localCam));
+    const worldTarget = memorialGroup.localToWorld(new THREE.Vector3(localTarget[0], localTarget[1], localTarget[2]));
+    const worldCam = memorialGroup.localToWorld(new THREE.Vector3(localCam[0], localCam[1], localCam[2]));
     state.activePreset = null;
     allHTMLElements('[data-preset]').forEach((b) => {
       b.setAttribute('aria-pressed', 'false');
@@ -722,7 +747,7 @@ if (stage) {
     controller.focusOn(worldCam, worldTarget);
   }
 
-  renderer.domElement.addEventListener('pointerdown', (e) => {
+  renderer.domElement.addEventListener('pointerdown', (e: PointerEvent) => {
     if (e.button !== 0) return;
     downX = e.clientX;
     downY = e.clientY;
@@ -730,7 +755,7 @@ if (stage) {
     pointerActive = true;
   });
 
-  renderer.domElement.addEventListener('pointermove', (e) => {
+  renderer.domElement.addEventListener('pointermove', (e: PointerEvent) => {
     // Hand cursor over anything clickable (gravestones, bells, hymn board), in Orbit and Walk mode alike
     if (e.buttons !== 0) {
       renderer.domElement.style.cursor = '';
@@ -740,7 +765,7 @@ if (stage) {
     renderer.domElement.style.cursor = hit ? 'pointer' : '';
   });
 
-  renderer.domElement.addEventListener('pointerup', (e) => {
+  renderer.domElement.addEventListener('pointerup', (e: PointerEvent) => {
     if (!pointerActive || e.button !== 0) return;
     pointerActive = false;
     const dist = Math.hypot(e.clientX - downX, e.clientY - downY);
@@ -753,8 +778,8 @@ if (stage) {
   });
 
   // Keyboard shortcuts
-  window.addEventListener('keydown', (e) => {
-    const t = /** @type {HTMLElement | null} */ (e.target);
+  window.addEventListener('keydown', (e: KeyboardEvent) => {
+    const t = e.target as HTMLElement | null;
     if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT')) return;
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.code === 'KeyC') setCutaway(!state.cutaway);
@@ -770,8 +795,8 @@ if (stage) {
 
   // ResizeObserver keeps canvas sharp in both embedded and fullscreen modes
   function handleResize() {
-    const w = Math.max(stage.clientWidth, 1);
-    const h = Math.max(stage.clientHeight, 1);
+    const w = Math.max(stageEl.clientWidth, 1);
+    const h = Math.max(stageEl.clientHeight, 1);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     renderer.setSize(w, h, false);
@@ -807,10 +832,10 @@ if (stage) {
   let mergeInfo = 'off';
   if (!perfParams.has('nomerge')) {
     const mergeRoots = [wallsGroup, roofGroup, interiorGroup, ceilingGroup, churchyardGroup];
-    const allKeys = new Set(Array.from({ length: 128 }, (_, i) => i));
+    const allKeys = new Set<number>(Array.from({ length: 128 }, (_, i): number => i));
     const dynamic = findAnimatedObjects(
       mergeRoots,
-      (checkpoint) => {
+      (checkpoint: () => void) => {
         organAnimator.update(5, true, { manual: allKeys, pedal: allKeys });
         checkpoint();
         candleEffect.update(1.7);
@@ -851,9 +876,13 @@ if (stage) {
     return moved;
   }
 
-  let stats: any = null;
+  interface SceneStatsElement extends HTMLElement {
+    setInfo(info: { load: string; meshes: string; shadows: string }): void;
+    frame(renderer: THREE.WebGLRenderer, cpuMs: number): void;
+  }
+  let stats: SceneStatsElement | null = null;
   if (perfParams.has('stats')) {
-    stats = document.createElement('st-scene-stats');
+    stats = document.createElement('st-scene-stats') as SceneStatsElement;
     stage.append(stats);
     stats.setInfo({
       load: `${(performance.now() / 1000).toFixed(1)} s`,
@@ -866,7 +895,7 @@ if (stage) {
   applyLighting('autumn');
 
   // A kissing gate's leaf clanks against its end post, quieter the further off the listener is
-  kissingGates.onStop = (gate) => {
+  kissingGates.onStop = (gate: { x: number; z: number; gate: THREE.Object3D }) => {
     const p = camera.position;
     churchAudio.playGateClang(Math.hypot(p.x - gate.x, p.y - gate.gate.position.y - 1, p.z - gate.z));
   };

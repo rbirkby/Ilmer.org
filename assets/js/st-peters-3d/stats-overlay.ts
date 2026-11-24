@@ -31,8 +31,8 @@ TEMPLATE.innerHTML = `
 <div class="fps" part="fps"></div><div class="body" part="body"></div>`;
 
 class SceneStats extends HTMLElement {
-  #fpsEl: any = null;
-  #bodyEl: any = null;
+  #fpsEl: HTMLElement | null = null;
+  #bodyEl: HTMLElement | null = null;
   #frames = 0;
   #frameMs = 0;
   #worstMs = 0;
@@ -43,15 +43,16 @@ class SceneStats extends HTMLElement {
 
   connectedCallback() {
     if (!this.shadowRoot) {
-      this.attachShadow({ mode: 'open' }).appendChild(TEMPLATE.content.cloneNode(true));
-      this.#fpsEl = this.shadowRoot.querySelector('.fps');
-      this.#bodyEl = this.shadowRoot.querySelector('.body');
+      const root = this.attachShadow({ mode: 'open' });
+      root.appendChild(TEMPLATE.content.cloneNode(true));
+      this.#fpsEl = root.querySelector<HTMLElement>('.fps');
+      this.#bodyEl = root.querySelector<HTMLElement>('.body');
     }
     this.setAttribute('aria-hidden', 'true');
   }
 
   /** Fixed facts shown under the live numbers (load time, merge counts...). */
-  setInfo(info) {
+  setInfo(info: Record<string, string | number>) {
     Object.assign(this.#extra, info);
   }
 
@@ -60,7 +61,16 @@ class SceneStats extends HTMLElement {
    * @param {{ info: { render: { calls: number, triangles: number }, memory: { geometries: number, textures: number }, programs?: unknown[] | null } }} renderer
    * @param {number} cpuMs JS time spent on this frame's update & render call
    */
-  frame(renderer, cpuMs) {
+  frame(
+    renderer: {
+      info: {
+        render: { calls: number; triangles: number };
+        memory: { geometries: number; textures: number };
+        programs?: unknown[] | null;
+      };
+    },
+    cpuMs: number
+  ) {
     const now = performance.now();
     const dt = now - this.#last;
     this.#last = now;
@@ -83,7 +93,7 @@ class SceneStats extends HTMLElement {
       `shaders ${programs ? programs.length : '?'}`
     ];
     for (const [k, v] of Object.entries(this.#extra)) lines.push(`${k.padEnd(7)} ${v}`);
-    this.#bodyEl.textContent = lines.join('\n');
+    if (this.#bodyEl) this.#bodyEl.textContent = lines.join('\n');
     this.#frames = 0;
     this.#frameMs = 0;
     this.#worstMs = 0;

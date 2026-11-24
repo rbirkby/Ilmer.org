@@ -1,4 +1,4 @@
-const section = document.querySelector('.census-summary');
+const section = document.querySelector<HTMLElement>('.census-summary');
 if (section) {
   const agesHeading = document.getElementById('census-ages-heading');
   const occupationsHeading = document.getElementById('census-occupations-heading');
@@ -26,7 +26,7 @@ if (section) {
     history.replaceState({ ...state, censusSummaryScroll: window.scrollY }, '');
   };
 
-  const restoreScroll = (state) => {
+  const restoreScroll = (state: { censusSummaryScroll?: number } | null) => {
     const y = state && typeof state.censusSummaryScroll === 'number' ? state.censusSummaryScroll : null;
     if (y === null) return;
     window.scrollTo(0, y);

@@ -1,11 +1,72 @@
-// @ts-nocheck -- scene code ported from unchecked JavaScript; three.js calls are validated at runtime.
 import * as THREE from 'three';
-import { canvasTexture, makeCanvas } from './canvas-utils.ts';
+import { canvas2d, canvasTexture, makeCanvas } from './canvas-utils.ts';
 import { addBox, boxMesh } from './mesh-utils.ts';
 import { DIM, getGroundHeight, groundOutlineRadius, isChristmasSeason } from './dimensions.ts';
 import { CHURCHYARD_MEMORIALS, surveyGridToWorld } from './memorials-data.ts';
 
-function pickStoneMat(stone, mats) {
+type XZ = readonly [number, number];
+type InscriptionLines = readonly (string | undefined)[];
+type ChurchMats = {
+  granite: THREE.Material;
+  ashlarWarm: THREE.Material;
+  medOak: THREE.Material;
+  ashlar: THREE.Material;
+  stoneCapDark: THREE.Material;
+  gravePebbles?: THREE.Material;
+  gravelPath: THREE.Material;
+  iron: THREE.Material;
+  weatherboard: THREE.Material;
+  railingPaint: THREE.Material;
+  pathPavers: THREE.Material;
+  grass: THREE.Material;
+};
+type MemorialSpec = {
+  id: string;
+  kind: string;
+  stone?: string;
+  inscription?: InscriptionLines;
+  pages?: readonly InscriptionLines[];
+  plaques?: readonly InscriptionLines[];
+  facesChurch?: boolean;
+  benchOnLeft?: boolean;
+  standingIn1900?: boolean;
+};
+type InscriptionOptions = {
+  id?: string;
+  widthPx?: number;
+  heightPx?: number;
+  isBrass?: boolean;
+  showBorder?: boolean;
+};
+type FocusOffset = { localTarget: [number, number, number]; localCam: [number, number, number] };
+type MemorialFocus = FocusOffset & { id: string };
+type TopplePose = { x: number; y: number; angle: number };
+type Toppler = {
+  monument: THREE.Object3D;
+  pivot: THREE.Object3D;
+  upright: TopplePose;
+  fallen: TopplePose;
+  hinge: { x: number; y: number };
+  height: number;
+  focus: { today: MemorialFocus; 1900: MemorialFocus };
+  angle: number;
+  vel: number;
+  mode: string;
+  from: number;
+  u: number;
+};
+type PolylinePoint = { x: number; z: number; dx: number; dz: number; yaw: number };
+type GateRec = {
+  gate: THREE.Object3D;
+  pivot: THREE.Object3D;
+  x: number;
+  z: number;
+  yaw: number;
+  angle: number;
+  outside: number;
+  side: number;
+};
+function pickStoneMat(stone: string | undefined, mats: ChurchMats): THREE.Material {
   if (stone === 'granite') return mats.granite;
   if (stone === 'buff') return mats.ashlarWarm;
   if (stone === 'wood') return mats.medOak;
@@ -13,7 +74,7 @@ function pickStoneMat(stone, mats) {
 }
 
 // Deterministic tiny hash for per-stone subtle weathering grain
-function hashSeed(str) {
+function hashSeed(str: string) {
   let h = 2166136261;
   for (let i = 0; i < str.length; i++) {
     h ^= str.charCodeAt(i);
@@ -24,17 +85,17 @@ function hashSeed(str) {
 
 // Render authentic carved-stone inscription canvas texture (transparent overlay on stone; solid metal on brass plates)
 function createInscriptionMaterial(
-  lines,
-  stone,
-  { id = 'M', widthPx = 384, heightPx = 512, isBrass = false, showBorder = false } = {}
-) {
+  lines: InscriptionLines | null | undefined,
+  stone: string | undefined,
+  { id = 'M', widthPx = 384, heightPx = 512, isBrass = false, showBorder = false }: InscriptionOptions = {}
+): THREE.MeshStandardMaterial {
   const canvas = makeCanvas(widthPx, heightPx);
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas2d(canvas);
   ctx.clearRect(0, 0, widthPx, heightPx);
 
   let ink = 'rgba(62, 56, 46, 0.66)';
   let highlight = 'rgba(250, 244, 228, 0.28)';
-  let outline: any = null;
+  let outline: string | null = null;
   let border = 'rgba(68, 60, 48, 0.24)';
   const isGranite = !isBrass && stone === 'granite';
 
@@ -82,9 +143,9 @@ function createInscriptionMaterial(
   const innerH = heightPx - pad * 3.6;
   const serifStack = 'Georgia, "Times New Roman", Times, serif';
 
-  const wrapAll = (fs) => {
+  const wrapAll = (fs: number) => {
     ctx.font = `600 ${fs}px ${serifStack}`;
-    const wrapped = [];
+    const wrapped: string[] = [];
     for (const raw of cleanLines) {
       if (!raw.trim()) {
         wrapped.push('');
@@ -113,7 +174,7 @@ function createInscriptionMaterial(
   // Start with a generous target font size and step down until all wrapped lines fit innerW & innerH
   let fontSize = Math.min(44, Math.max(15, Math.floor(innerH / Math.max(cleanLines.length + 0.5, 3.4) / 1.16)));
   let finalLines = wrapAll(fontSize);
-  const fitsWidth = (arr, fs) => {
+  const fitsWidth = (arr: readonly string[], fs: number) => {
     ctx.font = `700 ${fs}px ${serifStack}`;
     return arr.every((line) => !line || ctx.measureText(line).width <= innerW);
   };
@@ -190,7 +251,7 @@ function createInscriptionMaterial(
 }
 
 // Helper: create a flat inscribed top-facing plane whose text reads left-to-right from East (+X) looking West (-X)
-function createTopInscriptionMesh(wZ, hX, mat) {
+function createTopInscriptionMesh(wZ: number, hX: number, mat: THREE.Material) {
   const geo = new THREE.PlaneGeometry(wZ, hX);
   geo.rotateX(-Math.PI / 2);
   geo.rotateY(Math.PI / 2);
@@ -200,7 +261,7 @@ function createTopInscriptionMesh(wZ, hX, mat) {
 }
 
 // Helper: create an upright inscribed plane facing East (+X), reading left-to-right when viewed from East
-function createEastInscriptionMesh(wZ, hY, mat) {
+function createEastInscriptionMesh(wZ: number, hY: number, mat: THREE.Material) {
   const geo = new THREE.PlaneGeometry(wZ, hY);
   geo.rotateY(Math.PI / 2);
   const mesh = new THREE.Mesh(geo, mat);
@@ -209,7 +270,7 @@ function createEastInscriptionMesh(wZ, hY, mat) {
 }
 
 // Compute ideal local-space [target, camera] coordinates directly facing a memorial's carved inscription
-function getMemorialCameraOffsets(spec) {
+function getMemorialCameraOffsets(spec: { kind?: string }): FocusOffset {
   switch (spec.kind) {
     case 'celtic-cross-chains':
       return { localTarget: [-0.06, 0.44, 0], localCam: [1.08, 0.62, 0] };
@@ -239,8 +300,8 @@ function getMemorialCameraOffsets(spec) {
 }
 
 // Shared faceted 3D stone chipping geometry for kerbed grave beds
-let graveChippingGeo: any = null;
-function getGraveChippingGeometry() {
+let graveChippingGeo: THREE.DodecahedronGeometry | null = null;
+function getGraveChippingGeometry(): THREE.DodecahedronGeometry {
   if (!graveChippingGeo) {
     graveChippingGeo = new THREE.DodecahedronGeometry(0.022, 0);
     graveChippingGeo.scale(1.18, 0.62, 0.96);
@@ -249,12 +310,12 @@ function getGraveChippingGeometry() {
 }
 
 // Build an authentic 3D gravestone/monument matching the Monumental Inscriptions survey, photos & transcriptions
-function buildMemorial(spec, mats) {
+function buildMemorial(spec: MemorialSpec, mats: ChurchMats) {
   const g = new THREE.Group();
   const stoneMat = pickStoneMat(spec.stone, mats);
   const kerbMat = spec.stone === 'granite' ? mats.granite : mats.stoneCapDark;
 
-  const addKerbs = (lenX = 1.82, widZ = 0.86) => {
+  const addKerbs = (lenX = 1.82, widZ = 0.86): void => {
     const kerbH = 0.14;
     const wallT = 0.1;
     const north = boxMesh([lenX, kerbH, wallT], kerbMat, [0.35, kerbH * 0.5, -widZ * 0.5]);
@@ -310,16 +371,17 @@ function buildMemorial(spec, mats) {
     g.add(north, south, east, west, bed, pebbles);
   };
 
-  const addOpenBook = (baseY) => {
+  const addOpenBook = (baseY: number) => {
     const bookG = new THREE.Group();
     addBox(bookG, [0.38, 0.22, 0.68], stoneMat, [0, 0.11, 0], { cast: true });
 
     const pages = spec.pages || [spec.inscription || [], []];
     // Left page (South, +Z when facing West) & Right page (North, -Z when facing West)
-    [
-      [1, pages[0], 'L'],
-      [-1, pages[1], 'R']
-    ].forEach(([side, pageLines, suffix]) => {
+    const pageSpecs: [number, InscriptionLines, string][] = [
+      [1, pages[0] ?? [], 'L'],
+      [-1, pages[1] ?? [], 'R']
+    ];
+    pageSpecs.forEach(([side, pageLines, suffix]) => {
       const pagePivot = new THREE.Group();
       addBox(pagePivot, [0.4, 0.06, 0.32], stoneMat, [0, 0, 0], { cast: true, receive: true });
 
@@ -344,7 +406,12 @@ function buildMemorial(spec, mats) {
     g.add(bookG);
   };
 
-  const addHeadstoneSlab = (h = 0.88, hw = 0.3, xOff = -0.35, lines = spec.inscription) => {
+  const addHeadstoneSlab = (
+    h = 0.88,
+    hw = 0.3,
+    xOff = -0.35,
+    lines: InscriptionLines | undefined = spec.inscription
+  ) => {
     addBox(g, [0.24, 0.12, hw * 2 + 0.14], stoneMat, [xOff, 0.06, 0], { cast: true, receive: true });
 
     const shape = new THREE.Shape();
@@ -417,7 +484,7 @@ function buildMemorial(spec, mats) {
       g.add(crossG);
 
       // 4 high corner stone posts & sagging catenary wrought-iron link chains
-      const corners = [
+      const corners: [number, number][] = [
         [-0.68, -1.03],
         [1.38, -1.03],
         [1.38, 1.03],
@@ -432,7 +499,7 @@ function buildMemorial(spec, mats) {
       linkGeo.scale(1.45, 1.0, 1.0); // Elongated oval link along local +X
       const linkPitch = 0.036;
       const anchorY = 0.44;
-      const chainTransforms = [];
+      const chainTransforms: THREE.Matrix4[] = [];
       const xAxis = new THREE.Vector3(1, 0, 0);
       const tangent = new THREE.Vector3();
       const alignQ = new THREE.Quaternion();
@@ -510,10 +577,11 @@ function buildMemorial(spec, mats) {
 
       // Flanking stone plaques for C24 (William & Winifred Richardson; Ruth & Frank Rogers)
       if (spec.plaques?.length) {
-        [
-          [0.56, spec.plaques[0], 'P1'],
-          [-0.56, spec.plaques[1], 'P2']
-        ].forEach(([pz, pLines, suffix]) => {
+        const plaqueSpecs: [number, InscriptionLines, string][] = [
+          [0.56, spec.plaques[0] ?? [], 'P1'],
+          [-0.56, spec.plaques[1] ?? [], 'P2']
+        ];
+        plaqueSpecs.forEach(([pz, pLines, suffix]) => {
           addBox(g, [0.4, 0.07, 0.38], stoneMat, [-0.18, 0.04, pz], { receive: true });
           const pMat = createInscriptionMaterial(pLines, spec.stone, {
             id: `${spec.id}-${suffix}`,
@@ -693,10 +761,10 @@ function buildMemorial(spec, mats) {
 // out); setEra('today') topples them: a slab pivoting on its foot under gravity, rod-like
 // (angular acceleration 3g/2L sin θ), landing with a couple of small bounces. update(dt) returns true while any
 // stone is moving, so the caller can redraw the shadow map.
-function createToppleAnimator(topplers) {
+function createToppleAnimator(topplers: Toppler[]) {
   const G = 9.81;
-  let era = 'today';
-  const hingePos = (t, angle) => {
+  let era: 'today' | '1900' = 'today';
+  const hingePos = (t: Toppler, angle: number) => {
     // Pivot origin such that the slab's hinge point stays put on the socket (starting from the upright pose)
     const hx = t.upright.x + t.hinge.x;
     const hy = t.upright.y + t.hinge.y;
@@ -704,7 +772,7 @@ function createToppleAnimator(topplers) {
     const s = Math.sin(angle);
     return { x: hx - (t.hinge.x * c - t.hinge.y * s), y: hy - (t.hinge.x * s + t.hinge.y * c) };
   };
-  const pose = (t, angle) => {
+  const pose = (t: Toppler, angle: number) => {
     // Follow the hinge, drifting onto the measured resting spot as it comes down
     const end = t.fallen.angle;
     const h = hingePos(t, angle);
@@ -719,7 +787,7 @@ function createToppleAnimator(topplers) {
     t.mode = 'rest';
   }
   return {
-    setEra(next) {
+    setEra(next: 'today' | '1900') {
       if (next === era) return;
       era = next;
       for (const t of topplers) {
@@ -735,7 +803,7 @@ function createToppleAnimator(topplers) {
         }
       }
     },
-    update(dt) {
+    update(dt: number) {
       let moving = false;
       for (const t of topplers) {
         if (t.mode === 'rise') {
@@ -770,7 +838,7 @@ function createToppleAnimator(topplers) {
 }
 
 // Build a weathered wooden churchyard memorial bench (seen beside West wall in IMG_3928 & 3934)
-function buildGardenBench(mats) {
+function buildGardenBench(mats: ChurchMats) {
   const g = new THREE.Group();
   const seat = addBox(g, [1.52, 0.05, 0.46], mats.weatherboard, [0, 0, 0], { cast: true });
   seat.position.y = 0.44;
@@ -787,15 +855,15 @@ function buildGardenBench(mats) {
 }
 
 // Cache procedural alpha-cutout leaf-cluster materials per color so trees build instantaneously
-const leafMatCache = new Map();
+const leafMatCache = new Map<string, THREE.MeshStandardMaterial>();
 
-function getLeafClusterMaterial(foliageHex, isEvergreen) {
+function getLeafClusterMaterial(foliageHex: number, isEvergreen: boolean) {
   const key = `${foliageHex}-${isEvergreen ? 'ev' : 'dec'}`;
   if (leafMatCache.has(key)) return leafMatCache.get(key);
 
   const size = 256;
   const canvas = makeCanvas(size, size);
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas2d(canvas);
   ctx.clearRect(0, 0, size, size);
 
   const base = new THREE.Color(foliageHex);
@@ -886,7 +954,13 @@ function getLeafClusterMaterial(foliageHex, isEvergreen) {
  * girth scales the trunk (and, half as much, the limbs) for older, more mature trees. crownBase (metres), when
  * given, brings the foliage down to that height on low, spreading limbs, as on an open-grown churchyard tree.
  */
-function buildTree(height, foliageColor, isEvergreen = false, girth = 1, crownBase = null) {
+function buildTree(
+  height: number,
+  foliageColor: number,
+  isEvergreen = false,
+  girth = 1,
+  crownBase: number | null = null
+): THREE.Group {
   const g = new THREE.Group();
   const barkMat = new THREE.MeshStandardMaterial({ color: 0x453a30, roughness: 0.95 });
   const leafMat = getLeafClusterMaterial(foliageColor, isEvergreen);
@@ -897,7 +971,7 @@ function buildTree(height, foliageColor, isEvergreen = false, girth = 1, crownBa
     return seed / 4294967296;
   };
 
-  const addLeafCluster = (x, y, z, radius) => {
+  const addLeafCluster = (x: number, y: number, z: number, radius: number) => {
     // Pair of crossed & tilted foliage cards so every leaf cluster has 3D volume from all viewing angles
     const cardGeo = new THREE.PlaneGeometry(radius * 2, radius * 2);
     const c1 = new THREE.Mesh(cardGeo, leafMat);
@@ -951,7 +1025,7 @@ function buildTree(height, foliageColor, isEvergreen = false, girth = 1, crownBa
   g.add(trunk);
 
   // 5 spreading primary limbs + sub-branches visible through the semi-transparent foliage
-  const branchTips = [];
+  const branchTips: [number, number, number][] = [];
   for (let i = 0; i < 5; i++) {
     const az = (i / 5) * Math.PI * 2 + (rand() - 0.5) * 0.35;
     const tilt = 0.42 + rand() * 0.32;
@@ -998,7 +1072,7 @@ function buildTree(height, foliageColor, isEvergreen = false, girth = 1, crownBa
 
   // Low skirt of foliage: thin, whippy shoots sprouting from the trunk all the way down to just above crownBase,
   // each carrying a few small sprays of leaves, so the leaves hang to about crownBase off the ground
-  const lowClusters = [];
+  const lowClusters: [number, number, number][] = [];
   if (crownBase !== null) {
     const shoots = 22;
     for (let i = 0; i < shoots; i++) {
@@ -1018,6 +1092,7 @@ function buildTree(height, foliageColor, isEvergreen = false, girth = 1, crownBa
     }
   }
 
+  const skirtBase = crownBase;
   // Populate airy, semi-transparent leafy clusters around every branch tip
   branchTips.forEach(([bx, by, bz]) => {
     const clusterCount = 2;
@@ -1032,10 +1107,12 @@ function buildTree(height, foliageColor, isEvergreen = false, girth = 1, crownBa
     }
   });
   // The low skirt's clusters: their lower edges hang to about crownBase
-  lowClusters.forEach(([bx, by, bz]) => {
-    const r = 0.32 + rand() * 0.28; // small sprays, not the crown's big clusters
-    addLeafCluster(bx + (rand() - 0.5) * 0.2, Math.max(by, crownBase + r * 0.6), bz + (rand() - 0.5) * 0.2, r);
-  });
+  if (skirtBase !== null) {
+    lowClusters.forEach(([bx, by, bz]) => {
+      const r = 0.32 + rand() * 0.28; // small sprays, not the crown's big clusters
+      addLeafCluster(bx + (rand() - 0.5) * 0.2, Math.max(by, skirtBase + r * 0.6), bz + (rand() - 0.5) * 0.2, r);
+    });
+  }
 
   return g;
 }
@@ -1146,7 +1223,7 @@ export function createSkyDome() {
 // North churchyard frontage from the 1839 tithe-map outline (ilmer-1839-data `churchyard`), converted into
 // St Peter's local metres (+X east, +Z south) about CHURCH_PLAN.centre, then shifted 4 m toward the church
 // (original 1 m offset plus a further 3 m).
-export const NORTH_CHURCHYARD_RAILINGS = [
+export const NORTH_CHURCHYARD_RAILINGS: [number, number][] = [
   // West end: the last ~5 panels re-routed so the kissing gate stands 5 m in from the old end of the path
   // (towards the church door), coming straight down to the path; they meet the rest at an angle
   [-17.589, -6.181],
@@ -1174,9 +1251,9 @@ const KISSING_GATE_RADIUS = 0.8;
 /** Depth of the U from its mouth: deeper than the leaf, so a walker can stand inside while it swings past. */
 const KISSING_GATE_DEPTH = 1.65;
 /** The railing carries on south from the western gate's U to just past the next tree (at z 11.5). */
-const WEST_RAILING_SOUTH_END = [-17.6, 13.2];
+const WEST_RAILING_SOUTH_END: XZ = [-17.6, 13.2];
 
-function polylineLength(points) {
+function polylineLength(points: readonly XZ[]) {
   let len = 0;
   for (let i = 1; i < points.length; i++) {
     len += Math.hypot(points[i][0] - points[i - 1][0], points[i][1] - points[i - 1][1]);
@@ -1184,7 +1261,7 @@ function polylineLength(points) {
   return len;
 }
 
-function pointAlongPolyline(points, distance) {
+function pointAlongPolyline(points: readonly XZ[], distance: number): PolylinePoint {
   let remaining = Math.max(0, distance);
   for (let i = 1; i < points.length; i++) {
     const x0 = points[i - 1][0];
@@ -1223,7 +1300,13 @@ const PATH_GRASS_BANK = 0.45;
  * Lower the lawn under the footpath and curve it down steeply to the path edges so grass never
  * sits on top of the pavers. `pathX0`/`pathX1` are the E–W extents of the slab at `pathZ`.
  */
-function applyPathGrassBanks(groundGeo, pathX0, pathX1, pathZ = PATH_Z, pathWidth = PATH_WIDTH) {
+function applyPathGrassBanks(
+  groundGeo: THREE.BufferGeometry,
+  pathX0: number,
+  pathX1: number,
+  pathZ = PATH_Z,
+  pathWidth = PATH_WIDTH
+) {
   const pos = groundGeo.attributes.position;
   const half = pathWidth * 0.5;
   for (let i = 0; i < pos.count; i++) {
@@ -1251,7 +1334,15 @@ function applyPathGrassBanks(groundGeo, pathX0, pathX1, pathZ = PATH_Z, pathWidt
  * Terrain-following footpath with the original diamond-chequer paver mapping (UV 0–1 along the
  * whole run, as on the previous single slab) and gravel edges.
  */
-function addPathSlab(parent, mats, x0, z0, x1, z1, width = PATH_WIDTH) {
+function addPathSlab(
+  parent: THREE.Object3D,
+  mats: ChurchMats,
+  x0: number,
+  z0: number,
+  x1: number,
+  z1: number,
+  width = PATH_WIDTH
+) {
   const horiz = Math.hypot(x1 - x0, z1 - z0);
   if (horiz < 0.05) return;
   const steps = Math.max(2, Math.ceil(horiz / PATH_SEGMENT_LEN));
@@ -1263,11 +1354,11 @@ function addPathSlab(parent, mats, x0, z0, x1, z1, width = PATH_WIDTH) {
   const half = width * 0.5;
   const halfT = PATH_THICKNESS * 0.5;
 
-  const topPos = [];
-  const topUv = [];
-  const topIdx = [];
-  const edgePos = [];
-  const edgeIdx = [];
+  const topPos: number[] = [];
+  const topUv: number[] = [];
+  const topIdx: number[] = [];
+  const edgePos: number[] = [];
+  const edgeIdx: number[] = [];
 
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
@@ -1317,8 +1408,8 @@ const RAILING_TAPER_LEN = 0.1; // only the top ~10 cm tapers
  * The top of a railing upright: tapers over RAILING_TAPER_LEN from the shaft's radius to a small rounded tip (not a
  * sharp point), centred on its height like the CylinderGeometry it replaced. Cached per radius & segment count.
  */
-const railingTipCache = new Map();
-function railingTipGeometry(baseR, segments) {
+const railingTipCache = new Map<string, THREE.LatheGeometry>();
+function railingTipGeometry(baseR: number, segments: number): THREE.LatheGeometry {
   const key = `${baseR}:${segments}`;
   let geo = railingTipCache.get(key);
   if (geo) return geo;
@@ -1335,7 +1426,7 @@ function railingTipGeometry(baseR, segments) {
 }
 
 /** Straight shaft + short tapered tip (no full-length taper, no separate cone finial). */
-function addTaperedUpright(parent, mats, x, baseR) {
+function addTaperedUpright(parent: THREE.Object3D, mats: ChurchMats, x: number, baseR: number) {
   const iron = mats.railingPaint; // eggshell black, mildly rusted today
   const shaftH = RAILING_HEIGHT - RAILING_TAPER_LEN;
   const shaft = new THREE.Mesh(new THREE.CylinderGeometry(baseR, baseR, shaftH, 6), iron);
@@ -1350,7 +1441,11 @@ function addTaperedUpright(parent, mats, x, baseR) {
 }
 
 /** Wrought-iron railing panel: uprights with a short top taper, joined by flat horizontal bars. */
-function buildIronRailPanel(mats, length, { includeStartPost = true, includeEndPost = true } = {}) {
+function buildIronRailPanel(
+  mats: ChurchMats,
+  length: number,
+  { includeStartPost = true, includeEndPost = true }: { includeStartPost?: boolean; includeEndPost?: boolean } = {}
+) {
   const g = new THREE.Group();
   const iron = mats.railingPaint; // eggshell black, mildly rusted today
   const barH = 0.035;
@@ -1361,10 +1456,11 @@ function buildIronRailPanel(mats, length, { includeStartPost = true, includeEndP
   const shaftH = RAILING_HEIGHT - RAILING_TAPER_LEN;
 
   if (includeStartPost || includeEndPost) {
-    for (const [on, x] of [
+    const endPosts: [boolean, number][] = [
       [includeStartPost, 0],
       [includeEndPost, length]
-    ]) {
+    ];
+    for (const [on, x] of endPosts) {
       if (!on) continue;
       addTaperedUpright(g, mats, x, postBaseR);
     }
@@ -1412,7 +1508,7 @@ function buildIronRailPanel(mats, length, { includeStartPost = true, includeEndP
  */
 const KISSING_LEAF_LIMIT = Math.PI / 2 - 0.09; // the leaf's end stops against the U's end posts
 
-function buildKissingGate(mats) {
+function buildKissingGate(mats: ChurchMats) {
   const g = new THREE.Group();
   const iron = mats.railingPaint; // eggshell black, mildly rusted today
   const r = KISSING_GATE_RADIUS;
@@ -1425,7 +1521,7 @@ function buildKissingGate(mats) {
   const arm = KISSING_GATE_DEPTH - r;
   const outlineLen = 2 * arm + Math.PI * r;
   const arcCount = Math.round(outlineLen / 0.2);
-  const arcPoint = (i) => {
+  const arcPoint = (i: number): [number, number] => {
     const d = (i / arcCount) * outlineLen;
     if (d <= arm) return [d, -r];
     if (d >= arm + Math.PI * r) return [arm - (d - arm - Math.PI * r), r];
@@ -1433,7 +1529,7 @@ function buildKissingGate(mats) {
     return [arm + Math.cos(ang) * r, Math.sin(ang) * r];
   };
 
-  function addPost(x, z, radius = postR) {
+  function addPost(x: number, z: number, radius = postR) {
     const shaft = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, shaftH, 8), iron);
     shaft.position.set(x, shaftH * 0.5, z);
     shaft.castShadow = true;
@@ -1495,7 +1591,13 @@ function buildKissingGate(mats) {
  * post); prev: the point before it, so the boundary carries on across the path in the same direction.
  * Returns a gate record for createKissingGateAnimator.
  */
-function placeKissingGate(parent, mats, end, prev, onward = null) {
+function placeKissingGate(
+  parent: THREE.Object3D,
+  mats: ChurchMats,
+  end: XZ,
+  prev: XZ,
+  onward: XZ | null = null
+): GateRec {
   const gate = buildKissingGate(mats);
   const dx = end[0] - prev[0];
   const dz = end[1] - prev[1];
@@ -1508,10 +1610,11 @@ function placeKissingGate(parent, mats, end, prev, onward = null) {
   const len = Math.hypot(dx, dz);
   const ux = dx / len;
   const uz = dz / len;
-  const back = [end[0] + ux * KISSING_GATE_DEPTH, end[1] + uz * KISSING_GATE_DEPTH];
-  addRailingRun(parent, mats, [back, onward ?? [back[0] + ux * 1.5, back[1] + uz * 1.5]]);
+  const back: XZ = [end[0] + ux * KISSING_GATE_DEPTH, end[1] + uz * KISSING_GATE_DEPTH];
+  const onwardPoint: XZ = onward ?? [back[0] + ux * 1.5, back[1] + uz * 1.5];
+  addRailingRun(parent, mats, [back, onwardPoint]);
   const pivot = gate.userData.kissingLeaf;
-  const rec = { gate, pivot, x: end[0], z: end[1], yaw, angle: 0, outside: 0 };
+  const rec = { gate, pivot, x: end[0], z: end[1], yaw, angle: 0, outside: 0, side: 1 };
   return rec;
 }
 
@@ -1520,10 +1623,10 @@ function placeKissingGate(parent, mats, end, prev, onward = null) {
  * open towards an approaching walker; once they are inside the U it swings across behind them to let them
  * out the other side. update(dt, walkerPos) returns true while a leaf is moving.
  */
-function createKissingGateAnimator(gates) {
+function createKissingGateAnimator(gates: GateRec[]) {
   const r = KISSING_GATE_RADIUS;
   const leafLen = r - 0.06;
-  const local = (rec, p) => {
+  const local = (rec: GateRec, p: THREE.Vector3) => {
     const dx = p.x - rec.x;
     const dz = p.z - rec.z;
     const c = Math.cos(rec.yaw);
@@ -1539,8 +1642,8 @@ function createKissingGateAnimator(gates) {
   return {
     gates,
     /** Called with a gate record each time its leaf swings shut against an end post (main.js plays a clang) */
-    onStop: null,
-    update(dt, walker) {
+    onStop: null as ((rec: GateRec) => void) | null,
+    update(dt: number, walker: THREE.Vector3) {
       let moving = false;
       for (const rec of gates) {
         const { u, v } = local(rec, walker);
@@ -1569,7 +1672,7 @@ function createKissingGateAnimator(gates) {
   };
 }
 
-function addRailingRun(parent, mats, points) {
+function addRailingRun(parent: THREE.Object3D, mats: ChurchMats, points: readonly XZ[]) {
   const total = polylineLength(points);
   const panelLen = 2.35;
   for (let dist = 0; dist < total - 0.05;) {
@@ -1596,7 +1699,7 @@ function addRailingRun(parent, mats, points) {
  * North-side wrought-iron churchyard railings from the 1839 boundary, with kissing gates where the
  * E–W footpath exits at each end. No userData.era — the railings stood by 1900 and remain today.
  */
-export function buildNorthChurchyardRailings(mats, frontage = NORTH_CHURCHYARD_RAILINGS) {
+export function buildNorthChurchyardRailings(mats: ChurchMats, frontage: readonly XZ[] = NORTH_CHURCHYARD_RAILINGS) {
   const g = new THREE.Group();
   g.name = 'north-churchyard-railings';
 
@@ -1619,7 +1722,7 @@ export function buildNorthChurchyardRailings(mats, frontage = NORTH_CHURCHYARD_R
   return { group: g, westGate, eastGate, kissingGates: createKissingGateAnimator(gates) };
 }
 
-export function buildChurchyard(mats) {
+export function buildChurchyard(mats: ChurchMats) {
   const g = new THREE.Group();
 
   // 2. North wrought-iron railings first so the path extents are known for the lawn banks
@@ -1666,8 +1769,8 @@ export function buildChurchyard(mats) {
   g.add(bench);
 
   // 5. All 49 Plotted Churchyard Gravestones & Memorials with Carved Inscriptions
-  const memorialGroups = [];
-  const topplers = [];
+  const memorialGroups: THREE.Group[] = [];
+  const topplers: Toppler[] = [];
   CHURCHYARD_MEMORIALS.forEach((m, idx) => {
     const { x, z } = surveyGridToWorld(m.col, m.row);
     const monument = buildMemorial(m, mats);
@@ -1687,10 +1790,10 @@ export function buildChurchyard(mats) {
         monument,
         ...monument.userData.topple,
         focus: {
-          today: monument.userData.memorialFocus,
+          today: monument.userData.memorialFocus as MemorialFocus,
           1900: { id: m.id, ...getMemorialCameraOffsets({ ...m, kind: 'headstone' }) }
         }
-      });
+      } as Toppler);
     } else {
       monument.userData.era = 'today'; // the churchyard had no gravestones in 1900, save those marked standingIn1900
     }
@@ -1724,7 +1827,7 @@ export function buildChurchyard(mats) {
   yewSE.position.set(17.4, getGroundHeight(17.4, 7.2), 7.2);
   g.add(yewSE);
 
-  const trees = [
+  const trees: [number, number, number, number, number?, number?][] = [
     [-19.5, 11.5, 7.8, 0x6e5430],
     // A mature tree inside the railings, south of the path between the East kissing gate & the East gable
     [14.2, -2.3, 12.5, 0x8c682c, 2.4, 1.0],
@@ -1735,7 +1838,7 @@ export function buildChurchyard(mats) {
   // Four trees just inside the north railings, evenly spaced along them (at 1/5, 2/5, 3/5 & 4/5 of their length)
   // and 2 m in from the line, towards the church
   const railingLen = polylineLength(NORTH_CHURCHYARD_RAILINGS);
-  const railingTrees = [
+  const railingTrees: [number, number][] = [
     [8.4, 0x7a6232],
     [9.4, 0x5f6a36],
     [8.9, 0x8a6a2e],
@@ -1758,7 +1861,7 @@ export function buildChurchyard(mats) {
   });
 
   // 7. December Festive Christmas Tree outside the North Porch with twinkling fairy lights
-  let christmasEffect: any = null;
+  let christmasEffect: ReturnType<typeof buildChristmasTree> | null = null;
   const searchStr = typeof window !== 'undefined' ? window.location.search : '';
   if (isChristmasSeason(new Date(), searchStr)) {
     christmasEffect = buildChristmasTree(mats);
@@ -1777,7 +1880,7 @@ export function buildChurchyard(mats) {
 }
 
 // Build a festive Norway Spruce Christmas tree in a wooden planter with twinkling fairy lights & golden star
-function buildChristmasTree(mats) {
+function buildChristmasTree(mats: ChurchMats) {
   const group = new THREE.Group();
   group.name = 'december-christmas-tree';
 
@@ -1844,7 +1947,7 @@ function buildChristmasTree(mats) {
   // Spiraling Christmas fairy lights (warm white/gold + festive red, amber, blue, emerald bulbs)
   const palette = [0xffe49e, 0xff4545, 0xffb340, 0x55b0ff, 0x4ae67b, 0xfff0c2];
   const bulbGeo = new THREE.SphereGeometry(0.032, 8, 8);
-  const bulbEntries = [];
+  const bulbEntries: { mat: THREE.MeshStandardMaterial; phase: number; speed: number }[] = [];
   const bulbCount = 58;
 
   for (let i = 0; i < bulbCount; i++) {
@@ -1899,7 +2002,7 @@ function buildChristmasTree(mats) {
 
   return {
     group,
-    setMood(moodKey) {
+    setMood(moodKey: string) {
       if (moodKey === 'evensong') {
         baseLightIntensity = 3.2;
         baseEmissiveScale = 1.65;
@@ -1912,7 +2015,7 @@ function buildChristmasTree(mats) {
       }
       starMat.emissiveIntensity = 1.65 * baseEmissiveScale;
     },
-    update(elapsed) {
+    update(elapsed: number) {
       for (let i = 0; i < bulbEntries.length; i++) {
         const b = bulbEntries[i];
         const twinkle = 0.72 + 0.55 * (0.5 + 0.5 * Math.sin(elapsed * b.speed + b.phase));

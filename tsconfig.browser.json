@@ -4,20 +4,9 @@
   "compilerOptions": {
     "lib": ["esnext", "dom", "dom.iterable"],
     "types": [],
-    // These files were unchecked JavaScript. The Node program (tsconfig.json) stays `strict`, including
-    // every browser module that tests or generators import. This project turns strict off and types
-    // `three` loosely. The largest scene modules (the 1839 village and the St Peter's builders) are
-    // `@ts-nocheck`: their three.js calls do not match @types/three, and annotating them is a separate pass.
-    "strict": false,
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    "verbatimModuleSyntax": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    "strict": true,
     "paths": {
-      "/assets/*": ["./assets/*"],
-      "three": ["./browser-types/three.d.ts"],
-      "three/addons/controls/OrbitControls.js": ["./browser-types/OrbitControls.d.ts"]
+      "/assets/*": ["./assets/*"]
     }
   },
   "include": ["assets/js/**/*.ts", "types/browser-globals.d.ts", "types/cdn-modules.d.ts"],

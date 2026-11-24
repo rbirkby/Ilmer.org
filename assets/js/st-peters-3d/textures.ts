@@ -1,6 +1,5 @@
-// @ts-nocheck -- scene code ported from unchecked JavaScript; three.js calls are validated at runtime.
 import * as THREE from 'three';
-import { canvasTexture, makeCanvas, mulberry32 } from './canvas-utils.ts';
+import { canvas2d, canvasTexture, makeCanvas, mulberry32 } from './canvas-utils.ts';
 import { createAttenboroughPlaqueMaps, createJaquesDonorsTexture, createRollOfHonourMaps } from './plaques.ts';
 import {
   createEastStainedGlassTexture,
@@ -9,18 +8,49 @@ import {
   createWilsonStainedGlassTexture
 } from './stained-glass.ts';
 
-function finishTexture(canvas, { repeatX = 1, repeatY = 1, srgb = true, maxAniso = 8 } = {}) {
+interface TextureFinishOptions {
+  repeatX?: number;
+  repeatY?: number;
+  srgb?: boolean;
+  maxAniso?: number;
+}
+
+interface CanvasMapPair {
+  map: THREE.CanvasTexture;
+  bumpMap: THREE.CanvasTexture;
+}
+
+interface PaverBlock {
+  x0: number;
+  x1: number;
+  y0: number;
+  y1: number;
+  tone: number;
+  rng: () => number;
+}
+
+interface FigurePalette {
+  canopy: string;
+  robe1: string;
+  robe2: string;
+  accent: string;
+}
+
+function finishTexture(
+  canvas: HTMLCanvasElement,
+  { repeatX = 1, repeatY = 1, srgb = true, maxAniso = 8 }: TextureFinishOptions = {}
+): THREE.CanvasTexture {
   return canvasTexture(canvas, { srgb, anisotropy: maxAniso, repeat: [repeatX, repeatY] });
 }
 
 // 1. Buckinghamshire Coursed Limestone Rubble Wall (diffuse + bump)
-function createStoneWallMaps(maxAniso) {
+function createStoneWallMaps(maxAniso: number): CanvasMapPair {
   const w = 512;
   const h = 512;
   const col = makeCanvas(w, h);
   const bmp = makeCanvas(w, h);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rand = mulberry32(1402);
 
   // Lime mortar base
@@ -69,7 +99,7 @@ function createStoneWallMaps(maxAniso) {
         cb = v - 6;
       }
 
-      const drawPoly = (targetCtx, fillStyle) => {
+      const drawPoly = (targetCtx: CanvasRenderingContext2D, fillStyle: string) => {
         targetCtx.fillStyle = fillStyle;
         targetCtx.beginPath();
         const pad = 1.6;
@@ -124,13 +154,13 @@ function createStoneWallMaps(maxAniso) {
 
 // 1b. West Gable Masonry Contrast (west-gable.jpg): slightly cooler weathered medieval rubble below former half-hip
 //     vs subtly lighter, warmer, more neatly coursed sandy-buff 1909 limestone infill above
-function createWestGableLowerMaps(maxAniso) {
+function createWestGableLowerMaps(maxAniso: number): CanvasMapPair {
   const w = 512;
   const h = 512;
   const col = makeCanvas(w, h);
   const bmp = makeCanvas(w, h);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rand = mulberry32(19091);
 
   // Weathered lime mortar harmonized with the main church walls
@@ -171,7 +201,7 @@ function createWestGableLowerMaps(maxAniso) {
         cb = v - 5;
       }
 
-      const drawPoly = (targetCtx, fillStyle) => {
+      const drawPoly = (targetCtx: CanvasRenderingContext2D, fillStyle: string) => {
         targetCtx.fillStyle = fillStyle;
         targetCtx.beginPath();
         const pad = 1.6;
@@ -220,13 +250,13 @@ function createWestGableLowerMaps(maxAniso) {
   };
 }
 
-function createWestGableUpperMaps(maxAniso) {
+function createWestGableUpperMaps(maxAniso: number): CanvasMapPair {
   const w = 512;
   const h = 512;
   const col = makeCanvas(w, h);
   const bmp = makeCanvas(w, h);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rand = mulberry32(19092);
 
   // Soft warm cream-buff lime mortar base
@@ -267,7 +297,7 @@ function createWestGableUpperMaps(maxAniso) {
         cb = v - 11;
       }
 
-      const drawBlock = (targetCtx, fillStyle) => {
+      const drawBlock = (targetCtx: CanvasRenderingContext2D, fillStyle: string) => {
         targetCtx.fillStyle = fillStyle;
         targetCtx.beginPath();
         const pad = 1.25;
@@ -311,13 +341,13 @@ function createWestGableUpperMaps(maxAniso) {
 }
 
 // 2. Ashlar Dressed Limestone (quoins, buttresses, window surrounds, reredos, font)
-function createAshlarMaps(maxAniso) {
+function createAshlarMaps(maxAniso: number): CanvasMapPair {
   const w = 256;
   const h = 256;
   const col = makeCanvas(w, h);
   const bmp = makeCanvas(w, h);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rand = mulberry32(991);
 
   ctx.fillStyle = '#d3c8b2';
@@ -358,13 +388,13 @@ function createAshlarMaps(maxAniso) {
 // Porch roof of stone slates (old photo of the North Porch): big, irregular grey-brown limestone slates laid in
 // diminishing courses, deepest at the eaves and smallest at the ridge, weathered with pale lichen. Drawn for one
 // whole roof slope: u runs along the porch (north to south), v up the slope from the eaves (0) to the ridge (1).
-function createStoneSlateRoofMaps(maxAniso) {
+function createStoneSlateRoofMaps(maxAniso: number): CanvasMapPair {
   const w = 512;
   const h = 512;
   const col = makeCanvas(w, h);
   const bmp = makeCanvas(w, h);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rand = mulberry32(1879);
 
   ctx.fillStyle = '#2e2c28';
@@ -373,7 +403,7 @@ function createStoneSlateRoofMaps(maxAniso) {
   bctx.fillRect(0, 0, w, h);
 
   // Course heights shrink steadily from eaves to ridge; canvas y = 0 is the ridge (texture v = 1)
-  const courses = [];
+  const courses: number[][] = [];
   let y = h;
   let ch = h * 0.105;
   while (y > 0) {
@@ -437,13 +467,13 @@ function createStoneSlateRoofMaps(maxAniso) {
   };
 }
 
-function createClayRoofMaps(maxAniso) {
+function createClayRoofMaps(maxAniso: number): CanvasMapPair {
   const w = 512;
   const h = 512;
   const col = makeCanvas(w, h);
   const bmp = makeCanvas(w, h);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rand = mulberry32(3141);
 
   ctx.fillStyle = '#4a2b20';
@@ -520,13 +550,13 @@ function createClayRoofMaps(maxAniso) {
 }
 
 // 4. Weathered Horizontal Oak Weatherboarding (Bell-Turret)
-function createWeatherboardMaps(maxAniso) {
+function createWeatherboardMaps(maxAniso: number): CanvasMapPair {
   const w = 512;
   const h = 512;
   const col = makeCanvas(w, h);
   const bmp = makeCanvas(w, h);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rand = mulberry32(4821);
 
   const boards = 22;
@@ -569,13 +599,13 @@ function createWeatherboardMaps(maxAniso) {
 }
 
 // 5. Weathered Oak Spire Shingles (Silvery grey oak shingles with moss hint)
-function createShingleMaps(maxAniso) {
+function createShingleMaps(maxAniso: number): CanvasMapPair {
   const w = 512;
   const h = 512;
   const col = makeCanvas(w, h);
   const bmp = makeCanvas(w, h);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rand = mulberry32(7717);
 
   ctx.fillStyle = '#6c6a63';
@@ -613,12 +643,12 @@ function createShingleMaps(maxAniso) {
 }
 
 // 6. Diagonal Terracotta & Black Quarry Tiles (Nave & North Porch Floor)
-function createQuarryTileMaps(maxAniso) {
+function createQuarryTileMaps(maxAniso: number): CanvasMapPair {
   const size = 512;
   const col = makeCanvas(size, size);
   const bmp = makeCanvas(size, size);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rand = mulberry32(5501);
 
   ctx.fillStyle = '#4a4542';
@@ -662,7 +692,7 @@ function createQuarryTileMaps(maxAniso) {
         cb = v + 4;
       }
 
-      const drawDiamond = (c, style, inset) => {
+      const drawDiamond = (c: CanvasRenderingContext2D, style: string, inset: number) => {
         const hs = step * 0.5 - inset;
         c.fillStyle = style;
         c.beginPath();
@@ -694,10 +724,10 @@ function createQuarryTileMaps(maxAniso) {
 }
 
 // 7. Ornate Victorian Sanctuary Encaustic Tiles (seen in IMG_3938)
-function createSanctuaryTileMap(maxAniso) {
+function createSanctuaryTileMap(maxAniso: number): THREE.CanvasTexture {
   const s = 512;
   const col = makeCanvas(s, s);
-  const ctx = col.getContext('2d');
+  const ctx = canvas2d(col);
   ctx.fillStyle = '#524943';
   ctx.fillRect(0, 0, s, s);
 
@@ -733,12 +763,12 @@ function createSanctuaryTileMap(maxAniso) {
 }
 
 // 8. Warm Blush-Cream Lime Plaster (Interior Walls, matching IMG_3936-3950)
-function createPlasterMaps(maxAniso) {
+function createPlasterMaps(maxAniso: number): CanvasMapPair {
   const s = 512;
   const col = makeCanvas(s, s);
   const bmp = makeCanvas(s, s);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rand = mulberry32(2203);
 
   ctx.fillStyle = '#efe0d6';
@@ -770,13 +800,13 @@ function createPlasterMaps(maxAniso) {
 }
 
 // 9. Aged Oak Timber Grain (variant: 'dark' for belfry/screen/ribs, 'warm' for pews/pulpit)
-function createOakMaps(variant, maxAniso) {
+function createOakMaps(variant: 'dark' | 'medium' | 'warm', maxAniso: number): CanvasMapPair {
   const w = 512;
   const h = 512;
   const col = makeCanvas(w, h);
   const bmp = makeCanvas(w, h);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rand = mulberry32(variant === 'dark' ? 8811 : 6611);
 
   if (variant === 'dark') {
@@ -813,13 +843,13 @@ function createOakMaps(variant, maxAniso) {
 
 // 9b. Diamond Oak Parquetry (Glastonbury sanctuary chair back panel, chancel-chair photo)
 // Each lozenge is split into four triangles whose grain runs parallel to alternate edges, with fine dark joints.
-function createParquetryMaps(maxAniso) {
+function createParquetryMaps(maxAniso: number): CanvasMapPair {
   const w = 384;
   const h = 512;
   const col = makeCanvas(w, h);
   const bmp = makeCanvas(w, h);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rand = mulberry32(4417);
 
   const cols = 3.5; // lozenges across the panel
@@ -832,7 +862,7 @@ function createParquetryMaps(maxAniso) {
   bctx.fillStyle = '#808080';
   bctx.fillRect(0, 0, w, h);
 
-  const drawTri = (pts, tone, grainAng) => {
+  const drawTri = (pts: number[][], tone: string, grainAng: number) => {
     ctx.save();
     ctx.beginPath();
     ctx.moveTo(pts[0][0], pts[0][1]);
@@ -874,10 +904,11 @@ function createParquetryMaps(maxAniso) {
         drawTri([mid, left, top], tones[(t0 + 3) % 4], edgeAng);
 
         // Inlay joints (colour + bump grooves)
-        for (const [g, style, lw] of /** @type {[CanvasRenderingContext2D, string, number][]} */ ([
+        const joints: Array<[CanvasRenderingContext2D, string, number]> = [
           [ctx, 'rgba(22,13,7,0.85)', 1.6],
           [bctx, 'rgba(40,40,40,0.9)', 2.2]
-        ])) {
+        ];
+        for (const [g, style, lw] of joints) {
           g.strokeStyle = style;
           g.lineWidth = lw;
           g.beginPath();
@@ -903,11 +934,11 @@ function createParquetryMaps(maxAniso) {
 }
 
 // 10. Stained Glass & Diamond Leaded Glass Textures
-function createWindowGlassTexture(kind, maxAniso) {
+function createWindowGlassTexture(kind: string, maxAniso: number): THREE.CanvasTexture {
   const w = 256;
   const h = 512;
   const c = makeCanvas(w, h);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   const rand = mulberry32(kind.length * 1013);
 
   if (kind === 'clear-diamond') {
@@ -974,7 +1005,7 @@ function createWindowGlassTexture(kind, maxAniso) {
       ctx.stroke();
     }
 
-    const drawFigureLight = (cx, palette) => {
+    const drawFigureLight = (cx: number, palette: FigurePalette) => {
       // Gothic canopy arch
       ctx.fillStyle = palette.canopy;
       ctx.beginPath();
@@ -1060,11 +1091,11 @@ function createWindowGlassTexture(kind, maxAniso) {
 }
 
 // 11. Emerald Green Altar Frontal with Gold Orphreys & Embroidered Cross (IMG_3938)
-function createAltarFrontalTexture(maxAniso) {
+function createAltarFrontalTexture(maxAniso: number): THREE.CanvasTexture {
   const w = 512;
   const h = 256;
   const c = makeCanvas(w, h);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
 
   // Rich emerald damask green
   const grad = ctx.createLinearGradient(0, 0, 0, h);
@@ -1130,11 +1161,11 @@ function createAltarFrontalTexture(maxAniso) {
 }
 
 // 12. White Lace Fair-Linen Altar Cloth Overlay
-function createLaceClothTexture(maxAniso) {
+function createLaceClothTexture(maxAniso: number): THREE.CanvasTexture {
   const w = 256;
   const h = 128;
   const c = makeCanvas(w, h);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   ctx.fillStyle = '#f8f6f0';
   ctx.fillRect(0, 0, w, h);
 
@@ -1152,13 +1183,13 @@ function createLaceClothTexture(maxAniso) {
 
 // Plain navy woven cloth for the hanging hassocks: one colour with no motif, just a fine twill weave and slight
 // fibre mottling so the cushion still reads as fabric (diffuse + bump)
-function createKneelerFabricMaps(maxAniso) {
+function createKneelerFabricMaps(maxAniso: number): CanvasMapPair {
   const [r0, g0, b0] = [44, 58, 96];
   const w = 256;
   const c = makeCanvas(w, w);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   const b = makeCanvas(w, w);
-  const bctx = b.getContext('2d');
+  const bctx = canvas2d(b);
   const rng = mulberry32(410);
   const img = ctx.createImageData(w, w);
   const bimg = bctx.createImageData(w, w);
@@ -1189,14 +1220,14 @@ function createKneelerFabricMaps(maxAniso) {
 // Churchyard path: grey-brown stable-block pavers with a raised diamond-chequer face, laid in courses running
 // along the path with staggered joints; wide soil joints sprouting grass & weeds; the lawn spilling over both edges.
 // One tile spans 1.8m of path (u, repeats along it) by its full 1.48m width (v). (diffuse + bump)
-function createPathPaverMaps(maxAniso) {
+function createPathPaverMaps(maxAniso: number): CanvasMapPair {
   const pxPerM = 640;
   const W = Math.round(1.8 * pxPerM);
   const H = Math.round(1.48 * pxPerM);
   const c = makeCanvas(W, H);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   const b = makeCanvas(W, H);
-  const bctx = b.getContext('2d');
+  const bctx = canvas2d(b);
   const rng = mulberry32(1866);
   const courses = 7;
   const courseH = H / courses;
@@ -1209,7 +1240,7 @@ function createPathPaverMaps(maxAniso) {
   bctx.fillStyle = '#000';
   bctx.fillRect(0, 0, W, H);
 
-  const blocks = [];
+  const blocks: PaverBlock[] = [];
   for (let k = 0; k < courses; k++) {
     const n = Math.round(1.8 / 0.36);
     const raw = Array.from({ length: n }, () => 0.8 + rng() * 0.4);
@@ -1217,12 +1248,12 @@ function createPathPaverMaps(maxAniso) {
     let x = rng() * W;
     for (const r of raw) {
       const len = (r / sum) * W;
-      blocks.push({ x0: x, x1: x + len, y0: k * courseH, y1: (k + 1) * courseH });
+      blocks.push({ x0: x, x1: x + len, y0: k * courseH, y1: (k + 1) * courseH, tone: 0, rng: () => 0 });
       x += len;
     }
   }
   // Draw each block (and its wrapped copy) inset by half a joint
-  const drawBlock = (bl, dx) => {
+  const drawBlock = (bl: PaverBlock, dx: number) => {
     const x0 = bl.x0 + dx + joint * 0.5 + (rng() - 0.5) * 2;
     const x1 = bl.x1 + dx - joint * 0.5 + (rng() - 0.5) * 2;
     const y0 = bl.y0 + joint * 0.5 + (rng() - 0.5) * 2;
@@ -1307,7 +1338,7 @@ function createPathPaverMaps(maxAniso) {
   });
 
   // Grass & little weeds sprouting from the joints
-  const tuft = (x, y, n, len, spread) => {
+  const tuft = (x: number, y: number, n: number, len: number, spread: number) => {
     for (let i = 0; i < n; i++) {
       const a = -Math.PI / 2 + (rng() - 0.5) * spread;
       const l = len * (0.5 + rng() * 0.7);
@@ -1330,7 +1361,7 @@ function createPathPaverMaps(maxAniso) {
       bctx.stroke();
     }
   };
-  const rosette = (x, y, r) => {
+  const rosette = (x: number, y: number, r: number) => {
     for (let i = 0; i < 7; i++) {
       const a = (i / 7) * Math.PI * 2 + rng();
       ctx.fillStyle = ['#5f9a3a', '#78b048', '#4a8030'][i % 3];
@@ -1385,10 +1416,10 @@ function createPathPaverMaps(maxAniso) {
 }
 
 // 13. English Churchyard Grass
-function createGrassTexture(maxAniso) {
+function createGrassTexture(maxAniso: number): THREE.CanvasTexture {
   const s = 512;
   const c = makeCanvas(s, s);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   const rand = mulberry32(3030);
 
   ctx.fillStyle = '#4e6c32';
@@ -1406,14 +1437,13 @@ function createGrassTexture(maxAniso) {
 }
 
 // 14. Rainbow Stained Glass Caustic Decal (seen on the North wall in IMG_3949)
-function createCausticTexture() {
+function createCausticTexture(): THREE.CanvasTexture {
   const s = 256;
   const c = makeCanvas(s, s);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   ctx.clearRect(0, 0, s, s);
 
-  /** @type {[number, number, number, string][]} */
-  const blobs = [
+  const blobs: Array<[number, number, number, string]> = [
     [90, 140, 56, 'rgba(255,195,90,0.42)'],
     [168, 136, 56, 'rgba(255,170,80,0.42)'],
     [82, 108, 36, 'rgba(255,105,115,0.34)'],
@@ -1433,10 +1463,10 @@ function createCausticTexture() {
 }
 
 // 15. Speckled Grey Granite (for modern churchyard headstones, C9, C11, B1, etc.)
-function createGraniteMaps(maxAniso) {
+function createGraniteMaps(maxAniso: number): THREE.CanvasTexture {
   const s = 256;
   const col = makeCanvas(s, s);
-  const ctx = col.getContext('2d');
+  const ctx = canvas2d(col);
   const rand = mulberry32(9412);
 
   ctx.fillStyle = '#8b9094';
@@ -1454,12 +1484,12 @@ function createGraniteMaps(maxAniso) {
 }
 
 // 16. Small Stone Chippings & Pebbles inside Kerbed Graves (diffuse + bump map)
-function createGravePebbleMaps(maxAniso) {
+function createGravePebbleMaps(maxAniso: number): CanvasMapPair {
   const s = 512;
   const col = makeCanvas(s, s);
   const bmp = makeCanvas(s, s);
-  const ctx = col.getContext('2d');
-  const bctx = bmp.getContext('2d');
+  const ctx = canvas2d(col);
+  const bctx = canvas2d(bmp);
   const rand = mulberry32(6142);
 
   // Dark interstitial shadow bed between the stones
@@ -1542,13 +1572,13 @@ function createGravePebbleMaps(maxAniso) {
 
 // Create and export the shared Material Palette
 // B6: Procedurally carved 1860 limestone dedication tablet on the exterior NE Chancel wall (B6.md)
-function createDedicationStone1860Maps(maxAniso = 4) {
+function createDedicationStone1860Maps(maxAniso = 4): CanvasMapPair {
   const w = 1024;
   const h = 1200;
   const c = makeCanvas(w, h);
-  const ctx = c.getContext('2d');
+  const ctx = canvas2d(c);
   const bc = makeCanvas(w, h);
-  const bctx = bc.getContext('2d');
+  const bctx = canvas2d(bc);
 
   const rand = mulberry32(1860);
 
@@ -1621,7 +1651,14 @@ function createDedicationStone1860Maps(maxAniso = 4) {
   ];
 
   // Draw classical Roman capital text with gentle tracking so every line fits comfortably inside the margins
-  function drawTrackedLine(targetCtx, text, cx, y, maxW, fontSize) {
+  function drawTrackedLine(
+    targetCtx: CanvasRenderingContext2D,
+    text: string,
+    cx: number,
+    y: number,
+    maxW: number,
+    fontSize: number
+  ) {
     targetCtx.font = `500 ${fontSize}px Georgia, "Times New Roman", serif`;
     targetCtx.textAlign = 'left';
     targetCtx.textBaseline = 'middle';
@@ -1675,7 +1712,7 @@ function createDedicationStone1860Maps(maxAniso = 4) {
   return { map, bumpMap };
 }
 
-export function createMaterials(renderer) {
+export function createMaterials(renderer: THREE.WebGLRenderer) {
   const maxAniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
 
   const stoneMaps = createStoneWallMaps(maxAniso);
@@ -1791,7 +1828,7 @@ export function createMaterials(renderer) {
     }),
     // 1900 belfry: the same boarding with each board twice as deep
     weatherboardWide: (() => {
-      const wide = (t) => {
+      const wide = (t: THREE.CanvasTexture) => {
         const c = t.clone();
         c.repeat.set(t.repeat.x, t.repeat.y * 0.5);
         c.needsUpdate = true;
@@ -2045,7 +2082,7 @@ export function createMaterials(renderer) {
 // Plain leaded glazing in place of a stained-glass window (the church before its stained glass, c. 1900). The
 // window's own stained texture is reworked: the stone tracery and surround painted on it stay, while all its glass,
 // painted figures and leading included, becomes faintly green-tinted clear quarry glass behind diamond lead cames.
-const plainGlazingCache = new Map();
+const plainGlazingCache = new Map<THREE.MeshStandardMaterial, THREE.MeshStandardMaterial>();
 /**
  * Eggshell black paint on the churchyard's wrought-iron railings and kissing gates. Today it has weathered to a
  * mild rust: small orange-brown patches where the paint has gone, matt where they are. userData.rust is the
@@ -2113,14 +2150,20 @@ function createRailingPaintMaterial() {
   return mat;
 }
 
-export function createPlainGlazingMaterial(stainedMat) {
+export function createPlainGlazingMaterial(stainedMat: THREE.MeshStandardMaterial): THREE.MeshStandardMaterial {
   let mat = plainGlazingCache.get(stainedMat);
   if (mat) return mat;
-  const img = stainedMat.map.image;
+  const sourceMap = stainedMat.map;
+  if (!sourceMap) throw new Error('stained glass material has no map');
+  const img = sourceMap.image;
+  if (!(img instanceof HTMLCanvasElement || img instanceof HTMLImageElement || img instanceof ImageBitmap)) {
+    throw new Error('stained glass map has no drawable image');
+  }
   const w = img.width;
   const h = img.height;
   const c = makeCanvas(w, h);
   const ctx = c.getContext('2d', { willReadFrequently: true });
+  if (!ctx) throw new Error('2D canvas context is unavailable');
   ctx.drawImage(img, 0, 0);
   const data = ctx.getImageData(0, 0, w, h);
   const px = data.data;
@@ -2145,7 +2188,7 @@ export function createPlainGlazingMaterial(stainedMat) {
     }
   }
   const rad = Math.max(3, Math.round(w / 128));
-  const isStone = (x, y) => {
+  const isStone = (x: number, y: number) => {
     const x0 = Math.max(0, x - rad);
     const y0 = Math.max(0, y - rad);
     const x1 = Math.min(w, x + rad + 1);
@@ -2156,8 +2199,8 @@ export function createPlainGlazingMaterial(stainedMat) {
   // Real stonework (surround, mullions, tracery) is joined to the frame round the edge of the window; grey patches
   // of painted figure work in the middle are not. Keep only stone reachable from the border.
   const stone = new Uint8Array(w * h);
-  const stack = [];
-  const seed = (x, y) => {
+  const stack: number[] = [];
+  const seed = (x: number, y: number) => {
     const k = y * w + x;
     if (!stone[k] && isStone(x, y)) {
       stone[k] = 1;
@@ -2174,6 +2217,7 @@ export function createPlainGlazingMaterial(stainedMat) {
   }
   while (stack.length) {
     const k = stack.pop();
+    if (k === undefined) break;
     const x = k % w;
     const y = (k - x) / w;
     if (x > 0) seed(x - 1, y);
@@ -2205,7 +2249,7 @@ export function createPlainGlazingMaterial(stainedMat) {
     }
   }
   ctx.putImageData(data, 0, 0);
-  const tex = canvasTexture(c, { anisotropy: stainedMat.map.anisotropy });
+  const tex = canvasTexture(c, { anisotropy: sourceMap.anisotropy });
   mat = stainedMat.clone();
   mat.map = tex;
   mat.emissiveMap = tex;

@@ -453,7 +453,7 @@ const injectStyles = () =>
     document.head.appendChild(link);
   });
 
-const build = (container) => {
+const build = (container: HTMLElement) => {
   container.classList.add('ifm-wrap');
   if (container.clientHeight < 100) container.style.height = '520px';
 
@@ -479,7 +479,8 @@ const build = (container) => {
   L.control.layers({ OpenStreetMap: osm, 'Satellite (Esri)': sat }).addTo(map);
   L.control.scale({ imperial: true }).addTo(map);
 
-  const ul = legend.querySelector('ul');
+  // The legend markup above always includes this list.
+  const ul = legend.querySelector('ul')!;
   for (const f of FIELDS) {
     const poly = L.polygon(f.latlngs, {
       color: '#333',
@@ -516,7 +517,11 @@ const build = (container) => {
 export function init(root = document) {
   const containers = root.querySelectorAll(CONTAINER_SELECTOR);
   if (!containers.length) return;
-  injectStyles().then(() => containers.forEach(build));
+  injectStyles().then(() => {
+    containers.forEach((container) => {
+      if (container instanceof HTMLElement) build(container);
+    });
+  });
 }
 
 if (document.readyState !== 'loading') init();
