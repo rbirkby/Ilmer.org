@@ -148,7 +148,7 @@ const AM = [45, [52, 57, 60]];
 const A7 = [45, [55, 57, 61]];
 const D7 = [50, [54, 57, 60]];
 const chordRun = (list) => list.map(([beat, beats, [pedal, inner]]) => [beat, beats, pedal, inner]);
-export const HYMNS = {
+const HYMNS = {
   59: {
     title: 'O Come, All Ye Faithful',
     beatSec: 0.6,
@@ -327,6 +327,13 @@ export function createChurchAudio() {
     return impulse;
   }
 
+  // The nave and the bells share one impulse response
+  let stoneIR = null;
+  function stoneReverbIR() {
+    stoneIR ??= buildStoneReverbIR(context);
+    return stoneIR;
+  }
+
   function startScheduler() {
     if (!started || muted || !context || context.state !== 'running') return;
     applyGainAndFilter();
@@ -348,7 +355,7 @@ export function createChurchAudio() {
 
     // Warm nave stone reverb parallel send
     const convolver = context.createConvolver();
-    convolver.buffer = buildStoneReverbIR(context);
+    convolver.buffer = stoneReverbIR();
     reverbWet = context.createGain();
     reverbWet.gain.value = 0.52;
     reverbDry = context.createGain();
@@ -599,6 +606,17 @@ export function createChurchAudio() {
     }
   }
 
+  // A short burst of white noise dying away quickly: the hard 'click' at the start of a struck bell or iron bar
+  function noiseBurst(seconds) {
+    const len = Math.floor(context.sampleRate * seconds);
+    const buf = context.createBuffer(1, len, context.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+    const noise = context.createBufferSource();
+    noise.buffer = buf;
+    return noise;
+  }
+
   // Bells: their own bus straight to the speakers (they ring out of the open louvres, so the nave's stone
   // muffling doesn't apply), with a touch of the stone reverb
   let bellBus = null;
@@ -609,7 +627,7 @@ export function createChurchAudio() {
     const wet = context.createGain();
     wet.gain.value = 0.35;
     const conv = context.createConvolver();
-    conv.buffer = buildStoneReverbIR(context);
+    conv.buffer = stoneReverbIR();
     bellBus.connect(context.destination);
     bellBus.connect(conv);
     conv.connect(wet);
@@ -654,12 +672,7 @@ export function createChurchAudio() {
       });
     });
     // Clang of iron on bronze
-    const len = Math.floor(context.sampleRate * 0.05);
-    const buf = context.createBuffer(1, len, context.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
-    const noise = context.createBufferSource();
-    noise.buffer = buf;
+    const noise = noiseBurst(0.05);
     const bp = context.createBiquadFilter();
     bp.type = 'bandpass';
     bp.frequency.value = nominalHz * 3;
@@ -703,12 +716,7 @@ export function createChurchAudio() {
       }
     }
     // The hit itself: a very short, bright burst of noise
-    const len = Math.floor(context.sampleRate * 0.012);
-    const buf = context.createBuffer(1, len, context.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
-    const noise = context.createBufferSource();
-    noise.buffer = buf;
+    const noise = noiseBurst(0.012);
     const hp = context.createBiquadFilter();
     hp.type = 'highpass';
     hp.frequency.value = 1500;

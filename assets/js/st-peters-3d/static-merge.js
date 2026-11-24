@@ -116,7 +116,8 @@ export function mergeStaticMeshes(roots, { dynamic = new Set() } = {}) {
     const arrays = {};
     for (const name of names) {
       const a = first.attributes[name];
-      arrays[name] = new a.array.constructor(vertexCount * a.itemSize);
+      const ArrayType = /** @type {new (length: number) => THREE.TypedArray} */ (a.array.constructor);
+      arrays[name] = new ArrayType(vertexCount * a.itemSize);
     }
     const index = vertexCount > 65535 ? new Uint32Array(indexCount) : new Uint16Array(indexCount);
     let vOff = 0;

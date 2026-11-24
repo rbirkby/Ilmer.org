@@ -13,6 +13,9 @@ import { findAnimatedObjects, mergeStaticMeshes } from '/assets/js/st-peters-3d/
 import { createFader } from '/assets/js/st-peters-3d/fade.js';
 import '/assets/js/st-peters-3d/stats-overlay.js';
 
+/** @param {string} selector */
+const allHTMLElements = (selector) => /** @type {NodeListOf<HTMLElement>} */ (document.querySelectorAll(selector));
+
 const stage = document.getElementById('church-scene');
 const statusEl = document.getElementById('scene-status');
 
@@ -108,6 +111,7 @@ if (stage) {
     ringBellsAt: null // elapsed time at which the tour sets the bells ringing
   };
 
+  /** @type {Record<string, { sunPos: [number, number, number] } & Record<string, any>>} */
   const LIGHTING_MOODS = {
     autumn: {
       sunPos: [-16, 15, 20],
@@ -201,7 +205,7 @@ if (stage) {
     candleEffect.setMood(moodKey);
     if (christmasEffect) christmasEffect.setMood(moodKey);
 
-    document.querySelectorAll('[data-lighting]').forEach((btn) => {
+    allHTMLElements('[data-lighting]').forEach((btn) => {
       btn.setAttribute('aria-pressed', String(btn.dataset.lighting === moodKey));
     });
   }
@@ -218,7 +222,7 @@ if (stage) {
     if (o.userData.wideBoards1900) wideBoarded.push(o);
     if (o.userData.clipIn1900) halfHipClipped.push(o);
     if (o.userData.stainedGlass) {
-      o.userData.stainedMat = o.material;
+      o.userData.stainedMat = /** @type {THREE.Mesh} */ (o).material;
       stainedGlass.push(o);
     }
   });
@@ -314,7 +318,8 @@ if (stage) {
   }
 
   document.getElementById('walk-joystick')?.addEventListener('joystickmove', (e) => {
-    controller.setMoveInput(e.detail.x, e.detail.y);
+    const { x, y } = /** @type {CustomEvent<{ x: number, y: number }>} */ (e).detail;
+    controller.setMoveInput(x, y);
   });
 
   // Inside the nave (East of the vestry partition) or the chancel, at standing height, the view switches to Walk
@@ -358,7 +363,7 @@ if (stage) {
   function selectPreset(key) {
     if (!CAMERA_PRESETS[key]) return;
     state.activePreset = key;
-    document.querySelectorAll('[data-preset]').forEach((b) => {
+    allHTMLElements('[data-preset]').forEach((b) => {
       b.setAttribute('aria-pressed', String(b.dataset.preset === key));
     });
     setPresetsExpanded(false);
@@ -389,7 +394,7 @@ if (stage) {
 
   function startChurchTour() {
     state.activePreset = null;
-    document.querySelectorAll('[data-preset]').forEach((b) => {
+    allHTMLElements('[data-preset]').forEach((b) => {
       b.setAttribute('aria-pressed', 'false');
     });
     setPresetsExpanded(false);
@@ -410,7 +415,7 @@ if (stage) {
         setTourUI(false);
         if (completed) {
           state.activePreset = 'exterior-nw';
-          document.querySelectorAll('[data-preset]').forEach((b) => {
+          allHTMLElements('[data-preset]').forEach((b) => {
             b.setAttribute('aria-pressed', String(b.dataset.preset === 'exterior-nw'));
           });
           setPresetsExpanded(false);
@@ -429,11 +434,11 @@ if (stage) {
 
   tourBtn?.addEventListener('click', toggleChurchTour);
 
-  document.querySelectorAll('[data-preset]').forEach((btn) => {
+  allHTMLElements('[data-preset]').forEach((btn) => {
     btn.addEventListener('click', () => selectPreset(btn.dataset.preset));
   });
 
-  document.querySelectorAll('[data-lighting]').forEach((btn) => {
+  allHTMLElements('[data-lighting]').forEach((btn) => {
     btn.addEventListener('click', () => applyLighting(btn.dataset.lighting));
   });
 
@@ -593,7 +598,7 @@ if (stage) {
   }
 
   // Interactive Floor Plan minimap hotspots
-  document.querySelectorAll('[data-plan-jump]').forEach((el) => {
+  allHTMLElements('[data-plan-jump]').forEach((el) => {
     el.addEventListener('click', () => selectPreset(el.dataset.planJump));
   });
 
@@ -709,7 +714,7 @@ if (stage) {
     const worldTarget = memorialGroup.localToWorld(new THREE.Vector3(...localTarget));
     const worldCam = memorialGroup.localToWorld(new THREE.Vector3(...localCam));
     state.activePreset = null;
-    document.querySelectorAll('[data-preset]').forEach((b) => {
+    allHTMLElements('[data-preset]').forEach((b) => {
       b.setAttribute('aria-pressed', 'false');
     });
     if (controller.getMode() === 'walk') setWalkMode(false);
@@ -748,7 +753,7 @@ if (stage) {
 
   // Keyboard shortcuts
   window.addEventListener('keydown', (e) => {
-    const t = e.target;
+    const t = /** @type {HTMLElement | null} */ (e.target);
     if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT')) return;
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.code === 'KeyC') setCutaway(!state.cutaway);

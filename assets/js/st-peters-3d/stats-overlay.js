@@ -30,7 +30,7 @@ TEMPLATE.innerHTML = `
   </style>
 <div class="fps" part="fps"></div><div class="body" part="body"></div>`;
 
-export class SceneStats extends HTMLElement {
+class SceneStats extends HTMLElement {
   #fpsEl = null;
   #bodyEl = null;
   #frames = 0;

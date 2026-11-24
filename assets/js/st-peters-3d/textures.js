@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { canvasTexture, makeCanvas, mulberry32 } from '/assets/js/st-peters-3d/canvas-utils.js';
 import {
   createAttenboroughPlaqueMaps,
   createJaquesDonorsTexture,
@@ -11,34 +12,8 @@ import {
   createWilsonStainedGlassTexture
 } from '/assets/js/st-peters-3d/stained-glass.js';
 
-// Deterministic seeded PRNG so textures look identical and crisp every reload
-function mulberry32(seed) {
-  let a = seed >>> 0;
-  return function () {
-    a |= 0;
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-function makeCanvas(w, h) {
-  const c = document.createElement('canvas');
-  c.width = w;
-  c.height = h;
-  return c;
-}
-
 function finishTexture(canvas, { repeatX = 1, repeatY = 1, srgb = true, maxAniso = 8 } = {}) {
-  const tex = new THREE.CanvasTexture(canvas);
-  tex.wrapS = THREE.RepeatWrapping;
-  tex.wrapT = THREE.RepeatWrapping;
-  tex.repeat.set(repeatX, repeatY);
-  tex.anisotropy = maxAniso;
-  tex.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace;
-  tex.needsUpdate = true;
-  return tex;
+  return canvasTexture(canvas, { srgb, anisotropy: maxAniso, repeat: [repeatX, repeatY] });
 }
 
 // 1. Buckinghamshire Coursed Limestone Rubble Wall (diffuse + bump)
@@ -902,10 +877,10 @@ function createParquetryMaps(maxAniso) {
         drawTri([mid, left, top], tones[(t0 + 3) % 4], edgeAng);
 
         // Inlay joints (colour + bump grooves)
-        for (const [g, style, lw] of [
+        for (const [g, style, lw] of /** @type {[CanvasRenderingContext2D, string, number][]} */ ([
           [ctx, 'rgba(22,13,7,0.85)', 1.6],
           [bctx, 'rgba(40,40,40,0.9)', 2.2]
-        ]) {
+        ])) {
           g.strokeStyle = style;
           g.lineWidth = lw;
           g.beginPath();
@@ -1440,6 +1415,7 @@ function createCausticTexture() {
   const ctx = c.getContext('2d');
   ctx.clearRect(0, 0, s, s);
 
+  /** @type {[number, number, number, string][]} */
   const blobs = [
     [90, 140, 56, 'rgba(255,195,90,0.42)'],
     [168, 136, 56, 'rgba(255,170,80,0.42)'],
@@ -1455,8 +1431,7 @@ function createCausticTexture() {
     ctx.fillStyle = g;
     ctx.fillRect(x - r, y - r, r * 2, r * 2);
   });
-  const tex = new THREE.CanvasTexture(c);
-  tex.colorSpace = THREE.SRGBColorSpace;
+  const tex = canvasTexture(c);
   return tex;
 }
 
@@ -1696,12 +1671,9 @@ function createDedicationStone1860Maps(maxAniso = 4) {
     drawTrackedLine(bctx, line, w * 0.5, y, maxTextW, fs);
   });
 
-  const map = new THREE.CanvasTexture(c);
-  map.colorSpace = THREE.SRGBColorSpace;
-  map.anisotropy = maxAniso;
+  const map = canvasTexture(c, { anisotropy: maxAniso });
 
-  const bumpMap = new THREE.CanvasTexture(bc);
-  bumpMap.anisotropy = maxAniso;
+  const bumpMap = canvasTexture(bc, { srgb: false, anisotropy: maxAniso });
 
   return { map, bumpMap };
 }
@@ -2083,7 +2055,7 @@ const plainGlazingCache = new Map();
  * shader uniform (0 = freshly painted, 1900; 1 = today), set by main.js with the era. The patches are placed by
  * world position, so the static-mesh merge leaves them where they were.
  */
-export function createRailingPaintMaterial() {
+function createRailingPaintMaterial() {
   // Eggshell: a soft sheen, not gloss
   const mat = new THREE.MeshStandardMaterial({ color: 0x0a0a0c, roughness: 0.46, metalness: 0.08 });
   const rust = { value: 1 };
@@ -2150,9 +2122,7 @@ export function createPlainGlazingMaterial(stainedMat) {
   const img = stainedMat.map.image;
   const w = img.width;
   const h = img.height;
-  const c = document.createElement('canvas');
-  c.width = w;
-  c.height = h;
+  const c = makeCanvas(w, h);
   const ctx = c.getContext('2d', { willReadFrequently: true });
   ctx.drawImage(img, 0, 0);
   const data = ctx.getImageData(0, 0, w, h);
@@ -2238,9 +2208,7 @@ export function createPlainGlazingMaterial(stainedMat) {
     }
   }
   ctx.putImageData(data, 0, 0);
-  const tex = new THREE.CanvasTexture(c);
-  tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = stainedMat.map.anisotropy;
+  const tex = canvasTexture(c, { anisotropy: stainedMat.map.anisotropy });
   mat = stainedMat.clone();
   mat.map = tex;
   mat.emissiveMap = tex;

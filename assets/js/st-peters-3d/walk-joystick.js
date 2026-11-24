@@ -46,7 +46,7 @@ TEMPLATE.innerHTML = `
   <div class="base" part="base"><div class="knob" part="knob"></div></div>
 `;
 
-export class WalkJoystick extends HTMLElement {
+class WalkJoystick extends HTMLElement {
   #knob = null;
   #pointerId = null;
   #x = 0;

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { canvasTexture, makeCanvas } from '/assets/js/st-peters-3d/canvas-utils.js';
 import { DIM } from '/assets/js/st-peters-3d/dimensions.js';
 
 // Volumetric stained-glass sunbeam shader with smooth Fresnel edge feathering,
@@ -210,9 +211,7 @@ function buildDustMotes() {
 // Create a soft stained-glass colored light pool decal (for Sanctuary steps & Nave floor)
 function createColorPoolTexture(colors) {
   const s = 256;
-  const c = document.createElement('canvas');
-  c.width = s;
-  c.height = s;
+  const c = makeCanvas(s, s);
   const ctx = c.getContext('2d');
   ctx.clearRect(0, 0, s, s);
 
@@ -223,8 +222,7 @@ function createColorPoolTexture(colors) {
     ctx.fillStyle = g;
     ctx.fillRect(x - r, y - r, r * 2, r * 2);
   });
-  const tex = new THREE.CanvasTexture(c);
-  tex.colorSpace = THREE.SRGBColorSpace;
+  const tex = canvasTexture(c);
   return tex;
 }
 

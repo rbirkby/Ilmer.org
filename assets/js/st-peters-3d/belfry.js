@@ -1,9 +1,11 @@
 import * as THREE from 'three';
+import { canvasTexture, makeCanvas, mulberry32 } from '/assets/js/st-peters-3d/canvas-utils.js';
+import { addBox, boxMesh } from '/assets/js/st-peters-3d/mesh-utils.js';
 import { DIM } from '/assets/js/st-peters-3d/dimensions.js';
 
 // The ring of three, from A. H. Cocks, "The Church Bells of Buckinghamshire" (1897), Ilmer entry, with the
 // diameters he measured. The 1981 restoration by Whites of Appleton rehung them for swing chiming.
-export const ILMER_BELLS = [
+const ILMER_BELLS = [
   {
     number: 1,
     name: 'Treble',
@@ -131,17 +133,6 @@ export function buildTwistedRope(length, radius, material, curve = null) {
   return new THREE.Mesh(geo, material);
 }
 
-function mulberry32(seed) {
-  let a = seed >>> 0;
-  return () => {
-    a = (a + 0x6d2b79f5) >>> 0;
-    let t = a;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
 // Bell section in units of the mouth diameter, from the crown (on the axis) down the outside to the lip, then back
 // up the inside. y is measured up from the lip. The shoulder band (points 4-5) carries the inscription, the waist
 // band (6-7) any founder's initials.
@@ -221,12 +212,8 @@ function drawShield(ctx, x, y, s) {
 function createBellMaps(bell, circumferenceM) {
   const W = 2048;
   const H = ROW * (BELL_PROFILE.length - 1);
-  const col = document.createElement('canvas');
-  col.width = W;
-  col.height = H;
-  const bmp = document.createElement('canvas');
-  bmp.width = W;
-  bmp.height = H;
+  const col = makeCanvas(W, H);
+  const bmp = makeCanvas(W, H);
   const ctx = col.getContext('2d');
   const bctx = bmp.getContext('2d');
   const rng = mulberry32(1500 + bell.number * 37);
@@ -280,6 +267,7 @@ function createBellMaps(bell, circumferenceM) {
     blackletter: `bold italic ${letterPx * 0.95}px "Old English Text MT", "UnifrakturMaguntia", Georgia, serif`,
     lombardic: `bold ${letterPx}px "Lombardic", "Palatino Linotype", Georgia, serif`
   };
+  /** @type {{ cross?: boolean, fleur?: boolean, shield?: boolean, text?: string }[]} */
   const tokens = [{ cross: true }];
   bell.inscription.split(' ').forEach((wd, i, arr) => {
     tokens.push({ text: wd });
@@ -335,14 +323,8 @@ function createBellMaps(bell, circumferenceM) {
   paint(ctx, '#f4d98c', 'rgba(70,48,16,0.65)');
   paint(bctx, '#ffffff', null);
 
-  const finish = (c, srgb) => {
-    const t = new THREE.CanvasTexture(c);
-    t.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace;
-    t.anisotropy = 8;
-    return t;
-  };
   void circumferenceM;
-  return { map: finish(col, true), bumpMap: finish(bmp, false) };
+  return { map: canvasTexture(col, { anisotropy: 8 }), bumpMap: canvasTexture(bmp, { srgb: false, anisotropy: 8 }) };
 }
 
 // A small cube map of the bell chamber for the bronze to reflect: daylight through the louvres in bright bands on
@@ -352,9 +334,7 @@ function getBelfryEnvMap() {
   if (belfryEnvMap) return belfryEnvMap;
   const size = 128;
   const face = (draw) => {
-    const c = document.createElement('canvas');
-    c.width = size;
-    c.height = size;
+    const c = makeCanvas(size, size);
     draw(c.getContext('2d'));
     return c;
   };
@@ -423,10 +403,7 @@ function buildHungBell(bell, { pitHalf, wheelX, wheelR, headX }, mats) {
   const elm = mats.medOak;
 
   // Headstock, spanning the pit between the frame sides
-  const hs = new THREE.Mesh(new THREE.BoxGeometry(pitHalf * 2 - 0.02, 0.15, 0.2), elm);
-  hs.position.set(headX, -0.005, 0);
-  hs.castShadow = true;
-  g.add(hs);
+  addBox(g, [pitHalf * 2 - 0.02, 0.15, 0.2], elm, [headX, -0.005, 0], { cast: true });
   // Gudgeons out to the bearings
   [-1, 1].forEach((sx) => {
     const gud = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.14, 12), ironMat);
@@ -443,9 +420,7 @@ function buildHungBell(bell, { pitHalf, wheelX, wheelR, headX }, mats) {
     g.add(canon);
   }
   [-1, 1].forEach((sz) => {
-    const strap = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.2, 0.01), ironMat);
-    strap.position.set(0, -0.05, sz * 0.105);
-    g.add(strap);
+    addBox(g, [0.04, 0.2, 0.01], ironMat, [0, -0.05, sz * 0.105]);
     [-0.06, 0.06].forEach((bx) => {
       const bolt = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.19, 8), ironMat);
       bolt.position.set(bx, -0.01, sz * 0.05);
@@ -493,9 +468,8 @@ function buildHungBell(bell, { pitHalf, wheelX, wheelR, headX }, mats) {
     wheel.add(shroud);
   });
   for (let k = 0; k < 4; k++) {
-    const spoke = new THREE.Mesh(new THREE.BoxGeometry(0.045, wheelR * 2 - 0.08, 0.055), elm);
+    const spoke = addBox(wheel, [0.045, wheelR * 2 - 0.08, 0.055], elm);
     spoke.rotation.x = (k * Math.PI) / 4 + Math.PI / 8;
-    wheel.add(spoke);
   }
   const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.1, 12), ironMat);
   hub.rotation.z = Math.PI / 2;
@@ -503,19 +477,16 @@ function buildHungBell(bell, { pitHalf, wheelX, wheelR, headX }, mats) {
   wheel.position.x = wheelX;
   wheel.userData.era = 'today'; // in 1900 the bells hung dead and were chimed by hammers
   wheel.traverse((o) => {
-    if (o.isMesh) o.castShadow = true;
+    if (o instanceof THREE.Mesh) o.castShadow = true;
   });
   g.add(wheel);
 
   return g;
 }
 
+/** A box casting and receiving shadows, at (x, y, z). */
 function box(w, h, d, mat, x, y, z) {
-  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
-  m.position.set(x, y, z);
-  m.castShadow = true;
-  m.receiveShadow = true;
-  return m;
+  return boxMesh([w, h, d], mat, [x, y, z], { cast: true, receive: true });
 }
 
 // Bell chamber inside the weatherboarded turret: boarded floor and ceiling, studs, a two-tier oak frame with the
@@ -613,6 +584,7 @@ export function buildBellChamber(mats) {
 
   // --- The bells ---------------------------------------------------------------------------------------------
   const ropeMat = createRopeMaterial();
+  /** @type {[typeof ILMER_BELLS[number], number, number, number, number, number, number][]} */
   const hangs = [
     // [bell, pit between frame sides xa..xb, axle height, axle z, wheel side (+1 east / -1 west), wheel radius]
     [ILMER_BELLS[2], frameXs[0], frameXs[1], lowTop, -0.53, 1, 0.62],
@@ -690,9 +662,7 @@ export function buildBellChamber(mats) {
     head.rotation.x = Math.PI / 2;
     head.position.set(0, -0.32, -0.035);
     pivot.add(head);
-    const tailArm = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.02, 0.16), mats.iron);
-    tailArm.position.set(0, 0, 0.08);
-    pivot.add(tailArm);
+    addBox(pivot, [0.02, 0.02, 0.16], mats.iron, [0, 0, 0.08]);
     hammerG.add(pivot);
     const bracket = box(0.05, 0.05, 0.22, mats.iron, bellX, bowY + 0.32, bowZ + 0.1 + 0.05);
     hammerG.add(bracket);

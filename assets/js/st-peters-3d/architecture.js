@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { addBox, boxMesh } from '/assets/js/st-peters-3d/mesh-utils.js';
 import { DIM } from '/assets/js/st-peters-3d/dimensions.js';
 import { createChancelReliefHeightMaps } from '/assets/js/st-peters-3d/plaques.js';
 import { buildBellChamber } from '/assets/js/st-peters-3d/belfry.js';
@@ -284,18 +285,15 @@ function buildWindowInsert(spec, mats) {
   group.add(surrMesh);
 
   // Stone sill ledge
-  const sill = new THREE.Mesh(new THREE.BoxGeometry(spec.width + 0.24, 0.1, 0.22), mats.ashlarWarm);
-  sill.position.set(0, spec.sillY - 0.04, 0.02);
-  sill.castShadow = true;
-  sill.receiveShadow = true;
-  group.add(sill);
+  addBox(group, [spec.width + 0.24, 0.1, 0.22], mats.ashlarWarm, [0, spec.sillY - 0.04, 0.02], {
+    cast: true,
+    receive: true
+  });
 
   // Square-headed outer stone hood mould above Window 6 (North Nave Jaques Window, A3)
   // A1 (Sower), A2 (Altar/East) and A3 (Jaques) render procedurally painted stained-glass & stone tracery textures cleanly.
   if (spec.type === 'north-square-stained') {
-    const hood = new THREE.Mesh(new THREE.BoxGeometry(spec.width + 0.34, 0.09, 0.12), mats.ashlarWarm);
-    hood.position.set(0, spec.topY + 0.1, -0.08);
-    group.add(hood);
+    addBox(group, [spec.width + 0.34, 0.09, 0.12], mats.ashlarWarm, [0, spec.topY + 0.1, -0.08]);
   }
 
   return group;
@@ -306,19 +304,17 @@ function buildButtress(width, depth, height, mats) {
   const g = new THREE.Group();
 
   // Base plinth
-  const plinth = new THREE.Mesh(new THREE.BoxGeometry(width + 0.12, 0.58, depth + 0.12), mats.ashlar);
-  plinth.position.set(0, 0.29, (depth + 0.12) * 0.5);
-  plinth.castShadow = true;
-  plinth.receiveShadow = true;
-  g.add(plinth);
+  addBox(g, [width + 0.12, 0.58, depth + 0.12], mats.ashlar, [0, 0.29, (depth + 0.12) * 0.5], {
+    cast: true,
+    receive: true
+  });
 
   // Lower stage
   const stage1H = height * 0.58;
-  const stage1 = new THREE.Mesh(new THREE.BoxGeometry(width, stage1H, depth), mats.ashlar);
-  stage1.position.set(0, 0.58 + stage1H * 0.5, depth * 0.5);
-  stage1.castShadow = true;
-  stage1.receiveShadow = true;
-  g.add(stage1);
+  addBox(g, [width, stage1H, depth], mats.ashlar, [0, 0.58 + stage1H * 0.5, depth * 0.5], {
+    cast: true,
+    receive: true
+  });
 
   // Sloped top weather-cap (extruded triangle wedge)
   const capH = height * 0.34;
@@ -349,10 +345,7 @@ function buildRWP(height, mats) {
   g.add(pipe);
 
   // Cast-iron hopper head at eaves
-  const hopper = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.22, 0.2), mats.iron);
-  hopper.position.set(0, height - 0.12, 0.11);
-  hopper.castShadow = true;
-  g.add(hopper);
+  addBox(g, [0.24, 0.22, 0.2], mats.iron, [0, height - 0.12, 0.11], { cast: true });
 
   // Pipe mounting collars
   [0.7, height * 0.55].forEach((cy) => {
@@ -376,6 +369,7 @@ function buildBenchmarkQuoin(qx, qy, qz, mat, mark) {
     [mark.u, mark.v - 0.018, mark.u + 0.04, mark.v - 0.1]
   ];
   const holeU = mark.u - 0.078;
+  /** @type {(u: number, v: number, seg: number[]) => number} */
   const segDist = (u, v, [u0, v0, u1, v1]) => {
     const du = u1 - u0;
     const dv = v1 - v0;
@@ -452,9 +446,7 @@ function buildStoveChimney(x, N, mats) {
   g.add(cap);
   for (let k = 0; k < 3; k++) {
     const a = (k / 3) * Math.PI * 2;
-    const stay = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.09, 0.012), pale);
-    stay.position.set(x + Math.cos(a) * pipeR * 0.9, topY + 0.03, zc + Math.sin(a) * pipeR * 0.9);
-    g.add(stay);
+    addBox(g, [0.012, 0.09, 0.012], pale, [x + Math.cos(a) * pipeR * 0.9, topY + 0.03, zc + Math.sin(a) * pipeR * 0.9]);
   }
   // Stove smoke curling out from under the rain cap
   const smoke = buildChimneySmoke();
@@ -592,19 +584,14 @@ function buildHalfHip(N, halfHipY, mats) {
 // Build a carved limestone gable cross (East gable & North Porch gable)
 function buildGableCross(scale, mats) {
   const g = new THREE.Group();
-  const plinth = new THREE.Mesh(new THREE.BoxGeometry(0.28 * scale, 0.22 * scale, 0.24 * scale), mats.ashlar);
+  const plinth = addBox(g, [0.28 * scale, 0.22 * scale, 0.24 * scale], mats.ashlar);
   plinth.position.y = 0.11 * scale;
-  g.add(plinth);
 
-  const shaft = new THREE.Mesh(new THREE.BoxGeometry(0.11 * scale, 0.65 * scale, 0.1 * scale), mats.ashlar);
+  const shaft = addBox(g, [0.11 * scale, 0.65 * scale, 0.1 * scale], mats.ashlar, [0, 0, 0], { cast: true });
   shaft.position.y = 0.48 * scale;
-  shaft.castShadow = true;
-  g.add(shaft);
 
-  const arms = new THREE.Mesh(new THREE.BoxGeometry(0.44 * scale, 0.11 * scale, 0.1 * scale), mats.ashlar);
+  const arms = addBox(g, [0.44 * scale, 0.11 * scale, 0.1 * scale], mats.ashlar, [0, 0, 0], { cast: true });
   arms.position.y = 0.58 * scale;
-  arms.castShadow = true;
-  g.add(arms);
 
   return g;
 }
@@ -651,6 +638,13 @@ function addCarvedJambPanels(group, u, outerHW, zOuter, innerHW, zInner, carved)
 }
 
 // Helper to build a two-layer pierced wall (outer limestone rubble + inner cream plaster + splayed window reveals)
+/**
+ * @param {{
+ *   outlinePts?: number[][], outerOutlinePts?: number[][], innerOutlinePts?: number[][],
+ *   outerMaterial?: THREE.Material | null, outerThick: number, innerThick: number,
+ *   openings?: any[], niches?: any[], mats: any
+ * }} options
+ */
 function buildCompositeWall({
   outlinePts,
   outerOutlinePts = outlinePts,
@@ -730,11 +724,13 @@ function buildCompositeWall({
       const seatT = 0.07;
       const seatW = innerPts[1][0] * 2 + 0.06;
       const seatD = innerThick + 0.05;
-      const seatSlab = new THREE.Mesh(new THREE.BoxGeometry(seatW, seatT, seatD), mats.ashlarWarm);
-      seatSlab.position.set(op.u, seatY - seatT * 0.5 + 0.002, outerThick + seatD * 0.5);
-      seatSlab.castShadow = true;
-      seatSlab.receiveShadow = true;
-      group.add(seatSlab);
+      addBox(
+        group,
+        [seatW, seatT, seatD],
+        mats.ashlarWarm,
+        [op.u, seatY - seatT * 0.5 + 0.002, outerThick + seatD * 0.5],
+        { cast: true, receive: true }
+      );
       const nose = new THREE.Mesh(new THREE.CylinderGeometry(seatT * 0.5, seatT * 0.5, seatW, 12), mats.ashlarWarm);
       nose.rotation.z = Math.PI / 2;
       nose.position.set(op.u, seatY - seatT * 0.5 + 0.002, zIn + 0.05);
@@ -916,11 +912,14 @@ function buildGableCoping({ xPos, zHalf, eavesY, ridgeY, mats }) {
   const angle = Math.atan2(rise, zHalf);
 
   [-1, 1].forEach((side) => {
-    const coping = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.12, slopeLen), mats.ashlar);
-    coping.position.set(xPos, eavesY + rise * 0.5 + 0.08, side * (zHalf * 0.5));
+    const coping = addBox(
+      g,
+      [0.32, 0.12, slopeLen],
+      mats.ashlar,
+      [xPos, eavesY + rise * 0.5 + 0.08, side * (zHalf * 0.5)],
+      { cast: true }
+    );
     coping.rotation.x = side * angle;
-    coping.castShadow = true;
-    g.add(coping);
   });
   return g;
 }
@@ -955,12 +954,12 @@ function buildTowerAndSpire(mats) {
           ]
   ];
   const belfryWalls = new THREE.Group();
-  [
+  /** @type {[number, boolean][]} */ ([
     [0, true],
     [Math.PI, true],
     [Math.PI / 2, false],
     [-Math.PI / 2, false]
-  ].forEach(([rotY, northSouth]) => {
+  ]).forEach(([rotY, northSouth]) => {
     const shape = new THREE.Shape();
     shape.moveTo(-hsBox, t.baseY);
     shape.lineTo(hsBox, t.baseY);
@@ -1000,27 +999,24 @@ function buildTowerAndSpire(mats) {
     [-1, 1],
     [1, 1]
   ].forEach(([sx, sz]) => {
-    const trim = new THREE.Mesh(new THREE.BoxGeometry(0.1, belfryH, 0.1), mats.darkOak);
-    trim.position.set(t.xCenter + sx * hs, t.baseY + belfryH * 0.5, t.zCenter + sz * hs);
+    const trim = addBox(g, [0.1, belfryH, 0.1], mats.darkOak, [
+      t.xCenter + sx * hs,
+      t.baseY + belfryH * 0.5,
+      t.zCenter + sz * hs
+    ]);
     trim.userData.era = 'today';
-    g.add(trim);
     // 1900: plain corner boards the same colour as the boarding
-    const board = new THREE.Mesh(new THREE.BoxGeometry(0.1, belfryH, 0.1), mats.weatherboardWide);
+    const board = addBox(g, [0.1, belfryH, 0.1], mats.weatherboardWide);
     board.position.copy(trim.position);
     board.userData.era = '1900';
     board.visible = false;
-    g.add(board);
   });
 
   // Lead flashing skirt where belfry meets the clay Nave roof
   // (a ring of four strips standing proud of the boarding, so the bell chamber floor stays clear inside)
   [-1, 1].forEach((side) => {
-    const flashNS = new THREE.Mesh(new THREE.BoxGeometry(s + 0.18, 0.12, 0.09), mats.stoneCapDark);
-    flashNS.position.set(t.xCenter, 5.25, t.zCenter + side * (hs + 0.045));
-    g.add(flashNS);
-    const flashEW = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.12, s), mats.stoneCapDark);
-    flashEW.position.set(t.xCenter + side * (hs + 0.045), 5.25, t.zCenter);
-    g.add(flashEW);
+    addBox(g, [s + 0.18, 0.12, 0.09], mats.stoneCapDark, [t.xCenter, 5.25, t.zCenter + side * (hs + 0.045)]);
+    addBox(g, [0.09, 0.12, s], mats.stoneCapDark, [t.xCenter + side * (hs + 0.045), 5.25, t.zCenter]);
   });
 
   // Louvered belfry windows:
@@ -1030,22 +1026,16 @@ function buildTowerAndSpire(mats) {
 
     // Pointed frame + central mullion + horizontal timber louvre slats
     [-0.44, 0, 0.44].forEach((lx) => {
-      const post = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.72, 0.12), mats.weatherboard);
-      post.position.set(lx, -0.1, 0.03);
-      winG.add(post);
+      addBox(winG, [0.07, 0.72, 0.12], mats.weatherboard, [lx, -0.1, 0.03]);
     });
     for (let i = 0; i < 6; i++) {
-      const slat = new THREE.Mesh(new THREE.BoxGeometry(0.84, 0.05, 0.11), mats.weatherboard);
-      slat.position.set(0, -0.36 + i * 0.12, 0.04);
+      const slat = addBox(winG, [0.84, 0.05, 0.11], mats.weatherboard, [0, -0.36 + i * 0.12, 0.04]);
       slat.rotation.x = 0.45;
-      winG.add(slat);
     }
     // Pointed gothic gablet trim at top of belfry window
     [-1, 1].forEach((sx) => {
-      const archBar = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.08, 0.13), mats.weatherboard);
-      archBar.position.set(sx * 0.22, 0.44, 0.03);
+      const archBar = addBox(winG, [0.56, 0.08, 0.13], mats.weatherboard, [sx * 0.22, 0.44, 0.03]);
       archBar.rotation.z = -sx * 0.68;
-      winG.add(archBar);
     });
 
     winG.position.set(t.xCenter, t.eavesY - 0.88, sideZ * (hs + 0.02));
@@ -1058,15 +1048,11 @@ function buildTowerAndSpire(mats) {
   [-1, 1].forEach((sideX) => {
     const winG = new THREE.Group();
     [-0.38, 0, 0.38].forEach((lx) => {
-      const post = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.58, 0.11), mats.weatherboard);
-      post.position.set(lx, 0, 0.02);
-      winG.add(post);
+      addBox(winG, [0.06, 0.58, 0.11], mats.weatherboard, [lx, 0, 0.02]);
     });
     for (let i = 0; i < 5; i++) {
-      const slat = new THREE.Mesh(new THREE.BoxGeometry(0.74, 0.045, 0.1), mats.weatherboard);
-      slat.position.set(0, -0.2 + i * 0.1, 0.03);
+      const slat = addBox(winG, [0.74, 0.045, 0.1], mats.weatherboard, [0, -0.2 + i * 0.1, 0.03]);
       slat.rotation.x = 0.45;
-      winG.add(slat);
     }
     winG.position.set(t.xCenter + sideX * (hs + 0.02), t.eavesY - 0.76, t.zCenter);
     winG.rotation.y = sideX > 0 ? Math.PI / 2 : -Math.PI / 2;
@@ -1076,9 +1062,9 @@ function buildTowerAndSpire(mats) {
 
   // Belfry projecting eaves cornice
   const corniceSize = s + t.skirtOverhang * 2;
-  const cornice = new THREE.Mesh(new THREE.BoxGeometry(corniceSize, 0.12, corniceSize), mats.darkOak);
-  cornice.position.set(t.xCenter, t.eavesY, t.zCenter);
-  cornice.castShadow = true;
+  const cornice = boxMesh([corniceSize, 0.12, corniceSize], mats.darkOak, [t.xCenter, t.eavesY, t.zCenter], {
+    cast: true
+  });
   cornice.userData.era = 'today'; // in 1900 the boarding ran straight up into the gables, with no cornice
   g.add(cornice);
 
@@ -1176,16 +1162,16 @@ function buildTowerAndSpire(mats) {
   const pitch = Math.atan2(rise, halfSpan);
   const roofLen = s + 0.36; // oversails the gables as a short barge
   [-1, 1].forEach((side) => {
-    const slab = new THREE.Mesh(new THREE.BoxGeometry(roofLen, 0.06, slopeLen), mats.shingles);
-    slab.position.set(t.xCenter, roofY0 + rise * 0.5 + 0.03, t.zCenter + side * halfSpan * 0.5);
+    const slab = addBox(
+      capG,
+      [roofLen, 0.06, slopeLen],
+      mats.shingles,
+      [t.xCenter, roofY0 + rise * 0.5 + 0.03, t.zCenter + side * halfSpan * 0.5],
+      { cast: true, receive: true }
+    );
     slab.rotation.x = side * pitch;
-    slab.castShadow = true;
-    slab.receiveShadow = true;
-    capG.add(slab);
   });
-  const ridge = new THREE.Mesh(new THREE.BoxGeometry(roofLen, 0.06, 0.1), mats.weatherboard);
-  ridge.position.set(t.xCenter, roofY0 + rise + 0.05, t.zCenter);
-  capG.add(ridge);
+  addBox(capG, [roofLen, 0.06, 0.1], mats.weatherboard, [t.xCenter, roofY0 + rise + 0.05, t.zCenter]);
   // Gable triangles above the cornice, boarded like the walls below, with plain barge boards
   [-1, 1].forEach((sideX) => {
     const tri = new THREE.Shape();
@@ -1213,12 +1199,12 @@ function buildTowerAndSpire(mats) {
     });
   });
   // Today's louvred openings were boarded over: weatherboard infill shaped to each hole
-  [
+  /** @type {[number, boolean][]} */ ([
     [0, true],
     [Math.PI, true],
     [Math.PI / 2, false],
     [-Math.PI / 2, false]
-  ].forEach(([rotY, northSouth]) => {
+  ]).forEach(([rotY, northSouth]) => {
     const fill = new THREE.Shape();
     openings[0](northSouth).forEach(([x, y], i) => (i === 0 ? fill.moveTo(x, y) : fill.lineTo(x, y)));
     fill.closePath();
@@ -1245,15 +1231,11 @@ function buildTowerAndSpire(mats) {
       [0.07, lh, (lw + 0.07) * 0.5, 0],
       [0.07, lh, -(lw + 0.07) * 0.5, 0]
     ].forEach(([w, h, x, y]) => {
-      const f = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.06), mats.weatherboard);
-      f.position.set(x, y, 0.025);
-      louvre.add(f);
+      addBox(louvre, [w, h, 0.06], mats.weatherboard, [x, y, 0.025]);
     });
     for (let i = 0; i < 8; i++) {
-      const slat = new THREE.Mesh(new THREE.BoxGeometry(lw, 0.06, 0.08), mats.weatherboard);
-      slat.position.set(0, -lh * 0.5 + 0.06 + i * 0.087, 0.03);
+      const slat = addBox(louvre, [lw, 0.06, 0.08], mats.weatherboard, [0, -lh * 0.5 + 0.06 + i * 0.087, 0.03]);
       slat.rotation.x = 0.5;
-      louvre.add(slat);
     }
     louvre.rotation.y = sideX < 0 ? -Math.PI / 2 : Math.PI / 2;
     louvre.position.set(t.xCenter + sideX * (hsBox + 0.003), t.eavesY - 1.02, t.zCenter);
@@ -1441,9 +1423,7 @@ export function buildArchitecture(mats) {
 
   // Authentic blocked Norman/Medieval arched South Doorway outline in stone (seen in IMG_3932 & IMG_3933!)
   const blockedArchG = new THREE.Group();
-  const blockedFill = new THREE.Mesh(new THREE.BoxGeometry(1.06, 1.85, 0.05), mats.stoneWall);
-  blockedFill.position.set(-3.15, 0.92, N.zSouthExt + 0.01);
-  blockedArchG.add(blockedFill);
+  addBox(blockedArchG, [1.06, 1.85, 0.05], mats.stoneWall, [-3.15, 0.92, N.zSouthExt + 0.01]);
   const blockedVoussoir = new THREE.Mesh(new THREE.TorusGeometry(0.56, 0.09, 6, 14, Math.PI), mats.ashlarWarm);
   blockedVoussoir.position.set(-3.15, 1.48, N.zSouthExt + 0.02);
   blockedArchG.add(blockedVoussoir);
@@ -1809,9 +1789,7 @@ export function buildArchitecture(mats) {
     localTarget: [0, 0, -0.043],
     localCam: [0, 0.08, -1.25]
   };
-  const nePlaque = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.68, 0.045), mats.ashlarWarm);
-  nePlaque.position.set(0, 0, -0.018);
-  b6Group.add(nePlaque);
+  addBox(b6Group, [0.58, 0.68, 0.045], mats.ashlarWarm, [0, 0, -0.018]);
   const nePlaqueFace = new THREE.Mesh(new THREE.PlaneGeometry(0.56, 0.66), mats.dedicationStone1860);
   nePlaqueFace.position.set(0, 0, -0.043);
   nePlaqueFace.rotation.y = Math.PI;
@@ -1881,10 +1859,12 @@ export function buildArchitecture(mats) {
   const porchSlopeLen = Math.hypot(pHalfW + 0.12, porchRise + 0.08);
   const porchAngle = Math.atan2(porchRise, pHalfW);
   [-1, 1].forEach((side) => {
-    const coping = new THREE.Mesh(new THREE.BoxGeometry(porchSlopeLen, 0.1, 0.28), mats.ashlar);
-    coping.position.set(P.xCenter + side * (pHalfW * 0.5), P.eavesY + porchRise * 0.5 + 0.06, P.zNorthExt + 0.14);
+    const coping = addBox(porchGroup, [porchSlopeLen, 0.1, 0.28], mats.ashlar, [
+      P.xCenter + side * (pHalfW * 0.5),
+      P.eavesY + porchRise * 0.5 + 0.06,
+      P.zNorthExt + 0.14
+    ]);
     coping.rotation.z = -side * porchAngle;
-    porchGroup.add(coping);
   });
   const porchCross = buildGableCross(0.72, mats);
   porchCross.position.set(P.xCenter, P.ridgeY + 0.04, P.zNorthExt + 0.12);
@@ -1906,19 +1886,12 @@ export function buildArchitecture(mats) {
     const leafW = P.outerArchW * 0.48;
     const sign = isRight ? -1 : 1;
     // Vertical rails & gothic trefoil pickets
-    const frameTop = new THREE.Mesh(new THREE.BoxGeometry(leafW, 0.07, 0.05), mats.porchGateGrey);
-    frameTop.position.set(sign * leafW * 0.5, 1.05, 0);
-    pivot.add(frameTop);
-    const frameBot = new THREE.Mesh(new THREE.BoxGeometry(leafW, 0.08, 0.05), mats.porchGateGrey);
-    frameBot.position.set(sign * leafW * 0.5, 0.12, 0);
-    pivot.add(frameBot);
+    addBox(pivot, [leafW, 0.07, 0.05], mats.porchGateGrey, [sign * leafW * 0.5, 1.05, 0]);
+    addBox(pivot, [leafW, 0.08, 0.05], mats.porchGateGrey, [sign * leafW * 0.5, 0.12, 0]);
 
     for (let i = 0; i < 4; i++) {
       const px = sign * (0.07 + i * ((leafW - 0.14) / 3));
-      const picket = new THREE.Mesh(new THREE.BoxGeometry(0.055, 1.02, 0.04), mats.porchGateGrey);
-      picket.position.set(px, 0.58, 0);
-      picket.castShadow = true;
-      pivot.add(picket);
+      addBox(pivot, [0.055, 1.02, 0.04], mats.porchGateGrey, [px, 0.58, 0], { cast: true });
     }
     pivot.position.set(P.xCenter - sign * (P.outerArchW * 0.49), DIM.porchFloorY, P.zNorthExt + 0.22);
     return pivot;
@@ -1946,9 +1919,11 @@ export function buildArchitecture(mats) {
 
   // Moulded stone impost capitals at springline of inner door (IMG_3935)
   [-1, 1].forEach((side) => {
-    const impost = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.09, 0.22), mats.ashlarWarm);
-    impost.position.set(P.xCenter + side * (P.innerDoorW * 0.5 + 0.09), P.innerDoorSpringY, P.zSouth - 0.04);
-    porchGroup.add(impost);
+    addBox(porchGroup, [0.28, 0.09, 0.22], mats.ashlarWarm, [
+      P.xCenter + side * (P.innerDoorW * 0.5 + 0.09),
+      P.innerDoorSpringY,
+      P.zSouth - 0.04
+    ]);
   });
 
   // Inner Arched Oak Church Door (solid dark plank oak on both porch and Nave sides with horizontal ledges & ironwork)
@@ -1985,19 +1960,13 @@ export function buildArchitecture(mats) {
 
   // Horizontal oak ledge battens & iron latch box on the interior (Nave) face of the wooden door
   [0.36, 0.92, 1.44].forEach((ly) => {
-    const ledge = new THREE.Mesh(new THREE.BoxGeometry(P.innerDoorW - 0.14, 0.085, 0.024), mats.medOak);
-    ledge.position.set(P.innerDoorW * 0.5 - 0.015, ly, 0.085);
-    doorPivot.add(ledge);
+    addBox(doorPivot, [P.innerDoorW - 0.14, 0.085, 0.024], mats.medOak, [P.innerDoorW * 0.5 - 0.015, ly, 0.085]);
   });
-  const intLockBox = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.11, 0.03), mats.iron);
-  intLockBox.position.set(P.innerDoorW - 0.18, 0.98, 0.088);
-  doorPivot.add(intLockBox);
+  addBox(doorPivot, [0.16, 0.11, 0.03], mats.iron, [P.innerDoorW - 0.18, 0.98, 0.088]);
 
   // Wrought-iron strap hinges & ring latch on exterior porch face (IMG_3935)
   [0.42, 1.38].forEach((hy) => {
-    const strap = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.06, 0.02), mats.iron);
-    strap.position.set(0.42, hy, -0.01);
-    doorPivot.add(strap);
+    addBox(doorPivot, [0.76, 0.06, 0.02], mats.iron, [0.42, hy, -0.01]);
   });
   const ringHandle = new THREE.Mesh(new THREE.TorusGeometry(0.055, 0.012, 8, 16), mats.iron);
   ringHandle.position.set(P.innerDoorW - 0.16, 1.02, -0.03);
@@ -2035,9 +2004,11 @@ export function buildArchitecture(mats) {
 
   // Porch interior noticeboards on East and West side walls (IMG_3935)
   [-1, 1].forEach((side) => {
-    const board = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.72, 0.88), mats.darkOak);
-    board.position.set(P.xCenter + side * (P.widthInt * 0.5 - 0.03), 1.38, P.zNorthExt + 1.15);
-    porchGroup.add(board);
+    addBox(porchGroup, [0.04, 0.72, 0.88], mats.darkOak, [
+      P.xCenter + side * (P.widthInt * 0.5 - 0.03),
+      1.38,
+      P.zNorthExt + 1.15
+    ]);
     // White paper notices pinned to board
     for (let p = 0; p < 3; p++) {
       const note = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.26, 0.2), mats.wax);

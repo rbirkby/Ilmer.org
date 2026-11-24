@@ -60,7 +60,9 @@ test("every St Peter's 3D module imported by the page exists and is cache-busted
     }
   }
 
-  assert.equal(seen.size, 18);
+  assert.equal(seen.size, 20);
+  assert.ok(seen.has('/assets/js/st-peters-3d/canvas-utils.js'));
+  assert.ok(seen.has('/assets/js/st-peters-3d/mesh-utils.js'));
   assert.ok(seen.has('/assets/js/st-peters-3d/fade.js'));
   assert.ok(seen.has('/assets/js/st-peters-3d/static-merge.js'));
   assert.ok(seen.has('/assets/js/st-peters-3d/stats-overlay.js'));

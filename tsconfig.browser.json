@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "types": [],
+    "checkJs": true,
+    "strict": false,
+    "paths": {
+      "/assets/vendor/three/OrbitControls.js": ["./node_modules/three/examples/jsm/controls/OrbitControls.js"],
+      "/assets/*": ["./assets/*"]
+    }
+  },
+  "include": ["assets/js/st-peters-3d/**/*.js", "types/browser-globals.d.ts"],
+  "exclude": ["node_modules", "_site"]
+}

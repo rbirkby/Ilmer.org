@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import { canvasTexture, makeCanvas } from '/assets/js/st-peters-3d/canvas-utils.js';
+import { addBox, boxMesh } from '/assets/js/st-peters-3d/mesh-utils.js';
 import { DIM, getGroundHeight, groundOutlineRadius, isChristmasSeason } from '/assets/js/st-peters-3d/dimensions.js';
 import { CHURCHYARD_MEMORIALS, surveyGridToWorld } from '/assets/js/st-peters-3d/memorials-data.js';
 
@@ -25,9 +27,7 @@ function createInscriptionMaterial(
   stone,
   { id = 'M', widthPx = 384, heightPx = 512, isBrass = false, showBorder = false } = {}
 ) {
-  const canvas = document.createElement('canvas');
-  canvas.width = widthPx;
-  canvas.height = heightPx;
+  const canvas = makeCanvas(widthPx, heightPx);
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, widthPx, heightPx);
 
@@ -163,10 +163,7 @@ function createInscriptionMaterial(
     ctx.fillText(line, widthPx * 0.5, y);
   });
 
-  const tex = new THREE.CanvasTexture(canvas);
-  tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = 4;
-  tex.needsUpdate = true;
+  const tex = canvasTexture(canvas, { anisotropy: 4 });
 
   if (isBrass) {
     return new THREE.MeshStandardMaterial({
@@ -259,22 +256,18 @@ function buildMemorial(spec, mats) {
   const addKerbs = (lenX = 1.82, widZ = 0.86) => {
     const kerbH = 0.14;
     const wallT = 0.1;
-    const north = new THREE.Mesh(new THREE.BoxGeometry(lenX, kerbH, wallT), kerbMat);
-    north.position.set(0.35, kerbH * 0.5, -widZ * 0.5);
-    const south = new THREE.Mesh(new THREE.BoxGeometry(lenX, kerbH, wallT), kerbMat);
-    south.position.set(0.35, kerbH * 0.5, widZ * 0.5);
-    const east = new THREE.Mesh(new THREE.BoxGeometry(wallT, kerbH, widZ + wallT), kerbMat);
-    east.position.set(0.35 + lenX * 0.5, kerbH * 0.5, 0);
-    const west = new THREE.Mesh(new THREE.BoxGeometry(wallT, kerbH, widZ + wallT), kerbMat);
-    west.position.set(0.35 - lenX * 0.5, kerbH * 0.5, 0);
+    const north = boxMesh([lenX, kerbH, wallT], kerbMat, [0.35, kerbH * 0.5, -widZ * 0.5]);
+    const south = boxMesh([lenX, kerbH, wallT], kerbMat, [0.35, kerbH * 0.5, widZ * 0.5]);
+    const east = boxMesh([wallT, kerbH, widZ + wallT], kerbMat, [0.35 + lenX * 0.5, kerbH * 0.5, 0]);
+    const west = boxMesh([wallT, kerbH, widZ + wallT], kerbMat, [0.35 - lenX * 0.5, kerbH * 0.5, 0]);
 
     // Layer of small stone chippings/pebbles inside the kerb boundary
     const innerLenX = lenX - wallT;
     const innerWidZ = widZ - wallT;
     const bedH = 0.088;
-    const bed = new THREE.Mesh(new THREE.BoxGeometry(innerLenX, bedH, innerWidZ), mats.gravePebbles || mats.gravelPath);
-    bed.position.set(0.35, bedH * 0.5, 0);
-    bed.receiveShadow = true;
+    const bed = boxMesh([innerLenX, bedH, innerWidZ], mats.gravePebbles || mats.gravelPath, [0.35, bedH * 0.5, 0], {
+      receive: true
+    });
 
     // Scatter a 3D layer of individual faceted small stones across the top of the kerb bed
     const pebbleCount = Math.round(126 * innerLenX * innerWidZ); // ~126 chippings per square metre of bed
@@ -318,10 +311,7 @@ function buildMemorial(spec, mats) {
 
   const addOpenBook = (baseY) => {
     const bookG = new THREE.Group();
-    const rest = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.22, 0.68), stoneMat);
-    rest.position.set(0, 0.11, 0);
-    rest.castShadow = true;
-    bookG.add(rest);
+    addBox(bookG, [0.38, 0.22, 0.68], stoneMat, [0, 0.11, 0], { cast: true });
 
     const pages = spec.pages || [spec.inscription || [], []];
     // Left page (South, +Z when facing West) & Right page (North, -Z when facing West)
@@ -330,10 +320,7 @@ function buildMemorial(spec, mats) {
       [-1, pages[1], 'R']
     ].forEach(([side, pageLines, suffix]) => {
       const pagePivot = new THREE.Group();
-      const pageMesh = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.06, 0.32), stoneMat);
-      pageMesh.castShadow = true;
-      pageMesh.receiveShadow = true;
-      pagePivot.add(pageMesh);
+      addBox(pagePivot, [0.4, 0.06, 0.32], stoneMat, [0, 0, 0], { cast: true, receive: true });
 
       if (pageLines && pageLines.length > 0) {
         const pageMat = createInscriptionMaterial(pageLines, spec.stone, {
@@ -357,11 +344,7 @@ function buildMemorial(spec, mats) {
   };
 
   const addHeadstoneSlab = (h = 0.88, hw = 0.3, xOff = -0.35, lines = spec.inscription) => {
-    const plinth = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.12, hw * 2 + 0.14), stoneMat);
-    plinth.position.set(xOff, 0.06, 0);
-    plinth.castShadow = true;
-    plinth.receiveShadow = true;
-    g.add(plinth);
+    addBox(g, [0.24, 0.12, hw * 2 + 0.14], stoneMat, [xOff, 0.06, 0], { cast: true, receive: true });
 
     const shape = new THREE.Shape();
     shape.moveTo(-hw, 0);
@@ -440,11 +423,7 @@ function buildMemorial(spec, mats) {
         [-0.68, 1.03]
       ];
       corners.forEach(([px, pz]) => {
-        const post = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.52, 0.14), stoneMat);
-        post.position.set(px, 0.26, pz);
-        post.castShadow = true;
-        post.receiveShadow = true;
-        g.add(post);
+        addBox(g, [0.14, 0.52, 0.14], stoneMat, [px, 0.26, pz], { cast: true, receive: true });
       });
 
       // Build interlocking oval chain links sagging along a catenary curve between each pair of corner posts
@@ -505,16 +484,11 @@ function buildMemorial(spec, mats) {
     case 'cross-kerbs': {
       // C24 / C25: Tall cross on 3-stepped pedestal inside kerbs (+ flanking plaques on C24)
       addKerbs(1.9, 0.92);
-      const s1 = new THREE.Mesh(new THREE.BoxGeometry(0.66, 0.18, 0.66), stoneMat);
-      s1.position.set(-0.34, 0.09, 0);
-      const s2 = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.26, 0.52), stoneMat);
-      s2.position.set(-0.34, 0.3, 0);
-      const s3 = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.24, 0.38), stoneMat);
-      s3.position.set(-0.34, 0.54, 0);
-      const shaft = new THREE.Mesh(new THREE.BoxGeometry(0.13, 1.28, 0.14), stoneMat);
-      shaft.position.set(-0.34, 1.24, 0);
-      const arm = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.15, 0.62), stoneMat);
-      arm.position.set(-0.34, 1.54, 0);
+      const s1 = boxMesh([0.66, 0.18, 0.66], stoneMat, [-0.34, 0.09, 0]);
+      const s2 = boxMesh([0.5, 0.26, 0.52], stoneMat, [-0.34, 0.3, 0]);
+      const s3 = boxMesh([0.36, 0.24, 0.38], stoneMat, [-0.34, 0.54, 0]);
+      const shaft = boxMesh([0.13, 1.28, 0.14], stoneMat, [-0.34, 1.24, 0]);
+      const arm = boxMesh([0.13, 0.15, 0.62], stoneMat, [-0.34, 1.54, 0]);
       [s1, s2, s3, shaft, arm].forEach((m) => {
         m.castShadow = true;
         m.receiveShadow = true;
@@ -539,10 +513,7 @@ function buildMemorial(spec, mats) {
           [0.56, spec.plaques[0], 'P1'],
           [-0.56, spec.plaques[1], 'P2']
         ].forEach(([pz, pLines, suffix]) => {
-          const pSlab = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.07, 0.38), stoneMat);
-          pSlab.position.set(-0.18, 0.04, pz);
-          pSlab.receiveShadow = true;
-          g.add(pSlab);
+          addBox(g, [0.4, 0.07, 0.38], stoneMat, [-0.18, 0.04, pz], { receive: true });
           const pMat = createInscriptionMaterial(pLines, spec.stone, {
             id: `${spec.id}-${suffix}`,
             widthPx: 288,
@@ -559,12 +530,9 @@ function buildMemorial(spec, mats) {
     case 'cross-headstone': {
       // C22: Martha Belgrove — cross on headstone & footstone
       addHeadstoneSlab(0.84, 0.3, -0.35);
-      const topCrossV = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.34, 0.08), stoneMat);
-      topCrossV.position.set(-0.35, 1.08, 0);
-      const topCrossH = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.08, 0.24), stoneMat);
-      topCrossH.position.set(-0.35, 1.14, 0);
-      const foot = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.34, 0.32), stoneMat);
-      foot.position.set(1.1, 0.17, 0);
+      const topCrossV = boxMesh([0.08, 0.34, 0.08], stoneMat, [-0.35, 1.08, 0]);
+      const topCrossH = boxMesh([0.08, 0.08, 0.24], stoneMat, [-0.35, 1.14, 0]);
+      const foot = boxMesh([0.08, 0.34, 0.32], stoneMat, [1.1, 0.17, 0]);
       g.add(topCrossV, topCrossH, foot);
       break;
     }
@@ -600,11 +568,7 @@ function buildMemorial(spec, mats) {
       const hw = 0.31;
 
       // Low weathered original stone socket/plinth still embedded in the turf
-      const plinth = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.08, hw * 2 + 0.14), stoneMat);
-      plinth.position.set(0.06, 0.04, 0);
-      plinth.castShadow = true;
-      plinth.receiveShadow = true;
-      g.add(plinth);
+      addBox(g, [0.24, 0.08, hw * 2 + 0.14], stoneMat, [0.06, 0.04, 0], { cast: true, receive: true });
 
       // Headstone slab toppled backward onto the grass (local +X front face rotates to +Y skyward)
       const fallenPivot = new THREE.Group();
@@ -654,10 +618,8 @@ function buildMemorial(spec, mats) {
 
     case 'plaque': {
       // Flat square cremation tablet set flush in the churchyard grass (B7, C5, C15, C16, C29, C35-C43)
-      const tablet = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.055, 0.48), stoneMat);
+      const tablet = addBox(g, [0.48, 0.055, 0.48], stoneMat, [0, 0, 0], { receive: true });
       tablet.position.y = 0.028;
-      tablet.receiveShadow = true;
-      g.add(tablet);
 
       if (spec.inscription?.length) {
         const inscMat = createInscriptionMaterial(spec.inscription, spec.stone, {
@@ -675,10 +637,7 @@ function buildMemorial(spec, mats) {
     case 'plaque-angled': {
       // C33: Stone plaque set at an angle on a low wedge
       const wedgePivot = new THREE.Group();
-      const wedge = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.14, 0.5), stoneMat);
-      wedge.castShadow = true;
-      wedge.receiveShadow = true;
-      wedgePivot.add(wedge);
+      addBox(wedgePivot, [0.48, 0.14, 0.5], stoneMat, [0, 0, 0], { cast: true, receive: true });
 
       if (spec.inscription?.length) {
         const inscMat = createInscriptionMaterial(spec.inscription, spec.stone, {
@@ -699,12 +658,10 @@ function buildMemorial(spec, mats) {
 
     case 'marker': {
       // Small wooden cross marker with engraved brass nameplate (C3, C7, C30)
-      const post = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.62, 0.05), mats.medOak);
+      const post = boxMesh([0.05, 0.62, 0.05], mats.medOak, [0, 0, 0], { cast: true });
       post.position.y = 0.31;
-      post.castShadow = true;
-      const bar = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.08, 0.38), mats.medOak);
+      const bar = boxMesh([0.05, 0.08, 0.38], mats.medOak, [0, 0, 0], { cast: true });
       bar.position.y = 0.46;
-      bar.castShadow = true;
       g.add(post, bar);
 
       if (spec.inscription?.length) {
@@ -814,27 +771,16 @@ function createToppleAnimator(topplers) {
 // Build a weathered wooden churchyard memorial bench (seen beside West wall in IMG_3928 & 3934)
 function buildGardenBench(mats) {
   const g = new THREE.Group();
-  const seat = new THREE.Mesh(new THREE.BoxGeometry(1.52, 0.05, 0.46), mats.weatherboard);
+  const seat = addBox(g, [1.52, 0.05, 0.46], mats.weatherboard, [0, 0, 0], { cast: true });
   seat.position.y = 0.44;
-  seat.castShadow = true;
-  g.add(seat);
 
-  const back = new THREE.Mesh(new THREE.BoxGeometry(1.52, 0.46, 0.05), mats.weatherboard);
-  back.position.set(0, 0.72, -0.22);
+  const back = addBox(g, [1.52, 0.46, 0.05], mats.weatherboard, [0, 0.72, -0.22], { cast: true });
   back.rotation.x = -0.15;
-  back.castShadow = true;
-  g.add(back);
 
   [-0.68, 0.68].forEach((lx) => {
-    const legF = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.62, 0.07), mats.weatherboard);
-    legF.position.set(lx, 0.31, 0.18);
-    g.add(legF);
-    const legB = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.92, 0.07), mats.weatherboard);
-    legB.position.set(lx, 0.46, -0.2);
-    g.add(legB);
-    const arm = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.06, 0.46), mats.weatherboard);
-    arm.position.set(lx, 0.62, 0);
-    g.add(arm);
+    addBox(g, [0.07, 0.62, 0.07], mats.weatherboard, [lx, 0.31, 0.18]);
+    addBox(g, [0.07, 0.92, 0.07], mats.weatherboard, [lx, 0.46, -0.2]);
+    addBox(g, [0.07, 0.06, 0.46], mats.weatherboard, [lx, 0.62, 0]);
   });
   return g;
 }
@@ -847,9 +793,7 @@ function getLeafClusterMaterial(foliageHex, isEvergreen) {
   if (leafMatCache.has(key)) return leafMatCache.get(key);
 
   const size = 256;
-  const canvas = document.createElement('canvas');
-  canvas.width = size;
-  canvas.height = size;
+  const canvas = makeCanvas(size, size);
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, size, size);
 
@@ -921,10 +865,7 @@ function getLeafClusterMaterial(foliageHex, isEvergreen) {
     ctx.restore();
   }
 
-  const tex = new THREE.CanvasTexture(canvas);
-  tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = 4;
-  tex.needsUpdate = true;
+  const tex = canvasTexture(canvas, { anisotropy: 4 });
 
   const mat = new THREE.MeshStandardMaterial({
     map: tex,
@@ -1223,9 +1164,6 @@ export const NORTH_CHURCHYARD_RAILINGS = [
   [18.556, -6.15]
 ];
 
-// Kept as an alias so older references keep working during the rename
-export const NORTH_CHURCHYARD_FENCE = NORTH_CHURCHYARD_RAILINGS;
-
 const RAILING_HEIGHT = 1.28;
 const RAILING_PICKET_SPACING = 0.135;
 const PATH_Z = -6.22;
@@ -1432,10 +1370,7 @@ function buildIronRailPanel(mats, length, { includeStartPost = true, includeEndP
   }
 
   for (const y of railYs) {
-    const rail = new THREE.Mesh(new THREE.BoxGeometry(length, barH, barT * 2.2), iron);
-    rail.position.set(length * 0.5, y, 0);
-    rail.castShadow = true;
-    g.add(rail);
+    addBox(g, [length, barH, barT * 2.2], iron, [length * 0.5, y, 0], { cast: true });
   }
 
   const picketCount = Math.max(2, Math.floor(length / RAILING_PICKET_SPACING) + 1);
@@ -1539,11 +1474,8 @@ function buildKissingGate(mats) {
       const [x0, z0] = arcPoint(i);
       const [x1, z1] = arcPoint(i + 1);
       const len = Math.hypot(x1 - x0, z1 - z0);
-      const rail = new THREE.Mesh(new THREE.BoxGeometry(len, 0.032, 0.022), iron);
-      rail.position.set((x0 + x1) * 0.5, y, (z0 + z1) * 0.5);
+      const rail = addBox(g, [len, 0.032, 0.022], iron, [(x0 + x1) * 0.5, y, (z0 + z1) * 0.5], { cast: true });
       rail.rotation.y = Math.atan2(-(z1 - z0), x1 - x0);
-      rail.castShadow = true;
-      g.add(rail);
     }
   }
 
@@ -1684,11 +1616,6 @@ export function buildNorthChurchyardRailings(mats, frontage = NORTH_CHURCHYARD_R
   ];
 
   return { group: g, westGate, eastGate, kissingGates: createKissingGateAnimator(gates) };
-}
-
-/** @deprecated Use buildNorthChurchyardRailings */
-export function buildNorthChurchyardFence(mats, points) {
-  return buildNorthChurchyardRailings(mats, points);
 }
 
 export function buildChurchyard(mats) {

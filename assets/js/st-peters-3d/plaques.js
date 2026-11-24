@@ -1,37 +1,9 @@
-import * as THREE from 'three';
+import { canvasTexture, makeCanvas, mulberry32 } from '/assets/js/st-peters-3d/canvas-utils.js';
 
 // Procedurally painted interior wall memorials of St Peter's Church, Ilmer:
 //  - A7: Carved oak plaque to Robert Harold Attenborough (1880–1968)
 //  - Roll of Honour: Great War memorial stone tablet (South Nave wall)
 //  - A4: Framed hand-lettered List of Donors for Mrs Jaques's Memorial Window
-
-function mulberry32(seed) {
-  let a = seed >>> 0;
-  return function () {
-    a |= 0;
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-function makeCanvas(w, h) {
-  const c = document.createElement('canvas');
-  c.width = w;
-  c.height = h;
-  return c;
-}
-
-function finish(canvas, srgb, maxAniso) {
-  const tex = new THREE.CanvasTexture(canvas);
-  tex.wrapS = THREE.ClampToEdgeWrapping;
-  tex.wrapT = THREE.ClampToEdgeWrapping;
-  tex.anisotropy = maxAniso;
-  tex.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace;
-  tex.needsUpdate = true;
-  return tex;
-}
 
 // Measure a run list: [{ t: 'TEXT', sup?: true }]
 function measureRuns(ctx, runs, font, size) {
@@ -206,7 +178,10 @@ export function createAttenboroughPlaqueMaps(maxAniso = 8) {
     drawIncisedLine(ctx, bctx, ln.runs, cx, ln.y, ln.s, font, maxW, 'center', painter);
   }
 
-  return { map: finish(col, true, maxAniso), bumpMap: finish(bmp, false, maxAniso) };
+  return {
+    map: canvasTexture(col, { anisotropy: maxAniso }),
+    bumpMap: canvasTexture(bmp, { srgb: false, anisotropy: maxAniso })
+  };
 }
 
 // -------------------------------------------------------------------------
@@ -332,7 +307,10 @@ export function createRollOfHonourMaps(maxAniso = 8) {
     painter
   );
 
-  return { map: finish(col, true, maxAniso), bumpMap: finish(bmp, false, maxAniso) };
+  return {
+    map: canvasTexture(col, { anisotropy: maxAniso }),
+    bumpMap: canvasTexture(bmp, { srgb: false, anisotropy: maxAniso })
+  };
 }
 
 // -------------------------------------------------------------------------
@@ -641,7 +619,7 @@ export function createJaquesDonorsTexture(maxAniso = 8) {
   ctx.fillRect(-260, -6, 520, 12);
   ctx.restore();
 
-  return finish(c, true, maxAniso);
+  return canvasTexture(c, { anisotropy: maxAniso });
 }
 
 // -------------------------------------------------------------------------

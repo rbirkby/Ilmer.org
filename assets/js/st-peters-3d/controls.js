@@ -2,6 +2,17 @@ import * as THREE from 'three';
 import { OrbitControls } from '/assets/vendor/three/OrbitControls.js';
 import { getSurfaceY, groundOutlineRadius } from '/assets/js/st-peters-3d/dimensions.js';
 
+/**
+ * @typedef {object} CameraPreset
+ * @property {string} label
+ * @property {string} group
+ * @property {[number, number, number]} pos
+ * @property {[number, number, number]} target
+ * @property {boolean} cutaway
+ * @property {boolean} doorsOpen
+ */
+
+/** @type {Record<string, CameraPreset>} */
 export const CAMERA_PRESETS = {
   'exterior-nw': {
     label: 'Exterior NW',
@@ -188,6 +199,10 @@ export function createCameraController(camera, domElement) {
     );
   }
 
+  /**
+   * @param {any[]} waypoints
+   * @param {{ onStep?: (waypoint: any, index: number, count: number) => void, onEnd?: (completed: boolean) => void }} [callbacks]
+   */
   function startTour(waypoints, { onStep, onEnd } = {}) {
     if (!waypoints || waypoints.length === 0) return;
     stopTour(false);
