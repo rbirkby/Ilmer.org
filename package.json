@@ -7,6 +7,7 @@
     "start": "node scripts/dev.ts",
     "build:js": "vite build",
     "build": "npx @11ty/eleventy --config=.eleventy.ts",
+    "changelog": "node scripts/changelog.ts",
     "format": "oxfmt --write .",
     "format-check": "oxfmt --check .",
     "lint": "oxlint && markdownlint --ignore '**/node_modules/**' '**/*.md' --config .markdownlintrc.json --fix",
