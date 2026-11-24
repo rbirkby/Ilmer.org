@@ -1,13 +1,14 @@
 /* Ilmer field-map embed (ES module).
  *
- * Usage on any page (must be served over http(s), as with all ES modules):
+ * On ilmer.org the page loads the content-hashed bundle. Anywhere else, use the
+ * stable URL (this file is rewritten on each deploy and is not under the immutable cache):
  *   <div id="ilmer-field-map" style="height: 560px"></div>
- *   <script type="module" src="{{ 'ilmer-fields-embed' | bundle }}"></script>
+ *   <script type="module" src="https://www.ilmer.org/assets/js/ilmer-fields-embed.js"></script>
  *
  * Leaflet 1.9.4 (ESM build) is imported from unpkg; its stylesheet is injected
  * automatically. Field shapes were traced from the Ilmer estate field-map
  * diagram and georeferenced against the Chiltern Main Line and the lane to
- * the A4129. `init()` is also exported for programmatic use.
+ * the A4129. `init` is a named export of the stable file for programmatic use.
  */
 import * as L from 'https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js';
 

@@ -1,6 +1,9 @@
 _site
 node_modules
 assets/dist
+assets/.stable-build
+assets/js/ilmer-fields-embed.js
+assets/js/colorize-sw.js
 .DS_Store
 .lighthouseci
 pour-reports

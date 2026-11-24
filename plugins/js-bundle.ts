@@ -23,7 +23,7 @@ export function loadViteManifest(rootDir: string): ViteManifest {
   const file = candidates.find((candidate) => existsSync(candidate));
   if (!file) {
     throw new Error(
-      'Vite manifest not found in assets/dist. Run `npm run build:js` first (`npm run build` and `npm start` do this).'
+      'Vite manifest not found in assets/dist. `npm run build` bundles before rendering, and `npm start` waits for `vite build --watch`.'
     );
   }
   return JSON.parse(readFileSync(file, 'utf8')) as ViteManifest;

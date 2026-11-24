@@ -1,5 +1,5 @@
 import { initImageLightbox } from './image-lightbox.ts';
-import colorizeSwUrl from './colorize-sw.ts?worker&url';
+import { COLOURISE_SW_PATH, isStaleColouriseWorker } from './colourise-registration.ts';
 
 let workerRequestId = 0;
 let colorizeWorker: Worker | undefined;
@@ -353,14 +353,29 @@ function enhanceArticleImages() {
   });
 
   initImageLightbox({ triggerSelector: '.article-image-link' });
+  retireStaleColouriseWorkers();
 
   if (colorizeRegistrations.length > 0) {
     Promise.all(colorizeRegistrations).catch(() => {});
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register(colorizeSwUrl).catch(() => {});
+      navigator.serviceWorker.register(COLOURISE_SW_PATH).catch(() => {});
     }
   }
+}
+
+function retireStaleColouriseWorkers() {
+  if (!('serviceWorker' in navigator)) return;
+  navigator.serviceWorker
+    .getRegistrations()
+    .then((registrations) => {
+      for (const registration of registrations) {
+        const scriptURL =
+          registration.active?.scriptURL ?? registration.waiting?.scriptURL ?? registration.installing?.scriptURL;
+        if (scriptURL && isStaleColouriseWorker(scriptURL)) registration.unregister().catch(() => {});
+      }
+    })
+    .catch(() => {});
 }
 
 window.addEventListener('pagehide', revokeColorizedObjectUrls);

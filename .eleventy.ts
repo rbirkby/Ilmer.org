@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, globSync, readFileSync, readdirSync, rmSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import markdownItFootnote from 'markdown-it-footnote';
@@ -11,6 +11,7 @@ import markdownItMarginNotes from './plugins/markdown-it-margin-notes.ts';
 import { createCacheBustFilter } from './plugins/cache-bust.ts';
 import { retainedGitignorePatterns } from './plugins/eleventy-watch-ignores.ts';
 import { createBundleFilters } from './plugins/js-bundle.ts';
+import { eleventyRunsVite } from './scripts/dev-process.ts';
 import { tableScroll } from './plugins/table-scroll.ts';
 import { censusOccupations } from './plugins/census-occupations.ts';
 import { censusAgePyramid } from './plugins/census-age-pyramid.ts';
@@ -169,6 +170,9 @@ export default function (eleventyConfig: any) {
   eleventyConfig.addPassthroughCopy('assets/pdfs');
   eleventyConfig.addPassthroughCopy('assets/*.json');
   eleventyConfig.addPassthroughCopy('assets/dist');
+  // Stable URLs for the field-map embed and the colourise service worker. Vite writes these during the build.
+  eleventyConfig.addPassthroughCopy('assets/js/ilmer-fields-embed.js');
+  eleventyConfig.addPassthroughCopy('assets/js/colorize-sw.js');
   eleventyConfig.addPassthroughCopy({
     'node_modules/three/LICENSE': 'assets/vendor/three/LICENSE.txt'
   });
@@ -230,19 +234,30 @@ export default function (eleventyConfig: any) {
       .map((href) => `<link rel="modulepreload" href="${href}">`)
       .join('\n')
   );
-  eleventyConfig.on('eleventy.before', () => {
-    // Production builds always rebundle. `eleventy --serve` reuses the manifest and lets `vite build --watch` refresh it.
-    const serving = process.argv.includes('--serve') || process.argv.includes('--watch');
+  eleventyConfig.on('eleventy.before', ({ runMode }: { runMode?: string }) => {
+    // `runMode` comes from Eleventy. Serve and watch must not start their own Vite build:
+    // `npm start` is already running `vite build --watch`, and a second build races it.
     const manifest = path.join(ROOT, 'assets/dist/.vite/manifest.json');
-    if (!serving || !existsSync(manifest)) {
+    if (eleventyRunsVite(runMode)) {
       const viteBin = path.join(ROOT, 'node_modules/vite/bin/vite.js');
       const result = spawnSync(process.execPath, [viteBin, 'build'], { cwd: ROOT, stdio: 'inherit' });
       if (result.status !== 0) {
         throw new Error('Vite failed to bundle the site JavaScript');
       }
+    } else if (!existsSync(manifest)) {
+      throw new Error('No Vite manifest in assets/dist. Run `npm start` so the bundles exist before Eleventy serves.');
     }
     cacheBust.clearCache();
     bundles.bundle.clear();
+  });
+  // The manifest is only needed while rendering. Sourcemaps are not generated; drop any that a tool emits.
+  eleventyConfig.on('eleventy.after', () => {
+    const dist = path.join(ROOT, '_site/assets/dist');
+    if (!existsSync(dist)) return;
+    rmSync(path.join(dist, '.vite'), { recursive: true, force: true });
+    for (const mapFile of globSync('**/*.map', { cwd: dist })) {
+      rmSync(path.join(dist, mapFile), { force: true });
+    }
   });
   /** Root-relative site path: strips leading slashes; leaves absolute http(s) URLs unchanged. */
   eleventyConfig.addFilter('sitePath', (value: unknown) => {
