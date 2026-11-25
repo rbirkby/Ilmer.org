@@ -79,6 +79,7 @@ Generated automatically from [Conventional Commits](https://www.conventionalcomm
 
 ### Maintenance
 
+- Optimisations ([ae0738d](https://github.com/rbirkby/Ilmer.org/commit/ae0738d923e5351c0ffb3016ce2d97b4582b9a6e))
 - **formatting:** fix format ([33df4e4](https://github.com/rbirkby/Ilmer.org/commit/33df4e49eb13fea31bf7e0d93ba7695cc0087b56))
 - **deps:** Update dependencies ([baba326](https://github.com/rbirkby/Ilmer.org/commit/baba326c0d4c972cb396e2dc63eccf1043d2af65))
 
