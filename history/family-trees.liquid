@@ -1,0 +1,201 @@
+---
+layout: kinship
+title: 'Family Trees & Kinship Network'
+description: 'Interactive multi-generational family trees reconstructed from St Peter’s parish registers, 1841–1921 censuses, wills, monumental inscriptions, and manorial records.'
+tags: [post, church, history]
+ancestorCrumb1Source: { label: 'Parish Records', url: '/history/parish-records/' }
+---
+
+<div
+  id="kinship-app"
+  class="kinship-app"
+  data-kinship-url="/assets/ilmer-kinship.json"
+>
+  <div class="kinship-toolbar">
+    <div class="kinship-toolbar-row">
+      <div class="kinship-tabs" role="tablist" aria-label="Kinship diagram view">
+        <button
+          type="button"
+          id="tab-village"
+          class="kinship-tab"
+          role="tab"
+          aria-selected="true"
+          data-view="village"
+        >
+          Village Kinship Web (1747–1973)
+        </button>
+        <button
+          type="button"
+          id="tab-manor"
+          class="kinship-tab"
+          role="tab"
+          aria-selected="false"
+          data-view="manor"
+        >
+          Manorial Dynasties (1338–1912)
+        </button>
+        <button
+          type="button"
+          id="tab-custom"
+          class="kinship-tab"
+          role="tab"
+          aria-selected="false"
+          data-view="custom"
+          hidden
+        >
+          Loaded GEDCOM
+        </button>
+      </div>
+
+      <div class="kinship-actions">
+        <button
+          type="button"
+          id="btn-bridges"
+          class="kinship-btn"
+          aria-pressed="false"
+          title="Highlight marriages linking different Ilmer families"
+        >
+          <span class="kinship-dot kinship-dot--bridge" aria-hidden="true"></span>
+          Intermarriages
+        </button>
+
+        <div class="kinship-search">
+          <label class="kinship-file-input" for="kinship-search-input">Find person, farm, or event</label>
+          <input
+            id="kinship-search-input"
+            class="kinship-search-input"
+            type="search"
+            placeholder="Find person, farm, or event…"
+            autocomplete="off"
+          >
+          <div id="kinship-search-results" class="kinship-search-results" hidden></div>
+        </div>
+
+        <div class="kinship-zoom-group" role="group" aria-label="Zoom controls">
+          <button type="button" id="btn-zoom-out" aria-label="Zoom out">&minus;</button>
+          <span id="zoom-readout" class="kinship-zoom-readout">100%</span>
+          <button type="button" id="btn-zoom-in" aria-label="Zoom in">+</button>
+          <button type="button" id="btn-fit">Fit</button>
+        </div>
+
+        <button type="button" id="btn-fullscreen" class="kinship-btn" aria-pressed="false">
+          Fullscreen
+        </button>
+
+        <a
+          class="kinship-btn"
+          href="/assets/ilmer-kinship.ged"
+          download="ilmer-kinship.ged"
+          title="Download standards-compliant GEDCOM 7.0 file for Gramps, Ancestry, FamilySearch or RootsMagic"
+        >
+          Download .ged
+        </a>
+
+        <label class="kinship-btn" for="gedcom-upload" title="Preview any local GEDCOM (.ged) file in this explorer">
+          Open .ged
+          <input id="gedcom-upload" class="kinship-file-input" type="file" accept=".ged,.gedcom,text/plain">
+        </label>
+      </div>
+    </div>
+
+    <div id="family-filters" class="kinship-filters" role="group" aria-label="Filter by family"></div>
+  </div>
+
+  <div class="kinship-stage">
+    <div id="kinship-canvas-wrap" class="kinship-canvas-wrap">
+      <div id="kinship-loading" class="kinship-loading" role="status">Loading Ilmer kinship archive…</div>
+
+      <svg id="kinship-svg" class="kinship-svg" role="img" aria-label="Interactive Ilmer family tree diagram">
+        <defs>
+          <pattern id="kinship-dot-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+            <circle cx="1.5" cy="1.5" r="1" fill="#cbbda0" opacity="0.45"></circle>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#kinship-dot-grid)"></rect>
+        <g id="kinship-viewport">
+          <g id="layer-bands"></g>
+          <g id="layer-headers"></g>
+          <g id="layer-edges"></g>
+          <g id="layer-unions"></g>
+          <g id="layer-nodes"></g>
+          <g id="layer-bridge-pills"></g>
+        </g>
+      </svg>
+
+      <div id="selection-banner" class="kinship-banner" hidden aria-live="polite">
+        <span id="selection-banner-text"></span>
+        <button type="button" id="btn-clear-selection">Show all</button>
+      </div>
+
+      <div class="kinship-hint">
+        Drag to pan &middot; Scroll to zoom &middot; Click any person to trace ancestors &amp; descendants
+      </div>
+    </div>
+
+    <aside id="dossier-drawer" class="kinship-drawer" aria-label="Person details" hidden>
+      <div class="kinship-drawer-head">
+        <div>
+          <div id="d-family-badge" class="kinship-drawer-family"></div>
+          <h2 id="d-name"></h2>
+          <p id="d-dates" class="kinship-drawer-dates"></p>
+        </div>
+        <button type="button" id="btn-close-drawer" class="kinship-close-btn" aria-label="Close details">&times;</button>
+      </div>
+      <div id="d-body" class="kinship-drawer-body"></div>
+    </aside>
+  </div>
+
+  <div class="kinship-legend">
+    <div class="kinship-legend-group">
+      <span class="kinship-legend-item">
+        <svg width="24" height="10" aria-hidden="true"><line x1="0" y1="5" x2="24" y2="5" stroke="#5c5346" stroke-width="1.8"></line></svg>
+        Verified parent &rarr; child
+      </span>
+      <span class="kinship-legend-item">
+        <svg width="24" height="10" aria-hidden="true">
+          <line x1="0" y1="5" x2="24" y2="5" stroke="#b3541a" stroke-width="2.4"></line>
+          <circle cx="12" cy="5" r="3" fill="#b3541a"></circle>
+        </svg>
+        Cross-family intermarriage bridge
+      </span>
+      <span class="kinship-legend-item">
+        <svg width="24" height="10" aria-hidden="true"><line x1="0" y1="5" x2="24" y2="5" stroke="#5c5346" stroke-width="1.6" stroke-dasharray="4 3"></line></svg>
+        Likely / indirect link (explained in dossier)
+      </span>
+    </div>
+    <div class="kinship-legend-group">
+      <span>&#x1F4DC; Transcribed will</span>
+      <span>&#x1FAA6; Memorial inscription</span>
+      <span>&#x271D; War dead</span>
+      <span>&#x2302; Key Ilmer property</span>
+    </div>
+  </div>
+</div>
+
+<section class="kinship-prose">
+  <h2>Sources &amp; Open Genealogy Data</h2>
+  <p>
+    Every verified link in this diagram is cross-referenced from the primary sources published on this site: the
+    <a href="/history/st-peters-baptisms/">baptism</a>, <a href="/history/st-peters-marriages/">marriage</a>, and
+    <a href="/history/st-peters-burials/">burial</a> registers of St Peter’s, the
+    <a href="/census/">1841–1921 census returns</a> (including <a href="/history/lockington/">Lockington</a>),
+    <a href="/wills/">transcribed wills</a>, <a href="/history/monumental-inscriptions/">monumental inscriptions</a>,
+    and the <a href="/history/timeline/">village timeline</a>. Click any card above to open its dossier with direct
+    links to the supporting pages.
+  </p>
+  <p>
+    Where St Peter’s registers have historical gaps (notably the 1640–1659 Civil War and Commonwealth period) or where
+    an event occurred in a neighbouring parish such as Bledlow, Longwick, or Towersey, inferred or indirect bridges are
+    drawn as dashed lines rather than solid descents.
+  </p>
+  <p>
+    The underlying dataset is published in two open formats: as a
+    <a href="/assets/ilmer-kinship.ged" download="ilmer-kinship.ged">standard GEDCOM 7.0 file (<code>ilmer-kinship.ged</code>)</a>
+    ready to import into Gramps, RootsMagic, FamilySearch, or Ancestry, and as structured
+    <a href="/assets/ilmer-kinship.json">JSON (<code>ilmer-kinship.json</code>)</a> validated against its JSON Schema on
+    every build. You can also use <strong>Open .ged</strong> above to load and explore any local GEDCOM file directly in
+    your browser.
+  </p>
+</section>
+
+<script type="module" src="{{ '/assets/js/kinship-tree.js' | cacheBust }}"></script>

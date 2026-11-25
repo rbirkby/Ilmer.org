@@ -1,0 +1,3707 @@
+{
+  "version": "1.0",
+  "families": {
+    "kingham": {
+      "label": "Kingham",
+      "color": "#d97706"
+    },
+    "gomme": {
+      "label": "Gomme / Gomm",
+      "color": "#0284c7"
+    },
+    "goodchild": {
+      "label": "Goodchild",
+      "color": "#16a34a"
+    },
+    "wooster": {
+      "label": "Wooster → Goff",
+      "color": "#9333ea"
+    },
+    "clare": {
+      "label": "Clare",
+      "color": "#e11d48"
+    },
+    "stratford": {
+      "label": "Stratford",
+      "color": "#0d9488"
+    },
+    "horton": {
+      "label": "Horton",
+      "color": "#ca8a04"
+    },
+    "allen": {
+      "label": "Allen → Burnham",
+      "color": "#4f46e5"
+    },
+    "belgrove": {
+      "label": "Belgrove → Claydon",
+      "color": "#ea580c"
+    },
+    "rixon": {
+      "label": "Rixon",
+      "color": "#be185d"
+    },
+    "moleyns": {
+      "label": "de Moleyns",
+      "color": "#b45309"
+    },
+    "hungerford": {
+      "label": "Hungerford",
+      "color": "#dc2626"
+    },
+    "hastings": {
+      "label": "Hastings",
+      "color": "#7c3aed"
+    },
+    "dormer": {
+      "label": "Dormer",
+      "color": "#0284c7"
+    },
+    "stanhope": {
+      "label": "Stanhope",
+      "color": "#0d9488"
+    },
+    "frewen": {
+      "label": "Moreton → Frewen",
+      "color": "#16a34a"
+    }
+  },
+  "views": {
+    "village": {
+      "title": "Village Kinship Web (1747–1973)",
+      "subtitle": "Ten interlocking parish families reconstructed from St Peter’s registers, 1841–1921 censuses, wills, and churchyard memorials.",
+      "genLabels": [
+        ["Gen 1", "c. 1740s–1770s"],
+        ["Gen 2", "c. 1770s–1800s"],
+        ["Gen 3", "c. 1800s–1830s"],
+        ["Gen 4", "c. 1830s–1860s"],
+        ["Gen 5", "c. 1860s–1890s"],
+        ["Gen 6", "c. 1890s–1920s"],
+        ["Gen 7", "c. 1920s–1960s"],
+        ["Gen 8", "c. 1940s–1970s"]
+      ],
+      "columnHeaders": [
+        {
+          "label": "ALLEN → BURNHAM",
+          "family": "allen",
+          "startCol": 0,
+          "endCol": 1.18
+        },
+        {
+          "label": "HORTON",
+          "family": "horton",
+          "startCol": 2.35,
+          "endCol": 3.53
+        },
+        {
+          "label": "STRATFORD",
+          "family": "stratford",
+          "startCol": 4.7,
+          "endCol": 5.88
+        },
+        {
+          "label": "CLARE",
+          "family": "clare",
+          "startCol": 6.95,
+          "endCol": 7.45
+        },
+        {
+          "label": "KINGHAM → RIXON",
+          "family": "kingham",
+          "startCol": 8.55,
+          "endCol": 10.1
+        },
+        {
+          "label": "WOOSTER → GOFF",
+          "family": "wooster",
+          "startCol": 11.45,
+          "endCol": 13.55
+        },
+        {
+          "label": "GOODCHILD",
+          "family": "goodchild",
+          "startCol": 14.65,
+          "endCol": 16.75
+        },
+        {
+          "label": "GOMME (COLDHARBOUR)",
+          "family": "gomme",
+          "startCol": 17.85,
+          "endCol": 22.15
+        },
+        {
+          "label": "BELGROVE → CLAYDON",
+          "family": "belgrove",
+          "startCol": 23.6,
+          "endCol": 24.7
+        }
+      ],
+      "nodes": [
+        {
+          "id": "allen_mary",
+          "name": "Mary Allen",
+          "sex": "F",
+          "dates": "c. 1771–1861+",
+          "family": "allen",
+          "col": 1.18,
+          "gen": 1,
+          "occ": "Lacemaker",
+          "place": "Lockington",
+          "badges": [],
+          "notes": "Born High Wycombe c. 1771. Listed in Lockington censuses 1841–1861 (erroneously recorded aged 99 in 1861; actually 90). Lived with granddaughter Emma Burnham in 1851 and in Joseph & Lydia Burnham’s house in 1861.",
+          "sources": [
+            {
+              "label": "Lockington census (1841–1861)",
+              "url": "/history/lockington/"
+            },
+            {
+              "label": "Lockington",
+              "url": "/history/lockington/"
+            }
+          ]
+        },
+        {
+          "id": "burn_j1",
+          "name": "Joseph Burnham",
+          "sex": "M",
+          "dates": "c. 1813–1890",
+          "family": "allen",
+          "col": 0,
+          "gen": 2,
+          "occ": "Agricultural labourer",
+          "place": "Lockington & Ilmer",
+          "badges": [],
+          "notes": "Born Ilmer/Kingsey c. 1813; married Lydia Allen at St Peter’s on 17 Oct 1838. Lived at Lockington (1841–1861) and Ilmer (1871–1881). Buried 13 Jan 1890 aged 77.",
+          "sources": [
+            {
+              "label": "Marriage register (1838)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "Lockington census (1841–1861)",
+              "url": "/history/lockington/"
+            },
+            {
+              "label": "1871 Census",
+              "url": "/census/1871/"
+            },
+            {
+              "label": "1881 Census",
+              "url": "/census/1881/"
+            },
+            {
+              "label": "Burial register (1890)",
+              "url": "/history/st-peters-burials/"
+            }
+          ]
+        },
+        {
+          "id": "allen_lydia",
+          "name": "Lydia Allen",
+          "sex": "F",
+          "dates": "c. 1817–1870s",
+          "family": "allen",
+          "col": 1.18,
+          "gen": 2,
+          "occ": "Lacemaker",
+          "place": "Lockington & Ilmer",
+          "badges": [],
+          "notes": "Married Joseph Burnham in 1838. Confirmed as daughter of Mary Allen via the 1851 Lockington census (Emma Burnham listed as Mary Allen’s granddaughter) and 1861 co-residence.",
+          "sources": [
+            {
+              "label": "Marriage register (1838)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "Lockington census (1841–1861)",
+              "url": "/history/lockington/"
+            },
+            {
+              "label": "1871 Census",
+              "url": "/census/1871/"
+            }
+          ]
+        },
+        {
+          "id": "burn_james",
+          "name": "James Burnham",
+          "sex": "M",
+          "dates": "bap. 1845–1901+",
+          "family": "allen",
+          "col": 0.59,
+          "gen": 3,
+          "occ": "Shepherd / Labourer",
+          "place": "Lockington → Ilmer",
+          "badges": [],
+          "notes": "Baptized 3 Aug 1845 (son of Joseph & Lydia Burnham; brother of Emma, Charlotte, William, Matilda & Frederick). Married Kate (d. 1891 age 32). Lived with widowed father Joseph in 1881.",
+          "sources": [
+            {
+              "label": "Baptism register (1845)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Lockington census (1851–1861)",
+              "url": "/history/lockington/"
+            },
+            {
+              "label": "1871 Census–1901",
+              "url": "/census/1871/"
+            }
+          ]
+        },
+        {
+          "id": "burn_wj",
+          "name": "William, Robert & Joseph Burnham",
+          "sex": "U",
+          "dates": "b. 1880–1886",
+          "family": "allen",
+          "col": 0.59,
+          "gen": 4,
+          "occ": "Gen 4 Allen → Burnham",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Sons of James & Kate Burnham. William James (age 3mo) is explicitly listed as \"Grandson\" in Joseph Burnham’s 1881 household.",
+          "sources": [
+            {
+              "label": "1881 Census (Sched 65)",
+              "url": "/census/1881/"
+            },
+            {
+              "label": "1891 Census",
+              "url": "/census/1891/"
+            },
+            {
+              "label": "1901 Census",
+              "url": "/census/1901/"
+            }
+          ],
+          "groupKind": "siblings",
+          "members": [
+            {
+              "id": "burn_william_james",
+              "name": "William James Burnham",
+              "gedcomName": "William James /Burnham/",
+              "sex": "M",
+              "birth": "ABT 1881",
+              "place": "Ilmer",
+              "notes": "Aged 3 months in 1881 census as grandson in Joseph Burnham’s household."
+            },
+            {
+              "id": "burn_robert_g",
+              "name": "Robert G Burnham",
+              "gedcomName": "Robert G /Burnham/",
+              "sex": "M",
+              "birth": "ABT 1882",
+              "place": "Ilmer",
+              "notes": "Aged 9 in 1891 census and 19 in 1901 census."
+            },
+            {
+              "id": "burn_joseph_e",
+              "name": "Joseph E Burnham",
+              "gedcomName": "Joseph E /Burnham/",
+              "sex": "M",
+              "birth": "ABT 1886",
+              "place": "Ilmer",
+              "notes": "Aged 5 in 1891 census and 15 in 1901 census."
+            }
+          ]
+        },
+        {
+          "id": "horton_t1",
+          "name": "Thomas Horton",
+          "sex": "M",
+          "dates": "m. 1770",
+          "family": "horton",
+          "col": 2.35,
+          "gen": 0,
+          "occ": "Parishioner of Ilmer",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Married Sarah Southall at St Peter’s on 2 Dec 1770 (witnessed by Thomas Kingham).",
+          "sources": [
+            {
+              "label": "Marriage register (1770)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "Baptism register",
+              "url": "/history/st-peters-baptisms/"
+            }
+          ]
+        },
+        {
+          "id": "horton_s1",
+          "name": "Sarah Southall",
+          "sex": "F",
+          "dates": "c. 1754–1823",
+          "family": "horton",
+          "col": 3.53,
+          "gen": 0,
+          "occ": "",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Married Thomas Horton in 1770; buried at Ilmer 10 Jan 1823 aged 69.",
+          "sources": [
+            {
+              "label": "Marriage register (1770)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "Burial register (1823)",
+              "url": "/history/st-peters-burials/"
+            }
+          ]
+        },
+        {
+          "id": "horton_w2",
+          "name": "William Horton",
+          "sex": "M",
+          "dates": "1777–1831",
+          "family": "horton",
+          "col": 2.94,
+          "gen": 1,
+          "occ": "Labourer",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Baptized 11 May 1777; buried 29 Jul 1831 aged 54 (exact age match). With wife Elizabeth (b. c. 1786) had at least 10 children baptized 1804–1829.",
+          "sources": [
+            {
+              "label": "Baptism register (1777, 1804–1829)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Burial register (1831)",
+              "url": "/history/st-peters-burials/"
+            },
+            {
+              "label": "1841 Census",
+              "url": "/census/1841/"
+            }
+          ]
+        },
+        {
+          "id": "horton_eliz",
+          "name": "Elizabeth Horton",
+          "sex": "F",
+          "dates": "bap. 1807 · m. 1832",
+          "family": "horton",
+          "col": 2.35,
+          "gen": 2,
+          "occ": "",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Baptized 3 Apr 1807 (daughter of William & Elizabeth Horton). Married John Allen of Ilmer on 15 Oct 1832 (witnessed by sister Frances Horton).",
+          "sources": [
+            {
+              "label": "Baptism register (1807)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1832)",
+              "url": "/history/st-peters-marriages/"
+            }
+          ]
+        },
+        {
+          "id": "horton_sus",
+          "name": "Susanna Horton",
+          "sex": "F",
+          "dates": "bap. 1818",
+          "family": "horton",
+          "col": 3.53,
+          "gen": 2,
+          "occ": "Lacemaker",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Baptized 31 May 1818. Living with widowed mother Elizabeth Horton and 2-year-old son John in the 1841 census; also had daughter Emma (bap. 1844).",
+          "sources": [
+            {
+              "label": "Baptism register (1818, 1839, 1844)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "1841 Census",
+              "url": "/census/1841/"
+            }
+          ]
+        },
+        {
+          "id": "horton_j4",
+          "name": "John Horton",
+          "sex": "M",
+          "dates": "bap. 1839–1879+",
+          "family": "horton",
+          "col": 3.53,
+          "gen": 3,
+          "occ": "Agricultural labourer",
+          "place": "Vicarage House / Longwick",
+          "badges": [],
+          "notes": "Baptized 24 Mar 1839 (son of Susanna Horton); age 2 in 1841, age 32 in 1871 census (born Ilmer) with wife Emma (b. Princes Risborough c. 1840).",
+          "sources": [
+            {
+              "label": "Baptism register (1839, 1865–1879)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "1841 Census",
+              "url": "/census/1841/"
+            },
+            {
+              "label": "1871 Census (Sched 56)",
+              "url": "/census/1871/"
+            }
+          ]
+        },
+        {
+          "id": "horton_kids5",
+          "name": "8 Horton Children (Gen 5)",
+          "sex": "U",
+          "dates": "1861–1879",
+          "family": "horton",
+          "col": 3.53,
+          "gen": 4,
+          "occ": "Gen 5 Hortons",
+          "place": "Ilmer / Longwick / Kimble",
+          "badges": [],
+          "notes": "Children of John & Emma Horton: Thomas (c. 1861), Frederick (1865), Louisa (c. 1867), Isabella August (1870), Owen (1872–1872), John James (1873), Arthur Edward (1876), Elizabeth Jane (1879).",
+          "sources": [
+            {
+              "label": "Baptism register (1865–1879)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "1871 Census (Sched 56)",
+              "url": "/census/1871/"
+            }
+          ],
+          "groupKind": "siblings",
+          "members": [
+            {
+              "id": "horton_thomas_1861",
+              "name": "Thomas Horton",
+              "gedcomName": "Thomas /Horton/",
+              "sex": "M",
+              "birth": "ABT 1861",
+              "place": "Princes Risborough"
+            },
+            {
+              "id": "horton_frederick_1865",
+              "name": "Frederick Horton",
+              "gedcomName": "Frederick /Horton/",
+              "sex": "M",
+              "baptism": "1865",
+              "place": "Longwick"
+            },
+            {
+              "id": "horton_louisa_1867",
+              "name": "Louisa Horton",
+              "gedcomName": "Louisa /Horton/",
+              "sex": "F",
+              "birth": "ABT 1867",
+              "place": "Princes Risborough"
+            },
+            {
+              "id": "horton_isabella_1870",
+              "name": "Isabella August Horton",
+              "gedcomName": "Isabella August /Horton/",
+              "sex": "F",
+              "baptism": "26 JUN 1870",
+              "place": "Ilmer"
+            },
+            {
+              "id": "horton_owen_1872",
+              "name": "Owen Horton",
+              "gedcomName": "Owen /Horton/",
+              "sex": "M",
+              "baptism": "16 MAR 1872",
+              "burial": "20 MAR 1872",
+              "place": "Ilmer",
+              "notes": "Buried aged 5 weeks."
+            },
+            {
+              "id": "horton_john_james_1873",
+              "name": "John James Horton",
+              "gedcomName": "John James /Horton/",
+              "sex": "M",
+              "baptism": "13 APR 1873",
+              "place": "Ilmer"
+            },
+            {
+              "id": "horton_arthur_edward_1876",
+              "name": "Arthur Edward Horton",
+              "gedcomName": "Arthur Edward /Horton/",
+              "sex": "M",
+              "baptism": "6 FEB 1876",
+              "place": "Ilmer"
+            },
+            {
+              "id": "horton_elizabeth_jane_1879",
+              "name": "Elizabeth Jane Horton",
+              "gedcomName": "Elizabeth Jane /Horton/",
+              "sex": "F",
+              "baptism": "16 FEB 1879",
+              "place": "Kimble"
+            }
+          ]
+        },
+        {
+          "id": "strat_r1",
+          "name": "Richard Stratford",
+          "sex": "M",
+          "dates": "c. 1760–1837",
+          "family": "stratford",
+          "col": 4.7,
+          "gen": 1,
+          "occ": "Labourer",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "With wife Sarah had 8+ children baptized at St Peter’s between 1792 and 1825 (several baptized as adults in May 1820). Buried 3 Oct 1837 aged 77, widower.",
+          "sources": [
+            {
+              "label": "Baptism register (1792–1825)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Burial register (1837)",
+              "url": "/history/st-peters-burials/"
+            }
+          ]
+        },
+        {
+          "id": "king_theo",
+          "name": "Theodosia Kingham",
+          "sex": "F",
+          "dates": "c. 1787–1871",
+          "family": "kingham",
+          "col": 5.88,
+          "gen": 1,
+          "occ": "Lacemaker",
+          "place": "Towersey / Ilmer",
+          "badges": [],
+          "notes": "Born Towersey c. 1787. Living in Ilmer in 1871 aged 84 as \"Mother\" in the household of widowed daughter Hannah Stratford. Buried 31 May 1871 aged 83.",
+          "sources": [
+            {
+              "label": "1871 Census (Sched 61)",
+              "url": "/census/1871/"
+            },
+            {
+              "label": "Burial register (1871)",
+              "url": "/history/st-peters-burials/"
+            }
+          ]
+        },
+        {
+          "id": "strat_w2",
+          "name": "William Stratford",
+          "sex": "M",
+          "dates": "c. 1807–1868",
+          "family": "stratford",
+          "col": 4.7,
+          "gen": 2,
+          "occ": "Agricultural labourer",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Baptized as an adult on 21 May 1820 (son of Richard & Sarah Stratford). Married Anna/Hannah Kingham on 13 Oct 1833. Buried 16 Aug 1868.",
+          "sources": [
+            {
+              "label": "Baptism register (1820, 1834–1848)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1833)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "1841 Census–1861",
+              "url": "/census/1841/"
+            }
+          ]
+        },
+        {
+          "id": "strat_h2",
+          "name": "Hannah (Anna) Kingham",
+          "sex": "F",
+          "dates": "c. 1815–1886",
+          "family": "kingham",
+          "col": 5.88,
+          "gen": 2,
+          "occ": "Lacemaker",
+          "place": "Towersey / Ilmer",
+          "badges": [],
+          "notes": "Daughter of Theodosia Kingham (co-resident in 1871). Married William Stratford 13 Oct 1833; had 9 children. Buried 8 May 1886 aged 72.",
+          "sources": [
+            {
+              "label": "Marriage register (1833)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "1851 Census",
+              "url": "/census/1851/"
+            },
+            {
+              "label": "1871 Census",
+              "url": "/census/1871/"
+            },
+            {
+              "label": "Burial register (1886)",
+              "url": "/history/st-peters-burials/"
+            }
+          ]
+        },
+        {
+          "id": "strat_sophia",
+          "name": "Sophia Stratford (Matthews)",
+          "sex": "F",
+          "dates": "c. 1858–1911+",
+          "family": "stratford",
+          "col": 4.7,
+          "gen": 3,
+          "occ": "",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Daughter of William & Hannah Stratford (sibling of Benjamin, Sarah, Elizabeth, Fanny, John d. 1918, Eliza, Emma, Thomas). Widowed by 1911, living at Lower Farm Cottage with brother John Stratford and daughter Emma Matthews.",
+          "sources": [
+            {
+              "label": "1861 Census (Sched 50)",
+              "url": "/census/1861/"
+            },
+            {
+              "label": "1911 Census (Sched 136)",
+              "url": "/census/1911/"
+            }
+          ],
+          "gedcomName": "Sophia /Stratford/"
+        },
+        {
+          "id": "strat_emma_mat",
+          "name": "Emma Matthews",
+          "sex": "F",
+          "dates": "b. c. 1897",
+          "family": "stratford",
+          "col": 4.7,
+          "gen": 4,
+          "occ": "Scholar",
+          "place": "Lower Farm Cottage",
+          "badges": [],
+          "notes": "Recorded as \"Niece\" (age 14) of John Stratford and daughter of widowed Sophia Matthews (née Stratford) in the 1911 census.",
+          "sources": [
+            {
+              "label": "1911 Census (Sched 136)",
+              "url": "/census/1911/"
+            }
+          ]
+        },
+        {
+          "id": "strat_g3",
+          "name": "George Stratford",
+          "sex": "M",
+          "dates": "b. c. 1860",
+          "family": "stratford",
+          "col": 5.8,
+          "gen": 4,
+          "occ": "Agricultural labourer",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Explicitly recorded as \"Grandson\" (age 1 in 1861, age 10 in 1871) in William & Hannah Stratford’s household in Ilmer.",
+          "sources": [
+            {
+              "label": "1861 Census (Sched 50)",
+              "url": "/census/1861/"
+            },
+            {
+              "label": "1871 Census (Sched 61)",
+              "url": "/census/1871/"
+            }
+          ]
+        },
+        {
+          "id": "clare_r1",
+          "name": "Richard Clare",
+          "sex": "M",
+          "dates": "c. 1788–1857",
+          "family": "clare",
+          "col": 7.45,
+          "gen": 2,
+          "occ": "Agricultural labourer",
+          "place": "Thame / Ilmer",
+          "badges": [],
+          "notes": "Born Thame; married Elizabeth (b. Oakley, Oxon c. 1794). Had 7+ children baptized at Ilmer (1819–1835). Buried 19 Mar 1857 aged 69.",
+          "sources": [
+            {
+              "label": "Baptism register (1819–1835)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "1841 Census",
+              "url": "/census/1841/"
+            },
+            {
+              "label": "1851 Census",
+              "url": "/census/1851/"
+            },
+            {
+              "label": "Burial register (1857)",
+              "url": "/history/st-peters-burials/"
+            }
+          ]
+        },
+        {
+          "id": "clare_james",
+          "name": "James Clare",
+          "sex": "M",
+          "dates": "bap. 1834–1881+",
+          "family": "clare",
+          "col": 6.95,
+          "gen": 3,
+          "occ": "Agricultural labourer",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Baptized 23 Nov 1834 (son of Richard & Elizabeth Clare). Married Eliza Pitchford on 31 Jul 1862; had 9 children baptized/recorded 1862–1881.",
+          "sources": [
+            {
+              "label": "Baptism register (1834, 1869–1879)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1862)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "1871 Census",
+              "url": "/census/1871/"
+            },
+            {
+              "label": "1881 Census",
+              "url": "/census/1881/"
+            }
+          ]
+        },
+        {
+          "id": "clare_kids",
+          "name": "9 Clare Children",
+          "sex": "U",
+          "dates": "1862–1881",
+          "family": "clare",
+          "col": 6.95,
+          "gen": 4,
+          "occ": "",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Children of James & Eliza Clare: Ann, James, Emily, Richard (all bap. 6 Jun 1869), Elizabeth (1871), Mary & Elizabeth (1874), Arthur (1876), Ada (1879), and an infant son (1881).",
+          "sources": [
+            {
+              "label": "Baptism register (1869–1879)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "1871 Census",
+              "url": "/census/1871/"
+            },
+            {
+              "label": "1881 Census",
+              "url": "/census/1881/"
+            }
+          ],
+          "groupKind": "siblings",
+          "members": [
+            {
+              "id": "clare_anne_1862",
+              "name": "Anne Clare",
+              "gedcomName": "Anne /Clare/",
+              "sex": "F",
+              "birth": "ABT 1862",
+              "baptism": "6 JUN 1869",
+              "place": "Princes Risborough / Ilmer"
+            },
+            {
+              "id": "clare_james_1864",
+              "name": "James Clare",
+              "gedcomName": "James /Clare/",
+              "sex": "M",
+              "birth": "ABT 1864",
+              "baptism": "6 JUN 1869",
+              "place": "Ilmer"
+            },
+            {
+              "id": "clare_emily_1866",
+              "name": "Emily Clare",
+              "gedcomName": "Emily /Clare/",
+              "sex": "F",
+              "birth": "ABT 1866",
+              "baptism": "6 JUN 1869",
+              "place": "Ilmer"
+            },
+            {
+              "id": "clare_richard_1868",
+              "name": "Richard Clare",
+              "gedcomName": "Richard /Clare/",
+              "sex": "M",
+              "birth": "ABT 1868",
+              "baptism": "6 JUN 1869",
+              "place": "Ilmer"
+            },
+            {
+              "id": "clare_elizabeth_1871",
+              "name": "Elizabeth Clare",
+              "gedcomName": "Elizabeth /Clare/",
+              "sex": "F",
+              "baptism": "12 NOV 1871",
+              "place": "Ilmer"
+            },
+            {
+              "id": "clare_mary_1874",
+              "name": "Mary Clare",
+              "gedcomName": "Mary /Clare/",
+              "sex": "F",
+              "baptism": "28 MAR 1874",
+              "place": "Ilmer"
+            },
+            {
+              "id": "clare_arthur_1876",
+              "name": "Arthur Clare",
+              "gedcomName": "Arthur /Clare/",
+              "sex": "M",
+              "baptism": "JUN 1876",
+              "place": "Ilmer"
+            },
+            {
+              "id": "clare_ada_1879",
+              "name": "Ada Clare",
+              "gedcomName": "Ada /Clare/",
+              "sex": "F",
+              "baptism": "16 MAR 1879",
+              "place": "Ilmer"
+            },
+            {
+              "id": "clare_infant_1881",
+              "name": "Infant Clare",
+              "gedcomName": "Infant /Clare/",
+              "sex": "M",
+              "birth": "1881",
+              "place": "Ilmer",
+              "notes": "Recorded as 1-month-old infant son in the 1881 census."
+            }
+          ]
+        },
+        {
+          "id": "clare_ann",
+          "name": "Ann Clare",
+          "sex": "F",
+          "dates": "1835–1900",
+          "family": "clare",
+          "col": 8.13,
+          "gen": 3,
+          "occ": "Lacemaker",
+          "place": "Ilmer",
+          "badges": ["memorial"],
+          "notes": "Baptized 13 Dec 1835 (daughter of Richard & Elizabeth Clare). Married James Kingham on 23 Nov 1856 aged 21. Died 3 Mar 1900 aged 62 (headstone B2).",
+          "sources": [
+            {
+              "label": "Baptism register (1835)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1856)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "Monumental inscription B2",
+              "url": "/history/monumental-inscriptions/#B2"
+            },
+            {
+              "label": "1861 Census–1891",
+              "url": "/census/1861/"
+            }
+          ]
+        },
+        {
+          "id": "king_josh_elder",
+          "name": "Joshua Kingham (the elder)",
+          "sex": "M",
+          "dates": "d. 1779",
+          "family": "kingham",
+          "col": 8.7,
+          "gen": 0,
+          "occ": "Husbandman",
+          "place": "Ilmer",
+          "badges": ["will"],
+          "notes": "Left a detailed transcribed will dated 22 Feb 1779 (proved 6 Jul 1779) naming son John (sole executor) and daughters Mary, Sarah, Elizabeth, Hannah, Ann West, and Jane.",
+          "sources": [
+            {
+              "label": "Transcribed will: joshua kingham 1779",
+              "url": "/wills/joshua-kingham-1779/"
+            },
+            {
+              "label": "Baptism register (1751–1764)",
+              "url": "/history/st-peters-baptisms/"
+            }
+          ]
+        },
+        {
+          "id": "king_sarah_elder",
+          "name": "Sarah Kingham",
+          "sex": "F",
+          "dates": "fl. 1751–1764",
+          "family": "kingham",
+          "col": 9.88,
+          "gen": 0,
+          "occ": "",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Wife of Joshua Kingham the elder; mother of seven children baptized at St Peter’s between 1751 and 1764.",
+          "sources": [
+            {
+              "label": "Baptism register (1751–1764)",
+              "url": "/history/st-peters-baptisms/"
+            }
+          ]
+        },
+        {
+          "id": "king_j1777",
+          "name": "John Kingham",
+          "sex": "M",
+          "dates": "m. 1777 · d. 1810",
+          "family": "kingham",
+          "col": 8.7,
+          "gen": 1,
+          "occ": "Farmer / Yeoman",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Married Hannah Kingham at Ilmer on 9 Jun 1777 (\"both otp\"). Buried 22 Aug 1810 (\"farmer\"); yeoman will proved 1811. Multiple contemporary John Kinghams (bap. 1744, 1752, 1755) exist in Ilmer registers.",
+          "sources": [
+            {
+              "label": "Marriage register (1777)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "Baptism register (1778–1798)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Burial register (1810)",
+              "url": "/history/st-peters-burials/"
+            },
+            {
+              "label": "Wills index (1810/11)",
+              "url": "/wills/"
+            }
+          ]
+        },
+        {
+          "id": "king_h1777",
+          "name": "Hannah Kingham",
+          "sex": "F",
+          "dates": "bap. ?1757 · d. 1803",
+          "family": "kingham",
+          "col": 9.88,
+          "gen": 1,
+          "occ": "",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Married John Kingham 9 Jun 1777; buried 12 Jun 1803 (\"wife of John\"). Very likely the daughter Hannah baptized 14 Apr 1757 to Joshua Kingham the elder (who left £40 to \"daughter Hannah Kingham\" in 1779).",
+          "sources": [
+            {
+              "label": "Marriage register (1777)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "Burial register (1803)",
+              "url": "/history/st-peters-burials/"
+            },
+            {
+              "label": "Transcribed will: joshua kingham 1779",
+              "url": "/wills/joshua-kingham-1779/"
+            }
+          ]
+        },
+        {
+          "id": "king_josh2",
+          "name": "Joshua Kingham",
+          "sex": "M",
+          "dates": "bap. 1798–1860s",
+          "family": "kingham",
+          "col": 9.31,
+          "gen": 2,
+          "occ": "Agricultural labourer",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Baptized 10 Jan 1798 (son of John & Hannah Kingham). With wife Hannah/Anna (b. c. 1803 Great Kimble, d. 1876 age 73) had twins John & James (1828), William (1830), Charles (1834), George (1839), and Eliza (1841).",
+          "sources": [
+            {
+              "label": "Baptism register (1798, 1828–1841)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "1841 Census–1861",
+              "url": "/census/1841/"
+            }
+          ]
+        },
+        {
+          "id": "king_james3",
+          "name": "James Kingham",
+          "sex": "M",
+          "dates": "1828–1907",
+          "family": "kingham",
+          "col": 9.31,
+          "gen": 3,
+          "occ": "Agricultural labourer",
+          "place": "Cold Harbour / Close End",
+          "badges": ["memorial"],
+          "notes": "Baptized 12 Oct 1828 (twin of John; son of Joshua & Hannah Kingham). Married Ann Clare in 1856; died 10 Nov 1907 aged 79 (headstone B2).",
+          "sources": [
+            {
+              "label": "Baptism register (1828)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1856)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "Monumental inscription B2",
+              "url": "/history/monumental-inscriptions/#B2"
+            },
+            {
+              "label": "1841 Census–1901",
+              "url": "/census/1841/"
+            }
+          ]
+        },
+        {
+          "id": "king_will4",
+          "name": "William Kingham",
+          "sex": "M",
+          "dates": "c. 1859–1929",
+          "family": "kingham",
+          "col": 8.72,
+          "gen": 4,
+          "occ": "Farm labourer / Timber carter",
+          "place": "Close End Cottages",
+          "badges": ["property"],
+          "notes": "Son of James Kingham & Ann Clare (age 2 in 1861, 12 servant in 1871, 22 in 1881, then head at Close End 1891–1921). Married Elizabeth Claydon (c. 1863–1939, featured in the 1935 Daily Sketch). Buried 25 Apr 1929 aged 70.",
+          "sources": [
+            {
+              "label": "1861 Census–1921",
+              "url": "/census/1861/"
+            },
+            {
+              "label": "Burial register (1929, 1939)",
+              "url": "/history/st-peters-burials/"
+            },
+            {
+              "label": "Historic Photos",
+              "url": "/history/historic-photos/"
+            }
+          ]
+        },
+        {
+          "id": "king_albert5",
+          "name": "Albert Andrew Kingham",
+          "sex": "M",
+          "dates": "1887–1969",
+          "family": "kingham",
+          "col": 8.72,
+          "gen": 5,
+          "occ": "Farm lab. / Platelayer",
+          "place": "Close End → Longwick",
+          "badges": ["memorial"],
+          "notes": "Baptized 7 Aug 1887 (son of William Kingham & Elizabeth Claydon; brother of Ernest George bap. 1890). Married Florence Allen (1887–1980) on 11 Nov 1911. Died 29 Jan 1969 aged 81 (headstone B3).",
+          "sources": [
+            {
+              "label": "Baptism register (1887, 1912–1919)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1911)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "Monumental inscription B3",
+              "url": "/history/monumental-inscriptions/#B3"
+            },
+            {
+              "label": "1891 Census–1911",
+              "url": "/census/1891/"
+            }
+          ]
+        },
+        {
+          "id": "king_doris6",
+          "name": "Doris Mary Kingham (Rixon)",
+          "sex": "F",
+          "dates": "b. 1919 · m. 1940",
+          "family": "kingham",
+          "col": 8.72,
+          "gen": 6,
+          "occ": "",
+          "place": "Longwick",
+          "badges": [],
+          "notes": "Born Sep 1919, baptized 12 Oct 1919 (twin of Elsie Margaret; daughter of Albert Andrew Kingham & Florence Allen). Married lorry driver Reginald John Rixon at St Peter’s on 6 Jan 1940 aged 20.",
+          "sources": [
+            {
+              "label": "Baptism register (1919)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1940)",
+              "url": "/history/st-peters-marriages/"
+            }
+          ],
+          "gedcomName": "Doris Mary /Kingham/"
+        },
+        {
+          "id": "rixon_kids7",
+          "name": "Robin John (1941) & Judy Ann Rixon (1943)",
+          "sex": "U",
+          "dates": "b. 1941 & 1943",
+          "family": "rixon",
+          "col": 8.72,
+          "gen": 7,
+          "occ": "Gen 7 (8 w/ 1779 will)",
+          "place": "Princes Risborough",
+          "badges": [],
+          "notes": "Children of Reginald John Rixon & Doris Mary (née Kingham), baptized at St Peter’s on 22 Jun 1941 and 10 Oct 1943 — the 7th unbroken generation from John & Hannah Kingham (m. 1777) and 6th from Richard Clare.",
+          "sources": [
+            {
+              "label": "Baptism register (1941, 1943)",
+              "url": "/history/st-peters-baptisms/"
+            }
+          ],
+          "groupKind": "siblings",
+          "members": [
+            {
+              "id": "rixon_robin_john",
+              "name": "Robin John Rixon",
+              "gedcomName": "Robin John /Rixon/",
+              "sex": "M",
+              "birth": "15 APR 1941",
+              "baptism": "22 JUN 1941",
+              "place": "Princes Risborough"
+            },
+            {
+              "id": "rixon_judy_ann",
+              "name": "Judy Ann Rixon",
+              "gedcomName": "Judy Ann /Rixon/",
+              "sex": "F",
+              "birth": "2 JUL 1943",
+              "baptism": "10 OCT 1943",
+              "place": "Longwick"
+            }
+          ]
+        },
+        {
+          "id": "woost_j1",
+          "name": "James & Sarah Wooster",
+          "sex": "U",
+          "dates": "c. 1810–1860s",
+          "family": "wooster",
+          "col": 12.5,
+          "gen": 2,
+          "occ": "Farmer (137 acres)",
+          "place": "Rag Farm / Ilmer",
+          "badges": ["property"],
+          "notes": "James (b. c. 1810 Missenden) & Sarah (b. c. 1813 Monks Risborough) farmed 137 acres in Ilmer and raised 12 children, linking by marriage to Kingham (1854), Goodchild (1865), and Goff.",
+          "sources": [
+            {
+              "label": "Baptism register (1839)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "1841 Census–1871",
+              "url": "/census/1841/"
+            }
+          ],
+          "groupKind": "couple",
+          "members": [
+            {
+              "id": "woost_james_sr",
+              "name": "James Wooster",
+              "gedcomName": "James /Wooster/",
+              "sex": "M",
+              "birth": "ABT 1810",
+              "occ": "Farmer (137 acres)",
+              "place": "Missenden / Rag Farm, Ilmer"
+            },
+            {
+              "id": "woost_sarah_sr",
+              "name": "Sarah Wooster",
+              "gedcomName": "Sarah /Wooster/",
+              "sex": "F",
+              "birth": "ABT 1813",
+              "occ": "Farmer",
+              "place": "Monks Risborough / Ilmer",
+              "notes": "Widowed by 1871, farming in Ilmer with five children and granddaughter Mary Kingham."
+            }
+          ]
+        },
+        {
+          "id": "woost_anne",
+          "name": "Anna (Anne) Wooster",
+          "sex": "F",
+          "dates": "c. 1834 · m. 1854",
+          "family": "wooster",
+          "col": 11.45,
+          "gen": 3,
+          "occ": "",
+          "place": "Ilmer / Risborough",
+          "badges": [],
+          "notes": "Daughter of James & Sarah Wooster (bap. 18 Aug 1839). Married James Kingham on 17 Dec 1854; their daughter Mary Kingham (age 16) lived with grandmother Sarah Wooster in 1871.",
+          "sources": [
+            {
+              "label": "Baptism register (1839)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1854)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "1851 Census",
+              "url": "/census/1851/"
+            },
+            {
+              "label": "1871 Census",
+              "url": "/census/1871/"
+            }
+          ]
+        },
+        {
+          "id": "woost_mary_k",
+          "name": "Mary Kingham",
+          "sex": "F",
+          "dates": "b. c. 1855",
+          "family": "kingham",
+          "col": 11.45,
+          "gen": 4,
+          "occ": "",
+          "place": "Risborough / Ilmer",
+          "badges": [],
+          "notes": "Explicitly listed as \"Granddaughter\" (age 16) in widow Sarah Wooster’s 1871 household following Anna Wooster’s 1854 marriage to James Kingham.",
+          "sources": [
+            {
+              "label": "1871 Census (Sched 57)",
+              "url": "/census/1871/"
+            },
+            {
+              "label": "Marriage register (1854)",
+              "url": "/history/st-peters-marriages/"
+            }
+          ]
+        },
+        {
+          "id": "woost_joseph",
+          "name": "Joseph Wooster",
+          "sex": "M",
+          "dates": "c. 1847–1901+",
+          "family": "wooster",
+          "col": 12.5,
+          "gen": 3,
+          "occ": "Farmer’s son / Lab.",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Son of James & Sarah Wooster (born Ilmer c. 1847). Married Hannah North on 14 Apr 1873; six children baptized 1887–1888.",
+          "sources": [
+            {
+              "label": "Marriage register (1873)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "Baptism register (1887–1888)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "1851 Census–1901",
+              "url": "/census/1851/"
+            }
+          ]
+        },
+        {
+          "id": "woost_edith",
+          "name": "Edith Wooster (Goff)",
+          "sex": "F",
+          "dates": "c. 1876–1901+",
+          "family": "wooster",
+          "col": 12.5,
+          "gen": 4,
+          "occ": "",
+          "place": "Longwick / Windsor",
+          "badges": [],
+          "notes": "Baptized 27 Nov 1887 with four siblings (daughter of Joseph & Hannah Wooster). Married William Goff (Soldier, 1st Life Guards); staying at Joseph Wooster’s Ilmer home in 1901 with two children.",
+          "sources": [
+            {
+              "label": "Baptism register (1887, 1899–1901)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "1901 Census (Sched 130)",
+              "url": "/census/1901/"
+            }
+          ],
+          "gedcomName": "Edith /Wooster/"
+        },
+        {
+          "id": "goff_wg",
+          "name": "William George Goff",
+          "sex": "M",
+          "dates": "bap. 1901–1928+",
+          "family": "wooster",
+          "col": 12.5,
+          "gen": 5,
+          "occ": "Civil servant",
+          "place": "Windsor → Vauxhall",
+          "badges": [],
+          "notes": "Baptized at St Peter’s 24 Mar 1901 (\"Windsor Lifeguards\"); enumerated aged 2 months at grandfather Joseph Wooster’s house in Ilmer in 1901. Later lived at 55 Coronation Buildings, Vauxhall.",
+          "sources": [
+            {
+              "label": "Baptism register (1901, 1927–1928)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "1901 Census (Sched 130)",
+              "url": "/census/1901/"
+            }
+          ]
+        },
+        {
+          "id": "goff_kids",
+          "name": "Alan George (1927) & Ruth Mary Goff (1928)",
+          "sex": "U",
+          "dates": "bap. 1927–1928",
+          "family": "wooster",
+          "col": 12.5,
+          "gen": 6,
+          "occ": "Gen 5 Wooster → Goff",
+          "place": "Vauxhall → St Peter’s",
+          "badges": [],
+          "notes": "Brought back from Vauxhall, London to be baptized at St Peter’s, Ilmer on 17 Apr 1927 and 15 Jul 1928 — completing 5 verified generations from James & Sarah Wooster.",
+          "sources": [
+            {
+              "label": "Baptism register (1927, 1928)",
+              "url": "/history/st-peters-baptisms/"
+            }
+          ],
+          "groupKind": "siblings",
+          "members": [
+            {
+              "id": "goff_alan_george",
+              "name": "Alan George Goff",
+              "gedcomName": "Alan George /Goff/",
+              "sex": "M",
+              "baptism": "17 APR 1927",
+              "place": "55 Coronation Buildings, Vauxhall"
+            },
+            {
+              "id": "goff_ruth_mary",
+              "name": "Ruth Mary Goff",
+              "gedcomName": "Ruth Mary /Goff/",
+              "sex": "F",
+              "baptism": "15 JUL 1928",
+              "place": "55 Coronation Buildings, Vauxhall"
+            }
+          ]
+        },
+        {
+          "id": "woost_fanny",
+          "name": "Fanny Wooster",
+          "sex": "F",
+          "dates": "c. 1845 · m. 1865",
+          "family": "wooster",
+          "col": 13.55,
+          "gen": 3,
+          "occ": "Farmer’s daughter",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Daughter of James & Sarah Wooster. Married Thomas Goodchild of Longwick (aged 21, an earlier Thomas Goodchild distinct from David’s son) on 14 Mar 1865.",
+          "sources": [
+            {
+              "label": "Marriage register (1865)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "1851 Census",
+              "url": "/census/1851/"
+            },
+            {
+              "label": "1861 Census",
+              "url": "/census/1861/"
+            }
+          ]
+        },
+        {
+          "id": "king_jane1764",
+          "name": "Jane Kingham",
+          "sex": "F",
+          "dates": "bap. 1764 · m. 1790",
+          "family": "kingham",
+          "col": 13.95,
+          "gen": 1,
+          "occ": "",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Youngest daughter of Joshua Kingham the elder (under 21 in his 1779 will, granted board and lodging with her brother John). Married James Goodchild at Ilmer on 4 Jul 1790.",
+          "sources": [
+            {
+              "label": "Transcribed will: joshua kingham 1779",
+              "url": "/wills/joshua-kingham-1779/"
+            },
+            {
+              "label": "Baptism register (1764)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1790)",
+              "url": "/history/st-peters-marriages/"
+            }
+          ]
+        },
+        {
+          "id": "good_james1790",
+          "name": "James Goodchild",
+          "sex": "M",
+          "dates": "m. 1790",
+          "family": "goodchild",
+          "col": 15.13,
+          "gen": 1,
+          "occ": "",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Married Jane Kingham on 4 Jul 1790; their daughter Sarah Goodchild was baptized 11 Aug 1790 and buried 6 Sep 1790.",
+          "sources": [
+            {
+              "label": "Marriage register (1790)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "Baptism register (1790)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Burial register (1790)",
+              "url": "/history/st-peters-burials/"
+            }
+          ]
+        },
+        {
+          "id": "good_d1",
+          "name": "David & Elizabeth Goodchild",
+          "sex": "U",
+          "dates": "c. 1831–1886",
+          "family": "goodchild",
+          "col": 16.15,
+          "gen": 3,
+          "occ": "Farmer / Labourer",
+          "place": "Old Vicarage, Ilmer",
+          "badges": ["property"],
+          "notes": "Moved from Longwick to the Old Vicarage, Ilmer by 1873; raised 9 children. Tragedy struck in Dec 1885 (Elizabeth died age 53) and Dec 1886 (David died of a heart attack age 55), leaving eldest sons Thomas & John to raise the younger boys.",
+          "sources": [
+            {
+              "label": "Ilmer House",
+              "url": "/history/ilmer-house/"
+            },
+            {
+              "label": "1881 Census (Sched 62)",
+              "url": "/census/1881/"
+            },
+            {
+              "label": "Baptism register (1872–1878)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Burial register (1885–1886)",
+              "url": "/history/st-peters-burials/"
+            }
+          ],
+          "groupKind": "couple",
+          "members": [
+            {
+              "id": "good_david_sr",
+              "name": "David Goodchild",
+              "gedcomName": "David /Goodchild/",
+              "sex": "M",
+              "birth": "ABT 1831",
+              "burial": "24 DEC 1886",
+              "occ": "Farmer / Labourer",
+              "place": "Longwick / Old Vicarage, Ilmer",
+              "notes": "Died of a heart attack in Dec 1886 aged 55."
+            },
+            {
+              "id": "good_elizabeth_sr",
+              "name": "Elizabeth Goodchild",
+              "gedcomName": "Elizabeth /Goodchild/",
+              "sex": "F",
+              "birth": "ABT 1833",
+              "burial": "23 DEC 1885",
+              "place": "Princes Risborough / Old Vicarage, Ilmer",
+              "notes": "Died in Dec 1885 aged 53."
+            }
+          ]
+        },
+        {
+          "id": "good_john",
+          "name": "John Goodchild",
+          "sex": "M",
+          "dates": "c. 1855 · m. 1877",
+          "family": "goodchild",
+          "col": 14.65,
+          "gen": 4,
+          "occ": "Watercress grower",
+          "place": "Longwick / Summerleys",
+          "badges": [],
+          "notes": "Co-executor of father David Goodchild’s will. Married Lucy Kingham (age 21) at St Peter’s on 15 Sep 1877; four children baptized 1879–1889.",
+          "sources": [
+            {
+              "label": "Ilmer House",
+              "url": "/history/ilmer-house/"
+            },
+            {
+              "label": "Marriage register (1877)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "Baptism register (1879–1889)",
+              "url": "/history/st-peters-baptisms/"
+            }
+          ]
+        },
+        {
+          "id": "good_thomas",
+          "name": "Thomas Goodchild",
+          "sex": "M",
+          "dates": "c. 1863–1930",
+          "family": "goodchild",
+          "col": 15.65,
+          "gen": 4,
+          "occ": "Poultry farmer",
+          "place": "Old Vicarage / Green",
+          "badges": ["memorial", "property"],
+          "notes": "Executor of father David’s will aged 22; moved to the Old Vicarage with wife Mary (1861–1933) to raise orphaned younger brothers Albert, Owen & Ernest. Died 3 Oct 1930 aged 67 (headstone C19).",
+          "sources": [
+            {
+              "label": "Ilmer House",
+              "url": "/history/ilmer-house/"
+            },
+            {
+              "label": "Monumental inscription C19",
+              "url": "/history/monumental-inscriptions/#C19"
+            },
+            {
+              "label": "1891 Census–1921",
+              "url": "/census/1891/"
+            },
+            {
+              "label": "Baptism register (1887–1900)",
+              "url": "/history/st-peters-baptisms/"
+            }
+          ]
+        },
+        {
+          "id": "good_albert",
+          "name": "Albert Goodchild",
+          "sex": "M",
+          "dates": "1873–1931",
+          "family": "goodchild",
+          "col": 16.65,
+          "gen": 4,
+          "occ": "Flower wholesaler",
+          "place": "Ilmer House & London",
+          "badges": ["memorial", "property"],
+          "notes": "Orphaned at 13; married Elizabeth Mason (1894), built a thriving Covent Garden flower business, bought Upper Farm in 1909 to build Ilmer House, and bought the Old Vicarage in 1927. Died 15 Jul 1931 aged 57 (Celtic cross C11).",
+          "sources": [
+            {
+              "label": "Ilmer House",
+              "url": "/history/ilmer-house/"
+            },
+            {
+              "label": "Monumental inscription C11",
+              "url": "/history/monumental-inscriptions/#C11"
+            },
+            {
+              "label": "Baptism register (1873)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Vicarage",
+              "url": "/history/vicarage/"
+            }
+          ]
+        },
+        {
+          "id": "good_owen_ern",
+          "name": "Owen (1876–1932) & Ernest (1878)",
+          "sex": "U",
+          "dates": "Younger brothers",
+          "family": "goodchild",
+          "col": 17.65,
+          "gen": 4,
+          "occ": "Farmer · Emigrant",
+          "place": "Watlington · Canada",
+          "badges": ["memorial"],
+          "notes": "Owen (bap. 1876, d. 1932, headstone C18 with wife Kate Louisa; dau Dorothy Isabel bap. 1904) and Ernest William (bap. 1878, departed Liverpool aged 13 in 1892 as a British Home Child to Winnipeg, Canada).",
+          "sources": [
+            {
+              "label": "Ilmer House",
+              "url": "/history/ilmer-house/"
+            },
+            {
+              "label": "Monumental inscription C18",
+              "url": "/history/monumental-inscriptions/#C18"
+            },
+            {
+              "label": "Baptism register (1876, 1878, 1904)",
+              "url": "/history/st-peters-baptisms/"
+            }
+          ],
+          "groupKind": "siblings",
+          "members": [
+            {
+              "id": "good_owen",
+              "name": "Owen Goodchild",
+              "gedcomName": "Owen /Goodchild/",
+              "sex": "M",
+              "baptism": "6 FEB 1876",
+              "death": "10 MAR 1932",
+              "burial": "12 MAR 1932",
+              "occ": "Publican / Farmer",
+              "place": "Lander’s Farm, Watlington",
+              "notes": "Married Kate Louisa (d. 1935); daughter Dorothy Isabel baptized 28 Feb 1904. Headstone C18."
+            },
+            {
+              "id": "good_ernest_william",
+              "name": "Ernest William Goodchild",
+              "gedcomName": "Ernest William /Goodchild/",
+              "sex": "M",
+              "baptism": "7 JUL 1878",
+              "occ": "Emigrant",
+              "place": "Ilmer / Winnipeg, Canada",
+              "notes": "Departed Liverpool aged 13 in 1892 as a British Home Child bound for Quebec and Winnipeg."
+            }
+          ]
+        },
+        {
+          "id": "good_harry",
+          "name": "Harry Goodchild",
+          "sex": "M",
+          "dates": "1889–1973",
+          "family": "goodchild",
+          "col": 15.65,
+          "gen": 5,
+          "occ": "Cowman / Stockman",
+          "place": "Field Cottage, Ilmer",
+          "badges": ["memorial"],
+          "notes": "Baptized 24 Mar 1889 (son of Thomas & Mary Goodchild; brother of Louise, Frank, Ethel, Doris & Ada). Married Annie Smith (1890–1964, pictured in the 1935 Daily Sketch) on 27 Apr 1918. Died 26 Apr 1973 aged 84 (headstone C20).",
+          "sources": [
+            {
+              "label": "Baptism register (1889, 1919–1929)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1918)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "Monumental inscription C20",
+              "url": "/history/monumental-inscriptions/#C20"
+            },
+            {
+              "label": "Historic Photos",
+              "url": "/history/historic-photos/"
+            }
+          ]
+        },
+        {
+          "id": "good_douglas",
+          "name": "(Robert) Douglas Goodchild",
+          "sex": "M",
+          "dates": "fl. 1931–1946",
+          "family": "goodchild",
+          "col": 16.65,
+          "gen": 5,
+          "occ": "Nurseryman",
+          "place": "Old Vicarage / Meadows",
+          "badges": ["property"],
+          "notes": "Youngest child of Albert & Elizabeth Goodchild. Lived at the Old Vicarage and built the glasshouse nursery in central Ilmer (now Ilmer Meadows) before its 1946 closure.",
+          "sources": [
+            {
+              "label": "Ilmer House",
+              "url": "/history/ilmer-house/"
+            },
+            {
+              "label": "Vicarage",
+              "url": "/history/vicarage/"
+            }
+          ]
+        },
+        {
+          "id": "good_elsie",
+          "name": "Winifred, Elsie, Florence & Ernest John",
+          "sex": "U",
+          "dates": "1919–1968",
+          "family": "goodchild",
+          "col": 15.65,
+          "gen": 6,
+          "occ": "Gen 4 Goodchilds",
+          "place": "Field Cottage, Ilmer",
+          "badges": ["memorial"],
+          "notes": "Children of Harry & Annie Goodchild: Winifred May (1919, m. Matthews 1942), Elsie Dorothy (1921, pictured in the 1935 Daily Sketch, m. Gerald Knight), Florence Mary (1925, m. Miller 1948), and Ernest John (1929–1968, headstone C17).",
+          "sources": [
+            {
+              "label": "Baptism register (1919–1929)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1942, 1948)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "Monumental inscription C17",
+              "url": "/history/monumental-inscriptions/#C17"
+            },
+            {
+              "label": "Historic Photos",
+              "url": "/history/historic-photos/"
+            }
+          ],
+          "groupKind": "siblings",
+          "members": [
+            {
+              "id": "good_winifred_may",
+              "name": "Winifred May Goodchild",
+              "gedcomName": "Winifred May /Goodchild/",
+              "sex": "F",
+              "baptism": "29 MAR 1919",
+              "place": "Field Cottage, Ilmer",
+              "notes": "Married Vincent Charles Matthews at St Peter’s on 21 Oct 1942."
+            },
+            {
+              "id": "good_elsie_dorothy",
+              "name": "Elsie Dorothy Goodchild",
+              "gedcomName": "Elsie Dorothy /Goodchild/",
+              "sex": "F",
+              "birth": "4 AUG 1921",
+              "baptism": "21 SEP 1921",
+              "place": "Field Cottage, Ilmer",
+              "notes": "Pictured in the 1935 Daily Sketch feature on Ilmer; married Gerald Knight."
+            },
+            {
+              "id": "good_florence_mary",
+              "name": "Florence Mary Goodchild",
+              "gedcomName": "Florence Mary /Goodchild/",
+              "sex": "F",
+              "baptism": "1 MAR 1925",
+              "place": "Field Cottage, Ilmer",
+              "notes": "Married Leslie Joseph Miller at St Peter’s on 23 Oct 1948."
+            },
+            {
+              "id": "good_ernest_john",
+              "name": "Ernest John Goodchild",
+              "gedcomName": "Ernest John /Goodchild/",
+              "sex": "M",
+              "baptism": "29 SEP 1929",
+              "death": "28 AUG 1968",
+              "burial": "31 AUG 1968",
+              "place": "Field Cottage / Princes Risborough",
+              "notes": "Died aged 39; headstone C17."
+            }
+          ]
+        },
+        {
+          "id": "gomme_j1",
+          "name": "John Gomme",
+          "sex": "M",
+          "dates": "d. 1771",
+          "family": "gomme",
+          "col": 20.1,
+          "gen": 0,
+          "occ": "Grazier",
+          "place": "Cold Harbour, Ilmer",
+          "badges": ["property"],
+          "notes": "Grazier of Cold Harbour, Ilmer. Buried 17 Apr 1771; will proved 1771. With wife Mary had five children baptized 1747–1759.",
+          "sources": [
+            {
+              "label": "Wills index (1771)",
+              "url": "/wills/"
+            },
+            {
+              "label": "Baptism register (1747–1759)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Burial register (1771)",
+              "url": "/history/st-peters-burials/"
+            }
+          ]
+        },
+        {
+          "id": "gomme_j2",
+          "name": "John Gomme",
+          "sex": "M",
+          "dates": "1750–1825",
+          "family": "gomme",
+          "col": 19.51,
+          "gen": 1,
+          "occ": "Farmer",
+          "place": "Cold Harbour, Ilmer",
+          "badges": ["property"],
+          "notes": "Baptized 27 Oct 1750, buried 2 Jan 1825 aged 75 (exact match). Had 3 children by 1st wife Elizabeth (d. 1788) and 10 children (1793–1815) by 2nd wife Hannah (b. c. 1771 Towersey).",
+          "sources": [
+            {
+              "label": "Baptism register (1750, 1781–1815)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Burial register (1825)",
+              "url": "/history/st-peters-burials/"
+            }
+          ]
+        },
+        {
+          "id": "gomme_h2",
+          "name": "Hannah Gomme",
+          "sex": "F",
+          "dates": "c. 1771–1851+",
+          "family": "gomme",
+          "col": 20.69,
+          "gen": 1,
+          "occ": "Dairy farmer",
+          "place": "Cold Harbour, Ilmer",
+          "badges": ["property"],
+          "notes": "Born Towersey c. 1771; 2nd wife of John Gomme. Head of Cold Harbour dairy farm as widow in 1841 (age 70) and 1851 (age 80), hosting daughter Hannah and nephews Alfred & Eli.",
+          "sources": [
+            {
+              "label": "1841 Census",
+              "url": "/census/1841/"
+            },
+            {
+              "label": "1851 Census (Sched 19)",
+              "url": "/census/1851/"
+            },
+            {
+              "label": "Baptism register (1793–1815)",
+              "url": "/history/st-peters-baptisms/"
+            }
+          ]
+        },
+        {
+          "id": "gomme_edwin1815",
+          "name": "Edwin Gomme",
+          "sex": "M",
+          "dates": "bap. 1815 · m. 1839",
+          "family": "gomme",
+          "col": 17.7,
+          "gen": 2,
+          "occ": "Farmer / Carpenter",
+          "place": "Ilmer → Longwick",
+          "badges": [],
+          "notes": "Youngest child of John & Hannah Gomme (bap. 30 Jul 1815). Married Eliza Goodchild at St Peter’s on 19 Dec 1839; five children baptized 1840–1849.",
+          "sources": [
+            {
+              "label": "Baptism register (1815, 1840–1849)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1839)",
+              "url": "/history/st-peters-marriages/"
+            }
+          ]
+        },
+        {
+          "id": "gomme_ann1793",
+          "name": "Anne Gomm",
+          "sex": "F",
+          "dates": "bap. 1793 · m. 1811",
+          "family": "gomme",
+          "col": 18.75,
+          "gen": 2,
+          "occ": "",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Eldest child of John & Hannah Gomme (bap. 24 Feb 1793). Married Thomas Kingham of Ilmer on 28 Feb 1811 (witnessed by Hannah Gomm).",
+          "sources": [
+            {
+              "label": "Baptism register (1793)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1811)",
+              "url": "/history/st-peters-marriages/"
+            }
+          ]
+        },
+        {
+          "id": "gomme_jesse",
+          "name": "Jesse Gomme",
+          "sex": "M",
+          "dates": "1798–1867",
+          "family": "gomme",
+          "col": 19.75,
+          "gen": 2,
+          "occ": "Agricultural labourer",
+          "place": "Old Vicarage, Ilmer",
+          "badges": ["property"],
+          "notes": "Baptized 29 Nov 1798; buried 18 Dec 1867 aged 68. Tenant of the Old Vicarage in the 1839 tithe map and 1841–1861 censuses with wife Charlotte (b. Bledlow c. 1808).",
+          "sources": [
+            {
+              "label": "Baptism register (1798)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Vicarage",
+              "url": "/history/vicarage/"
+            },
+            {
+              "label": "1841 Census–1861",
+              "url": "/census/1841/"
+            },
+            {
+              "label": "Burial register (1867)",
+              "url": "/history/st-peters-burials/"
+            }
+          ]
+        },
+        {
+          "id": "gomme_esther",
+          "name": "Esther Gomme",
+          "sex": "F",
+          "dates": "bap. 1809 · m. 1833",
+          "family": "gomme",
+          "col": 20.93,
+          "gen": 2,
+          "occ": "",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Baptized 16 Jul 1809. Mother of Anne Gome (bap. 24 Jun 1832); married William Bowden of Towersey on 2 May 1833.",
+          "sources": [
+            {
+              "label": "Baptism register (1809, 1832)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1833)",
+              "url": "/history/st-peters-marriages/"
+            }
+          ]
+        },
+        {
+          "id": "gomme_henry",
+          "name": "Henry & Hannah Gomme",
+          "sex": "U",
+          "dates": "1801–1879 / 1794–1884",
+          "family": "gomme",
+          "col": 22.15,
+          "gen": 2,
+          "occ": "Cow doctor & Farmers",
+          "place": "Cold Harbour Farm",
+          "badges": ["memorial", "property"],
+          "notes": "Siblings Henry (bap. 1801, d. 1879 age 78, m. Sarah Jane Curryer 1835) and unmarried sister Hannah (bap. 1794, d. 1884 age 90) farmed Cold Harbour together. Commemorated together on headstone C14.",
+          "sources": [
+            {
+              "label": "Monumental inscription C14",
+              "url": "/history/monumental-inscriptions/#C14"
+            },
+            {
+              "label": "Baptism register (1794, 1801)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1835)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "1861 Census–1881",
+              "url": "/census/1861/"
+            }
+          ],
+          "groupKind": "siblings",
+          "members": [
+            {
+              "id": "gomme_henry_ind",
+              "name": "Henry Gomme",
+              "gedcomName": "Henry /Gomme/",
+              "sex": "M",
+              "baptism": "18 JAN 1801",
+              "death": "5 MAY 1879",
+              "burial": "10 MAY 1879",
+              "occ": "Cow doctor / Farmer",
+              "place": "Cold Harbour, Ilmer",
+              "notes": "Married Sarah Jane Curryer (1835). Commemorated on headstone C14.",
+              "isDescentParent": true
+            },
+            {
+              "id": "gomme_hannah_ind",
+              "name": "Hannah Gomme",
+              "gedcomName": "Hannah /Gomme/",
+              "sex": "F",
+              "baptism": "13 APR 1794",
+              "death": "27 SEP 1884",
+              "burial": "3 OCT 1884",
+              "occ": "Farmer",
+              "place": "Cold Harbour, Ilmer",
+              "notes": "Unmarried sister of Henry; farmed Cold Harbour and died aged 90. Headstone C14."
+            }
+          ]
+        },
+        {
+          "id": "gomme_eli",
+          "name": "Eli Gomme",
+          "sex": "M",
+          "dates": "c. 1828–1861+",
+          "family": "gomme",
+          "col": 19.75,
+          "gen": 3,
+          "occ": "Agricultural labourer",
+          "place": "Cold Harbour / Ilmer",
+          "badges": [],
+          "notes": "Son of Jesse & Charlotte Gomme. Married his first cousin Anne Gomme on 14 Sep 1850; lived at Cold Harbour with grandmother Hannah in 1851.",
+          "sources": [
+            {
+              "label": "Marriage register (1850)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "1841 Census–1861",
+              "url": "/census/1841/"
+            }
+          ]
+        },
+        {
+          "id": "gomme_anne1832",
+          "name": "Anne Gomme",
+          "sex": "F",
+          "dates": "bap. 1832–1861+",
+          "family": "gomme",
+          "col": 20.93,
+          "gen": 3,
+          "occ": "Lacemaker",
+          "place": "Cold Harbour / Ilmer",
+          "badges": [],
+          "notes": "Baptized 24 Jun 1832 (daughter of Esther Gomme); raised with grandmother Hannah Gomme in 1841. Married cousin Eli Gomme in 1850.",
+          "sources": [
+            {
+              "label": "Baptism register (1832)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1850)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "1841 Census–1861",
+              "url": "/census/1841/"
+            }
+          ]
+        },
+        {
+          "id": "gomme_wh",
+          "name": "William Henry Gomme",
+          "sex": "M",
+          "dates": "bap. 1851 · m. 1873",
+          "family": "gomme",
+          "col": 20.34,
+          "gen": 4,
+          "occ": "Agricultural labourer",
+          "place": "Cold Harbour, Ilmer",
+          "badges": [],
+          "notes": "Baptized 26 Jan 1851 (son of cousins Eli & Anne Gomme; brother of Mary Anne 1852 & Hannah 1859). Age 3mo in 1851, age 21 \"Nephew\" at Cold Harbour in 1871. Married Anne Wagerfield on 29 May 1873.",
+          "sources": [
+            {
+              "label": "Baptism register (1851)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1873)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "1851 Census–1871",
+              "url": "/census/1851/"
+            }
+          ]
+        },
+        {
+          "id": "gomme_george",
+          "name": "George & Hannah Julia Gomme",
+          "sex": "U",
+          "dates": "c. 1865–1945 / 1865–1933",
+          "family": "gomme",
+          "col": 22.15,
+          "gen": 4,
+          "occ": "Farmer",
+          "place": "Cold Harbour Farm",
+          "badges": ["memorial", "property"],
+          "notes": "Born Bledlow c. 1865; listed as \"Grandson\" of Henry Gomme (1871) and \"Nephew\" of Hannah Gomme (1881), succeeding them as Cold Harbour farmer. Had 10 children with Hannah Julia (headstone C8).",
+          "sources": [
+            {
+              "label": "Monumental inscription C8",
+              "url": "/history/monumental-inscriptions/#C8"
+            },
+            {
+              "label": "1871 Census–1921",
+              "url": "/census/1871/"
+            },
+            {
+              "label": "Coldharbour",
+              "url": "/history/coldharbour/"
+            },
+            {
+              "label": "War Dead",
+              "url": "/history/war-dead/"
+            }
+          ],
+          "groupKind": "couple",
+          "members": [
+            {
+              "id": "gomme_george_sr",
+              "name": "George Gomme",
+              "gedcomName": "George /Gomme/",
+              "sex": "M",
+              "birth": "ABT 1865",
+              "death": "24 JAN 1945",
+              "burial": "27 JAN 1945",
+              "occ": "Farmer",
+              "place": "Bledlow / Cold Harbour Farm",
+              "notes": "Listed as Henry Gomme’s grandson (1871) and Hannah Gomme’s nephew (1881). Died aged 80; headstone C8."
+            },
+            {
+              "id": "gomme_hannah_julia",
+              "name": "Hannah Julia Gomme",
+              "gedcomName": "Hannah Julia /Gomme/",
+              "sex": "F",
+              "birth": "ABT 1865",
+              "death": "11 NOV 1933",
+              "burial": "14 NOV 1933",
+              "place": "High Wycombe / Cold Harbour Farm",
+              "notes": "Wife of George Gomme; died aged 68. Headstone C8."
+            }
+          ]
+        },
+        {
+          "id": "gomme_aubrey",
+          "name": "Aubrey Sidney Gomme",
+          "sex": "M",
+          "dates": "1892–1917",
+          "family": "gomme",
+          "col": 21.55,
+          "gen": 5,
+          "occ": "21st Canadian Bn.",
+          "place": "Killed at Vimy Ridge",
+          "badges": ["war-dead"],
+          "notes": "Born at Coldharbour Farm 20 Aug 1892; emigrated to Canada in 1911 and served with the 21st Canadian Battalion. Killed in action at Vimy Ridge on 9 Apr 1917 aged 24; commemorated on Ilmer’s War Memorial.",
+          "sources": [
+            {
+              "label": "War Dead",
+              "url": "/history/war-dead/"
+            },
+            {
+              "label": "Monumental inscription RollOfHonour",
+              "url": "/history/monumental-inscriptions/#RollOfHonour"
+            },
+            {
+              "label": "1901 Census",
+              "url": "/census/1901/"
+            }
+          ]
+        },
+        {
+          "id": "gomme_ettie",
+          "name": "Philip, Ettie & 7 Siblings",
+          "sex": "U",
+          "dates": "1890–1970",
+          "family": "gomme",
+          "col": 22.65,
+          "gen": 5,
+          "occ": "Coldharbour children",
+          "place": "Cold Harbour Farm",
+          "badges": ["property"],
+          "notes": "Siblings of Aubrey: Harry Herbert (1890–1970), Elsie Beatrice (1892–1968), Philip William (b. 1895), Winifred (1898), Dorothy (1900), Ettie Nellie (1902–1907, fatally shot by accident in the granary), Lena (1905), Arthur (1908–09), Lilian (1910).",
+          "sources": [
+            {
+              "label": "Coldharbour",
+              "url": "/history/coldharbour/"
+            },
+            {
+              "label": "1891 Census–1921",
+              "url": "/census/1891/"
+            },
+            {
+              "label": "Burial register (1907–1970)",
+              "url": "/history/st-peters-burials/"
+            }
+          ],
+          "groupKind": "siblings",
+          "members": [
+            {
+              "id": "gomme_harry_herbert",
+              "name": "Harry Herbert Gomme",
+              "gedcomName": "Harry Herbert /Gomme/",
+              "sex": "M",
+              "birth": "ABT 1890",
+              "burial": "12 JUN 1970",
+              "place": "Cold Harbour / Bledlow"
+            },
+            {
+              "id": "gomme_elsie_beatrice",
+              "name": "Elsie Beatrice Gomme",
+              "gedcomName": "Elsie Beatrice /Gomme/",
+              "sex": "F",
+              "birth": "ABT 1892",
+              "burial": "8 JAN 1968",
+              "place": "Cold Harbour / Bournemouth"
+            },
+            {
+              "id": "gomme_philip_william",
+              "name": "Philip William Gomme",
+              "gedcomName": "Philip William /Gomme/",
+              "sex": "M",
+              "birth": "ABT 1895",
+              "place": "Cold Harbour Farm"
+            },
+            {
+              "id": "gomme_winifred_hilda",
+              "name": "Winifred Hilda Gomme",
+              "gedcomName": "Winifred Hilda /Gomme/",
+              "sex": "F",
+              "birth": "ABT 1898",
+              "place": "Cold Harbour Farm"
+            },
+            {
+              "id": "gomme_dorothy_elizabeth",
+              "name": "Dorothy Elizabeth Gomme",
+              "gedcomName": "Dorothy Elizabeth /Gomme/",
+              "sex": "F",
+              "birth": "ABT 1900",
+              "place": "Towersey / Cold Harbour Farm"
+            },
+            {
+              "id": "gomme_ettie_nellie",
+              "name": "Ettie Nellie Gomme",
+              "gedcomName": "Ettie Nellie /Gomme/",
+              "sex": "F",
+              "birth": "APR 1902",
+              "death": "2 AUG 1907",
+              "burial": "4 AUG 1907",
+              "place": "Cold Harbour Farm",
+              "notes": "Died aged 5 in the accidental granary shooting at Cold Harbour Farm."
+            },
+            {
+              "id": "gomme_lena_eva",
+              "name": "Lena Eva Gomme",
+              "gedcomName": "Lena Eva /Gomme/",
+              "sex": "F",
+              "birth": "ABT 1905",
+              "place": "Cold Harbour Farm"
+            },
+            {
+              "id": "gomme_arthur_frederick",
+              "name": "Arthur Frederick Gomme",
+              "gedcomName": "Arthur Frederick /Gomme/",
+              "sex": "M",
+              "birth": "ABT 1908",
+              "burial": "30 JUN 1909",
+              "place": "Cold Harbour Farm",
+              "notes": "Buried aged 1 year."
+            },
+            {
+              "id": "gomme_lilian_frances",
+              "name": "Lilian Frances Gomme",
+              "gedcomName": "Lilian Frances /Gomme/",
+              "sex": "F",
+              "birth": "1910",
+              "place": "Cold Harbour Farm"
+            }
+          ]
+        },
+        {
+          "id": "belg_r1",
+          "name": "Richard & Martha Belgrove",
+          "sex": "U",
+          "dates": "c. 1830–1901+",
+          "family": "belgrove",
+          "col": 24.15,
+          "gen": 3,
+          "occ": "Tenant Farmer & Warden",
+          "place": "Upper Farm, Ilmer",
+          "badges": ["property"],
+          "notes": "Richard (b. Stewkley c. 1830) & Martha Rudd (b. Weedon c. 1840) farmed Upper Farm (now Ilmer House) for decades (1871–1901 censuses) and raised 9+ children including church organist Martha and \"Ilmer Hermit\" Charles.",
+          "sources": [
+            {
+              "label": "1871 Census–1901",
+              "url": "/census/1871/"
+            },
+            {
+              "label": "Baptism register (1865–1885)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Church",
+              "url": "/history/church/"
+            }
+          ],
+          "groupKind": "couple",
+          "members": [
+            {
+              "id": "belg_richard_sr",
+              "name": "Richard Belgrove",
+              "gedcomName": "Richard /Belgrove/",
+              "sex": "M",
+              "birth": "ABT 1830",
+              "occ": "Tenant Farmer & Churchwarden",
+              "place": "Stewkley / Upper Farm, Ilmer"
+            },
+            {
+              "id": "belg_martha_rudd",
+              "name": "Martha Rudd",
+              "gedcomName": "Martha /Rudd/",
+              "sex": "F",
+              "birth": "ABT 1840",
+              "place": "Weedon / Upper Farm, Ilmer"
+            }
+          ]
+        },
+        {
+          "id": "belg_charlotte",
+          "name": "Charlotte Belgrove (Claydon)",
+          "sex": "F",
+          "dates": "1866–1943",
+          "family": "belgrove",
+          "col": 23.6,
+          "gen": 4,
+          "occ": "m. John Thos. Claydon",
+          "place": "Ilmer → Longwick",
+          "badges": ["memorial"],
+          "notes": "Baptized 30 Dec 1866 (daughter of Richard & Martha Belgrove). Married grocer John Thomas Claydon (1865–1936) on 29 Dec 1888. Died 14 Nov 1943 aged 77 (headstone C21).",
+          "sources": [
+            {
+              "label": "Baptism register (1866)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1888)",
+              "url": "/history/st-peters-marriages/"
+            },
+            {
+              "label": "Monumental inscription C21",
+              "url": "/history/monumental-inscriptions/#C21"
+            }
+          ],
+          "gedcomName": "Charlotte /Belgrove/"
+        },
+        {
+          "id": "belg_charlie",
+          "name": "Charles & Martha Belgrove",
+          "sex": "U",
+          "dates": "1885–1969 / 1865–1909",
+          "family": "belgrove",
+          "col": 24.7,
+          "gen": 4,
+          "occ": "“Hermit” · Organist",
+          "place": "Lockington · St Peter’s",
+          "badges": ["memorial", "property"],
+          "notes": "Charles (\"The Ilmer Hermit\", b. 1885, d. Nov 1968/bur. Feb 1969) lived alone at Lockington for 66 years after falling out with his father. Sister Martha (d. 1909 age 44) was St Peter’s organist for 25 years (window A2, headstone C22).",
+          "sources": [
+            {
+              "label": "Lockington",
+              "url": "/history/lockington/"
+            },
+            {
+              "label": "Lockington & Charles Belgrove",
+              "url": "/history/lockington/"
+            },
+            {
+              "label": "Monumental inscription A2",
+              "url": "/history/monumental-inscriptions/#A2"
+            },
+            {
+              "label": "Monumental inscription C22",
+              "url": "/history/monumental-inscriptions/#C22"
+            }
+          ],
+          "groupKind": "siblings",
+          "members": [
+            {
+              "id": "belg_charles_hermit",
+              "name": "Charles Belgrove",
+              "gedcomName": "Charles /Belgrove/",
+              "sex": "M",
+              "birth": "9 MAR 1885",
+              "baptism": "22 MAR 1885",
+              "death": "NOV 1968",
+              "burial": "11 FEB 1969",
+              "occ": "Smallholder (The Ilmer Hermit)",
+              "place": "Lockington",
+              "notes": "Lived alone at Lockington for 66 years after falling out with his father; died aged 84."
+            },
+            {
+              "id": "belg_martha_organist",
+              "name": "Martha Belgrove",
+              "gedcomName": "Martha /Belgrove/",
+              "sex": "F",
+              "birth": "ABT 1865",
+              "death": "10 SEP 1909",
+              "burial": "19 SEP 1909",
+              "occ": "Church organist",
+              "place": "Upper Farm, Ilmer",
+              "notes": "Organist at St Peter’s for 25 years; commemorated by stained-glass window A2 and headstone C22."
+            }
+          ]
+        },
+        {
+          "id": "clay_david",
+          "name": "David & Mark Claydon",
+          "sex": "U",
+          "dates": "1898–1973 / 1905–1978",
+          "family": "belgrove",
+          "col": 23.6,
+          "gen": 5,
+          "occ": "Grocer & Butcher",
+          "place": "Old Orchard / Longwick",
+          "badges": ["memorial"],
+          "notes": "Sons of John Thomas Claydon & Charlotte Belgrove (brothers of Esther 1890, Ruth 1894–1937 [C21], Mary 1896). David (m. Constance Mary, headstone B4) and Mark (m. Freda, headstone B5) are both buried at St Peter’s.",
+          "sources": [
+            {
+              "label": "Baptism register (1890–1906)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Monumental inscription B4",
+              "url": "/history/monumental-inscriptions/#B4"
+            },
+            {
+              "label": "Monumental inscription B5",
+              "url": "/history/monumental-inscriptions/#B5"
+            },
+            {
+              "label": "Monumental inscription C21",
+              "url": "/history/monumental-inscriptions/#C21"
+            }
+          ],
+          "groupKind": "siblings",
+          "members": [
+            {
+              "id": "clay_david_ind",
+              "name": "David Claydon",
+              "gedcomName": "David /Claydon/",
+              "sex": "M",
+              "baptism": "18 DEC 1898",
+              "death": "13 JUL 1973",
+              "burial": "18 JUL 1973",
+              "occ": "Grocer & Butcher",
+              "place": "Old Orchard / The Croft, Longwick",
+              "notes": "Married Constance Mary (d. 1977); headstone B4.",
+              "isDescentParent": true
+            },
+            {
+              "id": "clay_mark_ind",
+              "name": "Mark Claydon",
+              "gedcomName": "Mark /Claydon/",
+              "sex": "M",
+              "baptism": "28 JAN 1906",
+              "death": "1978",
+              "burial": "19 JUN 1978",
+              "place": "Flint Cottage, Longwick",
+              "notes": "Married Freda (1915–1981); headstone B5."
+            }
+          ]
+        },
+        {
+          "id": "clay_maryann",
+          "name": "Mary Ann Claydon (Warren)",
+          "sex": "F",
+          "dates": "b. 1931 · m. 1960",
+          "family": "belgrove",
+          "col": 23.6,
+          "gen": 6,
+          "occ": "Gen 4 Belgrove → Warren",
+          "place": "Longwick",
+          "badges": [],
+          "notes": "Born 4 Nov 1931, baptized 3 Apr 1932 (daughter of David & Constance Mary Claydon). Married Norman Leonard Warren at St Peter’s on 2 Apr 1960.",
+          "sources": [
+            {
+              "label": "Baptism register (1932)",
+              "url": "/history/st-peters-baptisms/"
+            },
+            {
+              "label": "Marriage register (1960)",
+              "url": "/history/st-peters-marriages/"
+            }
+          ],
+          "gedcomName": "Mary Ann /Claydon/"
+        }
+      ],
+      "unions": [
+        {
+          "id": "u_horton1",
+          "p1": "horton_t1",
+          "p2": "horton_s1",
+          "year": "1770",
+          "crossFamily": false
+        },
+        {
+          "id": "u_king_elder",
+          "p1": "king_josh_elder",
+          "p2": "king_sarah_elder",
+          "year": "c.1750",
+          "crossFamily": false
+        },
+        {
+          "id": "u_king1777",
+          "p1": "king_j1777",
+          "p2": "king_h1777",
+          "year": "1777",
+          "crossFamily": false
+        },
+        {
+          "id": "u_good_king1790",
+          "p1": "king_jane1764",
+          "p2": "good_james1790",
+          "year": "1790",
+          "crossFamily": true,
+          "label": "Kingham × Goodchild"
+        },
+        {
+          "id": "u_gomme2",
+          "p1": "gomme_j2",
+          "p2": "gomme_h2",
+          "year": "c.1792",
+          "crossFamily": false
+        },
+        {
+          "id": "u_burn_allen",
+          "p1": "burn_j1",
+          "p2": "allen_lydia",
+          "year": "1838",
+          "crossFamily": true,
+          "label": "Burnham × Allen"
+        },
+        {
+          "id": "u_strat_king",
+          "p1": "strat_w2",
+          "p2": "strat_h2",
+          "year": "1833",
+          "crossFamily": true,
+          "label": "Stratford × Kingham"
+        },
+        {
+          "id": "u_clare_king",
+          "p1": "clare_ann",
+          "p2": "king_james3",
+          "year": "1856",
+          "crossFamily": true,
+          "label": "Clare × Kingham"
+        },
+        {
+          "id": "u_gomme_cousin",
+          "p1": "gomme_eli",
+          "p2": "gomme_anne1832",
+          "year": "1850",
+          "crossFamily": false,
+          "label": "1st cousins"
+        }
+      ],
+      "descents": [
+        {
+          "from": "allen_mary",
+          "to": "allen_lydia"
+        },
+        {
+          "from": "u_burn_allen",
+          "to": "burn_james"
+        },
+        {
+          "from": "burn_james",
+          "to": "burn_wj"
+        },
+        {
+          "from": "u_horton1",
+          "to": "horton_w2"
+        },
+        {
+          "from": "horton_w2",
+          "to": "horton_eliz"
+        },
+        {
+          "from": "horton_w2",
+          "to": "horton_sus"
+        },
+        {
+          "from": "horton_sus",
+          "to": "horton_j4"
+        },
+        {
+          "from": "horton_j4",
+          "to": "horton_kids5"
+        },
+        {
+          "from": "strat_r1",
+          "to": "strat_w2"
+        },
+        {
+          "from": "king_theo",
+          "to": "strat_h2"
+        },
+        {
+          "from": "u_strat_king",
+          "to": "strat_sophia"
+        },
+        {
+          "from": "u_strat_king",
+          "to": "strat_g3",
+          "dashed": true
+        },
+        {
+          "from": "strat_sophia",
+          "to": "strat_emma_mat"
+        },
+        {
+          "from": "clare_r1",
+          "to": "clare_james"
+        },
+        {
+          "from": "clare_r1",
+          "to": "clare_ann"
+        },
+        {
+          "from": "clare_james",
+          "to": "clare_kids"
+        },
+        {
+          "from": "u_king_elder",
+          "to": "king_h1777",
+          "dashed": true
+        },
+        {
+          "from": "u_king_elder",
+          "to": "king_jane1764"
+        },
+        {
+          "from": "u_king1777",
+          "to": "king_josh2"
+        },
+        {
+          "from": "king_josh2",
+          "to": "king_james3"
+        },
+        {
+          "from": "u_clare_king",
+          "to": "king_will4"
+        },
+        {
+          "from": "king_will4",
+          "to": "king_albert5"
+        },
+        {
+          "from": "king_albert5",
+          "to": "king_doris6"
+        },
+        {
+          "from": "king_doris6",
+          "to": "rixon_kids7"
+        },
+        {
+          "from": "woost_j1",
+          "to": "woost_anne"
+        },
+        {
+          "from": "woost_j1",
+          "to": "woost_joseph"
+        },
+        {
+          "from": "woost_j1",
+          "to": "woost_fanny"
+        },
+        {
+          "from": "woost_anne",
+          "to": "woost_mary_k"
+        },
+        {
+          "from": "woost_joseph",
+          "to": "woost_edith"
+        },
+        {
+          "from": "woost_edith",
+          "to": "goff_wg"
+        },
+        {
+          "from": "goff_wg",
+          "to": "goff_kids"
+        },
+        {
+          "from": "good_d1",
+          "to": "good_john"
+        },
+        {
+          "from": "good_d1",
+          "to": "good_thomas"
+        },
+        {
+          "from": "good_d1",
+          "to": "good_albert"
+        },
+        {
+          "from": "good_d1",
+          "to": "good_owen_ern"
+        },
+        {
+          "from": "good_thomas",
+          "to": "good_harry"
+        },
+        {
+          "from": "good_albert",
+          "to": "good_douglas"
+        },
+        {
+          "from": "good_harry",
+          "to": "good_elsie"
+        },
+        {
+          "from": "gomme_j1",
+          "to": "gomme_j2"
+        },
+        {
+          "from": "u_gomme2",
+          "to": "gomme_edwin1815"
+        },
+        {
+          "from": "u_gomme2",
+          "to": "gomme_ann1793"
+        },
+        {
+          "from": "u_gomme2",
+          "to": "gomme_jesse"
+        },
+        {
+          "from": "u_gomme2",
+          "to": "gomme_esther"
+        },
+        {
+          "from": "u_gomme2",
+          "to": "gomme_henry"
+        },
+        {
+          "from": "gomme_jesse",
+          "to": "gomme_eli"
+        },
+        {
+          "from": "gomme_esther",
+          "to": "gomme_anne1832"
+        },
+        {
+          "from": "u_gomme_cousin",
+          "to": "gomme_wh"
+        },
+        {
+          "from": "gomme_henry",
+          "to": "gomme_george",
+          "dashed": true
+        },
+        {
+          "from": "gomme_george",
+          "to": "gomme_aubrey"
+        },
+        {
+          "from": "gomme_george",
+          "to": "gomme_ettie"
+        },
+        {
+          "from": "belg_r1",
+          "to": "belg_charlotte"
+        },
+        {
+          "from": "belg_r1",
+          "to": "belg_charlie"
+        },
+        {
+          "from": "belg_charlotte",
+          "to": "clay_david"
+        },
+        {
+          "from": "clay_david",
+          "to": "clay_maryann"
+        }
+      ],
+      "bridges": [
+        {
+          "from": "horton_eliz",
+          "to": "allen_lydia",
+          "corridorAfterGen": 1,
+          "laneOffset": 16,
+          "pillCol": 1.76,
+          "label": "Eliz. Horton m. John Allen (1832)"
+        },
+        {
+          "from": "gomme_ann1793",
+          "to": "king_josh2",
+          "corridorAfterGen": 1,
+          "laneOffset": 72,
+          "pillCol": 12.1,
+          "label": "Anne Gomm m. Thomas Kingham (1811)"
+        },
+        {
+          "from": "gomme_edwin1815",
+          "to": "good_d1",
+          "corridorAfterGen": 2,
+          "laneOffset": 16,
+          "pillCol": 16.95,
+          "label": "Edwin Gomme m. Eliza Goodchild (1839)"
+        },
+        {
+          "from": "woost_fanny",
+          "to": "good_d1",
+          "corridorAfterGen": 2,
+          "laneOffset": 72,
+          "pillCol": 14.85,
+          "label": "Fanny Wooster m. Thos. Goodchild (1865)"
+        },
+        {
+          "from": "good_john",
+          "to": "king_james3",
+          "corridorAfterGen": 3,
+          "laneOffset": 72,
+          "pillCol": 10.4,
+          "label": "John Goodchild m. Lucy Kingham (1877)"
+        }
+      ]
+    },
+    "manor": {
+      "title": "Manorial & Landowning Dynasties (1338–1912)",
+      "subtitle": "Three successive noble and gentry lineages holding the Manor of Ilmer across six centuries.",
+      "genLabels": [
+        ["Era 1", "14th Century"],
+        ["Era 2", "Late 14th c."],
+        ["Era 3", "Early 15th c."],
+        ["Era 4", "Mid 15th c."],
+        ["Era 5", "Late 15th c."],
+        ["Era 6", "16th Century"],
+        ["Era 7", "17th Century"],
+        ["Era 8", "18th Century"],
+        ["Era 9", "19th Century"],
+        ["Era 10", "Early 20th c."]
+      ],
+      "columnHeaders": [
+        {
+          "label": "DE MOLEYNS → HUNGERFORD → HASTINGS",
+          "family": "moleyns",
+          "startCol": 0.2,
+          "endCol": 1.8
+        },
+        {
+          "label": "DORMER → STANHOPE (EARLS)",
+          "family": "dormer",
+          "startCol": 3.4,
+          "endCol": 5
+        },
+        {
+          "label": "MORETON → FREWEN → CARTER",
+          "family": "frewen",
+          "startCol": 6.7,
+          "endCol": 9.2
+        }
+      ],
+      "nodes": [
+        {
+          "id": "m_john",
+          "name": "Sir John & Lady Egidia de Moleyns",
+          "sex": "U",
+          "dates": "d. 1360 / d. 1367",
+          "family": "moleyns",
+          "col": 1,
+          "gen": 0,
+          "occ": "Keeper of King’s Hawks",
+          "place": "Stoke Poges & Ilmer",
+          "badges": ["property"],
+          "notes": "Held the Manor of Ilmer in serjeanty (1338) as Marshal and Keeper of the King’s Hawks; granted licence to enclose Ilmer woods as a park in 1336.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1338–1367)",
+              "url": "/history/timeline/"
+            },
+            {
+              "label": "Vicarage",
+              "url": "/history/vicarage/"
+            }
+          ],
+          "groupKind": "couple",
+          "members": [
+            {
+              "id": "m_john_sir",
+              "name": "Sir John de Moleyns",
+              "gedcomName": "John /de Moleyns/",
+              "sex": "M",
+              "death": "10 MAR 1360",
+              "occ": "Keeper of the King’s Hawks",
+              "place": "Stoke Poges & Ilmer"
+            },
+            {
+              "id": "m_egidia_lady",
+              "name": "Lady Egidia de Moleyns",
+              "gedcomName": "Egidia /de Moleyns/",
+              "sex": "F",
+              "death": "21 JAN 1367",
+              "place": "Ilmer",
+              "notes": "Widow of Sir John de Moleyns; held Ilmer until her death in Jan 1366/67."
+            }
+          ]
+        },
+        {
+          "id": "m_will1",
+          "name": "Sir William de Moleyns",
+          "sex": "M",
+          "dates": "inherited 1367",
+          "family": "moleyns",
+          "col": 1,
+          "gen": 1,
+          "occ": "Lord of Ilmer",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Surviving son of Sir John & Lady Egidia; inherited Ilmer on his mother’s death in Jan 1366/67.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1366/67)",
+              "url": "/history/timeline/"
+            }
+          ]
+        },
+        {
+          "id": "m_rich",
+          "name": "Sir Richard de Moleyns",
+          "sex": "M",
+          "dates": "d. 14 Dec 1384",
+          "family": "moleyns",
+          "col": 1,
+          "gen": 2,
+          "occ": "Lord of Ilmer",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Died 14 Dec 1384 leaving his heir William de Moleyns aged 7.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1384)",
+              "url": "/history/timeline/"
+            }
+          ]
+        },
+        {
+          "id": "m_will2",
+          "name": "Sir William de Moleyns",
+          "sex": "M",
+          "dates": "c. 1377–1425",
+          "family": "moleyns",
+          "col": 1,
+          "gen": 3,
+          "occ": "Lord of Ilmer",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Died 8 Jun 1425; his Oct 1425 Inquisition post mortem surveyed 160 arable acres, 21 acres meadow, and pasture \"le Grove\" in Ilmer.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1425)",
+              "url": "/history/timeline/"
+            }
+          ]
+        },
+        {
+          "id": "m_will3",
+          "name": "Sir William de Moleyns",
+          "sex": "M",
+          "dates": "c. 1405–1429",
+          "family": "moleyns",
+          "col": 1,
+          "gen": 4,
+          "occ": "Lord of Ilmer",
+          "place": "Siege of Orléans",
+          "badges": ["war-dead"],
+          "notes": "Killed 8 May 1429 at the Siege of Orléans during the Hundred Years’ War; succeeded by his 3-year-old only daughter Eleanor.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1429)",
+              "url": "/history/timeline/"
+            },
+            {
+              "label": "War Dead",
+              "url": "/history/war-dead/"
+            }
+          ]
+        },
+        {
+          "id": "m_eleanor",
+          "name": "Eleanor (Alianor) de Moleyns",
+          "sex": "F",
+          "dates": "c. 1426–1476",
+          "family": "moleyns",
+          "col": 0.41,
+          "gen": 5,
+          "occ": "Heiress of Ilmer",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Married Robert Hungerford (1440) aged ~14; later married Sir Oliver Manyngham (1468, dau Frideswide).",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1429–1468)",
+              "url": "/history/timeline/"
+            }
+          ]
+        },
+        {
+          "id": "h_rob",
+          "name": "Robert, 3rd Baron Hungerford",
+          "sex": "M",
+          "dates": "c. 1429–1464",
+          "family": "hungerford",
+          "col": 1.59,
+          "gen": 5,
+          "occ": "Lord Moleyns",
+          "place": "Beheaded Newcastle",
+          "badges": ["war-dead"],
+          "notes": "Captured at Castillon (1453; ransomed by his mother for £9,961); Lancastrian captured at Battle of Hexham and beheaded 18 May 1464.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1440–1464)",
+              "url": "/history/timeline/"
+            },
+            {
+              "label": "War Dead",
+              "url": "/history/war-dead/"
+            }
+          ],
+          "gedcomName": "Robert /Hungerford/ 3rd Baron Hungerford"
+        },
+        {
+          "id": "h_thom",
+          "name": "Sir Thomas Hungerford",
+          "sex": "M",
+          "dates": "c. 1440–1469",
+          "family": "hungerford",
+          "col": 1,
+          "gen": 6,
+          "occ": "Heir of Ilmer",
+          "place": "Beheaded Salisbury",
+          "badges": ["war-dead"],
+          "notes": "Beheaded 17 Jan 1468/69 for attempting to restore Henry VI; lands later restored to his daughter Mary under Henry VII (c. 1485).",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1468/69, 1485)",
+              "url": "/history/timeline/"
+            },
+            {
+              "label": "War Dead",
+              "url": "/history/war-dead/"
+            }
+          ]
+        },
+        {
+          "id": "h_mary",
+          "name": "Lady Mary Hungerford",
+          "sex": "F",
+          "dates": "m. Hastings · Sacheverell",
+          "family": "hungerford",
+          "col": 0.41,
+          "gen": 7,
+          "occ": "Baroness Hungerford",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Married Edward, 2nd Baron Hastings (d. 1506) and later Sir Richard Sacheverell (1509).",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1500–1509)",
+              "url": "/history/timeline/"
+            }
+          ]
+        },
+        {
+          "id": "hs_edw",
+          "name": "Edward, 2nd Baron Hastings",
+          "sex": "M",
+          "dates": "d. 8 Nov 1506",
+          "family": "hastings",
+          "col": 1.59,
+          "gen": 7,
+          "occ": "Lord Hastings",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Husband of Hungerford heiress Lady Mary.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1506)",
+              "url": "/history/timeline/"
+            }
+          ],
+          "gedcomName": "Edward /Hastings/ 2nd Baron Hastings"
+        },
+        {
+          "id": "hs_geo",
+          "name": "George, 1st Earl of Huntingdon",
+          "sex": "M",
+          "dates": "d. 1544",
+          "family": "hastings",
+          "col": 1,
+          "gen": 8,
+          "occ": "1st Earl of Huntingdon",
+          "place": "Sold Ilmer 1538/39",
+          "badges": [],
+          "notes": "Inherited Ilmer through his mother Mary Hungerford. With his son Francis, Lord Hastings, sold Ilmer manor to Sir Robert Dormer in 1538/39.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1538/39, 1544)",
+              "url": "/history/timeline/"
+            }
+          ],
+          "gedcomName": "George /Hastings/ 1st Earl of Huntingdon"
+        },
+        {
+          "id": "hs_fran",
+          "name": "Francis, Lord Hastings",
+          "sex": "M",
+          "dates": "fl. 1538/39",
+          "family": "hastings",
+          "col": 1,
+          "gen": 9,
+          "occ": "Heir to Huntingdon",
+          "place": "Co-seller of Ilmer",
+          "badges": [],
+          "notes": "Joined his father George in selling the manor of Ilmer to Robert Dormer in 1538/39.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1538/39)",
+              "url": "/history/timeline/"
+            }
+          ],
+          "gedcomName": "Francis /Hastings/ Lord Hastings"
+        },
+        {
+          "id": "d_rob1",
+          "name": "Sir Robert Dormer",
+          "sex": "M",
+          "dates": "bought 1538/39 · d. 1552",
+          "family": "dormer",
+          "col": 4.2,
+          "gen": 1,
+          "occ": "Lord of the Manor",
+          "place": "Wing & Ilmer",
+          "badges": ["property"],
+          "notes": "Purchased the Manor of Ilmer from George & Francis Hastings in 1538/39.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1538/39, 1552)",
+              "url": "/history/timeline/"
+            }
+          ]
+        },
+        {
+          "id": "d_will",
+          "name": "Sir William Dormer",
+          "sex": "M",
+          "dates": "1514–1575",
+          "family": "dormer",
+          "col": 4.2,
+          "gen": 2,
+          "occ": "Lord & Patron",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Confirmed as titleholder c. 1553; appointed Vicars John Palmer, Swainson, and Martin Wright. Died 17 May 1575.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1553–1575)",
+              "url": "/history/timeline/"
+            }
+          ]
+        },
+        {
+          "id": "d_rob2",
+          "name": "Robert, 1st Baron Dormer",
+          "sex": "M",
+          "dates": "d. 18 Nov 1616",
+          "family": "dormer",
+          "col": 4.2,
+          "gen": 3,
+          "occ": "Master Falconer",
+          "place": "Wing & Ilmer",
+          "badges": [],
+          "notes": "Knighted 1591, Baronet & Baron Dormer of Wing 1615; appointed Vicar Thomas Vaudrey in 1612.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1591–1616)",
+              "url": "/history/timeline/"
+            }
+          ],
+          "gedcomName": "Robert /Dormer/ 1st Baron Dormer"
+        },
+        {
+          "id": "d_carn1",
+          "name": "Robert, 1st Earl of Carnarvon",
+          "sex": "M",
+          "dates": "c. 1610–1643",
+          "family": "dormer",
+          "col": 4.2,
+          "gen": 4,
+          "occ": "1st Earl of Carnarvon",
+          "place": "Battle of Newbury",
+          "badges": ["war-dead"],
+          "notes": "Grandson of 1st Baron Dormer; Royalist cavalry commander killed at the First Battle of Newbury on 20 Sep 1643.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1643)",
+              "url": "/history/timeline/"
+            },
+            {
+              "label": "War Dead",
+              "url": "/history/war-dead/"
+            }
+          ],
+          "gedcomName": "Robert /Dormer/ 1st Earl of Carnarvon"
+        },
+        {
+          "id": "d_carn2",
+          "name": "Charles, 2nd Earl of Carnarvon",
+          "sex": "M",
+          "dates": "d. 1709",
+          "family": "dormer",
+          "col": 4.2,
+          "gen": 5,
+          "occ": "2nd Earl of Carnarvon",
+          "place": "Ilmer",
+          "badges": [],
+          "notes": "Petitioned Charles II in 1660 for Ilmer & hereditary Keeper of the King’s Hawks; leased Ilmer lands to John Bowden. Died 1709 with no surviving sons.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1660–1709)",
+              "url": "/history/timeline/"
+            },
+            {
+              "label": "Transcribed will: john bowden 1711",
+              "url": "/wills/john-bowden-1711/"
+            }
+          ],
+          "gedcomName": "Charles /Dormer/ 2nd Earl of Carnarvon"
+        },
+        {
+          "id": "d_eliz",
+          "name": "Elizabeth Dormer",
+          "sex": "F",
+          "dates": "c. 1654–1677",
+          "family": "dormer",
+          "col": 3.61,
+          "gen": 6,
+          "occ": "Countess Chesterfield",
+          "place": "Ilmer heiress",
+          "badges": [],
+          "notes": "Daughter of Charles Dormer, 2nd Earl of Carnarvon; died aged 23. Through her, the Dormer lands passed to the Stanhope Earls of Chesterfield.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1677, 1709)",
+              "url": "/history/timeline/"
+            }
+          ]
+        },
+        {
+          "id": "s_phil2",
+          "name": "Philip, 2nd Earl of Chesterfield",
+          "sex": "M",
+          "dates": "d. 1714",
+          "family": "stanhope",
+          "col": 4.79,
+          "gen": 6,
+          "occ": "2nd Earl Chesterfield",
+          "place": "",
+          "badges": [],
+          "notes": "Husband of Elizabeth Dormer.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1709, 1714)",
+              "url": "/history/timeline/"
+            }
+          ],
+          "gedcomName": "Philip /Stanhope/ 2nd Earl of Chesterfield"
+        },
+        {
+          "id": "s_phil3",
+          "name": "Philip, 3rd Earl of Chesterfield",
+          "sex": "M",
+          "dates": "d. 1726",
+          "family": "stanhope",
+          "col": 4.2,
+          "gen": 7,
+          "occ": "3rd Earl Chesterfield",
+          "place": "Inherited 1709",
+          "badges": [],
+          "notes": "Eldest grandson of Charles Dormer; inherited Ilmer in 1709.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1709, 1726)",
+              "url": "/history/timeline/"
+            }
+          ],
+          "gedcomName": "Philip /Stanhope/ 3rd Earl of Chesterfield"
+        },
+        {
+          "id": "s_phil4",
+          "name": "Philip, 4th (d.1773) → 5th Earl (d.1815)",
+          "sex": "M",
+          "dates": "1726–1815",
+          "family": "stanhope",
+          "col": 4.2,
+          "gen": 8,
+          "occ": "4th & 5th Earls",
+          "place": "Estate Survey 1778",
+          "badges": [],
+          "notes": "4th Earl (famous for Letters to his Son) adopted his cousin & godson as 5th Earl, who inherited the \"Dormer Lands\" including Lower, Middle & Coldharbour Farms.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1773–1815)",
+              "url": "/history/timeline/"
+            }
+          ],
+          "groupKind": "chain",
+          "members": [
+            {
+              "id": "s_philip_4th",
+              "name": "Philip Stanhope, 4th Earl of Chesterfield",
+              "gedcomName": "Philip /Stanhope/ 4th Earl of Chesterfield",
+              "sex": "M",
+              "death": "1773",
+              "occ": "4th Earl of Chesterfield",
+              "place": "Ilmer",
+              "notes": "Author of Letters to his Son; adopted his cousin and godson as heir to the Dormer Lands."
+            },
+            {
+              "id": "s_philip_5th",
+              "name": "Philip Stanhope, 5th Earl of Chesterfield",
+              "gedcomName": "Philip /Stanhope/ 5th Earl of Chesterfield",
+              "sex": "M",
+              "death": "1815",
+              "occ": "5th Earl of Chesterfield",
+              "place": "Ilmer",
+              "notes": "Adopted cousin and godson of the 4th Earl; inherited the Dormer Lands including Ilmer."
+            }
+          ]
+        },
+        {
+          "id": "s_geo6",
+          "name": "George, 6th Earl of Chesterfield",
+          "sex": "M",
+          "dates": "d. 1866",
+          "family": "stanhope",
+          "col": 4.2,
+          "gen": 9,
+          "occ": "6th Earl Chesterfield",
+          "place": "Sold advowson 1858",
+          "badges": [],
+          "notes": "Appointed Rev. W. E. Partridge vicar of Ilmer (1833) and sold him the church patronage in 1858.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1833, 1858, 1866)",
+              "url": "/history/timeline/"
+            },
+            {
+              "label": "Church",
+              "url": "/history/church/"
+            }
+          ],
+          "gedcomName": "George /Stanhope/ 6th Earl of Chesterfield"
+        },
+        {
+          "id": "f_rich",
+          "name": "Rev. Richard Moreton",
+          "sex": "M",
+          "dates": "Little Moreton Hall",
+          "family": "frewen",
+          "col": 7.75,
+          "gen": 5,
+          "occ": "Clergyman",
+          "place": "Little Moreton Hall",
+          "badges": [],
+          "notes": "Maternal grandfather of Moreton John Edward Frewen and grandfather of Frances Moreton-Craigie & Sister Elizabeth Moreton.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1812, 1871)",
+              "url": "/history/timeline/"
+            }
+          ]
+        },
+        {
+          "id": "f_edw",
+          "name": "Dr (Rev.) Edward Frewen DD",
+          "sex": "M",
+          "dates": "d. 1831",
+          "family": "frewen",
+          "col": 6.8,
+          "gen": 6,
+          "occ": "Lord of Ilmer Manor",
+          "place": "Bought c. 1824",
+          "badges": ["property"],
+          "notes": "Purchased Ilmer Manor (likely at the Jul 1824 sale); succeeded by his son Moreton John Edward Frewen in Dec 1831.",
+          "sources": [
+            {
+              "label": "Ilmer timeline (1824, 1831)",
+              "url": "/history/timeline/"
+            }
+          ],
+          "gedcomName": "Edward /Frewen/"
+        },
+        {
+          "id": "f_wm",
+          "name": "Rev. William Moreton Moreton",
+          "sex": "M",
+          "dates": "Westerham, Kent",
+          "family": "frewen",
+          "col": 8.6,
+          "gen": 6,
+          "occ": "Clergyman",
+          "place": "Westerham, Kent",
+          "badges": [],
+          "notes": "Uncle named in Moreton John Edward Frewen’s will; father of Frances Annabella Moreton-Craigie and Sister Elizabeth Moreton.",
+          "sources": [
+            {
+              "label": "Transcribed will: moreton john edward frewen",
+              "url": "/wills/moreton-john-edward-frewen/"
+            },
+            {
+              "label": "Ilmer timeline (1871)",
+              "url": "/history/timeline/"
+            }
+          ]
+        },
+        {
+          "id": "f_mje",
+          "name": "Moreton John Edward Frewen",
+          "sex": "M",
+          "dates": "m. 1812 · d. 1871",
+          "family": "frewen",
+          "col": 6.8,
+          "gen": 7,
+          "occ": "Joint Lord of Manor",
+          "place": "Brighton",
+          "badges": ["will"],
+          "notes": "Married Sarah Jenkins (1812) and died childless in Jan 1871. His transcribed will left Ilmer Manor to wife Sarah for life, then to his Moreton cousins.",
+          "sources": [
+            {
+              "label": "Transcribed will: moreton john edward frewen",
+              "url": "/wills/moreton-john-edward-frewen/"
+            },
+            {
+              "label": "Ilmer timeline (1812–1871)",
+              "url": "/history/timeline/"
+            }
+          ]
+        },
+        {
+          "id": "f_fran",
+          "name": "Frances Moreton-Craigie",
+          "sex": "F",
+          "dates": "d. 10 Feb 1892",
+          "family": "frewen",
+          "col": 7.95,
+          "gen": 7,
+          "occ": "Tenant for life",
+          "place": "Ilmer farms",
+          "badges": [],
+          "notes": "Eldest daughter of Rev. William Moreton Moreton; held Ilmer farms for life until her death in Feb 1892.",
+          "sources": [
+            {
+              "label": "Transcribed will: moreton john edward frewen",
+              "url": "/wills/moreton-john-edward-frewen/"
+            },
+            {
+              "label": "Ilmer timeline (1871, 1892)",
+              "url": "/history/timeline/"
+            }
+          ]
+        },
+        {
+          "id": "f_eliz",
+          "name": "Sister Elizabeth Moreton",
+          "sex": "F",
+          "dates": "d. 20 Jan 1912",
+          "family": "frewen",
+          "col": 9.1,
+          "gen": 7,
+          "occ": "Lady of Manor · Nun",
+          "place": "Clewer / Torquay",
+          "badges": ["property"],
+          "notes": "Founder member of the Clewer Sisters of Mercy; funded the 1893 church restoration, 1904 farmhouses/cowsheds, 1907 Parish Room, and £100 toward the 1909 spire.",
+          "sources": [
+            {
+              "label": "Church",
+              "url": "/history/church/"
+            },
+            {
+              "label": "Coldharbour",
+              "url": "/history/coldharbour/"
+            },
+            {
+              "label": "Transcribed will: moreton john edward frewen",
+              "url": "/wills/moreton-john-edward-frewen/"
+            },
+            {
+              "label": "Ilmer timeline (1892–1912)",
+              "url": "/history/timeline/"
+            }
+          ]
+        },
+        {
+          "id": "f_carter",
+          "name": "Eleanor Carter (née Frewen)",
+          "sex": "F",
+          "dates": "inherited 1912",
+          "family": "frewen",
+          "col": 9.1,
+          "gen": 8,
+          "occ": "Estate heir",
+          "place": "Sold farms 1912",
+          "badges": [],
+          "notes": "Inherited Manor Farm, Lower Farm, and Coldharbour Farm on Sister Elizabeth Moreton’s death in Jan 1912 and sold the estate.",
+          "sources": [
+            {
+              "label": "Church",
+              "url": "/history/church/"
+            },
+            {
+              "label": "Ilmer timeline (1912)",
+              "url": "/history/timeline/"
+            }
+          ],
+          "gedcomName": "Eleanor /Frewen/"
+        }
+      ],
+      "unions": [
+        {
+          "id": "um_eh",
+          "p1": "m_eleanor",
+          "p2": "h_rob",
+          "year": "1440",
+          "crossFamily": true,
+          "label": "Moleyns × Hungerford"
+        },
+        {
+          "id": "um_mh",
+          "p1": "h_mary",
+          "p2": "hs_edw",
+          "year": "c.1480",
+          "crossFamily": true,
+          "label": "Hungerford × Hastings"
+        },
+        {
+          "id": "ud_es",
+          "p1": "d_eliz",
+          "p2": "s_phil2",
+          "year": "c.1669",
+          "crossFamily": true,
+          "label": "Dormer × Stanhope"
+        }
+      ],
+      "descents": [
+        {
+          "from": "m_john",
+          "to": "m_will1"
+        },
+        {
+          "from": "m_will1",
+          "to": "m_rich",
+          "dashed": true
+        },
+        {
+          "from": "m_rich",
+          "to": "m_will2"
+        },
+        {
+          "from": "m_will2",
+          "to": "m_will3"
+        },
+        {
+          "from": "m_will3",
+          "to": "m_eleanor"
+        },
+        {
+          "from": "um_eh",
+          "to": "h_thom"
+        },
+        {
+          "from": "h_thom",
+          "to": "h_mary"
+        },
+        {
+          "from": "um_mh",
+          "to": "hs_geo"
+        },
+        {
+          "from": "hs_geo",
+          "to": "hs_fran"
+        },
+        {
+          "from": "d_rob1",
+          "to": "d_will"
+        },
+        {
+          "from": "d_will",
+          "to": "d_rob2"
+        },
+        {
+          "from": "d_rob2",
+          "to": "d_carn1",
+          "dashed": true
+        },
+        {
+          "from": "d_carn1",
+          "to": "d_carn2"
+        },
+        {
+          "from": "d_carn2",
+          "to": "d_eliz"
+        },
+        {
+          "from": "ud_es",
+          "to": "s_phil3"
+        },
+        {
+          "from": "s_phil3",
+          "to": "s_phil4"
+        },
+        {
+          "from": "s_phil4",
+          "to": "s_geo6"
+        },
+        {
+          "from": "f_rich",
+          "to": "f_edw",
+          "dashed": true
+        },
+        {
+          "from": "f_rich",
+          "to": "f_wm"
+        },
+        {
+          "from": "f_edw",
+          "to": "f_mje"
+        },
+        {
+          "from": "f_wm",
+          "to": "f_fran"
+        },
+        {
+          "from": "f_wm",
+          "to": "f_eliz"
+        },
+        {
+          "from": "f_eliz",
+          "to": "f_carter",
+          "dashed": true
+        }
+      ],
+      "gutterBridges": [
+        {
+          "from": "hs_fran",
+          "to": "d_rob1",
+          "gutterCol": 2.65,
+          "pillGen": 5,
+          "label": "Sold to Dormer (1538/39)"
+        },
+        {
+          "from": "s_geo6",
+          "to": "f_edw",
+          "gutterCol": 5.85,
+          "pillGen": 7.5,
+          "label": "Sold to Frewen (c.1824)"
+        }
+      ]
+    }
+  }
+}

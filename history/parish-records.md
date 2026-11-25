@@ -45,6 +45,10 @@ Overall, {{ baptismsChart.total }} baptisms are recorded at an average rate of {
 
 {% render "year-bar-chart.liquid", records: st-peters-baptisms, yearKey: "baptism_date", label: "baptisms", href: "/history/st-peters-baptisms/" %}
 
+#### Family trees &amp; kinship network
+
+Cross-referencing these registers with the 1841–1921 censuses, wills, and monumental inscriptions reveals multi-generational parish lineages spanning up to seven unbroken generations. Explore the interactive [Family Trees &amp; Kinship Network](/history/family-trees/) (also downloadable as a standard [GEDCOM 7.0 file](/assets/ilmer-kinship.ged)).
+
 #### Interesting discoveries
 
 **A Recorded Suicide**: On June 13, 1704, the burial of Mary Gomm was recorded with the grim note: "who laid violent hand upon her selfe."
