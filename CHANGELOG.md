@@ -80,6 +80,7 @@ Generated automatically from [Conventional Commits](https://www.conventionalcomm
 
 ### Maintenance
 
+- **deps:** Update dependencies ([489e3dc](https://github.com/rbirkby/Ilmer.org/commit/489e3dc8cf27fa5c9b07d4ac7956303be0e99e52))
 - Further optimisations ([83063d8](https://github.com/rbirkby/Ilmer.org/commit/83063d8f12224ffb3081007f83ccabf8e12a7f77))
 - Optimisations ([ae0738d](https://github.com/rbirkby/Ilmer.org/commit/ae0738d923e5351c0ffb3016ce2d97b4582b9a6e))
 - **formatting:** fix format ([33df4e4](https://github.com/rbirkby/Ilmer.org/commit/33df4e49eb13fea31bf7e0d93ba7695cc0087b56))
