@@ -2,7 +2,7 @@
  * Sample the village measured terrain into a church-local elevation crop for St Peter's 3D.
  *
  * Heights are relative to CHURCH_PLAN.centre so the church model stays on y = 0.
- * Writes assets/st-peters-church-terrain.json and assets/js/st-peters-3d/church-terrain-data.ts.
+ * Writes assets/js/st-peters-3d/church-terrain-data.ts.
  *
  * Usage: node scripts/build-st-peters-church-terrain.ts
  */
@@ -65,9 +65,7 @@ const out = {
   elevations
 };
 
-const jsonPath = new URL('../assets/st-peters-church-terrain.json', import.meta.url);
 const jsPath = new URL('../assets/js/st-peters-3d/church-terrain-data.ts', import.meta.url);
-writeFileSync(jsonPath, `${JSON.stringify(out)}\n`);
 writeFileSync(
   jsPath,
   `// Auto-derived church-local crop of /assets/ilmer-terrain.json (relative to CHURCH_PLAN centre).\n` +
