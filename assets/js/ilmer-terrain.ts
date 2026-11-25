@@ -77,7 +77,12 @@ export function validateTerrain<T extends TerrainGrid = TerrainGrid>(input: unkn
   return data;
 }
 
-export function terrainHeight(data: TerrainGrid, x: number, z: number) {
+export type TerrainSampleGrid = Pick<
+  TerrainGrid,
+  'columns' | 'rows' | 'width' | 'depth' | 'baseElevation' | 'elevations'
+>;
+
+export function terrainHeight(data: TerrainSampleGrid, x: number, z: number) {
   const col = (x / data.width + 0.5) * (data.columns - 1);
   const row = (z / data.depth + 0.5) * (data.rows - 1);
   if (col < -1e-5 || row < -1e-5 || col > data.columns - 1 + 1e-5 || row > data.rows - 1 + 1e-5) {
@@ -97,11 +102,16 @@ export function terrainHeight(data: TerrainGrid, x: number, z: number) {
   return elevation - data.baseElevation;
 }
 
-/** Measured height above datum, with the position held inside the surveyed crop. */
-function clampedElevation(data: TerrainGrid, x: number, z: number) {
+/** Sample height relative to baseElevation, with (x, z) clamped inside the surveyed crop. */
+export function sampleTerrainClamped(data: TerrainSampleGrid, x: number, z: number) {
   const cx = Math.max(-data.width / 2, Math.min(data.width / 2, x));
   const cz = Math.max(-data.depth / 2, Math.min(data.depth / 2, z));
-  return terrainHeight(data, cx, cz) + data.baseElevation;
+  return terrainHeight(data, cx, cz);
+}
+
+/** Measured height above datum, with the position held inside the surveyed crop. */
+function clampedElevation(data: TerrainSampleGrid, x: number, z: number) {
+  return sampleTerrainClamped(data, x, z) + data.baseElevation;
 }
 
 /**

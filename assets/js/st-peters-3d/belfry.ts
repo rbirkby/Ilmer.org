@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { canvas2d, canvasTexture, makeCanvas, mulberry32 } from './canvas-utils.ts';
 import { addBox, boxMesh } from './mesh-utils.ts';
 import { DIM } from './dimensions.ts';
+import type { ChurchMaterials } from './textures.ts';
 
 type BellName = 'Treble' | 'Second' | 'Tenor';
 type BellLettering = 'roman' | 'blackletter' | 'lombardic';
@@ -16,13 +17,22 @@ type Bell = {
   waist: string | null;
 };
 type InscriptionToken = { cross?: boolean; fleur?: boolean; shield?: boolean; text?: string };
-type BelfryMats = {
-  iron: THREE.Material;
-  medOak: THREE.MeshStandardMaterial;
-  darkOak: THREE.Material;
-  wheelOak?: THREE.MeshStandardMaterial;
-};
 type RopeCurve = THREE.Curve<THREE.Vector3>;
+
+const wheelOakCache = new WeakMap<THREE.MeshStandardMaterial, THREE.MeshStandardMaterial>();
+function getWheelOak(medOak: THREE.MeshStandardMaterial): THREE.MeshStandardMaterial {
+  let mat = wheelOakCache.get(medOak);
+  if (!mat) {
+    mat = new THREE.MeshStandardMaterial({
+      map: medOak.map,
+      color: 0xb08a5a,
+      roughness: 0.8,
+      side: THREE.DoubleSide
+    });
+    wheelOakCache.set(medOak, mat);
+  }
+  return mat;
+}
 
 // The ring of three, from A. H. Cocks, "The Church Bells of Buckinghamshire" (1897), Ilmer entry, with the
 // diameters he measured. The 1981 restoration by Whites of Appleton rehung them for swing chiming.
@@ -421,7 +431,7 @@ function buildBell(bell: Bell) {
 function buildHungBell(
   bell: Bell,
   { pitHalf, wheelX, wheelR, headX }: { pitHalf: number; wheelX: number; wheelR: number; headX: number },
-  mats: BelfryMats
+  mats: ChurchMaterials
 ) {
   const g = new THREE.Group();
   const { group: bellG, D, height } = buildBell(bell);
@@ -492,7 +502,7 @@ function buildHungBell(
   wheel.add(sole);
   const shroudGeo = new THREE.RingGeometry(wheelR - 0.07, wheelR + 0.012, 48);
   [-1, 1].forEach((sx) => {
-    const shroud = new THREE.Mesh(shroudGeo, mats.wheelOak);
+    const shroud = new THREE.Mesh(shroudGeo, getWheelOak(mats.medOak));
     shroud.rotation.y = Math.PI / 2;
     shroud.position.x = sx * 0.036;
     wheel.add(shroud);
@@ -521,8 +531,8 @@ function box(w: number, h: number, d: number, mat: THREE.Material, x: number, y:
 
 // Bell chamber inside the weatherboarded turret: boarded floor and ceiling, studs, a two-tier oak frame with the
 // second and tenor side by side below and the treble above, and the three ropes running down to the holes in the
-// tower ceiling (their positions below are fixed by interior.js). Returns { shell, frame }.
-export function buildBellChamber(mats: BelfryMats) {
+// tower ceiling (their positions below are fixed by interior.ts). Returns { shell, frame }.
+export function buildBellChamber(mats: ChurchMaterials) {
   const g = new THREE.Group(); // boarding, floor & ceiling: hidden with the roof in the floorplan cutaway
   const frame = new THREE.Group(); // bell frame, bells & ropes: stay visible in the cutaway
   const T = DIM.tower;
@@ -533,12 +543,6 @@ export function buildBellChamber(mats: BelfryMats) {
   const ceilY = T.eavesY - 0.06;
   const oak = mats.darkOak;
   const board = mats.medOak;
-  mats.wheelOak ??= new THREE.MeshStandardMaterial({
-    map: mats.medOak.map,
-    color: 0xb08a5a,
-    roughness: 0.8,
-    side: THREE.DoubleSide
-  });
 
   // Boarded floor with the trap over the hatch below, and the boarded ceiling under the spire
   g.add(box(inner * 2, 0.05, inner * 2, board, cx, floorTop - 0.025, cz));
@@ -864,8 +868,17 @@ export function createBellRinger(frame: THREE.Object3D, ...extraRoots: THREE.Obj
     }
   }
 
+  const animatedObjects: THREE.Object3D[] = [];
+  for (const h of hung) {
+    animatedObjects.push(h);
+    if (h.userData.clapper) animatedObjects.push(h.userData.clapper);
+    if (h.userData.hammer) animatedObjects.push(h.userData.hammer);
+    if (h.userData.hammerCord) animatedObjects.push(h.userData.hammerCord);
+  }
+  for (const v of vestryCords.values()) animatedObjects.push(v.o);
+
   setMode('swing');
-  return { ring, update, setMode, isRinging: () => startedAt !== null, bells: hung };
+  return { ring, update, setMode, isRinging: () => startedAt !== null, bells: hung, animatedObjects };
 }
 
 // Strike tone of each bell: nominal frequency in Hz. The ring is untuned medieval and Jacobean work, so these are

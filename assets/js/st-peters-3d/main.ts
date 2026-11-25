@@ -1,17 +1,21 @@
 import * as THREE from 'three';
+import { createSkyDome } from '../ilmer-sky.ts';
+import { bindFullscreenToggle } from '../scene-fullscreen.ts';
 import { createMaterials, createPlainGlazingMaterial } from './textures.ts';
 import { buildArchitecture } from './architecture.ts';
 import { buildInterior } from './interior.ts';
-import { buildChurchyard, createSkyDome } from './churchyard.ts';
+import { buildChurchyard } from './churchyard.ts';
 import { buildAtmosphere } from './atmosphere.ts';
-import { createChurchAudio } from './audio.ts';
+import type { ChurchAudio } from './audio.ts';
+import type { ChristmasEffect } from './christmas-tree.ts';
 import './walk-joystick.ts';
 import { BELL_NOMINAL_HZ, createBellRinger } from './belfry.ts';
-import { CHURCH_TOUR_WAYPOINTS, DIM } from './dimensions.ts';
+import { CHURCH_TOUR_WAYPOINTS, DIM, getGroundHeight, isChristmasSeason } from './dimensions.ts';
 import { CAMERA_PRESETS, createCameraController } from './controls.ts';
 import { findAnimatedObjects, mergeStaticMeshes } from './static-merge.ts';
 import { createFader } from './fade.ts';
-import './stats-overlay.ts';
+import { buildWillow } from './willow.ts';
+import type { SceneStatsElement } from './stats-overlay.ts';
 
 const allHTMLElements = (selector: string) => document.querySelectorAll<HTMLElement>(selector);
 
@@ -49,7 +53,7 @@ if (stage) {
   camera.position.set(openingPos[0], openingPos[1], openingPos[2]);
 
   // Sky & Lighting Rig
-  const sky = createSkyDome();
+  const sky = createSkyDome(120, { bottomColor: 0x6e8562, sunHaloStrength: 0.55, cloudStrength: 0.36 });
   scene.add(sky.mesh);
 
   const hemiLight = new THREE.HemisphereLight(0xbcd8f5, 0x5c6b48, 0.72);
@@ -77,21 +81,13 @@ if (stage) {
 
   // Build Church, Churchyard & Cinematic Stained-Glass Atmosphere
   const mats = createMaterials(renderer);
-  const { wallsGroup, roofGroup, doorPivots: doorPivotBag } = buildArchitecture(mats);
-  const doorPivots = doorPivotBag as {
-    gateLeft?: THREE.Object3D;
-    gateRight?: THREE.Object3D;
-    mainDoor?: THREE.Object3D;
-  };
+  const { wallsGroup, roofGroup, doorPivots } = buildArchitecture(mats);
   const { interiorGroup, ceilingGroup, chandelierLights, oilLights, causticMesh, candleEffect, organAnimator } =
     buildInterior(mats);
-  const {
-    group: churchyardGroup,
-    christmasEffect,
-    memorialGroups,
-    gravestoneEra,
-    kissingGates
-  } = buildChurchyard(mats);
+  const willow = buildWillow();
+  interiorGroup.add(willow.group, willow.bowlGroup);
+  const { group: churchyardGroup, memorialGroups, gravestoneEra, kissingGates } = buildChurchyard(mats);
+  let christmasEffect: ChristmasEffect | null = null;
   const atmosphere = buildAtmosphere();
 
   scene.add(wallsGroup);
@@ -226,6 +222,7 @@ if (stage) {
     atmosphere.setMood(moodKey);
     candleEffect.setMood(moodKey);
     if (christmasEffect) christmasEffect.setMood(moodKey);
+    willow.setMood(moodKey);
 
     allHTMLElements('[data-lighting]').forEach((btn) => {
       btn.setAttribute('aria-pressed', String(btn.dataset.lighting === moodKey));
@@ -269,6 +266,7 @@ if (stage) {
     state.era = era;
     shadowsDirty = true;
     for (const o of eraObjects) fader.setVisible(o, o.userData.era === era, instant);
+    willow.setEra(era, fader, instant);
     // Glazing, the half-hip cut and the belfry boards can't fade, so they change half way, as the features cross over
     fader.atMidpoint('era', () => applyEraMaterials(era), instant);
     bellRinger.setMode(era === '1900' ? 'chime' : 'swing');
@@ -484,8 +482,44 @@ if (stage) {
     setWalkMode(controller.getMode() !== 'walk');
   });
 
-  // Procedural parish pipe-organ voluntary (quietly stone-muffled outside, richer & louder inside)
-  const churchAudio = createChurchAudio();
+  // Procedural parish pipe-organ voluntary (lazy-loaded so it stays off the critical initial bundle)
+  let loadedAudio: ChurchAudio | null = null;
+  let audioLoadPromise: Promise<ChurchAudio> | null = null;
+  let audioMuted = false;
+  const EMPTY_ORGAN_NOTES = { manual: new Set<number>(), pedal: new Set<number>() };
+
+  function loadChurchAudio(): Promise<ChurchAudio> {
+    if (loadedAudio) return Promise.resolve(loadedAudio);
+    audioLoadPromise ??= import('./audio.ts').then(({ createChurchAudio }) => {
+      const audio = createChurchAudio();
+      audio.updateSpatial(camera.position, state.doorsOpen);
+      if (audioMuted) audio.setMuted(true);
+      loadedAudio = audio;
+      return audio;
+    });
+    return audioLoadPromise;
+  }
+
+  const churchAudio = {
+    start: () => loadChurchAudio().then((a) => a.start()),
+    setMuted: (isMuted: boolean) => {
+      audioMuted = Boolean(isMuted);
+      if (loadedAudio) loadedAudio.setMuted(audioMuted);
+      else if (!audioMuted) void loadChurchAudio().then((a) => a.start());
+    },
+    isMuted: () => (loadedAudio ? loadedAudio.isMuted() : audioMuted),
+    isRunning: () => loadedAudio?.isRunning() ?? false,
+    updateSpatial: (pos: THREE.Vector3, doorsOpen: boolean) => loadedAudio?.updateSpatial(pos, doorsOpen),
+    getSoundingNotes: () => (loadedAudio ? loadedAudio.getSoundingNotes() : EMPTY_ORGAN_NOTES),
+    playHymn: (n: number) => void loadChurchAudio().then((a) => a.playHymn(n)),
+    playBell: (hz: number, delaySec?: number, level?: number) =>
+      void loadChurchAudio().then((a) => a.playBell(hz, delaySec, level)),
+    playGateClang: (distance?: number, level?: number) => {
+      if (audioMuted) return;
+      loadedAudio?.playGateClang(distance, level);
+    }
+  };
+
   const soundBtn = document.getElementById('btn-sound');
   const soundOnIcon = soundBtn?.querySelector('[data-icon="sound-on"]');
   const soundOffIcon = soundBtn?.querySelector('[data-icon="sound-off"]');
@@ -511,9 +545,6 @@ if (stage) {
     setSoundMuted(!churchAudio.isMuted());
   });
 
-  // Prime spatial acoustics for the initial camera position before starting audio
-  churchAudio.updateSpatial(camera.position, state.doorsOpen);
-
   // Register gesture unlock listeners immediately (do not wait for start() to resolve, because
   // browser AudioContext.resume() stays pending when autoplay is deferred until first interaction)
   const UNLOCK_EVENTS = ['pointerdown', 'pointerup', 'click', 'keydown', 'wheel', 'touchstart'];
@@ -536,92 +567,14 @@ if (stage) {
   for (const evt of UNLOCK_EVENTS) {
     window.addEventListener(evt, unlockChurchAudio, { capture: true, passive: true });
   }
-  churchAudio.start().then((ok) => {
-    if (ok) removeUnlockListeners();
+
+  const stageWrapper = stage.closest<HTMLElement>('.reconstruction-stage') || stage;
+  const fsBtn = document.getElementById('btn-fullscreen') as HTMLButtonElement | null;
+  const fullscreen = bindFullscreenToggle({
+    button: fsBtn,
+    stage: stageWrapper,
+    onChange: handleResize
   });
-
-  const stageWrapper = stage.closest('.reconstruction-stage') || stage;
-  const fsBtn = document.getElementById('btn-fullscreen');
-  let isPseudoFullscreen = false;
-
-  function getNativeFullscreenElement() {
-    return document.fullscreenElement || document.webkitFullscreenElement || null;
-  }
-
-  function syncFullscreenUI() {
-    if (!fsBtn) return;
-    const isFs = getNativeFullscreenElement() === stageWrapper || isPseudoFullscreen;
-    fsBtn.setAttribute('aria-pressed', String(isFs));
-    const label = isFs ? 'Exit fullscreen' : 'Enter fullscreen';
-    fsBtn.setAttribute('aria-label', label);
-    fsBtn.title = label;
-    const fsEnterIcon = fsBtn.querySelector('[data-icon="fs-enter"]');
-    const fsExitIcon = fsBtn.querySelector('[data-icon="fs-exit"]');
-    fsEnterIcon?.toggleAttribute('hidden', isFs);
-    fsExitIcon?.toggleAttribute('hidden', !isFs);
-  }
-
-  function setPseudoFullscreen(enabled: boolean) {
-    isPseudoFullscreen = Boolean(enabled);
-    stageWrapper.classList.toggle('is-pseudo-fullscreen', isPseudoFullscreen);
-    document.body.classList.toggle('st-peters-fs-lock', isPseudoFullscreen);
-    syncFullscreenUI();
-    handleResize();
-  }
-
-  if (fsBtn) {
-    const canNativeFs = Boolean(
-      (document.fullscreenEnabled && stageWrapper.requestFullscreen) ||
-      (document.webkitFullscreenEnabled && stageWrapper.webkitRequestFullscreen)
-    );
-
-    fsBtn.addEventListener('click', () => {
-      const nativeEl = getNativeFullscreenElement();
-      if (nativeEl || isPseudoFullscreen) {
-        if (nativeEl) {
-          const exitFn = document.exitFullscreen || document.webkitExitFullscreen;
-          if (exitFn) exitFn.call(document).catch?.(() => setPseudoFullscreen(false));
-        }
-        if (isPseudoFullscreen) {
-          setPseudoFullscreen(false);
-        }
-        return;
-      }
-
-      if (canNativeFs) {
-        const reqFn = stageWrapper.requestFullscreen || stageWrapper.webkitRequestFullscreen;
-        const fallbackTimer = window.setTimeout(() => {
-          if (!getNativeFullscreenElement() && !isPseudoFullscreen) {
-            setPseudoFullscreen(true);
-          }
-        }, 120);
-        try {
-          const res = reqFn.call(stageWrapper);
-          if (res && typeof res.then === 'function') {
-            res.then(
-              () => {
-                window.clearTimeout(fallbackTimer);
-                if (!getNativeFullscreenElement()) setPseudoFullscreen(true);
-              },
-              () => {
-                window.clearTimeout(fallbackTimer);
-                setPseudoFullscreen(true);
-              }
-            );
-          }
-        } catch {
-          window.clearTimeout(fallbackTimer);
-          setPseudoFullscreen(true);
-        }
-      } else {
-        // Fallback for iPhone Safari where native Fullscreen API is unavailable on non-video elements
-        setPseudoFullscreen(true);
-      }
-    });
-
-    document.addEventListener('fullscreenchange', syncFullscreenUI);
-    document.addEventListener('webkitfullscreenchange', syncFullscreenUI);
-  }
 
   // Interactive Floor Plan minimap hotspots
   allHTMLElements('[data-plan-jump]').forEach((el) => {
@@ -688,7 +641,7 @@ if (stage) {
   interiorGroup.traverse((o) => {
     if (o.userData.hymnNumber) hymnBoards.push(o);
   });
-  const pickRoots = [...memorialGroups, wallsGroup, ...bellRopeGroups, ...hymnBoards];
+  const pickRoots = [...memorialGroups, wallsGroup, ...bellRopeGroups, ...hymnBoards, willow.group, willow.bowlGroup];
   let downX = 0;
   let downY = 0;
   let downTime = 0;
@@ -697,6 +650,11 @@ if (stage) {
   function isShown(obj: THREE.Object3D | null): boolean {
     for (let cur = obj; cur; cur = cur.parent) if (!cur.visible) return false;
     return true;
+  }
+
+  function findWillow(obj: THREE.Object3D | null): THREE.Object3D | null {
+    for (let cur = obj; cur; cur = cur.parent) if (cur.userData?.willow || cur.userData?.waterBowl) return cur;
+    return null;
   }
 
   function findHymnBoard(obj: THREE.Object3D | null): THREE.Object3D | null {
@@ -731,7 +689,7 @@ if (stage) {
     // click targets whose parent is shown
     const hit = raycaster.intersectObjects(pickRoots, true).find((h) => isShown(h.object.parent));
     if (!hit) return null;
-    return findMemorialGroup(hit.object) || findBell(hit.object) || findHymnBoard(hit.object);
+    return findWillow(hit.object) || findMemorialGroup(hit.object) || findBell(hit.object) || findHymnBoard(hit.object);
   }
 
   function focusMemorial(memorialGroup: THREE.Object3D) {
@@ -772,22 +730,26 @@ if (stage) {
     const elapsedMs = performance.now() - downTime;
     if (dist >= 6 || elapsedMs >= 450) return;
     const picked = pickMemorialAtEvent(e);
-    if (picked?.userData.bell || picked?.userData.ringsBells) ringBells();
+    if (picked?.userData.waterBowl) willow.summonFromBowl(fader);
+    else if (picked?.userData.willow) willow.greet();
+    else if (picked?.userData.bell || picked?.userData.ringsBells) ringBells();
     else if (picked?.userData.hymnNumber) playHymn(picked.userData.hymnNumber);
     else if (picked) focusMemorial(picked);
   });
 
   // Keyboard shortcuts
   window.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.repeat) return;
     const t = e.target as HTMLElement | null;
-    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT')) return;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable))
+      return;
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.code === 'KeyC') setCutaway(!state.cutaway);
     else if (e.code === 'KeyO') setDoorsOpen(!state.doorsOpen);
     else if (e.code === 'KeyF') setWalkMode(controller.getMode() !== 'walk');
     else if (e.code === 'KeyM') setSoundMuted(!churchAudio.isMuted());
     else if (e.code === 'KeyT') toggleChurchTour();
-    else if (e.code === 'Escape' && isPseudoFullscreen) setPseudoFullscreen(false);
+    else if (e.code === 'Escape' && fullscreen.isPseudoFullscreen()) fullscreen.exit();
     else if (e.code === 'Escape' && controller.isTouring()) controller.stopTour(false);
     else if (e.code === 'KeyR') selectPreset('exterior-nw');
     else if (e.code === 'KeyY') setEra(state.era === '1900' ? 'today' : '1900');
@@ -840,22 +802,16 @@ if (stage) {
         checkpoint();
         candleEffect.update(1.7);
         checkpoint();
-        // Ring & chime a full round in small steps, checking poses at each: hammers & clappers strike and fall back
-        for (const mode of ['swing', 'chime']) {
-          bellRinger.setMode(mode);
-          bellRinger.ring(0);
-          for (let t = 0.1; t < 12; t += 0.1) {
-            bellRinger.update(t);
-            checkpoint();
-          }
-        }
       },
       () => {
         organAnimator.update(5, false, null);
-        bellRinger.setMode('swing');
       }
     );
+    for (const o of bellRinger.animatedObjects) dynamic.add(o);
+    for (const o of bellRopeParts) dynamic.add(o);
     for (const pivot of Object.values(doorPivots)) if (pivot) dynamic.add(pivot);
+    dynamic.add(willow.group);
+    dynamic.add(willow.bowlGroup);
     const counts = mergeStaticMeshes(mergeRoots, { dynamic });
     mergeInfo = `${counts.before}→${counts.after}`;
   }
@@ -876,18 +832,30 @@ if (stage) {
     return moved;
   }
 
-  interface SceneStatsElement extends HTMLElement {
-    setInfo(info: { load: string; meshes: string; shadows: string }): void;
-    frame(renderer: THREE.WebGLRenderer, cpuMs: number): void;
-  }
   let stats: SceneStatsElement | null = null;
   if (perfParams.has('stats')) {
-    stats = document.createElement('st-scene-stats') as SceneStatsElement;
-    stage.append(stats);
-    stats.setInfo({
-      load: `${(performance.now() / 1000).toFixed(1)} s`,
-      meshes: mergeInfo,
-      shadows: renderer.shadowMap.autoUpdate ? 'live' : 'on change'
+    void import('./stats-overlay.ts').then(() => {
+      stats = document.createElement('st-scene-stats') as SceneStatsElement;
+      stage.append(stats);
+      stats.setInfo({
+        load: `${(performance.now() / 1000).toFixed(1)} s`,
+        meshes: mergeInfo,
+        shadows: renderer.shadowMap.autoUpdate ? 'live' : 'on change'
+      });
+    });
+  }
+
+  // Lazy-load the December Christmas tree outside the North Porch only in December (or ?christmas=1 / ?month=12)
+  if (isChristmasSeason(new Date(), window.location.search)) {
+    void import('./christmas-tree.ts').then(({ buildChristmasTree }) => {
+      christmasEffect = buildChristmasTree(mats);
+      christmasEffect.group.position.set(-0.2, getGroundHeight(-0.2, -4.55), -4.55);
+      christmasEffect.group.userData.era = 'today'; // electric fairy lights
+      christmasEffect.group.visible = state.era === 'today';
+      christmasEffect.setMood(state.lighting);
+      churchyardGroup.add(christmasEffect.group);
+      eraObjects.push(christmasEffect.group);
+      shadowsDirty = true;
     });
   }
 
@@ -919,13 +887,17 @@ if (stage) {
     const doorTarget = state.doorsOpen ? 1 : 0;
     state.gateAnim = THREE.MathUtils.lerp(state.gateAnim, gateTarget, Math.min(1, dt * approachRate));
     state.mainDoorAnim = THREE.MathUtils.lerp(state.mainDoorAnim, doorTarget, Math.min(1, dt * approachRate));
+    if (Math.abs(state.gateAnim - gateTarget) < 1e-4) state.gateAnim = gateTarget;
+    if (Math.abs(state.mainDoorAnim - doorTarget) < 1e-4) state.mainDoorAnim = doorTarget;
     if (doorPivots.gateLeft) doorPivots.gateLeft.rotation.y = state.gateAnim * 1.45;
     if (doorPivots.gateRight) doorPivots.gateRight.rotation.y = -state.gateAnim * 1.45;
     if (doorPivots.mainDoor) doorPivots.mainDoor.rotation.y = -state.mainDoorAnim * 1.55;
+    sky.mesh.position.copy(camera.position);
     sky.material.uniforms.uTime.value = elapsed;
     atmosphere.update(elapsed);
     candleEffect.update(elapsed);
     if (christmasEffect) christmasEffect.update(elapsed);
+    willow.update(dt, camera);
 
     updateBells();
     controller.update(dt);
@@ -956,6 +928,12 @@ if (stage) {
       if (statusEl) statusEl.hidden = true;
       stage.dataset.state = 'ready';
       animate();
+      // Warm-load the audio module once the scene is interactive so first-click gesture unlock runs synchronously
+      if (!audioMuted) {
+        void churchAudio.start().then((ok) => {
+          if (ok) removeUnlockListeners();
+        });
+      }
     },
     (error) => {
       console.error("St Peter's 3D reconstruction could not start:", error);

@@ -1,6 +1,5 @@
+import * as THREE from 'three';
 import { MAP, buildings } from './ilmer-1839-data.ts';
-
-type Three = typeof import('three');
 
 /** A point in map or world units: [x, z]. */
 export type Point = [number, number];
@@ -176,12 +175,12 @@ export function historicalTrees(data: DetectedTreeData) {
 const LEAVES_PER_CROWN = 180;
 
 /** The instanced broadleaf crown. Placement uses its horizontal radius; the page instances this geometry. */
-export function createTreeCrown(THREE: Three) {
+export function createTreeCrown() {
   const foliagePositions: number[] = [];
   const foliageNormals: number[] = [];
   const foliageColors: number[] = [];
   function foliagePart(
-    geometry: InstanceType<Three['BufferGeometry']>,
+    geometry: THREE.BufferGeometry,
     x: number,
     y: number,
     z: number,
@@ -193,8 +192,8 @@ export function createTreeCrown(THREE: Three) {
     geometry.scale(sx, sy, sz);
     geometry.translate(x, y, z);
     const expanded = geometry.index ? geometry.toNonIndexed() : geometry;
-    foliagePositions.push(...(expanded.getAttribute('position') as InstanceType<Three['BufferAttribute']>).array);
-    foliageNormals.push(...(expanded.getAttribute('normal') as InstanceType<Three['BufferAttribute']>).array);
+    foliagePositions.push(...(expanded.getAttribute('position') as THREE.BufferAttribute).array);
+    foliageNormals.push(...(expanded.getAttribute('normal') as THREE.BufferAttribute).array);
     for (let i = 0; i < expanded.attributes.position.count; i++) foliageColors.push(shade, shade, shade);
     geometry.dispose();
     if (expanded !== geometry) expanded.dispose();

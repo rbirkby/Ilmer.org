@@ -4,6 +4,7 @@
 // +Z = South (Sower window / 3 buttresses), -Z = North (North Porch)
 // +Y = Up (0 = exterior ground at the church = measured terrain at CHURCH_PLAN centre)
 
+import { sampleTerrainClamped } from '../ilmer-terrain.ts';
 import churchTerrain from './church-terrain-data.ts';
 
 export const DIM = {
@@ -181,23 +182,6 @@ export function isChristmasSeason(date = new Date(), search = '') {
   return date.getMonth() === 11;
 }
 
-/** Same triangle interpolation as ilmer-terrain.js, clamped to the church-local crop. */
-function sampleChurchTerrain(x: number, z: number) {
-  const data = churchTerrain;
-  const col = (x / data.width + 0.5) * (data.columns - 1);
-  const row = (z / data.depth + 0.5) * (data.rows - 1);
-  const u = Math.max(0, Math.min(data.columns - 1, col));
-  const v = Math.max(0, Math.min(data.rows - 1, row));
-  const ix = Math.min(Math.floor(u), data.columns - 2);
-  const iy = Math.min(Math.floor(v), data.rows - 2);
-  const dx = u - ix;
-  const dy = v - iy;
-  const sample = (i: number, j: number) => data.elevations[j * data.columns + i];
-  return dx + dy <= 1
-    ? sample(ix, iy) * (1 - dx - dy) + sample(ix + 1, iy) * dx + sample(ix, iy + 1) * dy
-    : sample(ix, iy + 1) * (1 - dx) + sample(ix + 1, iy) * (1 - dy) + sample(ix + 1, iy + 1) * (dx + dy - 1);
-}
-
 /**
  * Soft pad under the church footprint: masonry and floors stay on y = 0 while the
  * surrounding churchyard and fields follow the measured 1839/LIDAR terrain.
@@ -221,7 +205,7 @@ function buildingPadWeight(x: number, z: number) {
 
 // Measured exterior terrain elevation (relative to the church). Flat under the building pad.
 export function getGroundHeight(x: number, z: number) {
-  const measured = sampleChurchTerrain(x, z);
+  const measured = sampleTerrainClamped(churchTerrain, x, z);
   const pad = buildingPadWeight(x, z);
   return measured * (1 - pad);
 }

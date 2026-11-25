@@ -10,6 +10,19 @@ import {
   isChristmasSeason
 } from '../assets/js/st-peters-3d/dimensions.ts';
 import { CHURCHYARD_MEMORIALS } from '../assets/js/st-peters-3d/memorials-data.ts';
+import {
+  advanceWillowState,
+  createWillowState,
+  findWillowPath,
+  pickRunAnimation,
+  summonWillowToBowl,
+  triggerWillowGreet,
+  WILLOW_DRINK_SECONDS,
+  WILLOW_SPRITE_SHEET,
+  WILLOW_WATER_BOWL_POS,
+  WILLOW_WAYPOINTS,
+  willowFloorY
+} from '../assets/js/st-peters-3d/willow.ts';
 
 const root = new URL('../', import.meta.url);
 
@@ -40,26 +53,40 @@ test("every St Peter's 3D module imported by the page exists and the page loads 
     assert.ok(existsSync(fileUrl), `missing module ${modPath}`);
     const source = readFileSync(fileUrl, 'utf8');
 
-    // Both `import x from '...'` and side-effect `import '...'` (walk joystick, stats overlay)
-    for (const match of source.matchAll(/(?:from|import)\s+['"]([^'"]+)['"]/g)) {
+    // Static `import x from '...'`, side-effect `import '...'`, and dynamic `import('...')`
+    for (const match of source.matchAll(/(?:from\s+|import\s+|import\s*\(\s*)['"]([^'"]+)['"]/g)) {
       const spec = match[1];
-      if (!spec.startsWith('./')) continue;
+      if (!spec.startsWith('./') && !spec.startsWith('../')) continue;
       const next = new URL(spec, `https://example.invalid${modPath}`).pathname;
-      if (!next.startsWith('/assets/js/st-peters-3d/')) continue;
+      if (!next.startsWith('/assets/js/')) continue;
       pending.push(next);
     }
   }
 
-  assert.equal(seen.size, 20);
-  assert.ok(seen.has('/assets/js/st-peters-3d/canvas-utils.ts'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/mesh-utils.ts'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/fade.ts'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/static-merge.ts'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/stats-overlay.ts'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/belfry.ts'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/stained-glass.ts'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/plaques.ts'));
-  assert.ok(seen.has('/assets/js/st-peters-3d/church-terrain-data.ts'));
+  for (const required of [
+    '/assets/js/ilmer-sky.ts',
+    '/assets/js/ilmer-terrain.ts',
+    '/assets/js/scene-fullscreen.ts',
+    '/assets/js/st-peters-3d/canvas-utils.ts',
+    '/assets/js/st-peters-3d/mesh-utils.ts',
+    '/assets/js/st-peters-3d/fade.ts',
+    '/assets/js/st-peters-3d/static-merge.ts',
+    '/assets/js/st-peters-3d/stats-overlay.ts',
+    '/assets/js/st-peters-3d/belfry.ts',
+    '/assets/js/st-peters-3d/stained-glass.ts',
+    '/assets/js/st-peters-3d/plaques.ts',
+    '/assets/js/st-peters-3d/reliefs.ts',
+    '/assets/js/st-peters-3d/christmas-tree.ts',
+    '/assets/js/st-peters-3d/interior/structure.ts',
+    '/assets/js/st-peters-3d/interior/furniture.ts',
+    '/assets/js/st-peters-3d/interior/organs.ts',
+    '/assets/js/st-peters-3d/interior/lighting.ts',
+    '/assets/js/st-peters-3d/interior/props.ts',
+    '/assets/js/st-peters-3d/church-terrain-data.ts',
+    '/assets/js/st-peters-3d/willow.ts'
+  ]) {
+    assert.ok(seen.has(required), `expected ${required} in module graph`);
+  }
 
   const texturesSource = readFileSync(new URL('assets/js/st-peters-3d/textures.ts', root), 'utf8');
   assert.doesNotMatch(texturesSource, /\/images\/monumental-inscriptions\/A[123]\.avif/);
@@ -325,8 +352,188 @@ test('features fade out and back in over half a second without touching shared m
   assert.equal(feature.visible, false);
   assert.equal(mesh.material, shared);
 
-  // Start-up: instant
+  // Hidden pre-merge originals are not enlisted or cloned during fades
+  const hiddenOriginal = new THREE.Mesh(new THREE.BoxGeometry(), shared);
+  hiddenOriginal.visible = false;
+  feature.add(hiddenOriginal);
+  fader.setVisible(feature, false);
+  fader.update(0.25);
+  assert.equal(hiddenOriginal.material, shared, 'hidden pre-merge meshes should keep original material');
   fader.setVisible(feature, true, true);
   assert.equal(feature.visible, true);
   assert.equal(fader.isFading(), false);
+});
+
+test('Willow sprite atlas exists and Willow roams safely up and down the nave and into the vestry', () => {
+  const spriteFile = new URL(`../public${WILLOW_SPRITE_SHEET.url}`, import.meta.url);
+  assert.ok(existsSync(spriteFile), `missing sprite sheet ${WILLOW_SPRITE_SHEET.url}`);
+  const bytes = readFileSync(spriteFile);
+  assert.equal(bytes.subarray(0, 4).toString('ascii'), 'RIFF');
+  assert.equal(bytes.subarray(8, 12).toString('ascii'), 'WEBP');
+
+  // Water bowl sits in Today era underneath the rearmost North pew (closest to the front door, near the North wall)
+  const willowSrc = readFileSync(new URL('../assets/js/st-peters-3d/willow.ts', import.meta.url), 'utf8');
+  assert.match(willowSrc, /group\.userData\.era = 'today'/);
+  assert.match(willowSrc, /group\.userData\.waterBowl = true/);
+  assert.match(willowSrc, /waterDisc\.name = 'willow-water-surface'/);
+  assert.match(willowSrc, /group\.visible = false/);
+  assert.ok(
+    WILLOW_WATER_BOWL_POS.x >= -1.82 && WILLOW_WATER_BOWL_POS.x <= -1.36,
+    'water bowl should sit beneath the rearmost North pew closest to the North Porch door'
+  );
+  assert.ok(
+    WILLOW_WATER_BOWL_POS.z < -2.0 && WILLOW_WATER_BOWL_POS.z > DIM.nave.zNorthInt + 0.2,
+    'water bowl should sit near the North wall inside the pew end'
+  );
+
+  // Every waypoint & connecting edge stays strictly inside the nave/vestry and clear of all furniture & partition walls
+  const byId = new Map(WILLOW_WAYPOINTS.map((wp) => [wp.id, wp]));
+  const boxDist = (x: number, z: number, x0: number, x1: number, z0: number, z1: number) =>
+    Math.hypot(Math.max(x0 - x, 0, x - x1), Math.max(z0 - z, 0, z - z1));
+  const clearance = 0.18; // keeps Willow clear even through the 0.38 m gap beside the octagonal font
+  const pointClear = (x: number, z: number) => {
+    const insideChurch =
+      x > DIM.nave.xWestInt + clearance && x < DIM.nave.xEastInt - 0.35 && Math.abs(z) < DIM.nave.zSouthInt - clearance;
+    const clearOfFont = Math.hypot(x + 3.98, z) > 0.64 + clearance;
+    const clearOfNorthPews = boxDist(x, z, -1.85, 1.62, -2.45, -0.59) > clearance;
+    const clearOfVisitorPew = boxDist(x, z, -3.55, -3.09, -2.25, -0.95) > clearance;
+    const clearOfOrgan = boxDist(x, z, -5.28, -3.98, -2.35, -1.09) > clearance;
+    const clearOfSouthPews = boxDist(x, z, -2.42, 2.18, 0.59, 2.45) > clearance;
+    const clearOfNarrowSouthPews = boxDist(x, z, -5.14, -2.63, 1.02, 2.22) > clearance;
+    const clearOfPulpit = boxDist(x, z, 1.64, 2.86, -2.54, -1.3) > clearance;
+    const clearOfLectern = Math.hypot(x - 2.46, z - 1.22) > 0.3 + clearance;
+    const clearOfVestryPartition =
+      boxDist(x, z, -5.24, -5.12, -2.6, -0.485) > clearance && boxDist(x, z, -5.24, -5.12, 0.485, 2.6) > clearance;
+    const clearOfExtinguishers =
+      Math.hypot(x + 5.04, z + 0.72) > 0.08 + clearance && Math.hypot(x + 5.02, z - 0.72) > 0.1 + clearance;
+    const clearOfVestryFurniture =
+      boxDist(x, z, -5.94, -5.26, -2.26, -0.7) > clearance &&
+      boxDist(x, z, -6.88, -6.44, -2.17, -0.93) > clearance &&
+      boxDist(x, z, -5.82, -5.26, 0.74, 1.56) > clearance &&
+      boxDist(x, z, -6.66, -5.5, 2.04, 2.56) > clearance;
+    return (
+      insideChurch &&
+      clearOfFont &&
+      clearOfNorthPews &&
+      clearOfVisitorPew &&
+      clearOfOrgan &&
+      clearOfSouthPews &&
+      clearOfNarrowSouthPews &&
+      clearOfPulpit &&
+      clearOfLectern &&
+      clearOfVestryPartition &&
+      clearOfExtinguishers &&
+      clearOfVestryFurniture
+    );
+  };
+
+  for (const wp of WILLOW_WAYPOINTS) {
+    assert.ok(pointClear(wp.x, wp.z), `waypoint ${wp.id} (${wp.x}, ${wp.z}) collides with church obstacle`);
+    for (const neighborId of wp.neighbors) {
+      const nb = byId.get(neighborId);
+      assert.ok(nb, `unknown neighbor ${neighborId} on ${wp.id}`);
+      assert.ok(nb.neighbors.includes(wp.id), `edge ${wp.id} -> ${neighborId} should be bidirectional`);
+      for (let i = 0; i <= 20; i++) {
+        const t = i / 20;
+        const x: number = wp.x + (nb.x - wp.x) * t;
+        const z: number = wp.z + (nb.z - wp.z) * t;
+        assert.ok(
+          pointClear(x, z),
+          `edge ${wp.id} -> ${neighborId} clips obstacle at (${x.toFixed(2)}, ${z.toFixed(2)})`
+        );
+      }
+    }
+  }
+
+  // BFS finds a continuous route all the way from the rood screen into the vestry
+  const fullRun = findWillowPath('rood-centre', 'vestry-centre');
+  assert.ok(fullRun.length >= 10, `expected full-length nave-to-vestry path, got ${fullRun.length} steps`);
+  assert.equal(fullRun.at(-1), 'vestry-centre');
+  assert.ok(fullRun.includes('nave-centre'), 'route from rood screen to vestry runs along the nave aisle');
+  assert.ok(fullRun.includes('vestry-doorway'), 'route passes through the vestry partition doorway');
+
+  // Willow starts hidden until the water bowl is clicked, and stays paused while hidden
+  const state = createWillowState({ seed: 202607 });
+  assert.equal(state.name, 'Willow');
+  assert.equal(state.revealed, false);
+  advanceWillowState(state, 1.0, 0, 1);
+  assert.equal(state.revealed, false);
+  assert.equal(state.currentNodeId, 'water-bowl');
+
+  // Clicking the water bowl reveals Willow drinking from it, then she roams the nave & vestry
+  summonWillowToBowl(state);
+  assert.equal(state.revealed, true);
+  assert.equal(state.mode, 'drinking');
+  assert.equal(state.animation, 'drinking');
+  assert.equal(state.currentNodeId, 'water-bowl');
+  assert.ok(state.stateRemaining >= WILLOW_DRINK_SECONDS);
+
+  const seenAnims = new Set<string>([state.animation]);
+  const visitedNodes = new Set<string>([state.currentNodeId]);
+  const visitedZones = new Set<string>();
+  for (let i = 0; i < 8000; i++) {
+    // Rotate camera right vector slowly so all 4 running directions are exercised
+    const angle = i * 0.002;
+    advanceWillowState(state, 0.05, Math.cos(angle), Math.sin(angle), { x: -2.0, z: 0.0 });
+    seenAnims.add(state.animation);
+    visitedNodes.add(state.currentNodeId);
+    const curNode = byId.get(state.currentNodeId);
+    if (curNode) visitedZones.add(curNode.zone);
+    assert.ok(
+      pointClear(state.x, state.z),
+      `Willow clipped obstacle at (${state.x.toFixed(2)}, ${state.z.toFixed(2)})`
+    );
+  }
+  for (const anim of [
+    'drinking',
+    'idle',
+    'running-left',
+    'running-right',
+    'running-front',
+    'running-back',
+    'waving',
+    'jumping',
+    'failed'
+  ]) {
+    assert.ok(seenAnims.has(anim), `Willow should play the "${anim}" animation`);
+  }
+  for (const zone of ['vestry', 'west-nave', 'mid-nave', 'east-nave']) {
+    assert.ok(visitedZones.has(zone), `Willow should visit zone "${zone}"`);
+  }
+  assert.ok(visitedNodes.has('vestry-centre'), 'Willow should run into the vestry');
+  assert.ok(visitedNodes.has('rood-centre'), 'Willow should run up to the east nave by the rood screen');
+
+  // Clicking the water bowl again calls Willow back from wherever she is to drink again
+  state.currentNodeId = 'rood-centre';
+  state.x = 2.52;
+  state.z = 0;
+  summonWillowToBowl(state);
+  assert.equal(state.mode, 'running');
+  assert.equal(state.path.at(-1), 'water-bowl');
+  for (let i = 0; i < 400 && state.mode === 'running'; i++) {
+    advanceWillowState(state, 0.05, 0, 1);
+  }
+  assert.equal(state.currentNodeId, 'water-bowl');
+  assert.equal(state.mode, 'drinking');
+  assert.equal(state.animation, 'drinking');
+
+  // Camera-relative 4-way running direction (Nave → Chancel camera looks +X, so camRight = (0, +1))
+  assert.equal(pickRunAnimation(1, 0, 0, 1, 'running-right'), 'running-back'); // running East away from viewer
+  assert.equal(pickRunAnimation(-1, 0, 0, 1, 'running-back'), 'running-front'); // running West toward viewer
+  assert.equal(pickRunAnimation(0, 1, 0, 1, 'running-front'), 'running-right'); // running South to viewer's right
+  assert.equal(pickRunAnimation(0, -1, 0, 1, 'running-right'), 'running-left'); // running North to viewer's left
+  // And from Nave → Tower (camera looks -X, camRight = (0, -1)), West is away and East is toward viewer
+  assert.equal(pickRunAnimation(-1, 0, 0, -1, 'running-left'), 'running-back');
+  assert.equal(pickRunAnimation(1, 0, 0, -1, 'running-back'), 'running-front');
+
+  // Clicking Willow alternates between waving and jumping
+  triggerWillowGreet(state);
+  assert.equal(state.animation, 'waving');
+  triggerWillowGreet(state);
+  assert.equal(state.animation, 'jumping');
+
+  // Floor height rises slightly on both the crimson vestry carpet and the gold rood-screen runner
+  assert.equal(willowFloorY(0, 0), DIM.naveFloorY);
+  assert.ok(willowFloorY(-6.2, 0) > DIM.naveFloorY, 'vestry carpet sits above bare quarry tiles');
+  assert.ok(willowFloorY(2.6, 0) > DIM.naveFloorY, 'east carpet runner sits above bare quarry tiles');
 });

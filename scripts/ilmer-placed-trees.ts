@@ -7,7 +7,6 @@ import type { MeasuredTerrain } from '../assets/js/ilmer-terrain.ts';
 import { circleOverlapsTriangles, createTreeCrown, historicalTrees, validateTrees } from '../assets/js/ilmer-trees.ts';
 import type { HistoricalTree, PlacedTreeData, Point, Triangle } from '../assets/js/ilmer-trees.ts';
 import type { TerrainGrid } from '../assets/js/ilmer-terrain.ts';
-import type * as Three from 'three';
 import { withinField } from '../assets/js/ilmer-livestock.ts';
 import { rideCircuitLength, rideCircuitPoint } from '../assets/js/ilmer-ride.ts';
 
@@ -40,19 +39,15 @@ export function cartCorridorTriangles() {
   return cartCorridor;
 }
 
-export function placementRoadTriangles(
-  THREE: typeof Three,
-  terrain: TerrainGrid,
-  groundHeight: (x: number, z: number) => number
-) {
+export function placementRoadTriangles(terrain: TerrainGrid, groundHeight: (x: number, z: number) => number) {
   const roadTriangles: Triangle[] = [];
   for (const polygon of roadPolygons) {
-    const draped = drapeMapPolygon(THREE, terrain, groundHeight, mapPoint, polygon, 0.14);
+    const draped = drapeMapPolygon(terrain, groundHeight, mapPoint, polygon, 0.14);
     roadTriangles.push(...trianglesXZ(draped.geometry));
     draped.geometry.dispose();
   }
   for (const track of tracks) {
-    const draped = drapeTrack(THREE, terrain, groundHeight, mapPoint, track, 1.5, 0.14);
+    const draped = drapeTrack(terrain, groundHeight, mapPoint, track, 1.5, 0.14);
     roadTriangles.push(...trianglesXZ(draped.geometry));
     draped.geometry.dispose();
   }
@@ -133,20 +128,17 @@ function sha256(bytes: string) {
   return createHash('sha256').update(bytes).digest('hex');
 }
 
-export function buildPlacedTrees(
-  THREE: typeof Three,
-  { terrainText, treeText }: { terrainText: string; treeText: string }
-) {
+export function buildPlacedTrees({ terrainText, treeText }: { terrainText: string; treeText: string }) {
   const terrain = historicalTerrain(validateTerrain<MeasuredTerrain>(JSON.parse(terrainText)));
   const treeData = validateTrees(JSON.parse(treeText));
   const groundHeight = (x: number, z: number) => terrainHeight(terrain, x, z);
   const { trees: detectedTrees, excluded } = historicalTrees(treeData);
-  const { crownRadius, geometry } = createTreeCrown(THREE);
+  const { crownRadius, geometry } = createTreeCrown();
   geometry.dispose();
   const placed = placeDetectedTrees({
     detectedTrees,
     excluded,
-    roadTriangles: placementRoadTriangles(THREE, terrain, groundHeight),
+    roadTriangles: placementRoadTriangles(terrain, groundHeight),
     cartCorridor: cartCorridorTriangles(),
     pondPolygons: ponds.map((pond) => pond.map(([x, y]) => mapPoint(x, y))),
     crownRadius,
@@ -170,8 +162,8 @@ export function buildPlacedTrees(
   };
 }
 
-export function buildPlacedTreesFromFiles(THREE: typeof Three) {
+export function buildPlacedTreesFromFiles() {
   const terrainText = readFileSync(new URL('../assets/ilmer-terrain.json', import.meta.url), 'utf8');
   const treeText = readFileSync(new URL('../assets/ilmer-trees.json', import.meta.url), 'utf8');
-  return buildPlacedTrees(THREE, { terrainText, treeText });
+  return buildPlacedTrees({ terrainText, treeText });
 }

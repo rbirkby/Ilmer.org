@@ -1,4 +1,4 @@
-import type * as Three from 'three';
+import * as THREE from 'three';
 import { canvas2d } from './st-peters-3d/canvas-utils.ts';
 
 // Wooden fingerposts where the road leaves the map, pointing to the next villages. Turnpike-era posts were
@@ -41,7 +41,7 @@ export function signpostPlacement(
 }
 
 /** A white fingerpost whose arm, lettered with `text`, points along local +x. */
-export function createFingerpost(THREE: typeof Three, text: string): Three.Group {
+export function createFingerpost(text: string): THREE.Group {
   const paint = new THREE.MeshStandardMaterial({ color: 0xf1ede2, roughness: 0.85 });
   const group = new THREE.Group();
   const post = new THREE.Mesh(new THREE.BoxGeometry(0.13, POST_HEIGHT, 0.13), paint);
@@ -67,7 +67,7 @@ export function createFingerpost(THREE: typeof Three, text: string): Three.Group
   const canvas = document.createElement('canvas');
   canvas.width = 512;
   canvas.height = 96;
-  const ctx = canvas2d(canvas)!;
+  const ctx = canvas2d(canvas);
   ctx.fillStyle = '#1b1a18';
   ctx.font = 'bold 64px Georgia, serif';
   ctx.textAlign = 'center';

@@ -32,7 +32,6 @@ import {
   circleOverlapsTriangles,
   validatePlacedTrees
 } from '../assets/js/ilmer-trees.ts';
-import * as THREE from 'three';
 import { buildPlacedTreesFromFiles } from '../scripts/ilmer-placed-trees.ts';
 import {
   ridePath,
@@ -969,7 +968,7 @@ test('placed trees are the road clearance the page used to run, loaded instead o
   const stored = validatePlacedTrees(
     JSON.parse(readFileSync(new URL('../assets/ilmer-placed-trees.json', import.meta.url), 'utf8'))
   );
-  const fresh = buildPlacedTreesFromFiles(THREE);
+  const fresh = buildPlacedTreesFromFiles();
   assert.deepEqual(
     fresh.trees,
     JSON.parse(readFileSync(new URL('../assets/ilmer-placed-trees.json', import.meta.url), 'utf8')).trees

@@ -1,25 +1,13 @@
 import * as THREE from 'three';
 import { canvas2d, canvasTexture, makeCanvas } from './canvas-utils.ts';
 import { addBox, boxMesh } from './mesh-utils.ts';
-import { DIM, getGroundHeight, groundOutlineRadius, isChristmasSeason } from './dimensions.ts';
+import { DIM, getGroundHeight, groundOutlineRadius } from './dimensions.ts';
 import { CHURCHYARD_MEMORIALS, surveyGridToWorld } from './memorials-data.ts';
+import type { ChurchMaterials } from './textures.ts';
 
 type XZ = readonly [number, number];
 type InscriptionLines = readonly (string | undefined)[];
-type ChurchMats = {
-  granite: THREE.Material;
-  ashlarWarm: THREE.Material;
-  medOak: THREE.Material;
-  ashlar: THREE.Material;
-  stoneCapDark: THREE.Material;
-  gravePebbles?: THREE.Material;
-  gravelPath: THREE.Material;
-  iron: THREE.Material;
-  weatherboard: THREE.Material;
-  railingPaint: THREE.Material;
-  pathPavers: THREE.Material;
-  grass: THREE.Material;
-};
+type ChurchMats = ChurchMaterials;
 type MemorialSpec = {
   id: string;
   kind: string;
@@ -857,7 +845,7 @@ function buildGardenBench(mats: ChurchMats) {
 // Cache procedural alpha-cutout leaf-cluster materials per color so trees build instantaneously
 const leafMatCache = new Map<string, THREE.MeshStandardMaterial>();
 
-function getLeafClusterMaterial(foliageHex: number, isEvergreen: boolean) {
+export function getLeafClusterMaterial(foliageHex: number, isEvergreen: boolean) {
   const key = `${foliageHex}-${isEvergreen ? 'ev' : 'dec'}`;
   if (leafMatCache.has(key)) return leafMatCache.get(key);
 
@@ -1115,109 +1103,6 @@ function buildTree(
   }
 
   return g;
-}
-
-// Create cinematic atmospheric sky dome shader with sun Mie glow, wispy autumn clouds & Evensong stars
-export function createSkyDome() {
-  const skyMat = new THREE.ShaderMaterial({
-    side: THREE.BackSide,
-    depthWrite: false,
-    uniforms: {
-      topColor: { value: new THREE.Color(0x2d66b8) },
-      horizonColor: { value: new THREE.Color(0xc8dcf0) },
-      bottomColor: { value: new THREE.Color(0x6e8562) },
-      sunDir: { value: new THREE.Vector3(-16, 15, 20).normalize() },
-      sunColor: { value: new THREE.Color(0xfff1d0) },
-      sunHaloStrength: { value: 0.55 },
-      cloudColor: { value: new THREE.Color(0xf8f3ea) },
-      cloudStrength: { value: 0.36 },
-      starStrength: { value: 0.0 },
-      uTime: { value: 0.0 }
-    },
-    vertexShader: `
-      varying vec3 vWorldPos;
-      void main() {
-        vec4 wp = modelMatrix * vec4(position, 1.0);
-        vWorldPos = wp.xyz;
-        gl_Position = projectionMatrix * viewMatrix * wp;
-      }
-    `,
-    fragmentShader: `
-      uniform vec3 topColor;
-      uniform vec3 horizonColor;
-      uniform vec3 bottomColor;
-      uniform vec3 sunDir;
-      uniform vec3 sunColor;
-      uniform float sunHaloStrength;
-      uniform vec3 cloudColor;
-      uniform float cloudStrength;
-      uniform float starStrength;
-      uniform float uTime;
-      varying vec3 vWorldPos;
-
-      float hash21(vec2 p) {
-        p = fract(p * vec2(123.34, 456.21));
-        p += dot(p, p + 45.32);
-        return fract(p.x * p.y);
-      }
-
-      float noise(vec2 p) {
-        vec2 i = floor(p);
-        vec2 f = fract(p);
-        f = f * f * (3.0 - 2.0 * f);
-        float a = hash21(i);
-        float b = hash21(i + vec2(1.0, 0.0));
-        float c = hash21(i + vec2(0.0, 1.0));
-        float d = hash21(i + vec2(1.0, 1.0));
-        return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
-      }
-
-      float fbm(vec2 p) {
-        float v = 0.0;
-        float amp = 0.5;
-        for (int i = 0; i < 4; i++) {
-          v += amp * noise(p);
-          p = p * 2.05 + vec2(11.3, 7.1);
-          amp *= 0.5;
-        }
-        return v;
-      }
-
-      void main() {
-        vec3 dir = normalize(vWorldPos);
-        float h = dir.y;
-        vec3 col = h >= 0.0
-          ? mix(horizonColor, topColor, pow(clamp(h, 0.0, 1.0), 0.55))
-          : mix(horizonColor, bottomColor, clamp(-h * 4.0, 0.0, 1.0));
-
-        if (h > 0.0) {
-          // Warm solar Mie scattering halo + crisp sun disc
-          float sunDot = max(dot(dir, normalize(sunDir)), 0.0);
-          float halo = pow(sunDot, 7.0) * 0.42 + pow(sunDot, 48.0) * 0.55 + smoothstep(0.9975, 0.9994, sunDot) * 1.1;
-          col += sunColor * halo * sunHaloStrength;
-
-          // Subtle wispy late-afternoon clouds drifting slowly across the sky
-          vec2 cloudUv = (dir.xz / (h + 0.16)) * 0.55 + vec2(uTime * 0.0025, uTime * 0.0012);
-          float n = fbm(cloudUv * vec2(1.6, 0.85));
-          float wisps = smoothstep(0.48, 0.78, n) * smoothstep(0.02, 0.24, h) * (1.0 - smoothstep(0.55, 0.95, h));
-          vec3 litCloud = mix(cloudColor, sunColor, pow(sunDot, 4.0) * 0.55);
-          col = mix(col, litCloud, wisps * cloudStrength);
-
-          // Delicate twilight stars in Evensong mode
-          if (starStrength > 0.01) {
-            vec2 starCell = floor((dir.xz / (h + 0.25)) * 120.0);
-            float starRand = hash21(starCell);
-            float star = step(0.9955, starRand) * smoothstep(0.18, 0.55, h);
-            col += vec3(0.88, 0.93, 1.0) * star * starStrength;
-          }
-        }
-
-        gl_FragColor = vec4(col, 1.0);
-      }
-    `
-  });
-  const mesh = new THREE.Mesh(new THREE.SphereGeometry(120, 32, 20), skyMat);
-  return { mesh, material: skyMat };
 }
 
 // North churchyard frontage from the 1839 tithe-map outline (ilmer-1839-data `churchyard`), converted into
@@ -1860,168 +1745,10 @@ export function buildChurchyard(mats: ChurchMats) {
     g.add(tree);
   });
 
-  // 7. December Festive Christmas Tree outside the North Porch with twinkling fairy lights
-  let christmasEffect: ReturnType<typeof buildChristmasTree> | null = null;
-  const searchStr = typeof window !== 'undefined' ? window.location.search : '';
-  if (isChristmasSeason(new Date(), searchStr)) {
-    christmasEffect = buildChristmasTree(mats);
-    christmasEffect.group.position.set(-0.2, getGroundHeight(-0.2, -4.55), -4.55);
-    christmasEffect.group.userData.era = 'today'; // electric fairy lights
-    g.add(christmasEffect.group);
-  }
-
   return {
     group: g,
-    christmasEffect,
     memorialGroups,
     gravestoneEra: createToppleAnimator(topplers),
     kissingGates
-  };
-}
-
-// Build a festive Norway Spruce Christmas tree in a wooden planter with twinkling fairy lights & golden star
-function buildChristmasTree(mats: ChurchMats) {
-  const group = new THREE.Group();
-  group.name = 'december-christmas-tree';
-
-  // Wooden half-barrel planter & iron hoops at base
-  const tub = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.26, 0.36, 12), mats.medOak);
-  tub.position.y = 0.18;
-  tub.castShadow = true;
-  tub.receiveShadow = true;
-  group.add(tub);
-
-  [0.09, 0.28].forEach((hy) => {
-    const hoop = new THREE.Mesh(new THREE.TorusGeometry(0.295, 0.012, 6, 18), mats.iron);
-    hoop.rotation.x = Math.PI / 2;
-    hoop.position.y = hy;
-    group.add(hoop);
-  });
-
-  // Tapered spruce trunk
-  const trunkMat = new THREE.MeshStandardMaterial({ color: 0x3f2d20, roughness: 0.95 });
-  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.09, 2.7, 8), trunkMat);
-  trunk.position.y = 1.62;
-  trunk.castShadow = true;
-  group.add(trunk);
-
-  // Layered spruce needle boughs (inner cones + feathery alpha-cutout evergreen leaf sprays)
-  const spruceMat = new THREE.MeshStandardMaterial({
-    color: 0x183d21,
-    roughness: 0.9,
-    flatShading: true
-  });
-  const sprayMat = getLeafClusterMaterial(0x1f4f28, true);
-
-  const tiers = [
-    { y: 0.88, r: 0.84, h: 0.92 },
-    { y: 1.32, r: 0.72, h: 0.84 },
-    { y: 1.74, r: 0.59, h: 0.76 },
-    { y: 2.12, r: 0.46, h: 0.68 },
-    { y: 2.46, r: 0.33, h: 0.58 },
-    { y: 2.75, r: 0.21, h: 0.46 }
-  ];
-
-  tiers.forEach((tier, tIdx) => {
-    const cone = new THREE.Mesh(new THREE.ConeGeometry(tier.r * 0.86, tier.h, 9), spruceMat);
-    cone.position.y = tier.y;
-    cone.rotation.y = tIdx * 0.42;
-    cone.castShadow = true;
-    cone.receiveShadow = true;
-    group.add(cone);
-
-    // Feathery spruce branch sprays around each tier edge
-    const sprayCount = Math.max(4, Math.round(tier.r * 10));
-    for (let s = 0; s < sprayCount; s++) {
-      const a = (s / sprayCount) * Math.PI * 2 + tIdx * 0.5;
-      const sr = tier.r * 0.74;
-      const spraySize = 0.26 + tier.r * 0.34;
-      const card = new THREE.Mesh(new THREE.PlaneGeometry(spraySize, spraySize), sprayMat);
-      card.position.set(Math.cos(a) * sr, tier.y - tier.h * 0.26, Math.sin(a) * sr);
-      card.rotation.set(0.35, -a + Math.PI / 2, (s % 2 === 0 ? 1 : -1) * 0.2);
-      card.castShadow = true;
-      group.add(card);
-    }
-  });
-
-  // Spiraling Christmas fairy lights (warm white/gold + festive red, amber, blue, emerald bulbs)
-  const palette = [0xffe49e, 0xff4545, 0xffb340, 0x55b0ff, 0x4ae67b, 0xfff0c2];
-  const bulbGeo = new THREE.SphereGeometry(0.032, 8, 8);
-  const bulbEntries: { mat: THREE.MeshStandardMaterial; phase: number; speed: number }[] = [];
-  const bulbCount = 58;
-
-  for (let i = 0; i < bulbCount; i++) {
-    const t = i / (bulbCount - 1); // 0 = bottom boughs, 1 = near star
-    const y = 0.54 + t * 2.34;
-    const radius = THREE.MathUtils.lerp(0.84, 0.14, Math.pow(t, 0.92));
-    const angle = t * Math.PI * 11.5; // ~5.75 spiral turns around the spruce
-    const colHex = palette[i % palette.length];
-    const bulbMat = new THREE.MeshStandardMaterial({
-      color: colHex,
-      emissive: colHex,
-      emissiveIntensity: 1.6,
-      roughness: 0.2
-    });
-    const bulb = new THREE.Mesh(bulbGeo, bulbMat);
-    bulb.position.set(Math.cos(angle) * radius, y, Math.sin(angle) * radius);
-    group.add(bulb);
-    bulbEntries.push({ mat: bulbMat, phase: i * 0.85, speed: 2.2 + (i % 4) * 0.55 });
-  }
-
-  // Glowing 5-pointed golden star topper
-  const starShape = new THREE.Shape();
-  for (let i = 0; i < 10; i++) {
-    const r = i % 2 === 0 ? 0.16 : 0.068;
-    const a = (i * Math.PI) / 5 + Math.PI / 2;
-    const sx = Math.cos(a) * r;
-    const sy = Math.sin(a) * r;
-    if (i === 0) starShape.moveTo(sx, sy);
-    else starShape.lineTo(sx, sy);
-  }
-  starShape.closePath();
-  const starGeo = new THREE.ExtrudeGeometry(starShape, { depth: 0.035, bevelEnabled: false });
-  starGeo.translate(0, 0, -0.0175);
-  const starMat = new THREE.MeshStandardMaterial({
-    color: 0xffe484,
-    emissive: 0xffc83d,
-    emissiveIntensity: 1.8,
-    roughness: 0.25,
-    metalness: 0.5
-  });
-  const star = new THREE.Mesh(starGeo, starMat);
-  star.position.set(0, 3.12, 0);
-  group.add(star);
-
-  // Warm festive glow PointLight illuminating the North Porch stonework & lawn
-  const treeLight = new THREE.PointLight(0xffd28a, 1.5, 9.5, 1.6);
-  treeLight.position.set(0, 1.85, -0.45);
-  group.add(treeLight);
-
-  let baseLightIntensity = 1.5;
-  let baseEmissiveScale = 1.0;
-
-  return {
-    group,
-    setMood(moodKey: string) {
-      if (moodKey === 'evensong') {
-        baseLightIntensity = 3.2;
-        baseEmissiveScale = 1.65;
-      } else if (moodKey === 'golden') {
-        baseLightIntensity = 2.1;
-        baseEmissiveScale = 1.3;
-      } else {
-        baseLightIntensity = 1.2;
-        baseEmissiveScale = 1.05;
-      }
-      starMat.emissiveIntensity = 1.65 * baseEmissiveScale;
-    },
-    update(elapsed: number) {
-      for (let i = 0; i < bulbEntries.length; i++) {
-        const b = bulbEntries[i];
-        const twinkle = 0.72 + 0.55 * (0.5 + 0.5 * Math.sin(elapsed * b.speed + b.phase));
-        b.mat.emissiveIntensity = 1.35 * baseEmissiveScale * twinkle;
-      }
-      treeLight.intensity = baseLightIntensity * (0.94 + 0.06 * Math.sin(elapsed * 2.4));
-    }
   };
 }

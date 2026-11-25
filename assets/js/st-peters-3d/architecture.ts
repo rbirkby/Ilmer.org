@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-import { canvas2d } from './canvas-utils.ts';
 import { addBox, boxMesh } from './mesh-utils.ts';
 import { DIM } from './dimensions.ts';
-import { createChancelReliefHeightMaps } from './plaques.ts';
+import { canvasToBlurredHeightField, createChancelReliefHeightMaps } from './reliefs.ts';
 import { buildBellChamber } from './belfry.ts';
+import type { ChurchMaterials } from './textures.ts';
 
 type Vec2 = [number, number];
 type Vec3 = [number, number, number];
@@ -48,33 +48,6 @@ type Niche = {
   u: number;
   spec: OpeningSpec;
   depth: number;
-};
-
-type ChurchMaterials = {
-  glassClear: THREE.Material;
-  glassEast: THREE.Material;
-  glassSower: THREE.Material;
-  glassNorthNave: THREE.Material;
-  glassWilson: THREE.Material;
-  ashlarWarm: THREE.Material;
-  ashlar: THREE.Material;
-  stoneCapDark: THREE.Material;
-  iron: THREE.Material;
-  clayRoof: THREE.Material;
-  plaster: THREE.Material;
-  stoneWall: THREE.Material;
-  weatherboard: THREE.Material;
-  weatherboardWide: THREE.Material;
-  darkOak: THREE.Material;
-  shingles: THREE.Material;
-  stoneWallWestLower: THREE.Material;
-  stoneWallWestUpper: THREE.Material;
-  dedicationStone1860: THREE.Material;
-  glassShade: THREE.Material;
-  porchGateGrey: THREE.Material;
-  medOak: THREE.MeshStandardMaterial;
-  quarryTile: THREE.Material;
-  wax: THREE.Material;
 };
 
 type CompositeWallOptions = {
@@ -281,47 +254,7 @@ function buildCarvedFace(
   marginR: number,
   material: THREE.Material
 ): THREE.Mesh {
-  const cw = canvas.width;
-  const ch = canvas.height;
-  const px = canvas2d(canvas).getImageData(0, 0, cw, ch).data;
-  let hf = new Float32Array(cw * ch);
-  for (let i = 0; i < cw * ch; i++) hf[i] = px[i * 4] / 255;
-
-  // Two passes of a 5x5 box blur soften the drawn shapes into worn, rounded stone
-  const blur = (src: Float32Array<ArrayBuffer>): Float32Array<ArrayBuffer> => {
-    const tmp = new Float32Array(src.length);
-    const out = new Float32Array(src.length);
-    for (let y = 0; y < ch; y++) {
-      for (let x = 0; x < cw; x++) {
-        let sum = 0;
-        let cnt = 0;
-        for (let k = -2; k <= 2; k++) {
-          const xx = x + k;
-          if (xx >= 0 && xx < cw) {
-            sum += src[y * cw + xx];
-            cnt++;
-          }
-        }
-        tmp[y * cw + x] = sum / cnt;
-      }
-    }
-    for (let y = 0; y < ch; y++) {
-      for (let x = 0; x < cw; x++) {
-        let sum = 0;
-        let cnt = 0;
-        for (let k = -2; k <= 2; k++) {
-          const yy = y + k;
-          if (yy >= 0 && yy < ch) {
-            sum += tmp[yy * cw + x];
-            cnt++;
-          }
-        }
-        out[y * cw + x] = sum / cnt;
-      }
-    }
-    return out;
-  };
-  hf = blur(blur(hf));
+  const { hf, cw, ch } = canvasToBlurredHeightField(canvas);
 
   // Canvas pixels are millimetres: keep the carving's true width where it fits, centring it in the spare face
   const avail = width - marginL - marginR;
@@ -490,11 +423,10 @@ function buildRWP(height: number, mats: ChurchMaterials): THREE.Group {
 }
 
 // Ordnance Survey cut benchmark carved into the West face (-X) of a corner quoin: a horizontal bar with a broad arrow
-// beneath it pointing up to the bar, and a drilled hole at its North end. Returns a replacement quoin box whose
-// West face is finely subdivided and pushed in along V-cut grooves, darkened towards the bottom of each cut.
+// beneath it pointing up to the bar, and a drilled hole at its North end. Only the small carved region on the -X face
+// is finely subdivided (~2.5mm); the rest of the stone uses single quads (~9k tris instead of ~194k).
 // (u, v) on that face: u runs along +Z from the face centre, v up from the stone's centre.
 function buildBenchmarkQuoin(qx: number, qy: number, qz: number, mat: THREE.Material, mark: BenchmarkMark): THREE.Mesh {
-  const geo = new THREE.BoxGeometry(qx, qy, qz, 1, Math.round(qy / 0.0015), Math.round(qz / 0.0015));
   const segs: [number, number, number, number][] = [
     [mark.u - 0.065, mark.v, mark.u + 0.065, mark.v], // bar
     [mark.u, mark.v - 0.018, mark.u, mark.v - 0.11], // arrow shaft
@@ -520,17 +452,73 @@ function buildBenchmarkQuoin(qx: number, qy: number, qz: number, mat: THREE.Mate
     if (rh < 0.013) d = Math.max(d, 0.03 * Math.min(1, (0.013 - rh) / 0.003)); // drilled hole, steep sides
     return d;
   };
-  const pos = geo.attributes.position;
-  const colors = new Float32Array(pos.count * 3).fill(1);
-  for (let k = 0; k < pos.count; k++) {
-    if (pos.getX(k) > -qx * 0.5 + 1e-6) continue;
-    const d = depthAt(pos.getZ(k), pos.getY(k));
-    if (d <= 0) continue;
-    pos.setX(k, pos.getX(k) + d);
-    const shade = 1 - 0.45 * Math.min(1, d / cutDepth);
-    colors.set([shade, shade * 0.97, shade * 0.93], k * 3);
+
+  // Build 1D sample stops: dense 2.5mm grid across the carved benchmark window, single margin span outside it
+  const makeStops = (halfSpan: number, lo: number, hi: number, step: number): number[] => {
+    const a = Math.max(-halfSpan, lo);
+    const b = Math.min(halfSpan, hi);
+    const stops: number[] = [];
+    if (a > -halfSpan + 1e-5) stops.push(-halfSpan);
+    const n = Math.max(2, Math.round((b - a) / step));
+    for (let i = 0; i <= n; i++) stops.push(a + ((b - a) * i) / n);
+    if (b < halfSpan - 1e-5) stops.push(halfSpan);
+    return stops;
+  };
+  const us = makeStops(qz * 0.5, mark.u - 0.098, mark.u + 0.078, 0.0025);
+  const vs = makeStops(qy * 0.5, mark.v - 0.125, mark.v + 0.025, 0.0025);
+  const hx = qx * 0.5;
+  const hy = qy * 0.5;
+  const hz = qz * 0.5;
+
+  const positions: number[] = [];
+  const uvs: number[] = [];
+  const colors: number[] = [];
+  const indices: number[] = [];
+
+  // Carved -X face
+  const nu = us.length;
+  const nv = vs.length;
+  for (let j = 0; j < nv; j++) {
+    const v = vs[j];
+    const uvY = v / qy + 0.5;
+    for (let i = 0; i < nu; i++) {
+      const u = us[i];
+      const d = depthAt(u, v);
+      positions.push(-hx + d, v, u);
+      uvs.push(u / qz + 0.5, uvY);
+      const shade = d > 0 ? 1 - 0.45 * Math.min(1, d / cutDepth) : 1;
+      colors.push(shade, shade * (d > 0 ? 0.97 : 1), shade * (d > 0 ? 0.93 : 1));
+    }
   }
-  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  for (let j = 0; j < nv - 1; j++) {
+    for (let i = 0; i < nu - 1; i++) {
+      const a = j * nu + i;
+      const b = a + 1;
+      const c = a + nu + 1;
+      const d = a + nu;
+      indices.push(a, b, c, a, c, d);
+    }
+  }
+
+  // Remaining 5 uncarved faces as single quads (CCW outward winding)
+  const addQuad = (p0: Vec3, p1: Vec3, p2: Vec3, p3: Vec3) => {
+    const base = positions.length / 3;
+    positions.push(...p0, ...p1, ...p2, ...p3);
+    uvs.push(0, 0, 1, 0, 1, 1, 0, 1);
+    colors.push(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    indices.push(base, base + 1, base + 2, base, base + 2, base + 3);
+  };
+  addQuad([hx, -hy, hz], [hx, -hy, -hz], [hx, hy, -hz], [hx, hy, hz]); // +X
+  addQuad([-hx, hy, hz], [hx, hy, hz], [hx, hy, -hz], [-hx, hy, -hz]); // +Y
+  addQuad([-hx, -hy, -hz], [hx, -hy, -hz], [hx, -hy, hz], [-hx, -hy, hz]); // -Y
+  addQuad([-hx, -hy, hz], [hx, -hy, hz], [hx, hy, hz], [-hx, hy, hz]); // +Z
+  addQuad([hx, -hy, -hz], [-hx, -hy, -hz], [-hx, hy, -hz], [hx, hy, -hz]); // -Z
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  geo.setIndex(indices);
   geo.computeVertexNormals();
   const carvedMat = mat.clone();
   carvedMat.vertexColors = true;
@@ -2338,11 +2326,17 @@ export function buildArchitecture(mats: ChurchMaterials): {
 // shadowSide stays BackSide so shadow casting is unchanged. The roof space is a real void and is left alone.
 // Written after colour-space conversion, so given directly in sRGB
 const SOLID_CORE_COLOUR = new THREE.Vector3(0x6b / 255, 0x63 / 255, 0x58 / 255);
+const solidCapCache = new WeakMap<THREE.Material, Map<string, THREE.Material>>();
 export function capSolidMasonry(root: THREE.Object3D, coreColour: THREE.Vector3 = SOLID_CORE_COLOUR): void {
-  const capped = new Map<THREE.Material, THREE.Material>();
+  const colorKey = `${coreColour.x.toFixed(4)},${coreColour.y.toFixed(4)},${coreColour.z.toFixed(4)}`;
   const capMaterial = (m: THREE.Material): THREE.Material => {
     if (!m || m.transparent || m.side !== THREE.FrontSide || m.userData.noSolidCap) return m;
-    let c = capped.get(m);
+    let byColour = solidCapCache.get(m);
+    if (!byColour) {
+      byColour = new Map();
+      solidCapCache.set(m, byColour);
+    }
+    let c = byColour.get(colorKey);
     if (c) return c;
     c = m.clone();
     c.side = THREE.DoubleSide;
@@ -2357,7 +2351,7 @@ export function capSolidMasonry(root: THREE.Object3D, coreColour: THREE.Vector3 
         );
     };
     c.customProgramCacheKey = () => 'solid-core';
-    capped.set(m, c);
+    byColour.set(colorKey, c);
     return c;
   };
   root.traverse((o) => {

@@ -30,6 +30,20 @@ TEMPLATE.innerHTML = `
   </style>
 <div class="fps" part="fps"></div><div class="body" part="body"></div>`;
 
+export interface SceneStatsElement extends HTMLElement {
+  setInfo(info: Record<string, string | number>): void;
+  frame(
+    renderer: {
+      info: {
+        render: { calls: number; triangles: number };
+        memory: { geometries: number; textures: number };
+        programs?: unknown[] | null;
+      };
+    },
+    cpuMs: number
+  ): void;
+}
+
 class SceneStats extends HTMLElement {
   #fpsEl: HTMLElement | null = null;
   #bodyEl: HTMLElement | null = null;

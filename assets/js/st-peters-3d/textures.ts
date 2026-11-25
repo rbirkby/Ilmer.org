@@ -43,104 +43,140 @@ function finishTexture(
   return canvasTexture(canvas, { srgb, anisotropy: maxAniso, repeat: [repeatX, repeatY] });
 }
 
-// 1. Buckinghamshire Coursed Limestone Rubble Wall (diffuse + bump)
-function createStoneWallMaps(maxAniso: number): CanvasMapPair {
+interface RubbleToneBand {
+  maxTone: number;
+  base: number;
+  span: number;
+  dr: number;
+  dg: number;
+  db: number;
+}
+
+interface RubbleMasonryConfig {
+  seed: number;
+  mortarColor: string;
+  mortarBump: string;
+  rows: number;
+  xStartJitter: number;
+  widthMin: number;
+  widthSpan: number;
+  heightMin: number;
+  heightSpan: number;
+  yJitter: number;
+  pad: number;
+  cornerTopX: number;
+  cornerBotX: number;
+  cornerY: number;
+  bumpMin: number;
+  bumpSpan: number;
+  tones: RubbleToneBand[];
+  speckles?: {
+    count: number;
+    shape: 'circle' | 'rect';
+    lightThreshold: number;
+    lightColor: string;
+    darkColor: string;
+  };
+  lichen?: { count: number; lightThreshold: number; lightColor: string; darkColor: string };
+  mottle: {
+    count: number;
+    minR: number;
+    spanR: number;
+    lightThreshold: number;
+    lightColor: string;
+    darkColor: string;
+  };
+}
+
+// 1. Coursed / uncoursed Buckinghamshire limestone rubble walls (main shell + West gable lower/upper contrast)
+function createRubbleMasonryMaps(cfg: RubbleMasonryConfig, maxAniso: number): CanvasMapPair {
   const w = 512;
   const h = 512;
   const col = makeCanvas(w, h);
   const bmp = makeCanvas(w, h);
   const ctx = canvas2d(col);
   const bctx = canvas2d(bmp);
-  const rand = mulberry32(1402);
+  const rand = mulberry32(cfg.seed);
 
-  // Lime mortar base
-  ctx.fillStyle = '#c5beae';
+  ctx.fillStyle = cfg.mortarColor;
   ctx.fillRect(0, 0, w, h);
-  bctx.fillStyle = '#4a4a4a';
+  bctx.fillStyle = cfg.mortarBump;
   bctx.fillRect(0, 0, w, h);
 
-  // Irregular coursed rubble stones (pale warm cream/grey limestone)
-  const rows = 24;
-  const rowH = h / rows;
-  for (let r = 0; r < rows; r++) {
-    let x = -rand() * 24;
+  const rowH = h / cfg.rows;
+  for (let r = 0; r < cfg.rows; r++) {
+    let x = -rand() * cfg.xStartJitter;
     const y = r * rowH;
-    while (x < w + 24) {
-      const sw = 26 + rand() * 52;
-      const sh = rowH * (0.72 + rand() * 0.24);
-      const sy = y + (rowH - sh) * 0.5 + (rand() - 0.5) * 1.5;
+    while (x < w + cfg.xStartJitter) {
+      const sw = cfg.widthMin + rand() * cfg.widthSpan;
+      const sh = rowH * (cfg.heightMin + rand() * cfg.heightSpan);
+      const sy = y + (rowH - sh) * 0.5 + (rand() - 0.5) * cfg.yJitter;
 
-      // Subtle stone color variation: pale chalky limestone, warm buff, cool grey, occasional flint
       const tone = rand();
-      let cr, cg, cb;
-      if (tone < 0.55) {
-        // Pale Buckinghamshire limestone
-        const v = 186 + rand() * 34;
-        cr = v + 6;
-        cg = v + 2;
-        cb = v - 10;
-      } else if (tone < 0.82) {
-        // Warm ochre-buff stone
-        const v = 175 + rand() * 32;
-        cr = v + 14;
-        cg = v + 5;
-        cb = v - 16;
-      } else if (tone < 0.95) {
-        // Cool grey weathered stone
-        const v = 152 + rand() * 30;
-        cr = v;
-        cg = v + 2;
-        cb = v + 3;
-      } else {
-        // Dark ironstone / flint nodule
-        const v = 102 + rand() * 28;
-        cr = v + 4;
-        cg = v;
-        cb = v - 6;
-      }
+      const band = cfg.tones.find((b) => tone < b.maxTone) ?? cfg.tones[cfg.tones.length - 1];
+      const v = band.base + rand() * band.span;
+      const cr = v + band.dr;
+      const cg = v + band.dg;
+      const cb = v + band.db;
 
       const drawPoly = (targetCtx: CanvasRenderingContext2D, fillStyle: string) => {
         targetCtx.fillStyle = fillStyle;
         targetCtx.beginPath();
-        const pad = 1.6;
-        const x0 = x + pad;
-        const y0 = sy + pad;
-        const x1 = x + sw - pad;
-        const y1 = sy + sh - pad;
-        targetCtx.moveTo(x0 + rand() * 3, y0 + rand() * 2);
-        targetCtx.lineTo(x1 - rand() * 3, y0 + rand() * 2);
-        targetCtx.lineTo(x1 - rand() * 2, y1 - rand() * 2);
-        targetCtx.lineTo(x0 + rand() * 2, y1 - rand() * 2);
+        const x0 = x + cfg.pad;
+        const y0 = sy + cfg.pad;
+        const x1 = x + sw - cfg.pad;
+        const y1 = sy + sh - cfg.pad;
+        targetCtx.moveTo(x0 + rand() * cfg.cornerTopX, y0 + rand() * cfg.cornerY);
+        targetCtx.lineTo(x1 - rand() * cfg.cornerTopX, y0 + rand() * cfg.cornerY);
+        targetCtx.lineTo(x1 - rand() * cfg.cornerBotX, y1 - rand() * cfg.cornerY);
+        targetCtx.lineTo(x0 + rand() * cfg.cornerBotX, y1 - rand() * cfg.cornerY);
         targetCtx.closePath();
         targetCtx.fill();
       };
 
       drawPoly(ctx, `rgb(${cr | 0},${cg | 0},${cb | 0})`);
-      const bv = (145 + rand() * 85) | 0;
+      const bv = (cfg.bumpMin + rand() * cfg.bumpSpan) | 0;
       drawPoly(bctx, `rgb(${bv},${bv},${bv})`);
 
-      // Surface grain / lichen speckles
-      for (let s = 0; s < 5; s++) {
-        const sx = x + 4 + rand() * Math.max(4, sw - 8);
-        const ssy = sy + 3 + rand() * Math.max(3, sh - 6);
-        const rad = 1 + rand() * 3;
-        ctx.fillStyle = rand() > 0.3 ? 'rgba(240,236,225,0.22)' : 'rgba(95,102,82,0.16)';
-        ctx.beginPath();
-        ctx.arc(sx, ssy, rad, 0, Math.PI * 2);
-        ctx.fill();
+      if (cfg.speckles) {
+        const sp = cfg.speckles;
+        for (let s = 0; s < sp.count; s++) {
+          ctx.fillStyle = rand() > sp.lightThreshold ? sp.lightColor : sp.darkColor;
+          if (sp.shape === 'circle') {
+            const sx = x + 4 + rand() * Math.max(4, sw - 8);
+            const ssy = sy + 3 + rand() * Math.max(3, sh - 6);
+            ctx.beginPath();
+            ctx.arc(sx, ssy, 1 + rand() * 3, 0, Math.PI * 2);
+            ctx.fill();
+          } else {
+            ctx.fillRect(x + 3 + rand() * Math.max(4, sw - 6), sy + 2 + rand() * Math.max(3, sh - 4), 2, 2);
+          }
+        }
       }
       x += sw;
     }
   }
 
-  // Subtle limewash mottling across the wall (very characteristic of St Peter's Ilmer)
-  for (let i = 0; i < 45; i++) {
+  if (cfg.lichen) {
+    const li = cfg.lichen;
+    for (let i = 0; i < li.count; i++) {
+      const lx = rand() * w;
+      const ly = rand() * h;
+      const lr = 2 + rand() * 6.5;
+      ctx.fillStyle = rand() > li.lightThreshold ? li.lightColor : li.darkColor;
+      ctx.beginPath();
+      ctx.ellipse(lx, ly, lr, lr * (0.65 + rand() * 0.5), rand() * Math.PI, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  const m = cfg.mottle;
+  for (let i = 0; i < m.count; i++) {
     const gx = rand() * w;
     const gy = rand() * h;
-    const gr = 24 + rand() * 68;
+    const gr = m.minR + rand() * m.spanR;
     const grad = ctx.createRadialGradient(gx, gy, 2, gx, gy, gr);
-    const bright = rand() > 0.4;
-    grad.addColorStop(0, bright ? 'rgba(232,228,218,0.18)' : 'rgba(128,125,108,0.13)');
+    grad.addColorStop(0, rand() > m.lightThreshold ? m.lightColor : m.darkColor);
     grad.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = grad;
     ctx.fillRect(gx - gr, gy - gr, gr * 2, gr * 2);
@@ -152,193 +188,124 @@ function createStoneWallMaps(maxAniso: number): CanvasMapPair {
   };
 }
 
-// 1b. West Gable Masonry Contrast (west-gable.jpg): slightly cooler weathered medieval rubble below former half-hip
-//     vs subtly lighter, warmer, more neatly coursed sandy-buff 1909 limestone infill above
-function createWestGableLowerMaps(maxAniso: number): CanvasMapPair {
-  const w = 512;
-  const h = 512;
-  const col = makeCanvas(w, h);
-  const bmp = makeCanvas(w, h);
-  const ctx = canvas2d(col);
-  const bctx = canvas2d(bmp);
-  const rand = mulberry32(19091);
-
-  // Weathered lime mortar harmonized with the main church walls
-  ctx.fillStyle = '#b4aea0';
-  ctx.fillRect(0, 0, w, h);
-  bctx.fillStyle = '#484848';
-  bctx.fillRect(0, 0, w, h);
-
-  // Uncoursed medieval rubblestone in natural weathered grey-buff tones (IMG_3934 & west-gable.jpg)
-  const rows = 26;
-  const rowH = h / rows;
-  for (let r = 0; r < rows; r++) {
-    let x = -rand() * 28;
-    const y = r * rowH;
-    while (x < w + 28) {
-      const sw = 24 + rand() * 52;
-      const sh = rowH * (0.7 + rand() * 0.26);
-      const sy = y + (rowH - sh) * 0.5 + (rand() - 0.5) * 2.0;
-      const tone = rand();
-      let cr, cg, cb;
-      if (tone < 0.54) {
-        // Weathered cool pale-grey limestone
-        const v = 160 + rand() * 34;
-        cr = v + 1;
-        cg = v + 2;
-        cb = v - 6;
-      } else if (tone < 0.86) {
-        // Aged warm grey-buff stone
-        const v = 166 + rand() * 30;
-        cr = v + 6;
-        cg = v + 3;
-        cb = v - 10;
-      } else {
-        // Occasional darker weathered rubble stone
-        const v = 132 + rand() * 26;
-        cr = v + 2;
-        cg = v + 2;
-        cb = v - 5;
-      }
-
-      const drawPoly = (targetCtx: CanvasRenderingContext2D, fillStyle: string) => {
-        targetCtx.fillStyle = fillStyle;
-        targetCtx.beginPath();
-        const pad = 1.6;
-        targetCtx.moveTo(x + pad + rand() * 3.5, sy + pad + rand() * 2);
-        targetCtx.lineTo(x + sw - pad - rand() * 3.5, sy + pad + rand() * 2);
-        targetCtx.lineTo(x + sw - pad - rand() * 2.5, sy + sh - pad - rand() * 2);
-        targetCtx.lineTo(x + pad + rand() * 2.5, sy + sh - pad - rand() * 2);
-        targetCtx.closePath();
-        targetCtx.fill();
-      };
-
-      drawPoly(ctx, `rgb(${cr | 0},${cg | 0},${cb | 0})`);
-      const bv = (140 + rand() * 88) | 0;
-      drawPoly(bctx, `rgb(${bv},${bv},${bv})`);
-      x += sw;
-    }
+const STONE_WALL_MAIN: RubbleMasonryConfig = {
+  seed: 1402,
+  mortarColor: '#c5beae',
+  mortarBump: '#4a4a4a',
+  rows: 24,
+  xStartJitter: 24,
+  widthMin: 26,
+  widthSpan: 52,
+  heightMin: 0.72,
+  heightSpan: 0.24,
+  yJitter: 1.5,
+  pad: 1.6,
+  cornerTopX: 3,
+  cornerBotX: 2,
+  cornerY: 2,
+  bumpMin: 145,
+  bumpSpan: 85,
+  tones: [
+    { maxTone: 0.55, base: 186, span: 34, dr: 6, dg: 2, db: -10 }, // Pale Buckinghamshire limestone
+    { maxTone: 0.82, base: 175, span: 32, dr: 14, dg: 5, db: -16 }, // Warm ochre-buff stone
+    { maxTone: 0.95, base: 152, span: 30, dr: 0, dg: 2, db: 3 }, // Cool grey weathered stone
+    { maxTone: 1, base: 102, span: 28, dr: 4, dg: 0, db: -6 } // Dark ironstone / flint nodule
+  ],
+  speckles: {
+    count: 5,
+    shape: 'circle',
+    lightThreshold: 0.3,
+    lightColor: 'rgba(240,236,225,0.22)',
+    darkColor: 'rgba(95,102,82,0.16)'
+  },
+  mottle: {
+    count: 45,
+    minR: 24,
+    spanR: 68,
+    lightThreshold: 0.4,
+    lightColor: 'rgba(232,228,218,0.18)',
+    darkColor: 'rgba(128,125,108,0.13)'
   }
+};
 
-  // Subtle pale grey-white lichen flecks across the older lower masonry (west-gable.jpg)
-  for (let i = 0; i < 65; i++) {
-    const lx = rand() * w;
-    const ly = rand() * h;
-    const lr = 2 + rand() * 6.5;
-    ctx.fillStyle = rand() > 0.3 ? 'rgba(226,226,216,0.28)' : 'rgba(138,144,118,0.2)';
-    ctx.beginPath();
-    ctx.ellipse(lx, ly, lr, lr * (0.65 + rand() * 0.5), rand() * Math.PI, 0, Math.PI * 2);
-    ctx.fill();
+// West gable contrast (west-gable.jpg): cooler weathered medieval rubble below former half-hip
+const STONE_WALL_WEST_LOWER: RubbleMasonryConfig = {
+  seed: 19091,
+  mortarColor: '#b4aea0',
+  mortarBump: '#484848',
+  rows: 26,
+  xStartJitter: 28,
+  widthMin: 24,
+  widthSpan: 52,
+  heightMin: 0.7,
+  heightSpan: 0.26,
+  yJitter: 2.0,
+  pad: 1.6,
+  cornerTopX: 3.5,
+  cornerBotX: 2.5,
+  cornerY: 2,
+  bumpMin: 140,
+  bumpSpan: 88,
+  tones: [
+    { maxTone: 0.54, base: 160, span: 34, dr: 1, dg: 2, db: -6 },
+    { maxTone: 0.86, base: 166, span: 30, dr: 6, dg: 3, db: -10 },
+    { maxTone: 1, base: 132, span: 26, dr: 2, dg: 2, db: -5 }
+  ],
+  lichen: {
+    count: 65,
+    lightThreshold: 0.3,
+    lightColor: 'rgba(226,226,216,0.28)',
+    darkColor: 'rgba(138,144,118,0.2)'
+  },
+  mottle: {
+    count: 36,
+    minR: 24,
+    spanR: 60,
+    lightThreshold: 0.45,
+    lightColor: 'rgba(226,222,212,0.14)',
+    darkColor: 'rgba(126,124,112,0.12)'
   }
+};
 
-  // Soft natural limewash mottling matching the rest of the church exterior
-  for (let i = 0; i < 36; i++) {
-    const gx = rand() * w;
-    const gy = rand() * h;
-    const gr = 24 + rand() * 60;
-    const grad = ctx.createRadialGradient(gx, gy, 2, gx, gy, gr);
-    const bright = rand() > 0.45;
-    grad.addColorStop(0, bright ? 'rgba(226,222,212,0.14)' : 'rgba(126,124,112,0.12)');
-    grad.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(gx - gr, gy - gr, gr * 2, gr * 2);
+// Neatly coursed, subtly warmer sandy-buff 1909 gable infill stonework above former half-hip
+const STONE_WALL_WEST_UPPER: RubbleMasonryConfig = {
+  seed: 19092,
+  mortarColor: '#c8bfa8',
+  mortarBump: '#585858',
+  rows: 28,
+  xStartJitter: 18,
+  widthMin: 28,
+  widthSpan: 44,
+  heightMin: 0.8,
+  heightSpan: 0.14,
+  yJitter: 0.8,
+  pad: 1.25,
+  cornerTopX: 1.5,
+  cornerBotX: 1.2,
+  cornerY: 1,
+  bumpMin: 160,
+  bumpSpan: 62,
+  tones: [
+    { maxTone: 0.62, base: 184, span: 22, dr: 9, dg: 3, db: -18 },
+    { maxTone: 0.88, base: 176, span: 22, dr: 11, dg: 4, db: -19 },
+    { maxTone: 1, base: 166, span: 20, dr: 4, dg: 2, db: -11 }
+  ],
+  speckles: {
+    count: 3,
+    shape: 'rect',
+    lightThreshold: 0.45,
+    lightColor: 'rgba(240,234,218,0.18)',
+    darkColor: 'rgba(132,122,98,0.14)'
+  },
+  mottle: {
+    count: 28,
+    minR: 20,
+    spanR: 54,
+    lightThreshold: 0.5,
+    lightColor: 'rgba(140,136,118,0.12)',
+    darkColor: 'rgba(232,226,208,0.1)'
   }
-
-  return {
-    map: finishTexture(col, { srgb: true, maxAniso }),
-    bumpMap: finishTexture(bmp, { srgb: false, maxAniso })
-  };
-}
-
-function createWestGableUpperMaps(maxAniso: number): CanvasMapPair {
-  const w = 512;
-  const h = 512;
-  const col = makeCanvas(w, h);
-  const bmp = makeCanvas(w, h);
-  const ctx = canvas2d(col);
-  const bctx = canvas2d(bmp);
-  const rand = mulberry32(19092);
-
-  // Soft warm cream-buff lime mortar base
-  ctx.fillStyle = '#c8bfa8';
-  ctx.fillRect(0, 0, w, h);
-  bctx.fillStyle = '#585858';
-  bctx.fillRect(0, 0, w, h);
-
-  // Neatly coursed, subtly warmer sandy-buff 1909 gable infill stonework (west-gable.jpg)
-  const rows = 28;
-  const rowH = h / rows;
-  for (let r = 0; r < rows; r++) {
-    let x = -rand() * 18;
-    const y = r * rowH;
-    while (x < w + 18) {
-      const sw = 28 + rand() * 44;
-      const sh = rowH * (0.8 + rand() * 0.14);
-      const sy = y + (rowH - sh) * 0.5 + (rand() - 0.5) * 0.8;
-      const tone = rand();
-      let cr, cg, cb;
-      if (tone < 0.62) {
-        // Warm sandy-buff limestone (only gently warmer/lighter than lower medieval rubble)
-        const v = 184 + rand() * 22;
-        cr = v + 9;
-        cg = v + 3;
-        cb = v - 18;
-      } else if (tone < 0.88) {
-        // Soft weathered buff-ochre limestone
-        const v = 176 + rand() * 22;
-        cr = v + 11;
-        cg = v + 4;
-        cb = v - 19;
-      } else {
-        // Muted warm grey-buff block
-        const v = 166 + rand() * 20;
-        cr = v + 4;
-        cg = v + 2;
-        cb = v - 11;
-      }
-
-      const drawBlock = (targetCtx: CanvasRenderingContext2D, fillStyle: string) => {
-        targetCtx.fillStyle = fillStyle;
-        targetCtx.beginPath();
-        const pad = 1.25;
-        targetCtx.moveTo(x + pad + rand() * 1.5, sy + pad + rand() * 1);
-        targetCtx.lineTo(x + sw - pad - rand() * 1.5, sy + pad + rand() * 1);
-        targetCtx.lineTo(x + sw - pad - rand() * 1.2, sy + sh - pad - rand() * 1);
-        targetCtx.lineTo(x + pad + rand() * 1.2, sy + sh - pad - rand() * 1);
-        targetCtx.closePath();
-        targetCtx.fill();
-      };
-
-      drawBlock(ctx, `rgb(${cr | 0},${cg | 0},${cb | 0})`);
-      const bv = (160 + rand() * 62) | 0;
-      drawBlock(bctx, `rgb(${bv},${bv},${bv})`);
-
-      // Fine sandy limestone texture speckles
-      for (let s = 0; s < 3; s++) {
-        ctx.fillStyle = rand() > 0.45 ? 'rgba(240,234,218,0.18)' : 'rgba(132,122,98,0.14)';
-        ctx.fillRect(x + 3 + rand() * Math.max(4, sw - 6), sy + 2 + rand() * Math.max(3, sh - 4), 2, 2);
-      }
-      x += sw;
-    }
-  }
-
-  // Light century-old weathering mottling so the 1909 infill reads organically aged
-  for (let i = 0; i < 28; i++) {
-    const gx = rand() * w;
-    const gy = rand() * h;
-    const gr = 20 + rand() * 54;
-    const grad = ctx.createRadialGradient(gx, gy, 2, gx, gy, gr);
-    grad.addColorStop(0, rand() > 0.5 ? 'rgba(140,136,118,0.12)' : 'rgba(232,226,208,0.1)');
-    grad.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(gx - gr, gy - gr, gr * 2, gr * 2);
-  }
-
-  return {
-    map: finishTexture(col, { srgb: true, maxAniso }),
-    bumpMap: finishTexture(bmp, { srgb: false, maxAniso })
-  };
-}
+};
 
 // 2. Ashlar Dressed Limestone (quoins, buttresses, window surrounds, reredos, font)
 function createAshlarMaps(maxAniso: number): CanvasMapPair {
@@ -1633,9 +1600,9 @@ function createDedicationStone1860Maps(maxAniso = 4): CanvasMapPair {
 export function createMaterials(renderer: THREE.WebGLRenderer) {
   const maxAniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
 
-  const stoneMaps = createStoneWallMaps(maxAniso);
-  const westGableLowerMaps = createWestGableLowerMaps(maxAniso);
-  const westGableUpperMaps = createWestGableUpperMaps(maxAniso);
+  const stoneMaps = createRubbleMasonryMaps(STONE_WALL_MAIN, maxAniso);
+  const westGableLowerMaps = createRubbleMasonryMaps(STONE_WALL_WEST_LOWER, maxAniso);
+  const westGableUpperMaps = createRubbleMasonryMaps(STONE_WALL_WEST_UPPER, maxAniso);
   const ashlarMaps = createAshlarMaps(maxAniso);
   const graniteMap = createGraniteMaps(maxAniso);
   const clayRoofMaps = createClayRoofMaps(maxAniso);
@@ -1989,6 +1956,8 @@ export function createMaterials(renderer: THREE.WebGLRenderer) {
     })
   };
 }
+
+export type ChurchMaterials = ReturnType<typeof createMaterials>;
 
 // Plain leaded glazing in place of a stained-glass window (the church before its stained glass, c. 1900). The
 // window's own stained texture is reworked: the stone tracery and surround painted on it stay, while all its glass,

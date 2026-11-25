@@ -288,6 +288,7 @@ export function createChurchAudio() {
   let reverbDry: GainNode | null = null;
   let masterGain: GainNode | null = null;
   let organBus: GainNode | null = null;
+  let fxMuteGain: GainNode | null = null;
   let timer: ReturnType<typeof setInterval> | null = null;
   let muted = false;
   let started = false;
@@ -295,7 +296,11 @@ export function createChurchAudio() {
   let nextBarTime = 0;
   let targetGain = 0.075;
   let targetCutoff = 680;
-  const activeNodes = new Set<OscillatorNode>();
+  let lastAppliedGain = NaN;
+  let lastAppliedCutoff = NaN;
+  let lastAppliedMuted: boolean | null = null;
+  const EMPTY_NOTES = { manual: new Set<number>(), pedal: new Set<number>() };
+  const noiseBufferCache = new Map<number, AudioBuffer>();
   // Notes scheduled on the audio clock, so the organ console can show what is sounding: { midi, start, end, pedal }
   let scheduledNotes: Array<{ midi: number; start: number; end: number; pedal: boolean }> = [];
   // Note envelopes still sounding or yet to sound, so a hymn can cut the voluntary short
@@ -385,6 +390,10 @@ export function createChurchAudio() {
     masterGain = context.createGain();
     masterGain.gain.value = muted ? 0.0001 : targetGain;
 
+    fxMuteGain = context.createGain();
+    fxMuteGain.gain.value = muted ? 0.0001 : 1;
+    fxMuteGain.connect(context.destination);
+
     organBus.connect(reverbDry);
     organBus.connect(convolver);
     convolver.connect(reverbWet);
@@ -442,9 +451,10 @@ export function createChurchAudio() {
     noteGain.connect(organBus);
     noteGains.add(noteGain);
 
-    for (const p of partials) {
-      const osc = context.createOscillator();
-      const pGain = context.createGain();
+    const ctx = context;
+    partials.forEach((p, idx) => {
+      const osc = ctx.createOscillator();
+      const pGain = ctx.createGain();
       osc.type = p.type;
       // Subtle chorusing detune (characteristic of twin rank organ pipes)
       osc.frequency.setValueAtTime(freq * p.mult, startTime);
@@ -453,14 +463,14 @@ export function createChurchAudio() {
       osc.connect(pGain);
       pGain.connect(noteGain);
 
-      activeNodes.add(osc);
-      osc.onended = () => {
-        activeNodes.delete(osc);
-        noteGains.delete(noteGain);
-      };
+      if (idx === 0) {
+        osc.onended = () => {
+          noteGains.delete(noteGain);
+        };
+      }
       osc.start(startTime);
       osc.stop(stopTime + 0.04);
-    }
+    });
   }
 
   function schedule() {
@@ -551,8 +561,18 @@ export function createChurchAudio() {
 
   function applyGainAndFilter() {
     if (!context || !masterGain || !muffleFilter) return;
-    const now = context.currentTime;
     const effectiveGain = muted ? 0.0001 : targetGain;
+    if (
+      lastAppliedMuted === muted &&
+      Math.abs(effectiveGain - lastAppliedGain) < 1e-4 &&
+      Math.abs(targetCutoff - lastAppliedCutoff) < 0.5
+    ) {
+      return;
+    }
+    lastAppliedMuted = muted;
+    lastAppliedGain = effectiveGain;
+    lastAppliedCutoff = targetCutoff;
+    const now = context.currentTime;
     masterGain.gain.setTargetAtTime(effectiveGain, now, muted ? 0.08 : 0.24);
     muffleFilter.frequency.setTargetAtTime(targetCutoff, now, 0.24);
   }
@@ -599,9 +619,9 @@ export function createChurchAudio() {
 
   // MIDI notes sounding right now, split into manual and pedal, for animating the console
   function getSoundingNotes(): { manual: Set<number>; pedal: Set<number> } {
+    if (!context || muted || context.state !== 'running') return EMPTY_NOTES;
     const manual = new Set<number>();
     const pedal = new Set<number>();
-    if (!context || muted || context.state !== 'running') return { manual, pedal };
     const now = context.currentTime;
     scheduledNotes = scheduledNotes.filter((n) => n.end > now);
     for (const n of scheduledNotes) {
@@ -612,6 +632,7 @@ export function createChurchAudio() {
 
   function setMuted(isMuted: boolean) {
     muted = Boolean(isMuted);
+    lastAppliedMuted = null;
     if (muted) {
       scheduledNotes = [];
       hymnEvents = null; // muting ends a hymn; unmuting returns to the voluntary
@@ -619,12 +640,23 @@ export function createChurchAudio() {
         clearInterval(timer);
         timer = null;
       }
-      if (context && masterGain) {
+      if (context) {
         const now = context.currentTime;
-        masterGain.gain.cancelScheduledValues(now);
-        masterGain.gain.setTargetAtTime(0.0001, now, 0.06);
+        if (masterGain) {
+          masterGain.gain.cancelScheduledValues(now);
+          masterGain.gain.setTargetAtTime(0.0001, now, 0.06);
+        }
+        if (fxMuteGain) {
+          fxMuteGain.gain.cancelScheduledValues(now);
+          fxMuteGain.gain.setTargetAtTime(0.0001, now, 0.04);
+        }
       }
     } else {
+      if (context && fxMuteGain) {
+        const now = context.currentTime;
+        fxMuteGain.gain.cancelScheduledValues(now);
+        fxMuteGain.gain.setTargetAtTime(1, now, 0.04);
+      }
       start();
     }
   }
@@ -633,29 +665,33 @@ export function createChurchAudio() {
   function noiseBurst(seconds: number) {
     const ctx = requireContext();
     const len = Math.floor(ctx.sampleRate * seconds);
-    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+    let buf = noiseBufferCache.get(len);
+    if (!buf) {
+      buf = ctx.createBuffer(1, len, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+      noiseBufferCache.set(len, buf);
+    }
     const noise = ctx.createBufferSource();
     noise.buffer = buf;
     return noise;
   }
 
-  // Bells: their own bus straight to the speakers (they ring out of the open louvres, so the nave's stone
-  // muffling doesn't apply), with a touch of the stone reverb
+  // Bells: their own bus routed through fxMuteGain (they ring out of the open louvres, so the nave's stone
+  // muffling doesn't apply, while muting still silences them), with a touch of the stone reverb
   let bellBus: GainNode | null = null;
   function ensureBellBus() {
-    if (bellBus || !context) return;
+    if (bellBus || !context || !fxMuteGain) return;
     bellBus = context.createGain();
     bellBus.gain.value = 1;
     const wet = context.createGain();
     wet.gain.value = 0.35;
     const conv = context.createConvolver();
     conv.buffer = stoneReverbIR();
-    bellBus.connect(context.destination);
+    bellBus.connect(fxMuteGain);
     bellBus.connect(conv);
     conv.connect(wet);
-    wet.connect(context.destination);
+    wet.connect(fxMuteGain);
   }
 
   // One blow of the clapper: a bell's partials relative to its nominal (hum, prime, tierce, quint, nominal,
@@ -776,7 +812,7 @@ export function createChurchAudio() {
     const wet = ctx.createGain();
     wet.gain.value = 0.55;
     conv.connect(wet);
-    wet.connect(ctx.destination);
+    wet.connect(fxMuteGain ?? ctx.destination);
     clangReverb = conv;
     return conv;
   }
@@ -789,7 +825,7 @@ export function createChurchAudio() {
     air.type = 'lowpass';
     air.frequency.value = 12000 / (1 + distance / 12);
     voice.connect(air);
-    air.connect(context.destination);
+    air.connect(fxMuteGain ?? context.destination);
     air.connect(ensureClangReverb());
     const baseHz = 260 * (1 + (Math.random() - 0.5) * 0.05); // no two knocks quite alike
     strikeIron(voice, t0, baseHz, 1);
@@ -819,3 +855,5 @@ export function createChurchAudio() {
     playGateClang
   };
 }
+
+export type ChurchAudio = ReturnType<typeof createChurchAudio>;

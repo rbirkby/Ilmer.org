@@ -2,7 +2,7 @@
 // meshes from these functions, and the tree-placement script uses the same ones, so a verge clearance
 // computed ahead of time still matches the roads the page draws.
 
-import type * as Three from 'three';
+import * as THREE from 'three';
 import type { TerrainGrid } from './ilmer-terrain.ts';
 import type { Point, Triangle } from './ilmer-trees.ts';
 
@@ -10,10 +10,9 @@ type GroundHeight = (x: number, z: number) => number;
 type MapPoint = (x: number, y: number) => Point;
 
 export function drapeOntoTerrain(
-  THREE: typeof Three,
   terrain: TerrainGrid,
   groundHeight: GroundHeight,
-  sourceGeometry: Three.BufferGeometry,
+  sourceGeometry: THREE.BufferGeometry,
   elevation: number,
   fixedHeight: number | null = null
 ) {
@@ -95,7 +94,6 @@ export function drapeOntoTerrain(
 }
 
 export function drapeMapPolygon(
-  THREE: typeof Three,
   terrain: TerrainGrid,
   groundHeight: GroundHeight,
   mapPoint: MapPoint,
@@ -111,13 +109,12 @@ export function drapeMapPolygon(
   });
   shape.closePath();
   const outline = new THREE.ShapeGeometry(shape);
-  const draped = drapeOntoTerrain(THREE, terrain, groundHeight, outline.toNonIndexed(), elevation, fixedHeight);
+  const draped = drapeOntoTerrain(terrain, groundHeight, outline.toNonIndexed(), elevation, fixedHeight);
   outline.dispose();
   return draped;
 }
 
 export function drapeTrack(
-  THREE: typeof Three,
   terrain: TerrainGrid,
   groundHeight: GroundHeight,
   mapPoint: MapPoint,
@@ -160,12 +157,12 @@ export function drapeTrack(
   for (let i = 0; i < flatPositions.count; i++) {
     flatPositions.setXYZ(i, flatPositions.getX(i), -flatPositions.getZ(i), 0);
   }
-  const draped = drapeOntoTerrain(THREE, terrain, groundHeight, flat, elevation);
+  const draped = drapeOntoTerrain(terrain, groundHeight, flat, elevation);
   geometry.dispose();
   return draped;
 }
 
-export function trianglesXZ(geometry: Three.BufferGeometry) {
+export function trianglesXZ(geometry: THREE.BufferGeometry) {
   const positions = geometry.getAttribute('position');
   const triangles: Triangle[] = [];
   for (let i = 0; i < positions.count; i += 3) {

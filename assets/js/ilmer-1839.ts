@@ -212,7 +212,7 @@ async function start() {
   scene.add(landscape, mappedGround, waterFeatures, structures, labels);
   const villageFog = new THREE.FogExp2(AUTUMN_SUN.fogColor, AUTUMN_SUN.fogDensity);
   scene.fog = villageFog;
-  const sky = createVillageSky(THREE, 1500);
+  const sky = createVillageSky(1500);
   scene.add(sky.mesh);
   scene.add(new THREE.HemisphereLight(AUTUMN_SUN.hemiSky, AUTUMN_SUN.hemiGround, AUTUMN_SUN.hemiIntensity));
   const sun = new THREE.DirectionalLight(AUTUMN_SUN.sunColor, AUTUMN_SUN.sunIntensity);
@@ -379,9 +379,7 @@ async function start() {
     parent: THREE.Object3D = mappedGround,
     fixedHeight: null = null
   ) {
-    const geometry = rememberDrape(
-      drapeMapPolygon(THREE, terrain, groundHeight, mapPoint, points, elevation, fixedHeight)
-    );
+    const geometry = rememberDrape(drapeMapPolygon(terrain, groundHeight, mapPoint, points, elevation, fixedHeight));
     const mesh = new THREE.Mesh(geometry, mat);
     mesh.receiveShadow = true;
     parent.add(mesh);
@@ -409,7 +407,7 @@ async function start() {
     elevation = 0.14,
     road = false
   ) {
-    const geometry = rememberDrape(drapeTrack(THREE, terrain, groundHeight, mapPoint, points, width, elevation));
+    const geometry = rememberDrape(drapeTrack(terrain, groundHeight, mapPoint, points, width, elevation));
     if (road) {
       const positions = geometry.attributes.position;
       for (let i = 0; i < positions.count; i += 3)
@@ -1246,7 +1244,7 @@ async function start() {
 
   // Positions were cleared of roads, the cart route and ponds when assets/ilmer-placed-trees.json was built.
   const { trees: mappedTrees, excluded: excludedTrees } = placed;
-  const { geometry: treeCrown, leavesPerCrown } = createTreeCrown(THREE);
+  const { geometry: treeCrown, leavesPerCrown } = createTreeCrown();
   const treeSize = (tree: PlacedTree) => (tree.orchard ? 3.5 : 5.5 + (tree.renderIndex % 3) * 0.5);
   const treeTrunks = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), trunkMaterial, mappedTrees.length);
   const treeCrowns = leafMaterials.map(
@@ -1375,7 +1373,7 @@ async function start() {
       ridePoint(inwardDistance),
       (px: number, pz: number) => mappedRoadPolygons.some((polygon) => withinField(polygon, px, pz, 0.3))
     );
-    const post = createFingerpost(THREE, text);
+    const post = createFingerpost(text);
     post.name = `signpost-${id}`;
     post.position.set(x, groundHeight(x, z) - 0.05, z);
     post.rotation.y = -heading;
@@ -1591,7 +1589,7 @@ async function start() {
   mapPlane.receiveShadow = true;
   scene.add(mapPlane);
 
-  const { cart, horse, driver, update: animateHorseAndCart, reinPoints } = createHorseAndCart(THREE, { timber });
+  const { cart, horse, driver, update: animateHorseAndCart, reinPoints } = createHorseAndCart({ timber });
   scene.add(cart, horse);
   cart.visible = horse.visible = false;
   const reinsGeometry = new THREE.BufferGeometry().setFromPoints(Array.from({ length: 4 }, () => new THREE.Vector3()));

@@ -77,7 +77,8 @@ export function createFader() {
   let shadowsChanged = false;
 
   function enlist(fade: Fade, obj: THREE.Object3D) {
-    obj.traverse((o) => {
+    // traverseVisible skips hidden pre-merged originals and hidden opposite-era subtrees
+    obj.traverseVisible((o) => {
       if (o instanceof THREE.Light) {
         let l = lights.get(o);
         if (!l) lights.set(o, (l = { base: o.intensity, written: NaN, fades: new Set() }));

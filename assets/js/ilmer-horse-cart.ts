@@ -12,13 +12,13 @@
 //
 // Units are metres. Each group's origin is on the ground; local -z points forward along the road.
 
-import type * as Three from 'three';
+import * as THREE from 'three';
 
 type Vec3 = [number, number, number];
 
 interface Leg {
-  top: Three.Group;
-  joint: Three.Group;
+  top: THREE.Group;
+  joint: THREE.Group;
   fore: boolean;
   baseY: number;
 }
@@ -52,8 +52,8 @@ export function walkPose(phase: number, reach: number) {
   return { swing: -reach + 2 * reach * eased, flex: Math.sin(Math.PI * w) };
 }
 
-export function createHorseAndCart(THREE: typeof Three, { timber }: { timber: Three.Material }) {
-  const material = (color: number, extra: Three.MeshStandardMaterialParameters = {}) =>
+export function createHorseAndCart({ timber }: { timber: THREE.Material }) {
+  const material = (color: number, extra: THREE.MeshStandardMaterialParameters = {}) =>
     new THREE.MeshStandardMaterial({ color, roughness: 0.9, ...extra });
   const coat = material(0x5b3822, { roughness: 0.75 });
   const points = material(0x1f1814, { roughness: 0.85 });
@@ -78,7 +78,7 @@ export function createHorseAndCart(THREE: typeof Three, { timber }: { timber: Th
   const sacking = material(0xb9a47a);
   const straw = material(0xd1b66a);
 
-  function add(parent: Three.Object3D, geometry: Three.BufferGeometry, mat: Three.Material, x = 0, y = 0, z = 0) {
+  function add(parent: THREE.Object3D, geometry: THREE.BufferGeometry, mat: THREE.Material, x = 0, y = 0, z = 0) {
     const mesh = new THREE.Mesh(geometry, mat);
     mesh.position.set(x, y, z);
     // The cart tours the lane all the time. It receives shadows but does not cast them, so the village
@@ -89,31 +89,31 @@ export function createHorseAndCart(THREE: typeof Three, { timber }: { timber: Th
     return mesh;
   }
   const box = (
-    parent: Three.Object3D,
+    parent: THREE.Object3D,
     w: number,
     h: number,
     d: number,
     x: number,
     y: number,
     z: number,
-    mat: Three.Material
+    mat: THREE.Material
   ) => add(parent, new THREE.BoxGeometry(w, h, d), mat, x, y, z);
   function ellipsoid(
-    parent: Three.Object3D,
+    parent: THREE.Object3D,
     rx: number,
     ry: number,
     rz: number,
     x: number,
     y: number,
     z: number,
-    mat: Three.Material
+    mat: THREE.Material
   ) {
     const mesh = add(parent, new THREE.SphereGeometry(1, 18, 12), mat, x, y, z);
     mesh.scale.set(rx, ry, rz);
     return mesh;
   }
   // A tapered round section between two points, rTop at `b`
-  function rod(parent: Three.Object3D, a: Vec3, b: Vec3, rA: number, rB: number, mat: Three.Material, segments = 10) {
+  function rod(parent: THREE.Object3D, a: Vec3, b: Vec3, rA: number, rB: number, mat: THREE.Material, segments = 10) {
     const start = new THREE.Vector3(...a);
     const end = new THREE.Vector3(...b);
     const length = start.distanceTo(end);
@@ -122,7 +122,7 @@ export function createHorseAndCart(THREE: typeof Three, { timber }: { timber: Th
     mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), end.sub(start).normalize());
     return mesh;
   }
-  function pivot(parent: Three.Object3D, x: number, y: number, z: number) {
+  function pivot(parent: THREE.Object3D, x: number, y: number, z: number) {
     const group = new THREE.Group();
     group.position.set(x, y, z);
     parent.add(group);
@@ -246,7 +246,7 @@ export function createHorseAndCart(THREE: typeof Three, { timber }: { timber: Th
   rod(cart, [-1.1, wheelY, 0], [1.1, wheelY, 0], 0.045, 0.045, iron, 8);
   box(cart, 1.5, 0.12, 0.14, 0, wheelY + 0.12, 0, cartRed);
 
-  const wheels: Three.Group[] = [];
+  const wheels: THREE.Group[] = [];
   for (const side of [-1, 1]) {
     const wheel = pivot(cart, side * 1.0, wheelY, 0);
     const tyre = add(wheel, new THREE.TorusGeometry(CART_WHEEL_RADIUS - 0.02, 0.03, 6, 32), iron);
