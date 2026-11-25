@@ -58,9 +58,8 @@ function isMergeable(
 
 /**
  * Merge static meshes under each root into a few large meshes.
- * @param {THREE.Object3D[]} roots groups to merge within (each is its own container)
- * @param {{ dynamic?: Set<THREE.Object3D> }} [options] objects that move at run time; each becomes a container
- * @returns {{ before: number, after: number, merged: number }} mesh counts, for the stats overlay
+ * `roots` are each their own container; `dynamic` objects also stay as separate containers.
+ * Returns `{ before, after, merged }` mesh counts for the stats overlay.
  */
 export function mergeStaticMeshes(
   roots: THREE.Object3D[],
@@ -205,15 +204,11 @@ export function mergeStaticMeshes(
  * transforms change. Saves tagging every key, pivot & hammer by hand in the model files.
  * Poses are compared at every checkpoint, not just at the end: a hammer that strikes and falls back to rest by the
  * last step still counts as moving.
- * @param {THREE.Object3D[]} roots
- * @param {(checkpoint: () => void) => void} exercise runs the animators, calling checkpoint() after each step
- * @param {() => void} settle brings the animators back to rest afterwards
- * @returns {Set<THREE.Object3D>}
  */
 export function findAnimatedObjects(
   roots: THREE.Object3D[],
   exercise: (checkpoint: () => void) => void,
-  settle: (notes?: { manual: Set<number>; pedal: Set<number> } | null) => void
+  settle: () => void
 ) {
   const snap = new Map<THREE.Object3D, [THREE.Vector3, THREE.Quaternion, THREE.Vector3, boolean]>();
   for (const root of roots) {

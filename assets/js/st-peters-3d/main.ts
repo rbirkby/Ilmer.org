@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { createSkyDome } from '../ilmer-sky.ts';
 import { bindFullscreenToggle } from '../scene-fullscreen.ts';
 import { createMaterials, createPlainGlazingMaterial } from './textures.ts';
+import { releaseCanvasBackingStores } from './canvas-utils.ts';
 import { buildArchitecture } from './architecture.ts';
 import { buildInterior } from './interior.ts';
 import { buildChurchyard } from './churchyard.ts';
@@ -303,11 +304,13 @@ if (stage) {
       }
       o.material = era === '1900' ? o.userData.wideMat : o.userData.todayMat;
     }
+    if (era === '1900') releaseCanvasBackingStores(renderer);
   }
 
   function setCutaway(enabled: boolean) {
     state.cutaway = enabled;
     shadowsDirty = true;
+    if (enabled) bellRinger.ensureBellMaps(renderer);
     for (const g of [roofGroup, ceilingGroup, atmosphere.group]) fader.setVisible(g, !enabled);
     const btn = document.getElementById('btn-cutaway');
     if (btn) btn.setAttribute('aria-pressed', String(enabled));
@@ -386,6 +389,7 @@ if (stage) {
 
   function selectPreset(key: string | undefined) {
     if (!key || !(key in CAMERA_PRESETS)) return;
+    if (key === 'bells' || key === 'west-belfry' || key === 'cutaway-plan') bellRinger.ensureBellMaps(renderer);
     state.activePreset = key;
     allHTMLElements('[data-preset]').forEach((b) => {
       b.setAttribute('aria-pressed', String(b.dataset.preset === key));
@@ -417,6 +421,7 @@ if (stage) {
   }
 
   function startChurchTour() {
+    bellRinger.ensureBellMaps(renderer);
     state.activePreset = null;
     allHTMLElements('[data-preset]').forEach((b) => {
       b.setAttribute('aria-pressed', 'false');
@@ -597,6 +602,7 @@ if (stage) {
   );
 
   function ringBells() {
+    bellRinger.ensureBellMaps(renderer);
     const ringStart = elapsed;
     const strikes = bellRinger.ring(ringStart);
     if (strikes.length === 0 || churchAudio.isMuted()) return;
@@ -610,6 +616,13 @@ if (stage) {
   }
 
   function updateBells() {
+    if (
+      !bellRinger.hasMaps() &&
+      camera.position.y > DIM.tower.baseY - 0.8 &&
+      Math.hypot(camera.position.x - DIM.tower.xCenter, camera.position.z - DIM.tower.zCenter) < 7
+    ) {
+      bellRinger.ensureBellMaps(renderer);
+    }
     if (state.ringBellsAt !== null && elapsed >= state.ringBellsAt) {
       state.ringBellsAt = null;
       ringBells();
@@ -855,6 +868,7 @@ if (stage) {
       christmasEffect.setMood(state.lighting);
       churchyardGroup.add(christmasEffect.group);
       eraObjects.push(christmasEffect.group);
+      releaseCanvasBackingStores(renderer);
       shadowsDirty = true;
     });
   }
@@ -925,6 +939,7 @@ if (stage) {
   // frame to compile the shadow-depth programs it actually draws.
   renderer.compileAsync(scene, camera).then(
     () => {
+      releaseCanvasBackingStores(renderer);
       if (statusEl) statusEl.hidden = true;
       stage.dataset.state = 'ready';
       animate();

@@ -537,3 +537,55 @@ test('Willow sprite atlas exists and Willow roams safely up and down the nave an
   assert.ok(willowFloorY(-6.2, 0) > DIM.naveFloorY, 'vestry carpet sits above bare quarry tiles');
   assert.ok(willowFloorY(2.6, 0) > DIM.naveFloorY, 'east carpet runner sits above bare quarry tiles');
 });
+
+test('releaseCanvasBackingStores uploads static textures in two passes before zeroing canvases', async () => {
+  const { canvasTexture, registerStaticCanvasTexture, releaseCanvasBackingStores } =
+    await import('../assets/js/st-peters-3d/canvas-utils.ts');
+
+  const fakeCanvas = (w: number, h: number) =>
+    ({ width: w, height: h, getContext: () => ({}) }) as unknown as HTMLCanvasElement;
+
+  const shared = fakeCanvas(512, 512);
+  const retained = fakeCanvas(1024, 1024);
+  const texA = canvasTexture(shared);
+  const texB = registerStaticCanvasTexture(texA.clone());
+  const texRetained = canvasTexture(retained, { retainBacking: true });
+
+  const uploadedDims: Array<[number, number]> = [];
+  const uploaded: unknown[] = [];
+  const fakeRenderer = {
+    initTexture(tex: { image?: unknown }) {
+      uploaded.push(tex);
+      const img = tex.image as { width: number; height: number };
+      uploadedDims.push([img.width, img.height]);
+    }
+  };
+
+  const count = releaseCanvasBackingStores(fakeRenderer);
+  assert.equal(count, 1, 'only the single unique static canvas should be released');
+  assert.deepEqual(uploaded, [texA, texB], 'both original and cloned static textures upload; retained does not');
+  assert.deepEqual(
+    uploadedDims,
+    [
+      [512, 512],
+      [512, 512]
+    ],
+    'both cloned textures see intact pixels during Pass 1 before Pass 2 zeros the shared canvas'
+  );
+  assert.equal(shared.width, 0);
+  assert.equal(shared.height, 0);
+  assert.equal(retained.width, 1024, 'retainBacking: true preserves the canvas for later 1900/font redraws');
+  assert.equal(retained.height, 1024);
+  assert.equal(texRetained.image, retained);
+  assert.equal(releaseCanvasBackingStores(fakeRenderer), 0, 'second call is an idempotent no-op');
+});
+
+test('belfry bell textures are downscaled to 1024x768 and painted lazily on belfry entry', () => {
+  const belfry = readFileSync(new URL('assets/js/st-peters-3d/belfry.ts', root), 'utf8');
+  const main = readFileSync(new URL('assets/js/st-peters-3d/main.ts', root), 'utf8');
+  assert.match(belfry, /const ROW = 32;/);
+  assert.match(belfry, /const W = 1024;/);
+  assert.match(belfry, /function ensureBellMaps\(/);
+  assert.match(main, /bellRinger\.ensureBellMaps\(renderer\)/);
+  assert.match(main, /releaseCanvasBackingStores\(renderer\)/);
+});

@@ -14,9 +14,18 @@ type ShaftSpec = ShaftColors & {
 type PoolStop = [number, number, number, string];
 type MoodKey = 'autumn' | 'golden' | 'evensong';
 
+type SharedAtmosphereUniforms = {
+  uTime: { value: number };
+  uIntensity: { value: number };
+  uTint: { value: THREE.Color };
+};
+
 // Volumetric stained-glass sunbeam shader with smooth Fresnel edge feathering,
 // multi-hue stained-glass streaks, and distance falloff (no hard edges from any angle).
-function createShaftShaderMaterial({ colorA, colorB, colorC, baseOpacity = 0.22 }: ShaftColors): THREE.ShaderMaterial {
+function createShaftShaderMaterial(
+  { colorA, colorB, colorC, baseOpacity = 0.22 }: ShaftColors,
+  shared: SharedAtmosphereUniforms
+): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
     transparent: true,
     depthWrite: false,
@@ -26,10 +35,10 @@ function createShaftShaderMaterial({ colorA, colorB, colorC, baseOpacity = 0.22 
       uColorA: { value: new THREE.Color(colorA) },
       uColorB: { value: new THREE.Color(colorB) },
       uColorC: { value: new THREE.Color(colorC) },
-      uTint: { value: new THREE.Color(0xfff4dc) },
+      uTint: shared.uTint,
       uOpacity: { value: baseOpacity },
-      uIntensity: { value: 1.0 },
-      uTime: { value: 0.0 }
+      uIntensity: shared.uIntensity,
+      uTime: shared.uTime
     },
     vertexShader: `
       varying vec2 vUv;
@@ -82,24 +91,17 @@ function createShaftShaderMaterial({ colorA, colorB, colorC, baseOpacity = 0.22 
 }
 
 // Build an oriented volumetric light-beam frustum + inner crossed light curtains from a window aperture
-function buildWindowShaft({
-  origin,
-  target,
-  startW,
-  startH,
-  endScale = 1.65,
-  colorA,
-  colorB,
-  colorC,
-  baseOpacity = 0.22
-}: ShaftSpec): { group: THREE.Group; materials: THREE.ShaderMaterial[] } {
+function buildWindowShaft(
+  { origin, target, startW, startH, endScale = 1.65, colorA, colorB, colorC, baseOpacity = 0.22 }: ShaftSpec,
+  shared: SharedAtmosphereUniforms
+): THREE.Group {
   const g = new THREE.Group();
   const start = new THREE.Vector3(...origin);
   const end = new THREE.Vector3(...target);
   const dir = new THREE.Vector3().subVectors(end, start);
   const length = dir.length();
 
-  const mat = createShaftShaderMaterial({ colorA, colorB, colorC, baseOpacity });
+  const mat = createShaftShaderMaterial({ colorA, colorB, colorC, baseOpacity }, shared);
 
   // Outer tapered 4-sided soft frustum aligned along local +Y (top=origin, bottom=target)
   const topR = Math.max(startW, startH) * 0.52;
@@ -107,52 +109,62 @@ function buildWindowShaft({
   const frustumGeo = new THREE.CylinderGeometry(topR, botR, length, 4, 1, true);
   frustumGeo.rotateY(Math.PI / 4);
   frustumGeo.scale(startW / Math.max(startW, startH), 1, startH / Math.max(startW, startH));
-  const frustum = new THREE.Mesh(frustumGeo, mat);
-  g.add(frustum);
+  g.add(new THREE.Mesh(frustumGeo, mat));
 
-  // Inner crossed volumetric sheets so the shaft stays richly visible even when looking nearly side-on
-  const innerMat = mat.clone();
-  innerMat.uniforms.uOpacity.value = baseOpacity * 0.72;
-  const makeCurtain = (wTop: number, wBot: number, rotY: number) => {
-    const pos = new Float32Array([
-      -wBot * 0.5,
-      -length * 0.5,
-      0,
-      wBot * 0.5,
-      -length * 0.5,
-      0,
-      wTop * 0.5,
-      length * 0.5,
-      0,
-      -wTop * 0.5,
-      length * 0.5,
-      0
-    ]);
-    const uvs = new Float32Array([0, 0, 1, 0, 1, 1, 0, 1]);
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    geo.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
-    geo.setIndex([0, 1, 2, 0, 2, 3]);
-    geo.computeVertexNormals();
-    const m = new THREE.Mesh(geo, innerMat);
-    m.rotation.y = rotY;
-    return m;
-  };
-  g.add(makeCurtain(startW * 0.9, startW * endScale * 0.95, 0));
-  g.add(makeCurtain(startH * 0.85, startH * endScale * 0.9, Math.PI / 2));
+  // Inner crossed volumetric sheets combined into a single 8-vertex geometry (one draw call per shaft)
+  const innerMat = createShaftShaderMaterial({ colorA, colorB, colorC, baseOpacity: baseOpacity * 0.72 }, shared);
+  const halfL = length * 0.5;
+  const wTopX = startW * 0.45;
+  const wBotX = startW * endScale * 0.475;
+  const wTopZ = startH * 0.425;
+  const wBotZ = startH * endScale * 0.45;
+  const curtainPos = new Float32Array([
+    // Plane 1 (XY, normal +Z)
+    -wBotX,
+    -halfL,
+    0,
+    wBotX,
+    -halfL,
+    0,
+    wTopX,
+    halfL,
+    0,
+    -wTopX,
+    halfL,
+    0,
+    // Plane 2 (ZY, normal +X)
+    0,
+    -halfL,
+    wBotZ,
+    0,
+    -halfL,
+    -wBotZ,
+    0,
+    halfL,
+    -wTopZ,
+    0,
+    halfL,
+    wTopZ
+  ]);
+  const curtainUvs = new Float32Array([0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1]);
+  const curtainGeo = new THREE.BufferGeometry();
+  curtainGeo.setAttribute('position', new THREE.BufferAttribute(curtainPos, 3));
+  curtainGeo.setAttribute('uv', new THREE.BufferAttribute(curtainUvs, 2));
+  curtainGeo.setIndex([0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7]);
+  curtainGeo.computeVertexNormals();
+  g.add(new THREE.Mesh(curtainGeo, innerMat));
 
   // Position at midpoint and orient local -Y from origin toward target
-  const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
-  g.position.copy(mid);
+  g.position.addVectors(start, end).multiplyScalar(0.5);
   const unitDir = dir.clone().normalize();
   // Local -Y points along unitDir => local +Y points along -unitDir
   g.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0), unitDir);
 
-  return { group: g, materials: [mat, innerMat] };
+  return g;
 }
 
 // Floating golden dust motes drifting lazily through the sunlit Nave & Chancel
-function buildDustMotes() {
+function buildDustMotes(uTime: { value: number }) {
   const count = 240;
   const positions = new Float32Array(count * 3);
   const seeds = new Float32Array(count);
@@ -184,7 +196,7 @@ function buildDustMotes() {
     depthWrite: false,
     blending: THREE.AdditiveBlending,
     uniforms: {
-      uTime: { value: 0 },
+      uTime,
       uIntensity: { value: 1.0 },
       uColor: { value: new THREE.Color(0xffe9bd) }
     },
@@ -246,7 +258,11 @@ export function buildAtmosphere() {
   const C = DIM.chancel;
   const W = DIM.windows;
 
-  const shaftMaterials: THREE.ShaderMaterial[] = [];
+  const sharedUniforms: SharedAtmosphereUniforms = {
+    uTime: { value: 0 },
+    uIntensity: { value: 1.0 },
+    uTint: { value: new THREE.Color(0xfff4dc) }
+  };
   const windowBounceLights: { light: THREE.PointLight; baseInt: number }[] = [];
   const poolMaterials: { mat: THREE.MeshBasicMaterial; baseOp: number }[] = [];
 
@@ -327,9 +343,7 @@ export function buildAtmosphere() {
   ];
 
   shaftSpecs.forEach((spec) => {
-    const shaft = buildWindowShaft(spec);
-    group.add(shaft.group);
-    shaftMaterials.push(...shaft.materials);
+    group.add(buildWindowShaft(spec, sharedUniforms));
   });
 
   // 2. Warm Colored Bounce Lights right inside the 3 Stained Glass Windows
@@ -380,7 +394,7 @@ export function buildAtmosphere() {
   poolMaterials.push({ mat: sanctuaryPoolMat, baseOp: 0.62 });
 
   // 4. Floating Golden Dust Motes drifting through the shafts
-  const dust = buildDustMotes();
+  const dust = buildDustMotes(sharedUniforms.uTime);
   group.add(dust.points);
 
   const MOOD_PRESETS = {
@@ -393,10 +407,8 @@ export function buildAtmosphere() {
     group,
     setMood(moodKey: MoodKey) {
       const m = MOOD_PRESETS[moodKey] || MOOD_PRESETS.autumn;
-      shaftMaterials.forEach((mat) => {
-        mat.uniforms.uIntensity.value = m.shaftInt;
-        mat.uniforms.uTint.value.setHex(m.tint);
-      });
+      sharedUniforms.uIntensity.value = m.shaftInt;
+      sharedUniforms.uTint.value.setHex(m.tint);
       windowBounceLights.forEach(({ light, baseInt }) => {
         light.intensity = baseInt * m.bounceScale;
       });
@@ -407,10 +419,7 @@ export function buildAtmosphere() {
       dust.material.uniforms.uColor.value.setHex(m.tint);
     },
     update(elapsed: number) {
-      shaftMaterials.forEach((mat) => {
-        mat.uniforms.uTime.value = elapsed;
-      });
-      dust.material.uniforms.uTime.value = elapsed;
+      sharedUniforms.uTime.value = elapsed;
     }
   };
 }

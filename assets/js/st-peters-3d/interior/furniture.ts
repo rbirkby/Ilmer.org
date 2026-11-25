@@ -7,7 +7,7 @@ import { applyBoxUVs } from '../architecture.ts';
 import { buildPiercedCarving, createLecternPanelHeightMap } from '../reliefs.ts';
 import type { ChurchMaterials } from '../textures.ts';
 import { buildAnglepoiseLamp, type CandleRig } from './lighting.ts';
-import { buildFlowerArrangement, buildOldBible, buildWaterExtinguisher, spiralPts } from './props.ts';
+import { buildFireExtinguisher, buildFlowerArrangement, buildOldBible, spiralPts } from './props.ts';
 
 type KneelerGeometries = {
   body: THREE.BufferGeometry;
@@ -624,7 +624,7 @@ export function buildSanctuaryAndChancel(interiorGroup: THREE.Group, mats: Churc
   deskG.add(stallSeat);
 
   // Water fire extinguisher standing against the chancel South wall, East of the choir stall
-  const chancelExt = buildWaterExtinguisher();
+  const chancelExt = buildFireExtinguisher('water');
   chancelExt.position.set(5.05, DIM.chancelFloorY, C.zSouthInt - 0.12);
   chancelExt.rotation.y = Math.PI + 0.35; // label towards the chancel aisle and the nave
   chancelExt.userData.era = 'today';

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { canvas2d, canvasTexture, makeCanvas, mulberry32 } from './canvas-utils.ts';
+import { canvas2d, createCanvasPair, makeCanvas, releaseCanvasBackingStores } from './canvas-utils.ts';
 import { addBox, boxMesh } from './mesh-utils.ts';
 import { DIM } from './dimensions.ts';
 import type { ChurchMaterials } from './textures.ts';
@@ -199,7 +199,7 @@ const BELL_PROFILE = [
   [0.24, 0.712],
   [0, 0.72]
 ];
-const ROW = 64; // canvas px per profile segment
+const ROW = 32; // canvas px per profile segment (1024×768 per bell map)
 const BAND = 4; // inscription band runs from profile point 4 to 5
 const WAIST_BAND = 6;
 const INSIDE_FROM = 14;
@@ -245,122 +245,116 @@ function drawShield(ctx: CanvasRenderingContext2D, x: number, y: number, s: numb
 }
 
 // Cast bronze with a dull brown-green patina, and the inscription standing proud round the shoulder (map + bump)
-function createBellMaps(bell: Bell, circumferenceM: number) {
-  const W = 2048;
+function createBellMaps(bell: Bell) {
+  const W = 1024;
   const H = ROW * (BELL_PROFILE.length - 1);
-  const col = makeCanvas(W, H);
-  const bmp = makeCanvas(W, H);
-  const ctx = canvas2d(col);
-  const bctx = canvas2d(bmp);
-  const rng = mulberry32(1500 + bell.number * 37);
-
-  // LatheGeometry runs v from the crown (v=0, the canvas's bottom row once flipped) to the inner crown (v=1)
-  const rowY = (j: number) => H - j * ROW;
-  ctx.fillStyle = '#d6ad52'; // bright polished brass-gold
-  ctx.fillRect(0, 0, W, H);
-  bctx.fillStyle = '#808080';
-  bctx.fillRect(0, 0, W, H);
-  for (let i = 0; i < 400; i++) {
-    const x = rng() * W;
-    const y = rng() * H;
-    const r = 2 + rng() * 14;
-    const green = rng() < 0.2;
-    ctx.fillStyle = green
-      ? `rgba(78,104,78,${0.06 + rng() * 0.12})`
-      : `rgba(${90 + rng() * 60},${60 + rng() * 40},${30 + rng() * 20},0.14)`;
-    ctx.beginPath();
-    ctx.ellipse(x, y, r, r * (0.4 + rng() * 0.6), rng() * Math.PI, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  // Weathering streaks running down from the shoulder
-  for (let i = 0; i < 160; i++) {
-    const x = rng() * W;
-    const y0 = rowY(BAND + 1);
-    ctx.fillStyle = `rgba(60,82,64,${0.03 + rng() * 0.05})`;
-    ctx.fillRect(x, rowY(12), 3 + rng() * 6, y0 - rowY(12));
-  }
-  // Inside of the bell: darker, unpolished
-  ctx.fillStyle = 'rgba(25,18,10,0.55)';
-  ctx.fillRect(0, 0, W, rowY(INSIDE_FROM));
-
-  // Moulding wires either side of the inscription band and at the sound bow
-  const wire = (j: number, frac: number) => {
-    const y = rowY(j) - frac * ROW;
-    ctx.fillStyle = 'rgba(150,120,70,0.7)';
-    ctx.fillRect(0, y - 3, W, 6);
-    bctx.fillStyle = '#e0e0e0';
-    bctx.fillRect(0, y - 3, W, 6);
-  };
-  wire(BAND, 0.06);
-  wire(BAND, 0.94);
-  wire(11, 0.5);
-  wire(12, 0.5);
-
-  // Lettering, drawn mirrored vertically so it reads upright on the bell
-  const letterPx = ROW * 0.8;
-  const fonts = {
-    roman: `bold ${letterPx}px "Times New Roman", Georgia, serif`,
-    blackletter: `bold italic ${letterPx * 0.95}px "Old English Text MT", "UnifrakturMaguntia", Georgia, serif`,
-    lombardic: `bold ${letterPx}px "Lombardic", "Palatino Linotype", Georgia, serif`
-  };
-  const tokens: InscriptionToken[] = [{ cross: true }];
-  bell.inscription.split(' ').forEach((wd: string, i: number, arr: string[]) => {
-    tokens.push({ text: wd });
-    if (bell.lettering === 'blackletter' && i < arr.length - 2) tokens.push({ fleur: true });
-  });
-  if (bell.lettering === 'lombardic') tokens.push({ shield: true });
-
-  const paint = (c: CanvasRenderingContext2D, fill: string, shadow: string | null) => {
-    c.save();
-    c.translate(0, rowY(BAND) - ROW * 0.5);
-    c.scale(1, -1);
-    c.font = fonts[bell.lettering];
-    c.textBaseline = 'middle';
-    c.textAlign = 'left';
-    const widths = tokens.map((t) => (t.text ? c.measureText(t.text).width : letterPx * 0.9));
-    // Spread the words round about 80% of the circumference, as the founders did
-    const usable = W * 0.86;
-    const gap = Math.max(letterPx * 0.5, (usable - widths.reduce((a, b) => a + b, 0)) / tokens.length);
-    let x = W * 0.06;
-    tokens.forEach((t, i) => {
-      const passes: [number, number, string][] = shadow
-        ? [
-            [3, 3, shadow],
-            [0, 0, fill]
-          ]
-        : [[0, 0, fill]];
-      passes.forEach(([dx, dy, style]) => {
-        c.fillStyle = style;
-        c.strokeStyle = style;
-        if (t.text) c.fillText(t.text, x + dx, dy);
-        else if (t.cross) drawCrossPatee(c, x + widths[i] * 0.5 + dx, dy, letterPx * 0.9);
-        else if (t.fleur) drawFleurStop(c, x + widths[i] * 0.5 + dx, dy, letterPx * 0.8);
-        else if (t.shield) drawShield(c, x + widths[i] * 0.5 + dx, dy, letterPx);
-      });
-      x += widths[i] + gap;
-    });
-    const waist = bell.waist;
-    if (waist) {
-      c.font = `bold ${letterPx * 0.9}px Georgia, serif`;
-      c.translate(0, -(rowY(WAIST_BAND) - rowY(BAND)));
-      const waistPasses: [number, number, string][] = shadow
-        ? [
-            [3, 3, shadow],
-            [0, 0, fill]
-          ]
-        : [[0, 0, fill]];
-      waistPasses.forEach(([dx, dy, style]) => {
-        c.fillStyle = style;
-        c.fillText(waist, W * 0.06 + dx, dy);
-      });
+  return createCanvasPair(W, H, 1500 + bell.number * 37, (ctx, bctx, rng) => {
+    // LatheGeometry runs v from the crown (v=0, the canvas's bottom row once flipped) to the inner crown (v=1)
+    const rowY = (j: number) => H - j * ROW;
+    ctx.fillStyle = '#d6ad52'; // bright polished brass-gold
+    ctx.fillRect(0, 0, W, H);
+    bctx.fillStyle = '#808080';
+    bctx.fillRect(0, 0, W, H);
+    for (let i = 0; i < 400; i++) {
+      const x = rng() * W;
+      const y = rng() * H;
+      const r = 1 + rng() * 7;
+      const green = rng() < 0.2;
+      ctx.fillStyle = green
+        ? `rgba(78,104,78,${0.06 + rng() * 0.12})`
+        : `rgba(${90 + rng() * 60},${60 + rng() * 40},${30 + rng() * 20},0.14)`;
+      ctx.beginPath();
+      ctx.ellipse(x, y, r, r * (0.4 + rng() * 0.6), rng() * Math.PI, 0, Math.PI * 2);
+      ctx.fill();
     }
-    c.restore();
-  };
-  paint(ctx, '#f4d98c', 'rgba(70,48,16,0.65)');
-  paint(bctx, '#ffffff', null);
+    // Weathering streaks running down from the shoulder
+    for (let i = 0; i < 160; i++) {
+      const x = rng() * W;
+      const y0 = rowY(BAND + 1);
+      ctx.fillStyle = `rgba(60,82,64,${0.03 + rng() * 0.05})`;
+      ctx.fillRect(x, rowY(12), 1.5 + rng() * 3, y0 - rowY(12));
+    }
+    // Inside of the bell: darker, unpolished
+    ctx.fillStyle = 'rgba(25,18,10,0.55)';
+    ctx.fillRect(0, 0, W, rowY(INSIDE_FROM));
 
-  void circumferenceM;
-  return { map: canvasTexture(col, { anisotropy: 8 }), bumpMap: canvasTexture(bmp, { srgb: false, anisotropy: 8 }) };
+    // Moulding wires either side of the inscription band and at the sound bow
+    const wireH = Math.max(2, Math.round(ROW * 0.095));
+    const wire = (j: number, frac: number) => {
+      const y = rowY(j) - frac * ROW;
+      ctx.fillStyle = 'rgba(150,120,70,0.7)';
+      ctx.fillRect(0, y - wireH * 0.5, W, wireH);
+      bctx.fillStyle = '#e0e0e0';
+      bctx.fillRect(0, y - wireH * 0.5, W, wireH);
+    };
+    wire(BAND, 0.06);
+    wire(BAND, 0.94);
+    wire(11, 0.5);
+    wire(12, 0.5);
+
+    // Lettering, drawn mirrored vertically so it reads upright on the bell
+    const letterPx = ROW * 0.8;
+    const fonts = {
+      roman: `bold ${letterPx}px "Times New Roman", Georgia, serif`,
+      blackletter: `bold italic ${letterPx * 0.95}px "Old English Text MT", "UnifrakturMaguntia", Georgia, serif`,
+      lombardic: `bold ${letterPx}px "Lombardic", "Palatino Linotype", Georgia, serif`
+    };
+    const tokens: InscriptionToken[] = [{ cross: true }];
+    bell.inscription.split(' ').forEach((wd: string, i: number, arr: string[]) => {
+      tokens.push({ text: wd });
+      if (bell.lettering === 'blackletter' && i < arr.length - 2) tokens.push({ fleur: true });
+    });
+    if (bell.lettering === 'lombardic') tokens.push({ shield: true });
+
+    const paint = (c: CanvasRenderingContext2D, fill: string, shadow: string | null) => {
+      c.save();
+      c.translate(0, rowY(BAND) - ROW * 0.5);
+      c.scale(1, -1);
+      c.font = fonts[bell.lettering];
+      c.textBaseline = 'middle';
+      c.textAlign = 'left';
+      const widths = tokens.map((t) => (t.text ? c.measureText(t.text).width : letterPx * 0.9));
+      // Spread the words round about 80% of the circumference, as the founders did
+      const usable = W * 0.86;
+      const gap = Math.max(letterPx * 0.5, (usable - widths.reduce((a, b) => a + b, 0)) / tokens.length);
+      let x = W * 0.06;
+      tokens.forEach((t, i) => {
+        const passes: [number, number, string][] = shadow
+          ? [
+              [1.5, 1.5, shadow],
+              [0, 0, fill]
+            ]
+          : [[0, 0, fill]];
+        passes.forEach(([dx, dy, style]) => {
+          c.fillStyle = style;
+          c.strokeStyle = style;
+          if (t.text) c.fillText(t.text, x + dx, dy);
+          else if (t.cross) drawCrossPatee(c, x + widths[i] * 0.5 + dx, dy, letterPx * 0.9);
+          else if (t.fleur) drawFleurStop(c, x + widths[i] * 0.5 + dx, dy, letterPx * 0.8);
+          else if (t.shield) drawShield(c, x + widths[i] * 0.5 + dx, dy, letterPx);
+        });
+        x += widths[i] + gap;
+      });
+      const waist = bell.waist;
+      if (waist) {
+        c.font = `bold ${letterPx * 0.9}px Georgia, serif`;
+        c.translate(0, -(rowY(WAIST_BAND) - rowY(BAND)));
+        const waistPasses: [number, number, string][] = shadow
+          ? [
+              [1.5, 1.5, shadow],
+              [0, 0, fill]
+            ]
+          : [[0, 0, fill]];
+        waistPasses.forEach(([dx, dy, style]) => {
+          c.fillStyle = style;
+          c.fillText(waist, W * 0.06 + dx, dy);
+        });
+      }
+      c.restore();
+    };
+    paint(ctx, '#f4d98c', 'rgba(70,48,16,0.65)');
+    paint(bctx, '#ffffff', null);
+  });
 }
 
 // A small cube map of the bell chamber for the bronze to reflect: daylight through the louvres in bright bands on
@@ -407,13 +401,11 @@ function buildBell(bell: Bell) {
   const pts = BELL_PROFILE.map(([r, y]) => new THREE.Vector2(Math.max(r * D, 0.0005), (y - top) * D));
   const geo = new THREE.LatheGeometry(pts, 56);
   geo.computeVertexNormals();
-  const maps = createBellMaps(bell, Math.PI * 0.64 * D);
+  // Inscription + patina canvases are painted lazily on first belfry visit / chime via bellRinger.ensureBellMaps()
   const mat = new THREE.MeshStandardMaterial({
-    map: maps.map,
-    bumpMap: maps.bumpMap,
-    bumpScale: 2.5,
+    color: 0xc8a048,
     metalness: 1.0,
-    roughness: 0.2,
+    roughness: 0.24,
     envMap: getBelfryEnvMap(),
     envMapIntensity: 1.5,
     side: THREE.DoubleSide
@@ -423,7 +415,7 @@ function buildBell(bell: Bell) {
   body.castShadow = true;
   body.receiveShadow = true;
   g.add(body);
-  return { group: g, D, height: top * D };
+  return { group: g, D, height: top * D, material: mat };
 }
 
 // One bell hung for swing chiming: elm headstock on iron gudgeons in plummer blocks, a full wheel on one side
@@ -434,10 +426,11 @@ function buildHungBell(
   mats: ChurchMaterials
 ) {
   const g = new THREE.Group();
-  const { group: bellG, D, height } = buildBell(bell);
+  const { group: bellG, D, height, material: bellMat } = buildBell(bell);
   const crownDrop = 0.085;
   bellG.position.y = -crownDrop;
   g.add(bellG);
+  g.userData.bellMat = bellMat;
 
   const ironMat = mats.iron;
   const elm = mats.medOak;
@@ -498,7 +491,6 @@ function buildHungBell(
   const wheel = new THREE.Group();
   const sole = new THREE.Mesh(new THREE.CylinderGeometry(wheelR, wheelR, 0.07, 48, 1, true), elm);
   sole.rotation.z = Math.PI / 2;
-  sole.material = elm;
   wheel.add(sole);
   const shroudGeo = new THREE.RingGeometry(wheelR - 0.07, wheelR + 0.012, 48);
   [-1, 1].forEach((sx) => {
@@ -877,8 +869,36 @@ export function createBellRinger(frame: THREE.Object3D, ...extraRoots: THREE.Obj
   }
   for (const v of vestryCords.values()) animatedObjects.push(v.o);
 
+  let mapsBuilt = false;
+  function ensureBellMaps(renderer?: Pick<THREE.WebGLRenderer, 'initTexture'>): boolean {
+    if (mapsBuilt) return false;
+    mapsBuilt = true;
+    for (const h of hung) {
+      const mat = h.userData.bellMat as THREE.MeshStandardMaterial | undefined;
+      if (!mat) continue;
+      const maps = createBellMaps(h.userData.bell as Bell);
+      mat.color.setHex(0xffffff);
+      mat.map = maps.map;
+      mat.bumpMap = maps.bumpMap;
+      mat.bumpScale = 2.5;
+      mat.roughness = 0.2;
+      mat.needsUpdate = true;
+    }
+    if (renderer) releaseCanvasBackingStores(renderer);
+    return true;
+  }
+
   setMode('swing');
-  return { ring, update, setMode, isRinging: () => startedAt !== null, bells: hung, animatedObjects };
+  return {
+    ring,
+    update,
+    setMode,
+    ensureBellMaps,
+    hasMaps: () => mapsBuilt,
+    isRinging: () => startedAt !== null,
+    bells: hung,
+    animatedObjects
+  };
 }
 
 // Strike tone of each bell: nominal frequency in Hz. The ring is untuned medieval and Jacobean work, so these are

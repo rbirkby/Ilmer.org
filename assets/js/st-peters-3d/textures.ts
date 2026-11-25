@@ -1,5 +1,12 @@
 import * as THREE from 'three';
-import { canvas2d, canvasTexture, makeCanvas, mulberry32 } from './canvas-utils.ts';
+import {
+  canvas2d,
+  canvasTexture,
+  createCanvasPair,
+  makeCanvas,
+  mulberry32,
+  registerStaticCanvasTexture
+} from './canvas-utils.ts';
 import { createAttenboroughPlaqueMaps, createJaquesDonorsTexture, createRollOfHonourMaps } from './plaques.ts';
 import {
   createEastStainedGlassTexture,
@@ -29,18 +36,28 @@ interface PaverBlock {
   rng: () => number;
 }
 
-interface FigurePalette {
-  canopy: string;
-  robe1: string;
-  robe2: string;
-  accent: string;
-}
-
 function finishTexture(
   canvas: HTMLCanvasElement,
   { repeatX = 1, repeatY = 1, srgb = true, maxAniso = 8 }: TextureFinishOptions = {}
 ): THREE.CanvasTexture {
   return canvasTexture(canvas, { srgb, anisotropy: maxAniso, repeat: [repeatX, repeatY] });
+}
+
+function drawStaggeredGrid(
+  rows: number,
+  colStart: number,
+  colEnd: number,
+  cellW: number,
+  cellH: number,
+  staggerX: number,
+  drawCell: (x: number, y: number, r: number, c: number) => void
+) {
+  for (let r = 0; r < rows; r++) {
+    const offset = (r % 2) * staggerX;
+    for (let c = colStart; c <= colEnd; c++) {
+      drawCell(c * cellW + offset, r * cellH, r, c);
+    }
+  }
 }
 
 interface RubbleToneBand {
@@ -311,220 +328,193 @@ const STONE_WALL_WEST_UPPER: RubbleMasonryConfig = {
 function createAshlarMaps(maxAniso: number): CanvasMapPair {
   const w = 256;
   const h = 256;
-  const col = makeCanvas(w, h);
-  const bmp = makeCanvas(w, h);
-  const ctx = canvas2d(col);
-  const bctx = canvas2d(bmp);
-  const rand = mulberry32(991);
+  return createCanvasPair(
+    w,
+    h,
+    991,
+    (ctx, bctx, rand) => {
+      ctx.fillStyle = '#d3c8b2';
+      ctx.fillRect(0, 0, w, h);
+      bctx.fillStyle = '#909090';
+      bctx.fillRect(0, 0, w, h);
 
-  ctx.fillStyle = '#d3c8b2';
-  ctx.fillRect(0, 0, w, h);
-  bctx.fillStyle = '#909090';
-  bctx.fillRect(0, 0, w, h);
-
-  const rows = 6;
-  const rh = h / rows;
-  for (let r = 0; r < rows; r++) {
-    const offset = (r % 2) * 42;
-    for (let c = -1; c < 4; c++) {
-      const x = c * 86 + offset;
-      const y = r * rh;
-      const v = 198 + (rand() - 0.5) * 24;
-      ctx.fillStyle = `rgb(${(v + 12) | 0},${(v + 4) | 0},${(v - 14) | 0})`;
-      ctx.fillRect(x + 1.5, y + 1.5, 83, rh - 3);
-      const bv = (165 + rand() * 45) | 0;
-      bctx.fillStyle = `rgb(${bv},${bv},${bv})`;
-      bctx.fillRect(x + 2, y + 2, 82, rh - 4);
-    }
-  }
-  // Subtle weathering speckles
-  for (let i = 0; i < 600; i++) {
-    const px = rand() * w;
-    const py = rand() * h;
-    ctx.fillStyle = rand() > 0.5 ? 'rgba(255,250,240,0.12)' : 'rgba(105,102,88,0.12)';
-    ctx.fillRect(px, py, 2 + rand() * 3, 2 + rand() * 3);
-  }
-
-  return {
-    map: finishTexture(col, { srgb: true, maxAniso }),
-    bumpMap: finishTexture(bmp, { srgb: false, maxAniso })
-  };
+      const rows = 6;
+      const rh = h / rows;
+      drawStaggeredGrid(rows, -1, 3, 86, rh, 42, (x, y) => {
+        const v = 198 + (rand() - 0.5) * 24;
+        ctx.fillStyle = `rgb(${(v + 12) | 0},${(v + 4) | 0},${(v - 14) | 0})`;
+        ctx.fillRect(x + 1.5, y + 1.5, 83, rh - 3);
+        const bv = (165 + rand() * 45) | 0;
+        bctx.fillStyle = `rgb(${bv},${bv},${bv})`;
+        bctx.fillRect(x + 2, y + 2, 82, rh - 4);
+      });
+      // Subtle weathering speckles
+      for (let i = 0; i < 600; i++) {
+        const px = rand() * w;
+        const py = rand() * h;
+        ctx.fillStyle = rand() > 0.5 ? 'rgba(255,250,240,0.12)' : 'rgba(105,102,88,0.12)';
+        ctx.fillRect(px, py, 2 + rand() * 3, 2 + rand() * 3);
+      }
+    },
+    { anisotropy: maxAniso, repeat: [1, 1] }
+  );
 }
 
 // 3. Weathered English Plain Clay Roof Tiles with mossy patches
 function createClayRoofMaps(maxAniso: number): CanvasMapPair {
   const w = 512;
   const h = 512;
-  const col = makeCanvas(w, h);
-  const bmp = makeCanvas(w, h);
-  const ctx = canvas2d(col);
-  const bctx = canvas2d(bmp);
-  const rand = mulberry32(3141);
+  return createCanvasPair(
+    w,
+    h,
+    3141,
+    (ctx, bctx, rand) => {
+      ctx.fillStyle = '#4a2b20';
+      ctx.fillRect(0, 0, w, h);
+      bctx.fillStyle = '#303030';
+      bctx.fillRect(0, 0, w, h);
 
-  ctx.fillStyle = '#4a2b20';
-  ctx.fillRect(0, 0, w, h);
-  bctx.fillStyle = '#303030';
-  bctx.fillRect(0, 0, w, h);
+      const rows = 28;
+      const cols = 18;
+      const rh = h / rows;
+      const cw = w / cols;
 
-  const rows = 28;
-  const cols = 18;
-  const rh = h / rows;
-  const cw = w / cols;
+      drawStaggeredGrid(rows, -1, cols, cw, rh, cw * 0.5, (x, y) => {
+        // Rich mix of terracotta orange-red, aged russet brown, dark burnt clay, subtle moss
+        const t = rand();
+        let cr, cg, cb;
+        if (t < 0.45) {
+          cr = 128 + rand() * 34;
+          cg = 64 + rand() * 20;
+          cb = 44 + rand() * 14;
+        } else if (t < 0.8) {
+          cr = 92 + rand() * 28;
+          cg = 48 + rand() * 18;
+          cb = 36 + rand() * 14;
+        } else if (t < 0.92) {
+          // Dark weathered/sooty tile
+          cr = 62 + rand() * 20;
+          cg = 42 + rand() * 16;
+          cb = 35 + rand() * 12;
+        } else {
+          // Mossy greenish-amber tile
+          cr = 98 + rand() * 25;
+          cg = 94 + rand() * 22;
+          cb = 42 + rand() * 14;
+        }
 
-  for (let r = 0; r < rows; r++) {
-    const offset = (r % 2) * (cw * 0.5);
-    for (let c = -1; c <= cols; c++) {
-      const x = c * cw + offset;
-      const y = r * rh;
-      // Rich mix of terracotta orange-red, aged russet brown, dark burnt clay, subtle moss
-      const t = rand();
-      let cr, cg, cb;
-      if (t < 0.45) {
-        cr = 128 + rand() * 34;
-        cg = 64 + rand() * 20;
-        cb = 44 + rand() * 14;
-      } else if (t < 0.8) {
-        cr = 92 + rand() * 28;
-        cg = 48 + rand() * 18;
-        cb = 36 + rand() * 14;
-      } else if (t < 0.92) {
-        // Dark weathered/sooty tile
-        cr = 62 + rand() * 20;
-        cg = 42 + rand() * 16;
-        cb = 35 + rand() * 12;
-      } else {
-        // Mossy greenish-amber tile
-        cr = 98 + rand() * 25;
-        cg = 94 + rand() * 22;
-        cb = 42 + rand() * 14;
+        ctx.fillStyle = `rgb(${cr | 0},${cg | 0},${cb | 0})`;
+        ctx.fillRect(x + 1, y + 1, cw - 1.8, rh - 1.4);
+
+        // Overlap shadow along bottom edge of each tile
+        ctx.fillStyle = 'rgba(20,10,6,0.38)';
+        ctx.fillRect(x, y + rh - 2.2, cw, 2.2);
+
+        // Bump gradient (sloped tile face)
+        const grad = bctx.createLinearGradient(0, y, 0, y + rh);
+        grad.addColorStop(0, '#787878');
+        grad.addColorStop(0.85, '#d8d8d8');
+        grad.addColorStop(1, '#222222');
+        bctx.fillStyle = grad;
+        bctx.fillRect(x + 1, y, cw - 1.5, rh);
+      });
+
+      // Mossy blotches typical of the lower/west slopes seen in IMG_3932
+      for (let i = 0; i < 32; i++) {
+        const gx = rand() * w;
+        const gy = rand() * h;
+        const gr = 18 + rand() * 44;
+        const grad = ctx.createRadialGradient(gx, gy, 2, gx, gy, gr);
+        grad.addColorStop(0, 'rgba(96,104,48,0.22)');
+        grad.addColorStop(1, 'rgba(96,104,48,0)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(gx - gr, gy - gr, gr * 2, gr * 2);
       }
-
-      ctx.fillStyle = `rgb(${cr | 0},${cg | 0},${cb | 0})`;
-      ctx.fillRect(x + 1, y + 1, cw - 1.8, rh - 1.4);
-
-      // Overlap shadow along bottom edge of each tile
-      ctx.fillStyle = 'rgba(20,10,6,0.38)';
-      ctx.fillRect(x, y + rh - 2.2, cw, 2.2);
-
-      // Bump gradient (sloped tile face)
-      const grad = bctx.createLinearGradient(0, y, 0, y + rh);
-      grad.addColorStop(0, '#787878');
-      grad.addColorStop(0.85, '#d8d8d8');
-      grad.addColorStop(1, '#222222');
-      bctx.fillStyle = grad;
-      bctx.fillRect(x + 1, y, cw - 1.5, rh);
-    }
-  }
-
-  // Mossy blotches typical of the lower/west slopes seen in IMG_3932
-  for (let i = 0; i < 32; i++) {
-    const gx = rand() * w;
-    const gy = rand() * h;
-    const gr = 18 + rand() * 44;
-    const grad = ctx.createRadialGradient(gx, gy, 2, gx, gy, gr);
-    grad.addColorStop(0, 'rgba(96,104,48,0.22)');
-    grad.addColorStop(1, 'rgba(96,104,48,0)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(gx - gr, gy - gr, gr * 2, gr * 2);
-  }
-
-  return {
-    map: finishTexture(col, { srgb: true, maxAniso }),
-    bumpMap: finishTexture(bmp, { srgb: false, maxAniso })
-  };
+    },
+    { anisotropy: maxAniso, repeat: [1, 1] }
+  );
 }
 
 // 4. Weathered Horizontal Oak Weatherboarding (Bell-Turret)
 function createWeatherboardMaps(maxAniso: number): CanvasMapPair {
   const w = 512;
   const h = 512;
-  const col = makeCanvas(w, h);
-  const bmp = makeCanvas(w, h);
-  const ctx = canvas2d(col);
-  const bctx = canvas2d(bmp);
-  const rand = mulberry32(4821);
+  return createCanvasPair(
+    w,
+    h,
+    4821,
+    (ctx, bctx, rand) => {
+      const boards = 22;
+      const bh = h / boards;
 
-  const boards = 22;
-  const bh = h / boards;
+      for (let i = 0; i < boards; i++) {
+        const y = i * bh;
+        const warm = rand() < 0.28;
+        const base = warm ? 128 + rand() * 28 : 138 + rand() * 28;
+        const r = warm ? base + 12 : base + 4;
+        const g = warm ? base + 2 : base + 2;
+        const b = warm ? base - 16 : base - 4;
 
-  for (let i = 0; i < boards; i++) {
-    const y = i * bh;
-    const warm = rand() < 0.28;
-    const base = warm ? 128 + rand() * 28 : 138 + rand() * 28;
-    const r = warm ? base + 12 : base + 4;
-    const g = warm ? base + 2 : base + 2;
-    const b = warm ? base - 16 : base - 4;
+        const grad = ctx.createLinearGradient(0, y, 0, y + bh);
+        grad.addColorStop(0, `rgb(${(r * 0.82) | 0},${(g * 0.82) | 0},${(b * 0.82) | 0})`);
+        grad.addColorStop(0.22, `rgb(${r | 0},${g | 0},${b | 0})`);
+        grad.addColorStop(0.86, `rgb(${(r * 0.96) | 0},${(g * 0.96) | 0},${(b * 0.96) | 0})`);
+        grad.addColorStop(1, 'rgb(42,38,34)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, y, w, bh);
 
-    const grad = ctx.createLinearGradient(0, y, 0, y + bh);
-    grad.addColorStop(0, `rgb(${(r * 0.82) | 0},${(g * 0.82) | 0},${(b * 0.82) | 0})`);
-    grad.addColorStop(0.22, `rgb(${r | 0},${g | 0},${b | 0})`);
-    grad.addColorStop(0.86, `rgb(${(r * 0.96) | 0},${(g * 0.96) | 0},${(b * 0.96) | 0})`);
-    grad.addColorStop(1, 'rgb(42,38,34)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, y, w, bh);
+        // Fine horizontal wood grain streaks
+        for (let s = 0; s < 14; s++) {
+          ctx.fillStyle = rand() > 0.5 ? 'rgba(255,252,245,0.08)' : 'rgba(35,30,25,0.12)';
+          ctx.fillRect(0, y + rand() * (bh - 2), w, 1 + rand() * 1.5);
+        }
 
-    // Fine horizontal wood grain streaks
-    for (let s = 0; s < 14; s++) {
-      ctx.fillStyle = rand() > 0.5 ? 'rgba(255,252,245,0.08)' : 'rgba(35,30,25,0.12)';
-      ctx.fillRect(0, y + rand() * (bh - 2), w, 1 + rand() * 1.5);
-    }
-
-    const bgrad = bctx.createLinearGradient(0, y, 0, y + bh);
-    bgrad.addColorStop(0, '#555555');
-    bgrad.addColorStop(0.85, '#e8e8e8');
-    bgrad.addColorStop(1, '#181818');
-    bctx.fillStyle = bgrad;
-    bctx.fillRect(0, y, w, bh);
-  }
-
-  return {
-    map: finishTexture(col, { srgb: true, maxAniso }),
-    bumpMap: finishTexture(bmp, { srgb: false, maxAniso })
-  };
+        const bgrad = bctx.createLinearGradient(0, y, 0, y + bh);
+        bgrad.addColorStop(0, '#555555');
+        bgrad.addColorStop(0.85, '#e8e8e8');
+        bgrad.addColorStop(1, '#181818');
+        bctx.fillStyle = bgrad;
+        bctx.fillRect(0, y, w, bh);
+      }
+    },
+    { anisotropy: maxAniso, repeat: [1, 1] }
+  );
 }
 
 // 5. Weathered Oak Spire Shingles (Silvery grey oak shingles with moss hint)
 function createShingleMaps(maxAniso: number): CanvasMapPair {
   const w = 512;
   const h = 512;
-  const col = makeCanvas(w, h);
-  const bmp = makeCanvas(w, h);
-  const ctx = canvas2d(col);
-  const bctx = canvas2d(bmp);
-  const rand = mulberry32(7717);
+  return createCanvasPair(
+    w,
+    h,
+    7717,
+    (ctx, bctx, rand) => {
+      ctx.fillStyle = '#6c6a63';
+      ctx.fillRect(0, 0, w, h);
 
-  ctx.fillStyle = '#6c6a63';
-  ctx.fillRect(0, 0, w, h);
+      const rows = 28;
+      const cols = 20;
+      const rh = h / rows;
+      const cw = w / cols;
 
-  const rows = 28;
-  const cols = 20;
-  const rh = h / rows;
-  const cw = w / cols;
+      drawStaggeredGrid(rows, -1, cols, cw, rh, cw * 0.5, (x, y) => {
+        const v = 118 + rand() * 44;
+        const moss = rand() < 0.14 ? 10 : 0;
+        ctx.fillStyle = `rgb(${(v - moss * 0.4) | 0},${(v + moss * 0.4) | 0},${(v - 4 - moss * 0.6) | 0})`;
+        ctx.fillRect(x + 1, y + 1, cw - 1.5, rh - 1.5);
+        ctx.fillStyle = 'rgba(20,20,18,0.42)';
+        ctx.fillRect(x, y + rh - 2, cw, 2);
 
-  for (let r = 0; r < rows; r++) {
-    const offset = (r % 2) * (cw * 0.5);
-    for (let c = -1; c <= cols; c++) {
-      const x = c * cw + offset;
-      const y = r * rh;
-      const v = 118 + rand() * 44;
-      const moss = rand() < 0.14 ? 10 : 0;
-      ctx.fillStyle = `rgb(${(v - moss * 0.4) | 0},${(v + moss * 0.4) | 0},${(v - 4 - moss * 0.6) | 0})`;
-      ctx.fillRect(x + 1, y + 1, cw - 1.5, rh - 1.5);
-      ctx.fillStyle = 'rgba(20,20,18,0.42)';
-      ctx.fillRect(x, y + rh - 2, cw, 2);
-
-      const bv = (130 + rand() * 80) | 0;
-      bctx.fillStyle = `rgb(${bv},${bv},${bv})`;
-      bctx.fillRect(x + 1, y + 1, cw - 1.5, rh - 2);
-      bctx.fillStyle = '#202020';
-      bctx.fillRect(x, y + rh - 2, cw, 2);
-    }
-  }
-
-  return {
-    map: finishTexture(col, { srgb: true, maxAniso }),
-    bumpMap: finishTexture(bmp, { srgb: false, maxAniso })
-  };
+        const bv = (130 + rand() * 80) | 0;
+        bctx.fillStyle = `rgb(${bv},${bv},${bv})`;
+        bctx.fillRect(x + 1, y + 1, cw - 1.5, rh - 2);
+        bctx.fillStyle = '#202020';
+        bctx.fillRect(x, y + rh - 2, cw, 2);
+      });
+    },
+    { anisotropy: maxAniso, repeat: [1, 1] }
+  );
 }
 
 // 6. Diagonal Terracotta & Black Quarry Tiles (Nave & North Porch Floor)
@@ -685,45 +675,36 @@ function createPlasterMaps(maxAniso: number): CanvasMapPair {
 }
 
 // 9. Aged Oak Timber Grain (variant: 'dark' for belfry/screen/ribs, 'warm' for pews/pulpit)
-function createOakMaps(variant: 'dark' | 'medium' | 'warm', maxAniso: number): CanvasMapPair {
+function createOakMaps(variant: 'dark' | 'warm', maxAniso: number): CanvasMapPair {
   const w = 512;
   const h = 512;
-  const col = makeCanvas(w, h);
-  const bmp = makeCanvas(w, h);
-  const ctx = canvas2d(col);
-  const bctx = canvas2d(bmp);
-  const rand = mulberry32(variant === 'dark' ? 8811 : 6611);
+  return createCanvasPair(
+    w,
+    h,
+    variant === 'dark' ? 8811 : 6611,
+    (ctx, bctx, rand) => {
+      ctx.fillStyle = variant === 'dark' ? '#2d2018' : '#6e4326';
+      ctx.fillRect(0, 0, w, h);
+      bctx.fillStyle = '#808080';
+      bctx.fillRect(0, 0, w, h);
 
-  if (variant === 'dark') {
-    ctx.fillStyle = '#2d2018';
-  } else if (variant === 'medium') {
-    ctx.fillStyle = '#5c3b24';
-  } else {
-    ctx.fillStyle = '#6e4326';
-  }
-  ctx.fillRect(0, 0, w, h);
-  bctx.fillStyle = '#808080';
-  bctx.fillRect(0, 0, w, h);
-
-  // Longitudinal wood fibers
-  for (let i = 0; i < 420; i++) {
-    const y = rand() * h;
-    const thick = 1 + rand() * 3.5;
-    const light = rand() > 0.45;
-    if (variant === 'dark') {
-      ctx.fillStyle = light ? 'rgba(84,60,44,0.22)' : 'rgba(18,12,8,0.28)';
-    } else {
-      ctx.fillStyle = light ? 'rgba(154,102,58,0.22)' : 'rgba(58,32,16,0.24)';
-    }
-    ctx.fillRect(0, y, w, thick);
-    bctx.fillStyle = light ? 'rgba(175,175,175,0.22)' : 'rgba(70,70,70,0.25)';
-    bctx.fillRect(0, y, w, thick);
-  }
-
-  return {
-    map: finishTexture(col, { srgb: true, maxAniso }),
-    bumpMap: finishTexture(bmp, { srgb: false, maxAniso })
-  };
+      // Longitudinal wood fibers
+      for (let i = 0; i < 420; i++) {
+        const y = rand() * h;
+        const thick = 1 + rand() * 3.5;
+        const light = rand() > 0.45;
+        if (variant === 'dark') {
+          ctx.fillStyle = light ? 'rgba(84,60,44,0.22)' : 'rgba(18,12,8,0.28)';
+        } else {
+          ctx.fillStyle = light ? 'rgba(154,102,58,0.22)' : 'rgba(58,32,16,0.24)';
+        }
+        ctx.fillRect(0, y, w, thick);
+        bctx.fillStyle = light ? 'rgba(175,175,175,0.22)' : 'rgba(70,70,70,0.25)';
+        bctx.fillRect(0, y, w, thick);
+      }
+    },
+    { anisotropy: maxAniso, repeat: [1, 1] }
+  );
 }
 
 // 9b. Diamond Oak Parquetry (Glastonbury sanctuary chair back panel, chancel-chair photo)
@@ -818,157 +799,52 @@ function createParquetryMaps(maxAniso: number): CanvasMapPair {
   };
 }
 
-// 10. Stained Glass & Diamond Leaded Glass Textures
-function createWindowGlassTexture(kind: string, maxAniso: number): THREE.CanvasTexture {
+// 10. Clear Diamond-Quarry Leaded Glass Texture
+function createClearDiamondGlassTexture(maxAniso: number): THREE.CanvasTexture {
   const w = 256;
   const h = 512;
   const c = makeCanvas(w, h);
   const ctx = canvas2d(c);
-  const rand = mulberry32(kind.length * 1013);
+  const rand = mulberry32(13 * 1013);
 
-  if (kind === 'clear-diamond') {
-    // Translucent bright sky-tinted glass with crisp lead cames (diamond quarries)
-    const bg = ctx.createLinearGradient(0, 0, 0, h);
-    bg.addColorStop(0, '#eef7ff');
-    bg.addColorStop(0.6, '#ddecf6');
-    bg.addColorStop(1, '#c8dce8');
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, w, h);
+  // Translucent bright sky-tinted glass with crisp lead cames (diamond quarries)
+  const bg = ctx.createLinearGradient(0, 0, 0, h);
+  bg.addColorStop(0, '#eef7ff');
+  bg.addColorStop(0.6, '#ddecf6');
+  bg.addColorStop(1, '#c8dce8');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, w, h);
 
-    // Subtle antique glass mottling
-    for (let i = 0; i < 80; i++) {
-      ctx.fillStyle = rand() > 0.5 ? 'rgba(255,255,255,0.16)' : 'rgba(155,180,195,0.12)';
-      ctx.beginPath();
-      ctx.arc(rand() * w, rand() * h, 10 + rand() * 25, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    // Crisp diamond lead lines
-    ctx.strokeStyle = '#2c2f33';
-    ctx.lineWidth = 3.2;
-    const step = 36;
-    for (let x = -h; x < w + h; x += step) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x + h * 0.65, h);
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.moveTo(x, h);
-      ctx.lineTo(x + h * 0.65, 0);
-      ctx.stroke();
-    }
-    // Horizontal saddle bars
-    ctx.strokeStyle = '#222428';
-    ctx.lineWidth = 4;
-    for (let y = 80; y < h; y += 96) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(w, y);
-      ctx.stroke();
-    }
-  } else {
-    // Rich Victorian Stained Glass ('east-stained', 'sower-stained', 'north-square-stained')
-    const bg = ctx.createLinearGradient(0, 0, 0, h);
-    bg.addColorStop(0, '#dff0ff');
-    bg.addColorStop(0.35, '#8ec3f0');
-    bg.addColorStop(1, '#d8e8f2');
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, w, h);
-
-    // Diamond quarry borders top & bottom
-    ctx.strokeStyle = 'rgba(40,45,55,0.45)';
-    ctx.lineWidth = 2;
-    for (let x = -h; x < w + h; x += 26) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x + h * 0.6, h);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(x, h);
-      ctx.lineTo(x + h * 0.6, 0);
-      ctx.stroke();
-    }
-
-    const drawFigureLight = (cx: number, palette: FigurePalette) => {
-      // Gothic canopy arch
-      ctx.fillStyle = palette.canopy;
-      ctx.beginPath();
-      ctx.arc(cx, 150, 48, Math.PI, 0);
-      ctx.lineTo(cx + 48, 360);
-      ctx.lineTo(cx - 48, 360);
-      ctx.closePath();
-      ctx.fill();
-
-      // Robed biblical figure
-      ctx.fillStyle = palette.robe1;
-      ctx.beginPath();
-      ctx.moveTo(cx - 32, 355);
-      ctx.quadraticCurveTo(cx - 28, 235, cx, 215);
-      ctx.quadraticCurveTo(cx + 28, 235, cx + 32, 355);
-      ctx.closePath();
-      ctx.fill();
-
-      // Cloak/sash
-      ctx.fillStyle = palette.robe2;
-      ctx.beginPath();
-      ctx.moveTo(cx - 12, 230);
-      ctx.lineTo(cx + 28, 270);
-      ctx.lineTo(cx + 18, 352);
-      ctx.lineTo(cx - 20, 320);
-      ctx.closePath();
-      ctx.fill();
-
-      // Halo + head
-      ctx.fillStyle = '#ffd65c';
-      ctx.beginPath();
-      ctx.arc(cx, 192, 20, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#f5d4b8';
-      ctx.beginPath();
-      ctx.arc(cx, 194, 12, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Foliage / golden wheat / ground details
-      ctx.fillStyle = palette.accent;
-      ctx.fillRect(cx - 42, 355, 84, 34);
-    };
-
-    if (kind === 'east-stained') {
-      drawFigureLight(w * 0.27, { canopy: '#3b78d4', robe1: '#cc2929', robe2: '#f2c14e', accent: '#3d9956' });
-      drawFigureLight(w * 0.73, { canopy: '#2d6ac7', robe1: '#2e5ec4', robe2: '#d93232', accent: '#4ba363' });
-      // Top quatrefoil jewel in crimson & sapphire
-      ctx.fillStyle = '#cf2a35';
-      ctx.beginPath();
-      ctx.arc(w * 0.5, 58, 28, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#ffd966';
-      ctx.beginPath();
-      ctx.arc(w * 0.5, 58, 12, 0, Math.PI * 2);
-      ctx.fill();
-    } else if (kind === 'sower-stained') {
-      // Vivid golden-green-crimson Parable of the Sower window
-      drawFigureLight(w * 0.27, { canopy: '#e3a82b', robe1: '#2e8c4d', robe2: '#d93b2b', accent: '#e0b33a' });
-      drawFigureLight(w * 0.73, { canopy: '#3b9c5c', robe1: '#d92e2e', robe2: '#3268d6', accent: '#c9932c' });
-    } else {
-      // North square-headed 2-light stained glass (IMG_3949)
-      drawFigureLight(w * 0.27, { canopy: '#2a7bc9', robe1: '#d4313e', robe2: '#399e5a', accent: '#356ac4' });
-      drawFigureLight(w * 0.73, { canopy: '#2a7bc9', robe1: '#cc2929', robe2: '#f0be3c', accent: '#2f8c4e' });
-    }
-
-    // Crisp dark lead came grid over the stained glass
-    ctx.strokeStyle = '#1b1d22';
-    ctx.lineWidth = 3.5;
-    for (let y = 40; y < h; y += 52) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(w, y);
-      ctx.stroke();
-    }
-    ctx.lineWidth = 6;
+  // Subtle antique glass mottling
+  for (let i = 0; i < 80; i++) {
+    ctx.fillStyle = rand() > 0.5 ? 'rgba(255,255,255,0.16)' : 'rgba(155,180,195,0.12)';
     ctx.beginPath();
-    ctx.moveTo(w * 0.5, 0);
-    ctx.lineTo(w * 0.5, h);
+    ctx.arc(rand() * w, rand() * h, 10 + rand() * 25, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Crisp diamond lead lines
+  ctx.strokeStyle = '#2c2f33';
+  ctx.lineWidth = 3.2;
+  const step = 36;
+  for (let x = -h; x < w + h; x += step) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x + h * 0.65, h);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(x, h);
+    ctx.lineTo(x + h * 0.65, 0);
+    ctx.stroke();
+  }
+  // Horizontal saddle bars
+  ctx.strokeStyle = '#222428';
+  ctx.lineWidth = 4;
+  for (let y = 80; y < h; y += 96) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(w, y);
     ctx.stroke();
   }
 
@@ -1613,7 +1489,6 @@ export function createMaterials(renderer: THREE.WebGLRenderer) {
   const plasterMaps = createPlasterMaps(maxAniso);
   const darkOakMaps = createOakMaps('dark', maxAniso);
   const warmOakMaps = createOakMaps('warm', maxAniso);
-  const medOakMaps = createOakMaps('medium', maxAniso);
   const parquetryMaps = createParquetryMaps(maxAniso);
   const kneelerMaps = createKneelerFabricMaps(maxAniso);
   const grassMap = createGrassTexture(maxAniso);
@@ -1710,7 +1585,7 @@ export function createMaterials(renderer: THREE.WebGLRenderer) {
         const c = t.clone();
         c.repeat.set(t.repeat.x, t.repeat.y * 0.5);
         c.needsUpdate = true;
-        return c;
+        return registerStaticCanvasTexture(c);
       };
       return new THREE.MeshStandardMaterial({
         map: wide(weatherboardMaps.map),
@@ -1760,16 +1635,11 @@ export function createMaterials(renderer: THREE.WebGLRenderer) {
       roughness: 0.55
     }),
     medOak: new THREE.MeshStandardMaterial({
-      map: medOakMaps.map,
-      bumpMap: medOakMaps.bumpMap,
+      color: 0xd6e0f0,
+      map: warmOakMaps.map,
+      bumpMap: warmOakMaps.bumpMap,
       bumpScale: 0.02,
       roughness: 0.62
-    }),
-    northDoorBlue: new THREE.MeshStandardMaterial({
-      color: 0x4b6478,
-      bumpMap: darkOakMaps.bumpMap,
-      bumpScale: 0.022,
-      roughness: 0.72
     }),
     porchGateGrey: new THREE.MeshStandardMaterial({
       color: 0x575d66,
@@ -1865,7 +1735,7 @@ export function createMaterials(renderer: THREE.WebGLRenderer) {
       metalness: 0.03
     }),
     glassClear: new THREE.MeshStandardMaterial({
-      map: createWindowGlassTexture('clear-diamond', maxAniso),
+      map: createClearDiamondGlassTexture(maxAniso),
       emissive: 0xcbe4fa,
       emissiveIntensity: 0.38,
       roughness: 0.22,

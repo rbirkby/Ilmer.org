@@ -63,12 +63,12 @@ export function buildInterior(mats: ChurchMaterials) {
   // -------------------------------------------------------
   // Nave pendants spaced evenly under the nave ceiling, the westernmost kept clear of the bell tower frame
   [
-    [-2.45, 5.08, 2.38, 1.6],
-    [-0.2, 5.08, 2.38, 1.65],
-    [1.95, 5.08, 2.38, 1.65],
-    [5.45, 4.66, 2.05, 1.7]
-  ].forEach(([cx, topY, drop, intensity]) => {
-    const ch = buildChandelier(drop, mats, intensity);
+    [-2.45, 5.08, 2.38],
+    [-0.2, 5.08, 2.38],
+    [1.95, 5.08, 2.38],
+    [5.45, 4.66, 2.05]
+  ].forEach(([cx, topY, drop]) => {
+    const ch = buildChandelier(drop, mats);
     ch.group.position.set(cx, topY, 0);
     ch.group.userData.era = 'today'; // electric
     ceilingGroup.add(ch.group);
@@ -101,16 +101,29 @@ export function buildInterior(mats: ChurchMaterials) {
   interiorGroup.add(sanctuaryLight);
   chandelierLights.push(sanctuaryLight);
 
+  // Stepped wall plaque facing -Z (used for the South Nave memorials)
+  const buildSteppedPlaque = (
+    w: number,
+    h: number,
+    d: number,
+    inset: number,
+    bodyMat: THREE.Material,
+    faceMat: THREE.Material
+  ) => {
+    const g = new THREE.Group();
+    addBox(g, [w, h, d], bodyMat, [0, 0, 0], { cast: true, receive: true });
+    addBox(g, [w - inset, h - inset, d + 0.008], bodyMat);
+    const face = new THREE.Mesh(new THREE.PlaneGeometry(w - inset - 0.01, h - inset - 0.01), faceMat);
+    face.position.z = -(d * 0.5 + 0.006);
+    face.rotation.y = Math.PI;
+    g.add(face);
+    g.userData.era = 'today';
+    return g;
+  };
+
   // Roll of Honour War Dead Stone Plaque + Remembrance Poppy Wreath on South Nave Wall (IMG_3943, 3950 / RollOfHonour.md)
-  const rollG = new THREE.Group();
-  addBox(rollG, [0.8, 0.51, 0.036], mats.ashlar, [0, 0, 0], { cast: true, receive: true });
-  addBox(rollG, [0.76, 0.47, 0.044], mats.ashlar);
-  const rollFace = new THREE.Mesh(new THREE.PlaneGeometry(0.75, 0.46), mats.rollOfHonour);
-  rollFace.position.z = -0.024;
-  rollFace.rotation.y = Math.PI;
-  rollG.add(rollFace);
+  const rollG = buildSteppedPlaque(0.8, 0.51, 0.036, 0.04, mats.ashlar, mats.rollOfHonour);
   rollG.position.set(-2.32, 2.08, N.zSouthInt - 0.022);
-  rollG.userData.era = 'today'; // after the Great War
   interiorGroup.add(rollG);
 
   // Small iron shelf & brackets beneath the Roll of Honour
@@ -150,15 +163,8 @@ export function buildInterior(mats: ChurchMaterials) {
   interiorGroup.add(wreathG);
 
   // A7: Carved Oak Memorial Plaque to Robert Harold Attenborough on SE Nave Wall (to the left/East of Sower Window)
-  const attenG = new THREE.Group();
-  addBox(attenG, [0.66, 0.34, 0.028], mats.medOak, [0, 0, 0], { cast: true, receive: true });
-  addBox(attenG, [0.63, 0.31, 0.036], mats.medOak);
-  const attenFace = new THREE.Mesh(new THREE.PlaneGeometry(0.62, 0.3), mats.attenboroughPlaque);
-  attenFace.position.z = -0.02;
-  attenFace.rotation.y = Math.PI;
-  attenG.add(attenFace);
+  const attenG = buildSteppedPlaque(0.66, 0.34, 0.028, 0.03, mats.medOak, mats.attenboroughPlaque);
   attenG.position.set(1.88, 1.85, N.zSouthInt - 0.02);
-  attenG.userData.era = 'today';
   interiorGroup.add(attenG);
 
   // A4: Framed List of Donors for Mrs Jaques's Memorial Window on North Nave Wall (next to Jaques Window A3)
@@ -167,22 +173,17 @@ export function buildInterior(mats: ChurchMaterials) {
   const frameH = 0.72;
   const railT = 0.034;
   // 4-piece moulded dark walnut/oak picture frame
-  const topRail = new THREE.Mesh(new THREE.BoxGeometry(frameW, railT, 0.038), mats.darkOak);
-  topRail.position.y = (frameH - railT) * 0.5;
-  const botRail = new THREE.Mesh(new THREE.BoxGeometry(frameW, railT, 0.038), mats.darkOak);
-  botRail.position.y = -(frameH - railT) * 0.5;
-  const leftRail = new THREE.Mesh(new THREE.BoxGeometry(railT, frameH, 0.038), mats.darkOak);
-  leftRail.position.x = -(frameW - railT) * 0.5;
-  const rightRail = new THREE.Mesh(new THREE.BoxGeometry(railT, frameH, 0.038), mats.darkOak);
-  rightRail.position.x = (frameW - railT) * 0.5;
-  const backBoard = new THREE.Mesh(new THREE.BoxGeometry(frameW - 0.02, frameH - 0.02, 0.016), mats.darkOak);
-  backBoard.position.z = -0.008;
+  addBox(donorsG, [frameW, railT, 0.038], mats.darkOak, [0, (frameH - railT) * 0.5, 0]);
+  addBox(donorsG, [frameW, railT, 0.038], mats.darkOak, [0, -(frameH - railT) * 0.5, 0]);
+  addBox(donorsG, [railT, frameH, 0.038], mats.darkOak, [-(frameW - railT) * 0.5, 0, 0]);
+  addBox(donorsG, [railT, frameH, 0.038], mats.darkOak, [(frameW - railT) * 0.5, 0, 0]);
+  addBox(donorsG, [frameW - 0.02, frameH - 0.02, 0.016], mats.darkOak, [0, 0, -0.008]);
   const donorsArt = new THREE.Mesh(
     new THREE.PlaneGeometry(frameW - railT * 1.8, frameH - railT * 1.8),
     mats.jaquesDonors
   );
   donorsArt.position.z = 0.008;
-  donorsG.add(topRail, botRail, leftRail, rightRail, backBoard, donorsArt);
+  donorsG.add(donorsArt);
   donorsG.scale.set(0.5, 0.5, 1); // half size
   donorsG.position.set(-0.08, 1.92, N.zNorthInt + 0.02); // just west of the Jaques window reveal
   donorsG.userData.era = 'today';

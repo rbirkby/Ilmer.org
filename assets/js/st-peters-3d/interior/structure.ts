@@ -9,7 +9,13 @@ import { buildSally, buildTwistedRope, createRopeMaterial } from '../belfry.ts';
 import { buildPiercedCarvingFromField, canvasToBlurredHeightField, createCarvedAngelHeightMap } from '../reliefs.ts';
 import type { ChurchMaterials } from '../textures.ts';
 import { buildCeilingSpotlight } from './lighting.ts';
-import { buildChimingFrame, buildHymnBookPile, buildTableCurtain, buildWaterExtinguisher } from './props.ts';
+import {
+  buildChimingFrame,
+  buildExtinguisherSign,
+  buildFireExtinguisher,
+  buildHymnBookPile,
+  buildTableCurtain
+} from './props.ts';
 
 type Seam = [number, number, number, number];
 
@@ -770,174 +776,27 @@ export function buildWestTowerInterior(mats: ChurchMaterials, ceilingGroup: THRE
   meterBox.userData.era = 'today'; // electrical consumer unit
   g.add(meterBox);
 
-  // Detailed British 2kg CO2 Fire Extinguisher beside vestry doorway + wall ID sign (IMG_3942)
-  const extG = new THREE.Group();
-  const extRedMat = new THREE.MeshStandardMaterial({ color: 0xc8161d, roughness: 0.24, metalness: 0.28 });
-  const extBlackMat = new THREE.MeshStandardMaterial({ color: 0x1a1c1f, roughness: 0.55, metalness: 0.15 });
-  const extMetalMat = new THREE.MeshStandardMaterial({ color: 0xbec4ca, roughness: 0.3, metalness: 0.85 });
-  const extPinMat = new THREE.MeshStandardMaterial({ color: 0xf0c420, roughness: 0.42, metalness: 0.25 });
-
-  // Smooth spun-steel tank with rounded dome shoulder & neck collar
-  const tankPts = [
-    new THREE.Vector2(0.0, 0.0),
-    new THREE.Vector2(0.058, 0.0),
-    new THREE.Vector2(0.062, 0.012),
-    new THREE.Vector2(0.062, 0.365),
-    new THREE.Vector2(0.059, 0.395),
-    new THREE.Vector2(0.049, 0.422),
-    new THREE.Vector2(0.032, 0.442),
-    new THREE.Vector2(0.018, 0.452),
-    new THREE.Vector2(0.018, 0.474),
-    new THREE.Vector2(0.0, 0.474)
-  ];
-  const tankMesh = new THREE.Mesh(new THREE.LatheGeometry(tankPts, 20), extRedMat);
-  tankMesh.castShadow = true;
-  tankMesh.receiveShadow = true;
-  extG.add(tankMesh);
-
-  // Subtle black rubber base ring
-  const baseRing = new THREE.Mesh(new THREE.CylinderGeometry(0.0635, 0.0645, 0.018, 20), extBlackMat);
-  baseRing.position.y = 0.009;
-  extG.add(baseRing);
-
-  // Curved UK BS EN 3 CO2 front label decal (black CO2 band + white instruction graphic)
-  const lblCanvas = makeCanvas(256, 256);
-  const lctx = canvas2d(lblCanvas);
-  lctx.fillStyle = '#c8161d';
-  lctx.fillRect(0, 0, 256, 256);
-  // Black CO2 identification band
-  lctx.fillStyle = '#141618';
-  lctx.fillRect(14, 16, 228, 66);
-  lctx.fillStyle = '#ffffff';
-  lctx.font = 'bold 42px sans-serif';
-  lctx.textAlign = 'center';
-  lctx.fillText('CO2', 128, 63);
-  // White instruction box & fire-class icons
-  lctx.fillStyle = '#f4f2ec';
-  lctx.fillRect(20, 94, 216, 144);
-  lctx.fillStyle = '#1c1c1e';
-  lctx.font = 'bold 16px sans-serif';
-  lctx.fillText('FIRE EXTINGUISHER', 128, 118);
-  lctx.fillStyle = '#44464a';
-  for (let i = 0; i < 4; i++) {
-    lctx.fillRect(34, 132 + i * 14, 188, 5);
-  }
-  // Small safety pictogram squares
-  ['#c8161d', '#1c1c1e', '#1e7b34'].forEach((col, i) => {
-    lctx.fillStyle = col;
-    lctx.fillRect(42 + i * 62, 196, 46, 30);
-    lctx.fillStyle = '#ffffff';
-    lctx.fillRect(54 + i * 62, 204, 22, 14);
-  });
-  const lblTex = canvasTexture(lblCanvas);
-  const lblMat = new THREE.MeshStandardMaterial({ map: lblTex, roughness: 0.35, metalness: 0.1 });
-  const lblMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.063, 0.063, 0.19, 18, 1, true, -0.95, 1.9), lblMat);
-  lblMesh.position.y = 0.21;
-  extG.add(lblMesh);
-
-  // Brass neck hex nut & chrome valve assembly
-  const neckNut = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 0.018, 6), mats.brass);
-  neckNut.position.y = 0.48;
-  extG.add(neckNut);
-  const valveBody = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.017, 0.044, 12), extMetalMat);
-  valveBody.position.y = 0.51;
-  extG.add(valveBody);
-
-  // Yellow safety pull-pin & ring on the side of the valve
-  const pinRing = new THREE.Mesh(new THREE.TorusGeometry(0.014, 0.0024, 6, 14), extPinMat);
-  pinRing.position.set(0.024, 0.518, -0.008);
-  pinRing.rotation.y = Math.PI / 3;
-  extG.add(pinRing);
-
-  // Lower fixed red carry handle + upper angled squeeze-grip operating lever (IMG_3942)
-  const carryHandle = addBox(extG, [0.014, 0.013, 0.105], extRedMat, [0, 0.506, -0.056]);
-  carryHandle.rotation.x = 0.12;
-
-  const squeezeLever = addBox(extG, [0.016, 0.012, 0.118], extRedMat, [0, 0.548, -0.056]);
-  squeezeLever.rotation.x = -0.38;
-
-  // Brass swivel elbow + matte-black flared conical CO2 discharge horn (concentric assembly pivoted at swivel)
-  const swivel = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.032, 8), mats.brass);
-  swivel.rotation.x = Math.PI / 2;
-  swivel.position.set(0, 0.506, 0.024);
-  extG.add(swivel);
-
-  const hornGroup = new THREE.Group();
-  hornGroup.position.set(0, 0.506, 0.038);
-  hornGroup.rotation.set(-0.22, 0, 0.2);
-  const hornElbow = new THREE.Mesh(new THREE.SphereGeometry(0.009, 8, 8), extBlackMat);
-  hornGroup.add(hornElbow);
-  const hornStem = new THREE.Mesh(new THREE.CylinderGeometry(0.007, 0.0085, 0.075, 10), extBlackMat);
-  hornStem.position.y = -0.038;
-  hornGroup.add(hornStem);
-  const hornCone = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.031, 0.21, 16, 1, false), extBlackMat);
-  hornCone.position.y = -0.175;
-  hornCone.castShadow = true;
-  hornGroup.add(hornCone);
-  const hornRim = new THREE.Mesh(new THREE.TorusGeometry(0.0305, 0.003, 6, 16), extBlackMat);
-  hornRim.rotation.x = Math.PI / 2;
-  hornRim.position.y = -0.28;
-  hornGroup.add(hornRim);
-  extG.add(hornGroup);
-
+  // British 2kg CO2 fire extinguisher beside vestry doorway + wall ID sign (IMG_3942)
+  const extG = buildFireExtinguisher('co2', mats);
   extG.position.set(pX + 0.14, floorY, -0.72);
   extG.rotation.y = Math.PI * 0.42; // Front label, squeeze levers & black CO2 horn facing out toward Nave/Organ
   extG.userData.era = 'today';
   g.add(extG);
 
-  // Small UK CO2 fire-extinguisher wall sign mounted right above it on the vestry partition (IMG_3942)
-  const signCanvas = makeCanvas(128, 96);
-  const sctx = canvas2d(signCanvas);
-  sctx.fillStyle = '#f2f0ea';
-  sctx.fillRect(0, 0, 128, 96);
-  sctx.fillStyle = '#141618';
-  sctx.fillRect(6, 6, 54, 84);
-  sctx.fillStyle = '#c8161d';
-  sctx.fillRect(66, 6, 56, 38);
-  sctx.fillStyle = '#1e7b34';
-  sctx.fillRect(66, 50, 56, 40);
-  sctx.fillStyle = '#ffffff';
-  sctx.font = 'bold 20px sans-serif';
-  sctx.textAlign = 'center';
-  sctx.fillText('CO2', 33, 56);
-  const signTex = canvasTexture(signCanvas);
-  const signMesh = new THREE.Mesh(
-    new THREE.PlaneGeometry(0.11, 0.085),
-    new THREE.MeshStandardMaterial({ map: signTex, roughness: 0.45 })
-  );
+  const signMesh = buildExtinguisherSign('co2');
   signMesh.rotation.y = Math.PI / 2;
   signMesh.position.set(pX + 0.046, floorY + 0.78, -0.74);
   signMesh.userData.era = 'today';
   g.add(signMesh);
 
-  // 9-litre water extinguisher on the other (South, left-hand) side of the vestry doorway: all red, with a red
-  // identification band, a black hose looped down the side to a nozzle clipped near the base
-  const waterG = buildWaterExtinguisher();
+  // 9-litre water extinguisher on the other (South, left-hand) side of the vestry doorway + wall ID sign
+  const waterG = buildFireExtinguisher('water');
   waterG.position.set(pX + 0.16, floorY, 0.72);
   waterG.rotation.y = Math.PI * 0.58; // label & hose facing out toward the nave
   waterG.userData.era = 'today';
   g.add(waterG);
 
-  // Matching water-extinguisher ID sign above it on the partition
-  const wsCanvas = makeCanvas(128, 96);
-  const wsctx = canvas2d(wsCanvas);
-  wsctx.fillStyle = '#f2f0ea';
-  wsctx.fillRect(0, 0, 128, 96);
-  wsctx.fillStyle = '#c8161d';
-  wsctx.fillRect(6, 6, 54, 84);
-  wsctx.fillStyle = '#ffffff';
-  wsctx.font = 'bold 15px sans-serif';
-  wsctx.textAlign = 'center';
-  wsctx.fillText('WATER', 33, 54);
-  wsctx.fillStyle = '#1e7b34';
-  wsctx.fillRect(66, 6, 56, 38);
-  wsctx.fillStyle = '#c8161d';
-  wsctx.fillRect(66, 50, 56, 40);
-  const wsTex = canvasTexture(wsCanvas);
-  const wSign = new THREE.Mesh(
-    new THREE.PlaneGeometry(0.11, 0.085),
-    new THREE.MeshStandardMaterial({ map: wsTex, roughness: 0.45 })
-  );
+  const wSign = buildExtinguisherSign('water');
   wSign.rotation.y = Math.PI / 2;
   wSign.position.set(pX + 0.046, floorY + 0.86, 0.74);
   wSign.userData.era = 'today';

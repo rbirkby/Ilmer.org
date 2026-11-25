@@ -1294,7 +1294,8 @@ export function createEastStainedGlassTexture(maxAniso = 8) {
   }
 
   addAntiqueGlassMottle(ctx, w, h, 1997, 0.06);
-  return canvasTexture(c, { anisotropy: maxAniso });
+  // Retain backing canvas so createPlainGlazingMaterial() can sample the tracery if the user switches to Year: 1900
+  return canvasTexture(c, { anisotropy: maxAniso, retainBacking: true });
 }
 
 // =========================================================================
@@ -2490,7 +2491,8 @@ export function createSowerStainedGlassTexture(maxAniso = 8) {
   ctx.restore();
 
   addAntiqueGlassMottle(ctx, w, h, 1997, 0.06);
-  return canvasTexture(c, { anisotropy: maxAniso });
+  // Retain backing canvas so createPlainGlazingMaterial() can sample the tracery if the user switches to Year: 1900
+  return canvasTexture(c, { anisotropy: maxAniso, retainBacking: true });
 }
 
 // =========================================================================
@@ -4332,7 +4334,7 @@ export function createJaquesStainedGlassTexture(maxAniso = 8) {
   }
 
   addAntiqueGlassMottle(ctx, w, h, 1937, 0.06);
-  return canvasTexture(c, { anisotropy: maxAniso });
+  return canvasTexture(c, { anisotropy: maxAniso, retainBacking: true });
 }
 
 // =========================================================================
@@ -4920,5 +4922,5 @@ export function createWilsonStainedGlassTexture(maxAniso = 8) {
 
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   addAntiqueGlassMottle(ctx, w, h, 2011, 0.05);
-  return canvasTexture(c, { anisotropy: maxAniso });
+  return canvasTexture(c, { anisotropy: maxAniso, retainBacking: true });
 }

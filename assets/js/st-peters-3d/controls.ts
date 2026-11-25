@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { getSurfaceY, groundOutlineRadius, type TourWaypoint } from './dimensions.ts';
+import { DIM, getSurfaceY, groundOutlineRadius, type TourWaypoint } from './dimensions.ts';
 
 export type CameraPreset = {
   label: string;
@@ -266,7 +266,7 @@ export function createCameraController(camera: THREE.PerspectiveCamera, domEleme
       orbit.enabled = false;
       syncWalkAnglesFromCamera();
       if (camera.position.y > 3.2) {
-        camera.position.set(-2.35, 1.68, -6.5);
+        camera.position.set(DIM.porch.xCenter, 1.68, -6.5);
         yaw = Math.PI;
         pitch = 0;
       }
@@ -276,25 +276,6 @@ export function createCameraController(camera: THREE.PerspectiveCamera, domEleme
       camera.getWorldDirection(forward);
       orbit.target.copy(camera.position).addScaledVector(forward, 4.0);
     }
-  }
-
-  function goToPreset(presetKey: string, onPresetMeta?: (preset: CameraPreset) => void) {
-    const p = CAMERA_PRESETS[presetKey];
-    if (!p) return;
-    stopTour(false);
-    if (mode === 'walk') {
-      setMode('orbit');
-    }
-    if (onPresetMeta) onPresetMeta(p);
-    transition = {
-      startPos: camera.position.clone(),
-      startTarget: orbit.target.clone(),
-      endPos: new THREE.Vector3(...p.pos),
-      endTarget: new THREE.Vector3(...p.target),
-      t: 0,
-      duration: 0.85
-    };
-    orbit.maxPolarAngle = p.group === 'Interior' ? Math.PI * 0.85 : Math.PI * 0.72;
   }
 
   function focusOn(
@@ -315,6 +296,19 @@ export function createCameraController(camera: THREE.PerspectiveCamera, domEleme
       duration
     };
     orbit.maxPolarAngle = maxPolarAngle;
+  }
+
+  function goToPreset(presetKey: string, onPresetMeta?: (preset: CameraPreset) => void) {
+    const p = CAMERA_PRESETS[presetKey];
+    if (!p) return;
+    stopTour(false);
+    if (mode === 'walk') {
+      setMode('orbit');
+    }
+    if (onPresetMeta) onPresetMeta(p);
+    focusOn(new THREE.Vector3(...p.pos), new THREE.Vector3(...p.target), {
+      maxPolarAngle: p.group === 'Interior' ? Math.PI * 0.85 : Math.PI * 0.72
+    });
   }
 
   const MIN_CAMERA_CLEARANCE = 0.35;
@@ -425,6 +419,13 @@ export function createCameraController(camera: THREE.PerspectiveCamera, domEleme
   window.addEventListener('pointerup', endLook);
   window.addEventListener('pointercancel', endLook);
 
+  // Hoisted scratch objects for per-frame camera updates (avoids per-frame allocations)
+  const walkEuler = new THREE.Euler(0, 0, 0, 'YXZ');
+  const scratchFwd = new THREE.Vector3();
+  const scratchRight = new THREE.Vector3();
+  const scratchDelta = new THREE.Vector3();
+  const WORLD_UP = new THREE.Vector3(0, 1, 0);
+
   function update(dt: number) {
     if (tour) {
       const n = tour.waypoints.length;
@@ -474,7 +475,7 @@ export function createCameraController(camera: THREE.PerspectiveCamera, domEleme
       const t3 = tour.targetNodes[Math.min(maxK, k + 2)];
 
       // Tighter tension along the North Porch doorway corridor so the camera tracks straight through the arch
-      const isDoorCorridor = Math.abs(p1.x - -2.35) < 0.05 && Math.abs(p2.x - -2.35) < 0.05;
+      const isDoorCorridor = Math.abs(p1.x - DIM.porch.xCenter) < 0.05 && Math.abs(p2.x - DIM.porch.xCenter) < 0.05;
       evalCatmullRomVec3(camera.position, p0, p1, p2, p3, u, isDoorCorridor ? 0.78 : 0.45);
       evalCatmullRomVec3(orbit.target, t0, t1, t2, t3, u, 0.42);
 
@@ -498,24 +499,24 @@ export function createCameraController(camera: THREE.PerspectiveCamera, domEleme
     }
 
     if (mode === 'walk') {
-      const euler = new THREE.Euler(pitch, yaw, 0, 'YXZ');
-      camera.quaternion.setFromEuler(euler);
+      walkEuler.set(pitch, yaw, 0, 'YXZ');
+      camera.quaternion.setFromEuler(walkEuler);
 
       const sprinting = shiftHeld || keys.has('ShiftLeft') || keys.has('ShiftRight');
       const moveSpeed = walkMoveSpeed(sprinting) * dt;
-      const forward = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw));
-      const right = new THREE.Vector3(Math.cos(yaw), 0, -Math.sin(yaw));
+      scratchFwd.set(-Math.sin(yaw), 0, -Math.cos(yaw));
+      scratchRight.set(Math.cos(yaw), 0, -Math.sin(yaw));
 
-      if (keys.has('KeyW') || keys.has('ArrowUp')) camera.position.addScaledVector(forward, moveSpeed);
-      if (keys.has('KeyS') || keys.has('ArrowDown')) camera.position.addScaledVector(forward, -moveSpeed);
-      if (keys.has('KeyD') || keys.has('ArrowRight')) camera.position.addScaledVector(right, moveSpeed);
-      if (keys.has('KeyA') || keys.has('ArrowLeft')) camera.position.addScaledVector(right, -moveSpeed);
+      if (keys.has('KeyW') || keys.has('ArrowUp')) camera.position.addScaledVector(scratchFwd, moveSpeed);
+      if (keys.has('KeyS') || keys.has('ArrowDown')) camera.position.addScaledVector(scratchFwd, -moveSpeed);
+      if (keys.has('KeyD') || keys.has('ArrowRight')) camera.position.addScaledVector(scratchRight, moveSpeed);
+      if (keys.has('KeyA') || keys.has('ArrowLeft')) camera.position.addScaledVector(scratchRight, -moveSpeed);
       // Joystick: walking pace for most of its travel, quickening towards a stride near the rim
       const push = Math.hypot(stick.x, stick.y);
       if (push > 0.08) {
         const pace = (push > 0.9 ? WALK_SPEED_SPRINT * 0.66 : WALK_SPEED) * dt;
-        camera.position.addScaledVector(forward, stick.y * pace);
-        camera.position.addScaledVector(right, stick.x * pace);
+        camera.position.addScaledVector(scratchFwd, stick.y * pace);
+        camera.position.addScaledVector(scratchRight, stick.x * pace);
       }
 
       // Free to wander the fields round the churchyard, stopping a few metres short of the land's edge
@@ -532,18 +533,17 @@ export function createCameraController(camera: THREE.PerspectiveCamera, domEleme
     } else {
       const moveSpeed = 5.5 * dt;
       if (keys.has('KeyW') || keys.has('KeyS') || keys.has('KeyA') || keys.has('KeyD')) {
-        const fwd = new THREE.Vector3();
-        camera.getWorldDirection(fwd);
-        fwd.y = 0;
-        fwd.normalize();
-        const right = new THREE.Vector3().crossVectors(fwd, new THREE.Vector3(0, 1, 0)).normalize();
-        const delta = new THREE.Vector3();
-        if (keys.has('KeyW')) delta.addScaledVector(fwd, moveSpeed);
-        if (keys.has('KeyS')) delta.addScaledVector(fwd, -moveSpeed);
-        if (keys.has('KeyD')) delta.addScaledVector(right, moveSpeed);
-        if (keys.has('KeyA')) delta.addScaledVector(right, -moveSpeed);
-        camera.position.add(delta);
-        orbit.target.add(delta);
+        camera.getWorldDirection(scratchFwd);
+        scratchFwd.y = 0;
+        scratchFwd.normalize();
+        scratchRight.crossVectors(scratchFwd, WORLD_UP).normalize();
+        scratchDelta.set(0, 0, 0);
+        if (keys.has('KeyW')) scratchDelta.addScaledVector(scratchFwd, moveSpeed);
+        if (keys.has('KeyS')) scratchDelta.addScaledVector(scratchFwd, -moveSpeed);
+        if (keys.has('KeyD')) scratchDelta.addScaledVector(scratchRight, moveSpeed);
+        if (keys.has('KeyA')) scratchDelta.addScaledVector(scratchRight, -moveSpeed);
+        camera.position.add(scratchDelta);
+        orbit.target.add(scratchDelta);
       }
       orbit.update();
       clampCameraAboveGround();

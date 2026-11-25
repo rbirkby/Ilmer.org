@@ -6,149 +6,98 @@ function midiToHz(midi: number) {
   return 440 * Math.pow(2, (midi - 69) / 12);
 }
 
-// Stately, contemplative 16-bar Anglican parish organ voluntary in G major (pedal, inner voices, singing melody)
-const VOLUNTARY_PHRASES = [
-  {
-    beats: 4,
-    pedal: 43,
-    chord: [55, 59, 62],
-    melody: [
-      [0, 2, 67],
-      [2, 2, 71]
-    ]
-  }, // G
-  {
-    beats: 4,
-    pedal: 40,
-    chord: [52, 55, 59],
-    melody: [
-      [0, 3, 74],
-      [3, 1, 72]
-    ]
-  }, // Em
-  {
-    beats: 4,
-    pedal: 48,
-    chord: [55, 60, 64],
-    melody: [
-      [0, 2, 71],
-      [2, 2, 69]
-    ]
-  }, // C
-  {
-    beats: 4,
-    pedal: 50,
-    chord: [54, 57, 62],
-    melody: [
-      [0, 2, 69],
-      [2, 2, 66]
-    ]
-  }, // D
-  {
-    beats: 4,
-    pedal: 43,
-    chord: [55, 59, 62],
-    melody: [
-      [0, 2, 67],
-      [2, 2, 74]
-    ]
-  }, // G
-  {
-    beats: 4,
-    pedal: 47,
-    chord: [54, 59, 62],
-    melody: [
-      [0, 2, 76],
-      [2, 2, 74]
-    ]
-  }, // Bm
-  {
-    beats: 4,
-    pedal: 48,
-    chord: [55, 60, 64],
-    melody: [
-      [0, 2, 72],
-      [2, 2, 71]
-    ]
-  }, // C
-  { beats: 4, pedal: 50, chord: [57, 60, 62], melody: [[0, 4, 69]] }, // D7
-  {
-    beats: 4,
-    pedal: 40,
-    chord: [55, 59, 64],
-    melody: [
-      [0, 2, 71],
-      [2, 2, 72]
-    ]
-  }, // Em
-  {
-    beats: 4,
-    pedal: 48,
-    chord: [55, 59, 64],
-    melody: [
-      [0, 2, 74],
-      [2, 2, 71]
-    ]
-  }, // Cmaj7
-  {
-    beats: 4,
-    pedal: 45,
-    chord: [55, 60, 64],
-    melody: [
-      [0, 2, 69],
-      [2, 2, 67]
-    ]
-  }, // Am7
-  {
-    beats: 4,
-    pedal: 50,
-    chord: [54, 57, 62],
-    melody: [
-      [0, 2, 66],
-      [2, 2, 69]
-    ]
-  }, // D
-  {
-    beats: 4,
-    pedal: 43,
-    chord: [55, 59, 62],
-    melody: [
-      [0, 2, 71],
-      [2, 2, 67]
-    ]
-  }, // G
-  {
-    beats: 4,
-    pedal: 48,
-    chord: [55, 60, 64],
-    melody: [
-      [0, 2, 69],
-      [2, 2, 71]
-    ]
-  }, // C
-  {
-    beats: 4,
-    pedal: 50,
-    chord: [55, 57, 62],
-    melody: [
-      [0, 2, 69],
-      [2, 2, 66]
-    ]
-  }, // Dsus4 -> D
-  { beats: 4, pedal: 43, chord: [55, 59, 62], melody: [[0, 4, 67]] } // G (cadence)
-];
-
-// Hymn tunes by their number on the hymn board. Adeste Fideles (Wade, 18th century), harmonised in G major.
-// melody: [beat, beats, midi]; chords: [beat, beats, pedal, [inner voices]]
+// Shared chord voicings [pedalMidi, innerVoices] used by both the voluntary and the hymn tunes
 type ChordVoicing = [number, number[]];
 type ChordEvent = [number, number, number, number[]];
 const G: ChordVoicing = [43, [55, 59, 62]];
 const D: ChordVoicing = [50, [54, 57, 62]];
 const C: ChordVoicing = [48, [52, 55, 60]];
+const C_HI: ChordVoicing = [48, [55, 60, 64]];
 const EM: ChordVoicing = [40, [52, 55, 59]];
+const EM_HI: ChordVoicing = [40, [55, 59, 64]];
+const BM: ChordVoicing = [47, [54, 59, 62]];
 const AM: ChordVoicing = [45, [52, 57, 60]];
+const AM7: ChordVoicing = [45, [55, 60, 64]];
+const CMAJ7: ChordVoicing = [48, [55, 59, 64]];
 const A7: ChordVoicing = [45, [55, 57, 61]];
 const D7: ChordVoicing = [50, [54, 57, 60]];
+const D7_OPEN: ChordVoicing = [50, [57, 60, 62]];
+const DSUS4: ChordVoicing = [50, [55, 57, 62]];
+
+const voluntaryBar = (
+  [pedal, chord]: ChordVoicing,
+  melody: [number, number, number][]
+): { beats: number; pedal: number; chord: number[]; melody: [number, number, number][] } => ({
+  beats: 4,
+  pedal,
+  chord,
+  melody
+});
+
+// Stately, contemplative 16-bar Anglican parish organ voluntary in G major (pedal, inner voices, singing melody)
+const VOLUNTARY_PHRASES = [
+  voluntaryBar(G, [
+    [0, 2, 67],
+    [2, 2, 71]
+  ]),
+  voluntaryBar(EM, [
+    [0, 3, 74],
+    [3, 1, 72]
+  ]),
+  voluntaryBar(C_HI, [
+    [0, 2, 71],
+    [2, 2, 69]
+  ]),
+  voluntaryBar(D, [
+    [0, 2, 69],
+    [2, 2, 66]
+  ]),
+  voluntaryBar(G, [
+    [0, 2, 67],
+    [2, 2, 74]
+  ]),
+  voluntaryBar(BM, [
+    [0, 2, 76],
+    [2, 2, 74]
+  ]),
+  voluntaryBar(C_HI, [
+    [0, 2, 72],
+    [2, 2, 71]
+  ]),
+  voluntaryBar(D7_OPEN, [[0, 4, 69]]),
+  voluntaryBar(EM_HI, [
+    [0, 2, 71],
+    [2, 2, 72]
+  ]),
+  voluntaryBar(CMAJ7, [
+    [0, 2, 74],
+    [2, 2, 71]
+  ]),
+  voluntaryBar(AM7, [
+    [0, 2, 69],
+    [2, 2, 67]
+  ]),
+  voluntaryBar(D, [
+    [0, 2, 66],
+    [2, 2, 69]
+  ]),
+  voluntaryBar(G, [
+    [0, 2, 71],
+    [2, 2, 67]
+  ]),
+  voluntaryBar(C_HI, [
+    [0, 2, 69],
+    [2, 2, 71]
+  ]),
+  voluntaryBar(DSUS4, [
+    [0, 2, 69],
+    [2, 2, 66]
+  ]),
+  voluntaryBar(G, [[0, 4, 67]])
+];
+
+// Hymn tunes by their number on the hymn board. Adeste Fideles (Wade, 18th century), harmonised in G major.
+// melody: [beat, beats, midi]; chords: [beat, beats, pedal, [inner voices]]
 const chordRun = (list: Array<[number, number, ChordVoicing]>): ChordEvent[] =>
   list.map(([beat, beats, [pedal, inner]]): ChordEvent => [beat, beats, pedal, inner]);
 const HYMNS = {
@@ -694,6 +643,60 @@ export function createChurchAudio() {
     wet.connect(fxMuteGain);
   }
 
+  // Shared struck-metal partial synthesis (detuned sine pairs + filtered attack click), used for both church bells
+  // and the kissing-gate iron clang.
+  function playMetallicStrike(
+    dest: AudioNode,
+    t0: number,
+    baseHz: number,
+    partials: readonly { ratio: number; gain: number; decay: number }[],
+    {
+      level = 1,
+      detune,
+      attack,
+      tailPad,
+      noise
+    }: {
+      level?: number;
+      detune: (index: number) => number;
+      attack: number;
+      tailPad: number;
+      noise: { dur: number; filterType: BiquadFilterType; freq: number; Q?: number; gain: number };
+    }
+  ): number {
+    const ctx = requireContext();
+    let stopAt = t0;
+    partials.forEach((p, i) => {
+      const spread = detune(i);
+      for (const side of [-1, 1]) {
+        const osc = ctx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.value = baseHz * p.ratio * (1 + side * spread);
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(0.0001, t0);
+        g.gain.linearRampToValueAtTime(p.gain * level * 0.5, t0 + attack);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + p.decay);
+        osc.connect(g);
+        g.connect(dest);
+        osc.start(t0);
+        osc.stop(t0 + p.decay + tailPad);
+        stopAt = Math.max(stopAt, t0 + p.decay + tailPad);
+      }
+    });
+    const burst = noiseBurst(noise.dur);
+    const filter = ctx.createBiquadFilter();
+    filter.type = noise.filterType;
+    filter.frequency.value = noise.freq;
+    if (noise.Q !== undefined) filter.Q.value = noise.Q;
+    const ng = ctx.createGain();
+    ng.gain.value = noise.gain;
+    burst.connect(filter);
+    filter.connect(ng);
+    ng.connect(dest);
+    burst.start(t0);
+    return stopAt;
+  }
+
   // One blow of the clapper: a bell's partials relative to its nominal (hum, prime, tierce, quint, nominal,
   // superquint, octave nominal), each with its own decay, plus a short metallic strike transient
   const BELL_PARTIALS = [
@@ -712,39 +715,15 @@ export function createChurchAudio() {
     if (!bellBus) return false;
     const ctx = context;
     const t0 = ctx.currentTime + Math.max(0, delaySec);
-    const voice = context.createGain();
+    const voice = ctx.createGain();
     voice.gain.value = level;
     voice.connect(bellBus);
-    let stopAt = t0;
-    BELL_PARTIALS.forEach((p, i) => {
-      // A pair of slightly detuned oscillators per partial gives the slow beating of a real casting
-      [-1, 1].forEach((side) => {
-        const osc = ctx.createOscillator();
-        osc.type = 'sine';
-        osc.frequency.value = nominalHz * p.ratio * (1 + side * 0.0012 * (i + 1));
-        const g = ctx.createGain();
-        g.gain.setValueAtTime(0.0001, t0);
-        g.gain.linearRampToValueAtTime(p.gain * 0.5, t0 + 0.004);
-        g.gain.exponentialRampToValueAtTime(0.0001, t0 + p.decay);
-        osc.connect(g);
-        g.connect(voice);
-        osc.start(t0);
-        osc.stop(t0 + p.decay + 0.05);
-        stopAt = Math.max(stopAt, t0 + p.decay + 0.05);
-      });
+    const stopAt = playMetallicStrike(voice, t0, nominalHz, BELL_PARTIALS, {
+      detune: (i) => 0.0012 * (i + 1),
+      attack: 0.004,
+      tailPad: 0.05,
+      noise: { dur: 0.05, filterType: 'bandpass', freq: nominalHz * 3, Q: 2, gain: 0.25 }
     });
-    // Clang of iron on bronze
-    const noise = noiseBurst(0.05);
-    const bp = ctx.createBiquadFilter();
-    bp.type = 'bandpass';
-    bp.frequency.value = nominalHz * 3;
-    bp.Q.value = 2;
-    const ng = ctx.createGain();
-    ng.gain.value = 0.25;
-    noise.connect(bp);
-    bp.connect(ng);
-    ng.connect(voice);
-    noise.start(t0);
     window.setTimeout(() => voice.disconnect(), (stopAt - ctx.currentTime + 0.2) * 1000);
     return true;
   }
@@ -762,33 +741,13 @@ export function createChurchAudio() {
     { ratio: 8.93, gain: 0.12, decay: 0.4 }
   ];
   function strikeIron(dest: AudioNode, t0: number, baseHz: number, level: number) {
-    const ctx = requireContext();
-    for (const m of CLANG_MODES) {
-      for (const side of [-1, 1]) {
-        const osc = ctx.createOscillator();
-        osc.type = 'sine';
-        osc.frequency.value = baseHz * m.ratio * (1 + side * 0.0025);
-        const g = ctx.createGain();
-        g.gain.setValueAtTime(0.0001, t0);
-        g.gain.linearRampToValueAtTime(m.gain * level * 0.5, t0 + 0.0015);
-        g.gain.exponentialRampToValueAtTime(0.0001, t0 + m.decay);
-        osc.connect(g);
-        g.connect(dest);
-        osc.start(t0);
-        osc.stop(t0 + m.decay + 0.02);
-      }
-    }
-    // The hit itself: a very short, bright burst of noise
-    const noise = noiseBurst(0.012);
-    const hp = ctx.createBiquadFilter();
-    hp.type = 'highpass';
-    hp.frequency.value = 1500;
-    const ng = ctx.createGain();
-    ng.gain.value = 0.7 * level;
-    noise.connect(hp);
-    hp.connect(ng);
-    ng.connect(dest);
-    noise.start(t0);
+    playMetallicStrike(dest, t0, baseHz, CLANG_MODES, {
+      level,
+      detune: () => 0.0025,
+      attack: 0.0015,
+      tailPad: 0.02,
+      noise: { dur: 0.012, filterType: 'highpass', freq: 1500, gain: 0.7 * level }
+    });
   }
   // A one-second reverberant tail for the clang: decaying noise, a little darker as it dies away
   let clangReverb: ConvolverNode | null = null;

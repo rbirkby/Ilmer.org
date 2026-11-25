@@ -16,11 +16,6 @@ type RunAlign = 'center' | 'left' | 'right';
 
 type RunPaint = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number) => void;
 
-interface IncisedPainter {
-  color: RunPaint;
-  bump: (text: string, x: number, y: number) => void;
-}
-
 interface PlaqueMaps {
   map: ReturnType<typeof canvasTexture>;
   bumpMap: ReturnType<typeof canvasTexture>;
@@ -70,26 +65,15 @@ function drawRuns(
   ctx.restore();
 }
 
-// Paint incised (V-cut) lettering: dark shadowed groove, a light lower-right catch edge, and a bump-map groove
-function incisedPainter(
-  shadow: string,
-  catchLight: string,
-  fill: string,
-  bctx: CanvasRenderingContext2D
-): IncisedPainter {
-  return {
-    color(ctx: CanvasRenderingContext2D, text: string, x: number, y: number) {
-      ctx.fillStyle = catchLight;
-      ctx.fillText(text, x + 1.4, y + 1.8);
-      ctx.fillStyle = shadow;
-      ctx.fillText(text, x - 0.8, y - 1.0);
-      ctx.fillStyle = fill;
-      ctx.fillText(text, x, y);
-    },
-    bump(text: string, x: number, y: number) {
-      bctx.fillStyle = '#1e1e1e';
-      bctx.fillText(text, x, y);
-    }
+// Paint incised (V-cut) lettering: dark shadowed groove, a light lower-right catch edge, and darkened fill
+function incisedPainter(shadow: string, catchLight: string, fill: string): RunPaint {
+  return (ctx: CanvasRenderingContext2D, text: string, x: number, y: number) => {
+    ctx.fillStyle = catchLight;
+    ctx.fillText(text, x + 1.4, y + 1.8);
+    ctx.fillStyle = shadow;
+    ctx.fillText(text, x - 0.8, y - 1.0);
+    ctx.fillStyle = fill;
+    ctx.fillText(text, x, y);
   };
 }
 
@@ -104,9 +88,9 @@ function drawIncisedLine(
   font: FontForSize,
   maxWidth: number,
   align: RunAlign,
-  painter: IncisedPainter
+  paintColor: RunPaint
 ) {
-  drawRuns(ctx, runs, x, y, size, font, maxWidth, align, (c, t, px, py) => painter.color(c, t, px, py));
+  drawRuns(ctx, runs, x, y, size, font, maxWidth, align, paintColor);
   drawRuns(bctx, runs, x, y, size, font, maxWidth, align, (c, t, px, py) => {
     c.fillStyle = '#1e1e1e';
     c.fillText(t, px, py);
@@ -207,7 +191,7 @@ export function createAttenboroughPlaqueMaps(maxAniso = 8): PlaqueMaps {
   // Carved Arts-and-Crafts roman capitals (dark incised grooves with gilt-catching lower edges)
   const font = (s: number) =>
     `600 ${s}px "Copperplate", "Copperplate Gothic Light", "Trajan Pro", "Times New Roman", serif`;
-  const painter = incisedPainter('rgba(28,20,8,0.9)', 'rgba(222,200,140,0.75)', '#4a3a1c', bctx);
+  const painter = incisedPainter('rgba(28,20,8,0.9)', 'rgba(222,200,140,0.75)', '#4a3a1c');
   const cx = w * 0.5;
   const maxW = w - 150;
   const lines = [
@@ -297,7 +281,7 @@ export function createRollOfHonourMaps(maxAniso = 8): PlaqueMaps {
 
   // Incised, darkened Arts-and-Crafts sans capitals
   const font = (s: number) => `500 ${s}px "Gill Sans", "Gill Sans MT", Optima, Candara, "Trebuchet MS", sans-serif`;
-  const painter = incisedPainter('rgba(18,16,12,0.85)', 'rgba(214,208,192,0.55)', '#2f2b24', bctx);
+  const painter = incisedPainter('rgba(18,16,12,0.85)', 'rgba(214,208,192,0.55)', '#2f2b24');
   const left = 92;
   const right = w - 92;
   const cx = w * 0.5;

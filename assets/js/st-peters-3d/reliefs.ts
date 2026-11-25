@@ -4,7 +4,7 @@
 //  - Carved limewood angels on the nave wall-plates
 //  - Pierced oak lectern front panel
 import * as THREE from 'three';
-import { canvas2d, makeCanvas, mulberry32 } from './canvas-utils.ts';
+import { canvas2d, canvasTexture, makeCanvas, mulberry32 } from './canvas-utils.ts';
 
 type ReliefPath = (ctx: CanvasRenderingContext2D) => void;
 type ReliefForm = (path: ReliefPath, peak: number, edge: number, cx?: number, cy?: number, r?: number) => void;
@@ -106,7 +106,7 @@ export function buildPiercedCarvingFromField(
     }
   }
   mctx.putImageData(img, 0, 0);
-  const alphaMap = new THREE.CanvasTexture(mask);
+  const alphaMap = canvasTexture(mask, { srgb: false });
 
   const width = (cw * 0.001) / pxPerMm;
   const height = (ch * 0.001) / pxPerMm;

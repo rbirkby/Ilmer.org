@@ -51,7 +51,6 @@ type GateRec = {
   z: number;
   yaw: number;
   angle: number;
-  outside: number;
   side: number;
 };
 function pickStoneMat(stone: string | undefined, mats: ChurchMats): THREE.Material {
@@ -1499,8 +1498,7 @@ function placeKissingGate(
   const onwardPoint: XZ = onward ?? [back[0] + ux * 1.5, back[1] + uz * 1.5];
   addRailingRun(parent, mats, [back, onwardPoint]);
   const pivot = gate.userData.kissingLeaf;
-  const rec = { gate, pivot, x: end[0], z: end[1], yaw, angle: 0, outside: 0, side: 1 };
-  return rec;
+  return { gate, pivot, x: end[0], z: end[1], yaw, angle: 0, side: 1 };
 }
 
 /**
@@ -1610,11 +1608,10 @@ export function buildNorthChurchyardRailings(mats: ChurchMats, frontage: readonl
 export function buildChurchyard(mats: ChurchMats) {
   const g = new THREE.Group();
 
-  // 2. North wrought-iron railings first so the path extents are known for the lawn banks
+  // 2. North wrought-iron railings first so the path extents are known for the lawn banks (paving ends at the gates)
   const { group: railingGroup, westGate, eastGate, kissingGates } = buildNorthChurchyardRailings(mats);
-  const pathOverhang = 0; // paving ends at the gates' boundary line
-  const pathX0 = westGate.x - pathOverhang;
-  const pathX1 = eastGate.x + pathOverhang;
+  const pathX0 = westGate.x;
+  const pathX1 = eastGate.x;
 
   // 1. Churchyard lawn following the measured village terrain (flat under the church pad at y = 0).
   // Dense enough that the path-edge banks (sub-metre) read as a vertical curve, not a step every 2 m.

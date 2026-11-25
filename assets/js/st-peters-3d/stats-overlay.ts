@@ -69,11 +69,7 @@ class SceneStats extends HTMLElement {
     Object.assign(this.#extra, info);
   }
 
-  /**
-   * Call once per frame after rendering.
-   * @param {{ info: { render: { calls: number, triangles: number }, memory: { geometries: number, textures: number }, programs?: unknown[] | null } }} renderer
-   * @param {number} cpuMs JS time spent on this frame's update & render call
-   */
+  /** Call once per frame after rendering, passing the JS time spent on this frame's update & render call. */
   frame(
     renderer: {
       info: {

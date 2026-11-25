@@ -199,7 +199,7 @@ export function buildDonationPlate(mats: ChurchMaterials) {
     ctx.fillText('Donations', 256, 66, 480);
   };
   drawLabel('serif');
-  const tex = canvasTexture(c);
+  const tex = canvasTexture(c, { retainBacking: true });
   if (typeof FontFace !== 'undefined') {
     new FontFace('UnifrakturMaguntia', 'url(/assets/fonts/UnifrakturMaguntia.woff2)')
       .load()
@@ -628,7 +628,7 @@ export function buildOldBible(mats: ChurchMaterials) {
   bc.fillStyle = '#808080';
   bc.fillRect(0, 0, 256, 256);
   drawCover(bc, '#303030', '#e0e0e0');
-  const bumpTex = new THREE.CanvasTexture(bv);
+  const bumpTex = canvasTexture(bv, { srgb: false });
   const leather = new THREE.MeshStandardMaterial({
     map: leatherTex,
     bumpMap: bumpTex,
@@ -788,94 +788,228 @@ export function buildHymnBookPile(
   return g;
 }
 
-// UK 9-litre water fire extinguisher: all red with a red WATER band on its label, black hose down the side to a
-// clipped nozzle. Origin at the centre of its base; label faces +Z.
+// Shared materials for UK BS EN 3 fire extinguishers (9-litre water and 2kg CO2)
+let extMatsCache: {
+  red: THREE.MeshStandardMaterial;
+  black: THREE.MeshStandardMaterial;
+  metal: THREE.MeshStandardMaterial;
+  pin: THREE.MeshStandardMaterial;
+} | null = null;
+function getExtinguisherMaterials() {
+  extMatsCache ??= {
+    red: new THREE.MeshStandardMaterial({ color: 0xc8161d, roughness: 0.24, metalness: 0.28 }),
+    black: new THREE.MeshStandardMaterial({ color: 0x1a1c1f, roughness: 0.55, metalness: 0.15 }),
+    metal: new THREE.MeshStandardMaterial({ color: 0xbec4ca, roughness: 0.3, metalness: 0.85 }),
+    pin: new THREE.MeshStandardMaterial({ color: 0xf0c420, roughness: 0.42, metalness: 0.25 })
+  };
+  return extMatsCache;
+}
 
-export function buildWaterExtinguisher() {
-  const waterG = new THREE.Group();
-  const extRedMat = new THREE.MeshStandardMaterial({ color: 0xc8161d, roughness: 0.24, metalness: 0.28 });
-  const extBlackMat = new THREE.MeshStandardMaterial({ color: 0x1a1c1f, roughness: 0.55, metalness: 0.15 });
-  const extMetalMat = new THREE.MeshStandardMaterial({ color: 0xbec4ca, roughness: 0.3, metalness: 0.85 });
-  const extPinMat = new THREE.MeshStandardMaterial({ color: 0xf0c420, roughness: 0.42, metalness: 0.25 });
-  const wR = 0.085;
-  const wH = 0.5;
-  const wTank = new THREE.Mesh(
-    new THREE.LatheGeometry(
-      [
+/**
+ * UK BS EN 3 fire extinguisher: `'water'` (9-litre red tank with side hose) or `'co2'` (2kg spun-steel tank with
+ * flared black discharge horn). Origin at the centre of its base; front label faces +Z.
+ */
+export function buildFireExtinguisher(kind: 'water' | 'co2', mats?: ChurchMaterials) {
+  const g = new THREE.Group();
+  const { red, black, metal, pin } = getExtinguisherMaterials();
+  const isCo2 = kind === 'co2';
+  const r = isCo2 ? 0.062 : 0.085;
+  const h = isCo2 ? 0.452 : 0.5;
+  const tankPts = isCo2
+    ? [
+        new THREE.Vector2(0.0, 0.0),
+        new THREE.Vector2(0.058, 0.0),
+        new THREE.Vector2(0.062, 0.012),
+        new THREE.Vector2(0.062, 0.365),
+        new THREE.Vector2(0.059, 0.395),
+        new THREE.Vector2(0.049, 0.422),
+        new THREE.Vector2(0.032, 0.442),
+        new THREE.Vector2(0.018, 0.452),
+        new THREE.Vector2(0.018, 0.474),
+        new THREE.Vector2(0.0, 0.474)
+      ]
+    : [
         new THREE.Vector2(0, 0),
-        new THREE.Vector2(wR - 0.004, 0),
-        new THREE.Vector2(wR, 0.012),
-        new THREE.Vector2(wR, wH - 0.05),
-        new THREE.Vector2(wR * 0.9, wH - 0.02),
-        new THREE.Vector2(wR * 0.6, wH),
-        new THREE.Vector2(0.024, wH + 0.012),
-        new THREE.Vector2(0.024, wH + 0.03),
-        new THREE.Vector2(0, wH + 0.03)
-      ],
-      24
+        new THREE.Vector2(r - 0.004, 0),
+        new THREE.Vector2(r, 0.012),
+        new THREE.Vector2(r, h - 0.05),
+        new THREE.Vector2(r * 0.9, h - 0.02),
+        new THREE.Vector2(r * 0.6, h),
+        new THREE.Vector2(0.024, h + 0.012),
+        new THREE.Vector2(0.024, h + 0.03),
+        new THREE.Vector2(0, h + 0.03)
+      ];
+  const segs = isCo2 ? 20 : 24;
+  const tank = new THREE.Mesh(new THREE.LatheGeometry(tankPts, segs), red);
+  tank.castShadow = true;
+  tank.receiveShadow = true;
+  g.add(tank);
+
+  const baseRing = new THREE.Mesh(
+    new THREE.CylinderGeometry(r + 0.0015, r + 0.0025, isCo2 ? 0.018 : 0.02, segs),
+    black
+  );
+  baseRing.position.y = isCo2 ? 0.009 : 0.01;
+  g.add(baseRing);
+
+  // Curved UK BS EN 3 front label decal
+  const lblCanvas = makeCanvas(256, 256);
+  const ctx = canvas2d(lblCanvas);
+  if (isCo2) {
+    ctx.fillStyle = '#c8161d';
+    ctx.fillRect(0, 0, 256, 256);
+    ctx.fillStyle = '#141618';
+    ctx.fillRect(14, 16, 228, 66);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 42px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('CO2', 128, 63);
+    ctx.fillStyle = '#f4f2ec';
+    ctx.fillRect(20, 94, 216, 144);
+    ctx.fillStyle = '#1c1c1e';
+    ctx.font = 'bold 16px sans-serif';
+    ctx.fillText('FIRE EXTINGUISHER', 128, 118);
+    ctx.fillStyle = '#44464a';
+    for (let i = 0; i < 4; i++) ctx.fillRect(34, 132 + i * 14, 188, 5);
+    ['#c8161d', '#1c1c1e', '#1e7b34'].forEach((col, i) => {
+      ctx.fillStyle = col;
+      ctx.fillRect(42 + i * 62, 196, 46, 30);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(54 + i * 62, 204, 22, 14);
+    });
+  } else {
+    ctx.fillStyle = '#f4f2ec';
+    ctx.fillRect(0, 0, 256, 256);
+    ctx.fillStyle = '#c8161d';
+    ctx.fillRect(0, 10, 256, 70);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 40px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('WATER', 128, 60);
+    ctx.fillStyle = '#1c1c1e';
+    ctx.font = 'bold 16px sans-serif';
+    ctx.fillText('FIRE EXTINGUISHER', 128, 108);
+    ctx.fillStyle = '#44464a';
+    for (let i = 0; i < 4; i++) ctx.fillRect(34, 124 + i * 14, 188, 5);
+    ctx.fillStyle = '#c8161d';
+    ctx.fillRect(100, 192, 56, 40);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 28px sans-serif';
+    ctx.fillText('A', 128, 224);
+  }
+  const label = new THREE.Mesh(
+    new THREE.CylinderGeometry(
+      r + 0.001,
+      r + 0.001,
+      isCo2 ? 0.19 : 0.24,
+      isCo2 ? 18 : 20,
+      1,
+      true,
+      isCo2 ? -0.95 : -0.8,
+      isCo2 ? 1.9 : 1.6
     ),
-    extRedMat
+    new THREE.MeshStandardMaterial({ map: canvasTexture(lblCanvas), roughness: 0.35, metalness: 0.1 })
   );
-  wTank.castShadow = true;
-  wTank.receiveShadow = true;
-  waterG.add(wTank);
-  const wBase = new THREE.Mesh(new THREE.CylinderGeometry(wR + 0.0015, wR + 0.0025, 0.02, 24), extBlackMat);
-  wBase.position.y = 0.01;
-  waterG.add(wBase);
-  const wCanvas = makeCanvas(256, 256);
-  const wctx = canvas2d(wCanvas);
-  wctx.fillStyle = '#f4f2ec';
-  wctx.fillRect(0, 0, 256, 256);
-  wctx.fillStyle = '#c8161d';
-  wctx.fillRect(0, 10, 256, 70);
-  wctx.fillStyle = '#ffffff';
-  wctx.font = 'bold 40px sans-serif';
-  wctx.textAlign = 'center';
-  wctx.fillText('WATER', 128, 60);
-  wctx.fillStyle = '#1c1c1e';
-  wctx.font = 'bold 16px sans-serif';
-  wctx.fillText('FIRE EXTINGUISHER', 128, 108);
-  wctx.fillStyle = '#44464a';
-  for (let i = 0; i < 4; i++) wctx.fillRect(34, 124 + i * 14, 188, 5);
-  wctx.fillStyle = '#c8161d';
-  wctx.fillRect(100, 192, 56, 40);
-  wctx.fillStyle = '#ffffff';
-  wctx.font = 'bold 28px sans-serif';
-  wctx.fillText('A', 128, 224);
-  const wTex = canvasTexture(wCanvas);
-  const wLabel = new THREE.Mesh(
-    new THREE.CylinderGeometry(wR + 0.001, wR + 0.001, 0.24, 20, 1, true, -0.8, 1.6),
-    new THREE.MeshStandardMaterial({ map: wTex, roughness: 0.35, metalness: 0.1 })
+  label.position.y = isCo2 ? 0.21 : 0.25;
+  g.add(label);
+
+  // Valve, handles & safety pull-pin
+  const brass = mats?.brass ?? metal;
+  if (isCo2) {
+    const neckNut = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 0.018, 6), brass);
+    neckNut.position.y = 0.48;
+    g.add(neckNut);
+  }
+  const valve = new THREE.Mesh(
+    new THREE.CylinderGeometry(isCo2 ? 0.016 : 0.02, isCo2 ? 0.017 : 0.022, isCo2 ? 0.044 : 0.05, 12),
+    metal
   );
-  wLabel.position.y = 0.25;
-  waterG.add(wLabel);
-  const wValve = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.022, 0.05, 12), extMetalMat);
-  wValve.position.y = wH + 0.055;
-  waterG.add(wValve);
-  const wCarry = addBox(waterG, [0.016, 0.013, 0.12], extBlackMat, [0, wH + 0.06, -0.06]);
-  wCarry.rotation.x = 0.1;
-  const wLever = addBox(waterG, [0.018, 0.012, 0.13], extBlackMat, [0, wH + 0.1, -0.06]);
-  wLever.rotation.x = -0.36;
-  const wPin = new THREE.Mesh(new THREE.TorusGeometry(0.014, 0.0024, 6, 14), extPinMat);
-  wPin.position.set(0.026, wH + 0.075, -0.01);
-  wPin.rotation.y = Math.PI / 3;
-  waterG.add(wPin);
-  // Hose from the valve, round the shoulder and down the side to a nozzle held in a clip
-  const hoseCurve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(0.02, wH + 0.055, 0),
-    new THREE.Vector3(0.06, wH + 0.05, 0.01),
-    new THREE.Vector3(wR + 0.02, wH - 0.03, 0.02),
-    new THREE.Vector3(wR + 0.014, 0.3, 0.03),
-    new THREE.Vector3(wR + 0.004, 0.16, 0.035)
+  valve.position.y = isCo2 ? 0.51 : h + 0.055;
+  g.add(valve);
+
+  const handleMat = isCo2 ? red : black;
+  const carry = addBox(g, [isCo2 ? 0.014 : 0.016, 0.013, isCo2 ? 0.105 : 0.12], handleMat, [
+    0,
+    isCo2 ? 0.506 : h + 0.06,
+    isCo2 ? -0.056 : -0.06
   ]);
-  const hose = new THREE.Mesh(new THREE.TubeGeometry(hoseCurve, 24, 0.008, 8), extBlackMat);
-  hose.castShadow = true;
-  waterG.add(hose);
-  const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(0.007, 0.011, 0.07, 10), extBlackMat);
-  nozzle.position.set(wR + 0.004, 0.12, 0.035);
-  waterG.add(nozzle);
-  addBox(waterG, [0.006, 0.012, 0.03], extMetalMat, [wR + 0.001, 0.12, 0.035]);
-  return waterG;
+  carry.rotation.x = isCo2 ? 0.12 : 0.1;
+  const lever = addBox(g, [isCo2 ? 0.016 : 0.018, 0.012, isCo2 ? 0.118 : 0.13], handleMat, [
+    0,
+    isCo2 ? 0.548 : h + 0.1,
+    isCo2 ? -0.056 : -0.06
+  ]);
+  lever.rotation.x = isCo2 ? -0.38 : -0.36;
+
+  const pinRing = new THREE.Mesh(new THREE.TorusGeometry(0.014, 0.0024, 6, 14), pin);
+  pinRing.position.set(isCo2 ? 0.024 : 0.026, isCo2 ? 0.518 : h + 0.075, isCo2 ? -0.008 : -0.01);
+  pinRing.rotation.y = Math.PI / 3;
+  g.add(pinRing);
+
+  if (isCo2) {
+    // Brass swivel elbow + matte-black flared conical CO2 discharge horn
+    const swivel = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.032, 8), brass);
+    swivel.rotation.x = Math.PI / 2;
+    swivel.position.set(0, 0.506, 0.024);
+    g.add(swivel);
+
+    const hornGroup = new THREE.Group();
+    hornGroup.position.set(0, 0.506, 0.038);
+    hornGroup.rotation.set(-0.22, 0, 0.2);
+    hornGroup.add(new THREE.Mesh(new THREE.SphereGeometry(0.009, 8, 8), black));
+    const hornStem = new THREE.Mesh(new THREE.CylinderGeometry(0.007, 0.0085, 0.075, 10), black);
+    hornStem.position.y = -0.038;
+    hornGroup.add(hornStem);
+    const hornCone = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.031, 0.21, 16, 1, false), black);
+    hornCone.position.y = -0.175;
+    hornCone.castShadow = true;
+    hornGroup.add(hornCone);
+    const hornRim = new THREE.Mesh(new THREE.TorusGeometry(0.0305, 0.003, 6, 16), black);
+    hornRim.rotation.x = Math.PI / 2;
+    hornRim.position.y = -0.28;
+    hornGroup.add(hornRim);
+    g.add(hornGroup);
+  } else {
+    // Hose from the valve, round the shoulder and down the side to a nozzle held in a clip
+    const hoseCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0.02, h + 0.055, 0),
+      new THREE.Vector3(0.06, h + 0.05, 0.01),
+      new THREE.Vector3(r + 0.02, h - 0.03, 0.02),
+      new THREE.Vector3(r + 0.014, 0.3, 0.03),
+      new THREE.Vector3(r + 0.004, 0.16, 0.035)
+    ]);
+    const hose = new THREE.Mesh(new THREE.TubeGeometry(hoseCurve, 24, 0.008, 8), black);
+    hose.castShadow = true;
+    g.add(hose);
+    const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(0.007, 0.011, 0.07, 10), black);
+    nozzle.position.set(r + 0.004, 0.12, 0.035);
+    g.add(nozzle);
+    addBox(g, [0.006, 0.012, 0.03], metal, [r + 0.001, 0.12, 0.035]);
+  }
+  return g;
+}
+
+/** Small UK BS EN 3 fire-extinguisher wall identification sign (`'co2'` or `'water'`). */
+export function buildExtinguisherSign(kind: 'water' | 'co2') {
+  const isCo2 = kind === 'co2';
+  const signCanvas = makeCanvas(128, 96);
+  const sctx = canvas2d(signCanvas);
+  sctx.fillStyle = '#f2f0ea';
+  sctx.fillRect(0, 0, 128, 96);
+  sctx.fillStyle = isCo2 ? '#141618' : '#c8161d';
+  sctx.fillRect(6, 6, 54, 84);
+  sctx.fillStyle = isCo2 ? '#c8161d' : '#1e7b34';
+  sctx.fillRect(66, 6, 56, 38);
+  sctx.fillStyle = isCo2 ? '#1e7b34' : '#c8161d';
+  sctx.fillRect(66, 50, 56, 40);
+  sctx.fillStyle = '#ffffff';
+  sctx.font = isCo2 ? 'bold 20px sans-serif' : 'bold 15px sans-serif';
+  sctx.textAlign = 'center';
+  sctx.fillText(isCo2 ? 'CO2' : 'WATER', 33, isCo2 ? 56 : 54);
+  return new THREE.Mesh(
+    new THREE.PlaneGeometry(0.11, 0.085),
+    new THREE.MeshStandardMaterial({ map: canvasTexture(signCanvas), roughness: 0.45 })
+  );
 }
 
 /**
@@ -1014,7 +1148,7 @@ export function buildTortoiseStove(mats: ChurchMaterials, x: number, floorY: num
         }
       }
     }
-    return new THREE.CanvasTexture(c);
+    return canvasTexture(c, { srgb: false });
   };
   const panelMats: Record<string, THREE.MeshStandardMaterial> = {};
   ['scroll', 'tiles'].forEach((kind) => {

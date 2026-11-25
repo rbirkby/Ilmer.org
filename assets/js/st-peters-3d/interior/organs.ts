@@ -9,6 +9,77 @@ import { markEra1900 } from './props.ts';
 
 export type OrganNotes = { manual: Set<number>; pedal: Set<number> };
 
+const SHARP_PITCH_CLASSES = new Set([1, 3, 6, 8, 10]);
+const isSharpMidi = (m: number) => SHARP_PITCH_CLASSES.has(m % 12);
+
+// Five-octave keyboard, C (MIDI 36) to C (96), each key pivoted at its back end so it dips when played.
+// `axis: 'x'` lays the compass along +X with keys projecting towards +Z (harmonium);
+// `axis: 'z'` lays the compass from +Z down to -Z with keys projecting towards -X (organ console).
+function buildFiveOctaveKeyboard(
+  parent: THREE.Object3D,
+  mats: ChurchMaterials,
+  {
+    span,
+    axis,
+    pivotY,
+    pivotDepth,
+    natDepth,
+    natHeight,
+    sharpDepth,
+    sharpHeight,
+    castNaturalShadow = false
+  }: {
+    span: number;
+    axis: 'x' | 'z';
+    pivotY: number;
+    pivotDepth: number;
+    natDepth: number;
+    natHeight: number;
+    sharpDepth: number;
+    sharpHeight: number;
+    castNaturalShadow?: boolean;
+  }
+) {
+  const lo = 36;
+  const hi = 96;
+  let naturals = 0;
+  for (let m = lo; m <= hi; m++) if (!isSharpMidi(m)) naturals++;
+  const kW = span / naturals;
+  const natGeo =
+    axis === 'x'
+      ? new THREE.BoxGeometry(kW - 0.0016, natHeight, natDepth).translate(0, natHeight * 0.5, natDepth * 0.5)
+      : new THREE.BoxGeometry(natDepth, natHeight, kW - 0.0016).translate(-natDepth * 0.5, natHeight * 0.5, 0);
+  const sharpGeo =
+    axis === 'x'
+      ? new THREE.BoxGeometry(kW * 0.55, sharpHeight, sharpDepth).translate(
+          0,
+          natHeight + sharpHeight * 0.5,
+          sharpDepth * 0.5
+        )
+      : new THREE.BoxGeometry(sharpDepth, sharpHeight, kW * 0.55).translate(
+          -sharpDepth * 0.5,
+          natHeight + sharpHeight * 0.5,
+          0
+        );
+  const ebony = new THREE.MeshStandardMaterial({ color: 0x15110e, roughness: 0.35 });
+  const keys = new Map<number, { pivot: THREE.Object3D; angle: number }>();
+  let nIdx = 0;
+  for (let m = lo; m <= hi; m++) {
+    const sharp = isSharpMidi(m);
+    const offset = sharp ? nIdx * kW : (nIdx + 0.5) * kW;
+    if (!sharp) nIdx++;
+    const pivot = new THREE.Group();
+    if (axis === 'x') pivot.position.set(-span * 0.5 + offset, pivotY, pivotDepth);
+    else pivot.position.set(pivotDepth, pivotY, span * 0.5 - offset);
+    const key = new THREE.Mesh(sharp ? sharpGeo : natGeo, sharp ? ebony : mats.wax);
+    if (castNaturalShadow && !sharp) key.castShadow = true;
+    pivot.add(key);
+    parent.add(pivot);
+    keys.set(m, { pivot, angle: 0 });
+  }
+  return keys;
+}
+
 function createFretworkTexture(kind: string) {
   const c = makeCanvas(256, 128);
   const ctx = canvas2d(c);
@@ -76,8 +147,7 @@ function buildHarmonium(mats: ChurchMaterials) {
     add(new THREE.BoxGeometry(0.06, 0.98, 0.46), oak, s * (W * 0.5 - 0.03), 0.49, -0.02);
     // Turned front legs with block feet and a scrolled bracket under the key bed
     add(new THREE.BoxGeometry(0.1, 0.09, 0.1), dark, s * (W * 0.5 - 0.06), 0.045, 0.2);
-    const leg = add(new THREE.CylinderGeometry(0.03, 0.036, 0.56, 12), oak, s * (W * 0.5 - 0.06), 0.37, 0.2);
-    leg.scale.set(1, 1, 1);
+    add(new THREE.CylinderGeometry(0.03, 0.036, 0.56, 12), oak, s * (W * 0.5 - 0.06), 0.37, 0.2);
     [0.16, 0.36, 0.56].forEach((y) =>
       add(new THREE.TorusGeometry(0.036, 0.008, 6, 14), oak, s * (W * 0.5 - 0.06), y, 0.2).rotateX(Math.PI / 2)
     );
@@ -98,29 +168,16 @@ function buildHarmonium(mats: ChurchMaterials) {
     add(new THREE.CylinderGeometry(0.05, 0.05, 0.06, 14), oak, s * (W * 0.5 - 0.06), 0.84, 0.22).rotateZ(Math.PI / 2);
   });
   // Five-octave keyboard, C (MIDI 36) to C (96), keys pivoted at their back ends; low notes at -X (player's left)
-  const keys = new Map<number, { pivot: THREE.Object3D; angle: number }>();
-  const isSharp = (m: number) => [1, 3, 6, 8, 10].includes(m % 12);
-  let naturals = 0;
-  for (let m = 36; m <= 96; m++) if (!isSharp(m)) naturals++;
-  const span = W - 0.2;
-  const kW = span / naturals;
-  const natGeo = new THREE.BoxGeometry(kW - 0.0016, 0.018, 0.14);
-  natGeo.translate(0, 0.009, 0.07);
-  const sharpGeo = new THREE.BoxGeometry(kW * 0.55, 0.014, 0.085);
-  sharpGeo.translate(0, 0.025, 0.0425);
-  const ebony = new THREE.MeshStandardMaterial({ color: 0x15110e, roughness: 0.35 });
-  let nIdx = 0;
-  for (let m = 36; m <= 96; m++) {
-    const sharp = isSharp(m);
-    const x = -span * 0.5 + (sharp ? nIdx * kW : (nIdx + 0.5) * kW);
-    if (!sharp) nIdx++;
-    const pivot = new THREE.Group();
-    pivot.position.set(x, 0.74, 0.1);
-    const key = new THREE.Mesh(sharp ? sharpGeo : natGeo, sharp ? ebony : mats.wax);
-    pivot.add(key);
-    g.add(pivot);
-    keys.set(m, { pivot, angle: 0 });
-  }
+  const keys = buildFiveOctaveKeyboard(g, mats, {
+    span: W - 0.2,
+    axis: 'x',
+    pivotY: 0.74,
+    pivotDepth: 0.1,
+    natDepth: 0.14,
+    natHeight: 0.018,
+    sharpDepth: 0.085,
+    sharpHeight: 0.014
+  });
   // Stop rail with a row of round white stop knobs
   add(new THREE.BoxGeometry(W - 0.14, 0.07, 0.1), oak, 0, 0.8, 0.05);
   const knobGeo = new THREE.CylinderGeometry(0.011, 0.011, 0.012, 12).rotateX(Math.PI / 2);
@@ -246,37 +303,17 @@ export function buildOrganAndHarmonium(interiorGroup: THREE.Group, mats: ChurchM
   addBox(organG, [0.26, 0.03, 1.16], mats.medOak, [-0.45, 0.825, 0]);
   // Five-octave manual, C (MIDI 36) to C (96). Each key hangs from a pivot at its back end so it can dip when
   // played; the player sits at -X, so low notes (their left) are at +Z
-  const isSharpMidi = (m: number) => [1, 3, 6, 8, 10].includes(m % 12);
-  const manualKeys = new Map<number, { pivot: THREE.Object3D; angle: number }>();
-  const naturalsBefore = (lo: number, m: number) => {
-    let n = 0;
-    for (let k = lo; k < m; k++) if (!isSharpMidi(k)) n++;
-    return n;
-  };
-  {
-    const lo = 36;
-    const hi = 96;
-    const span = 0.92;
-    const kW = span / naturalsBefore(lo, hi + 1);
-    const pivotX = -0.39;
-    const bedTop = 0.84;
-    const natKeyGeo = new THREE.BoxGeometry(0.15, 0.02, kW - 0.0016);
-    natKeyGeo.translate(-0.075, 0.01, 0);
-    const sharpKeyGeo = new THREE.BoxGeometry(0.095, 0.014, kW * 0.55);
-    sharpKeyGeo.translate(-0.0475, 0.02 + 0.007, 0);
-    const ebony = new THREE.MeshStandardMaterial({ color: 0x15110e, roughness: 0.35 });
-    for (let m = lo; m <= hi; m++) {
-      const sharp = isSharpMidi(m);
-      const z = span * 0.5 - naturalsBefore(lo, m) * kW - (sharp ? 0 : kW * 0.5);
-      const pivot = new THREE.Group();
-      pivot.position.set(pivotX, bedTop, z);
-      const key = new THREE.Mesh(sharp ? sharpKeyGeo : natKeyGeo, sharp ? ebony : mats.wax);
-      key.castShadow = !sharp;
-      pivot.add(key);
-      organG.add(pivot);
-      manualKeys.set(m, { pivot, angle: 0 });
-    }
-  }
+  const manualKeys = buildFiveOctaveKeyboard(organG, mats, {
+    span: 0.92,
+    axis: 'z',
+    pivotY: 0.84,
+    pivotDepth: -0.39,
+    natDepth: 0.15,
+    natHeight: 0.02,
+    sharpDepth: 0.095,
+    sharpHeight: 0.014,
+    castNaturalShadow: true
+  });
 
   // Roll-top (tambour) fall drawn down over the keyboard: a quarter-round of narrow oak slats running in
   // curved grooves in the two shaped cheeks, with a moulded lip on the bottom slat to lift it by

@@ -2,13 +2,7 @@
 // Uses the native Fullscreen API where the browser allows it on non-video elements, and otherwise
 // (iPhone Safari) pins the stage over the page with the `is-pseudo-fullscreen` class.
 
-/**
- * @param {object} options
- * @param {HTMLButtonElement | null} options.button The toggle button, holding `fs-enter` and `fs-exit` icons.
- * @param {HTMLElement} options.stage The element to show fullscreen.
- * @param {string} [options.lockClass] Class added to <body> to stop the page scrolling behind a pseudo-fullscreen stage.
- * @param {() => void} [options.onChange] Called whenever the stage enters or leaves fullscreen.
- */
+/** Bind a toggle button to enter/exit native or pseudo-fullscreen for `stage`. */
 export function bindFullscreenToggle({
   button,
   stage,

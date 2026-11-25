@@ -209,7 +209,6 @@ export default function (eleventyConfig: EleventyConfig) {
   eleventyConfig.addPassthroughCopy({
     'node_modules/markdown-it-github-alerts/styles/*.css': 'assets/css'
   });
-  eleventyConfig.addWatchTarget('public/assets/css/');
   // Eleventy skips Git-ignored paths, including added watch targets. Stop applying .gitignore,
   // keep every other ignored path out of the watch and the template search, and watch Vite's output.
   eleventyConfig.setUseGitIgnore(false);

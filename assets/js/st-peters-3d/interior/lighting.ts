@@ -27,9 +27,7 @@ type OilLampAssets = {
   fontGeo: THREE.BufferGeometry;
   chimneyGeo: THREE.BufferGeometry;
   burnerGeo: THREE.BufferGeometry;
-  flameGeo: THREE.BufferGeometry;
   chimneyMat: THREE.Material;
-  flameMat: THREE.Material;
 };
 
 type LitCandle = {
@@ -285,25 +283,105 @@ function getPendantGeometries() {
   return pendantGeoCache;
 }
 
-// Build a 3-light Edwardian wrought-iron pendant:
-// ceiling rose & hook, 3 forged link chains descending to the central circular mount ring, and 3 equidistant
-// lamps spaced 120° apart around the ring with wrought-iron fleur-de-lys brackets connecting the ring to each lamp.
-
-export function buildChandelier(dropHeight: number, mats: ChurchMaterials, lightIntensity = 1.6) {
-  const g = new THREE.Group();
-  const geo = getPendantGeometries();
-  const ringY = -dropHeight;
-
-  // Ceiling rose & suspension hook
+// Shared ceiling rose, hook, central circular mount ring with bosses, and 3 scrolled fleur-de-lys arms
+function addPendantRoseAndHook(g: THREE.Group, geo: PendantGeometries, mats: ChurchMaterials) {
   const rose = new THREE.Mesh(geo.roseGeo, mats.iron);
   rose.position.y = -0.0175;
   g.add(rose);
   const hook = new THREE.Mesh(geo.hookGeo, mats.iron);
   hook.position.y = -0.05;
   g.add(hook);
+}
+
+function buildPendantSaddle(geo: PendantGeometries, mats: ChurchMaterials, includeCollar: boolean) {
+  const saddle = new THREE.Group();
+  saddle.add(new THREE.Mesh(geo.ringGeo, mats.iron));
+  for (let i = 0; i < 3; i++) {
+    const ang = (i * Math.PI * 2) / 3 + Math.PI / 6;
+    const midAng = ang + Math.PI / 3;
+    const boss = new THREE.Mesh(geo.bossGeo, mats.iron);
+    boss.position.set(Math.cos(midAng) * 0.15, -0.005, Math.sin(midAng) * 0.15);
+    boss.rotation.y = -midAng;
+    saddle.add(boss);
+
+    const arm = new THREE.Group();
+    arm.add(new THREE.Mesh(geo.armGeo, mats.iron));
+    arm.add(new THREE.Mesh(geo.upperScrollGeo, mats.iron));
+    arm.add(new THREE.Mesh(geo.underScrollGeo, mats.iron));
+
+    const ringFleur = new THREE.Mesh(geo.fleurGeo, mats.iron);
+    ringFleur.position.set(0.185, 0.022, 0);
+    ringFleur.rotation.z = -0.42;
+    ringFleur.scale.setScalar(0.78);
+    arm.add(ringFleur);
+
+    const crestFleur = new THREE.Mesh(geo.fleurGeo, mats.iron);
+    crestFleur.position.set(0.345, 0.078, 0);
+    crestFleur.rotation.z = -0.12;
+    arm.add(crestFleur);
+
+    if (includeCollar) {
+      const collar = new THREE.Mesh(geo.collarGeo, mats.iron);
+      collar.position.set(0.345, 0.08, 0);
+      arm.add(collar);
+    }
+
+    arm.rotation.y = -ang;
+    saddle.add(arm);
+  }
+  return saddle;
+}
+
+function buildChainRuns(geo: PendantGeometries, mats: ChurchMaterials, chainRuns: Vec3Pair[]) {
+  const linkPitch = 0.024;
+  const counts = chainRuns.map(([a, b]) => Math.max(2, Math.floor(a.distanceTo(b) / linkPitch)));
+  const chain = new THREE.InstancedMesh(
+    geo.linkGeo,
+    mats.iron,
+    counts.reduce((n, c) => n + c, 0)
+  );
+  const up = new THREE.Vector3(0, 1, 0);
+  const dirV = new THREE.Vector3();
+  const alignQ = new THREE.Quaternion();
+  const twistQ = new THREE.Quaternion();
+  const q = new THREE.Quaternion();
+  const m = new THREE.Matrix4();
+  const p = new THREE.Vector3();
+  const one = new THREE.Vector3(1, 1, 1);
+  let li = 0;
+  chainRuns.forEach(([a, b], r) => {
+    const n = counts[r];
+    dirV.subVectors(b, a).normalize();
+    alignQ.setFromUnitVectors(up, dirV);
+    for (let k = 0; k < n; k++) {
+      p.lerpVectors(a, b, (k + 0.5) / n);
+      twistQ.setFromAxisAngle(up, k % 2 === 0 ? 0 : Math.PI / 2);
+      q.copy(alignQ).multiply(twistQ);
+      m.compose(p, q, one);
+      chain.setMatrixAt(li++, m);
+    }
+  });
+  chain.instanceMatrix.needsUpdate = true;
+  return chain;
+}
+
+// Build a 3-light Edwardian wrought-iron pendant:
+// ceiling rose & hook, 3 forged link chains descending to the central circular mount ring, and 3 equidistant
+// lamps spaced 120° apart around the ring with wrought-iron fleur-de-lys brackets connecting the ring to each lamp.
+
+export function buildChandelier(dropHeight: number, mats: ChurchMaterials) {
+  const g = new THREE.Group();
+  const geo = getPendantGeometries();
+  const ringY = -dropHeight;
+
+  addPendantRoseAndHook(g, geo, mats);
+
+  const saddle = buildPendantSaddle(geo, mats, true);
+  saddle.position.y = ringY;
+  g.add(saddle);
 
   // Opal glass shade + clear crimped lip + iron gallery cap + glowing lamp inside
-  const addShade = (x: number, y: number, z: number, scale: number) => {
+  const addShade = (x: number, y: number, z: number) => {
     const sg = new THREE.Group();
     const cap = new THREE.Mesh(geo.capGeo, mats.iron);
     cap.position.y = 0.006;
@@ -318,105 +396,30 @@ export function buildChandelier(dropHeight: number, mats: ChurchMaterials, light
     bulb.position.y = -0.08;
     sg.add(bulb);
     sg.position.set(x, y, z);
-    sg.scale.setScalar(scale);
     g.add(sg);
   };
 
-  // Central horizontal circular wrought-iron mount ring
-  const ring = new THREE.Mesh(geo.ringGeo, mats.iron);
-  ring.position.y = ringY;
-  g.add(ring);
-
-  // 3 equidistant lamps (120° apart) around the central circular mount ring,
-  // each connected from the ring by a scrolled wrought-iron arm + fleur-de-lys motif
   const chainRuns: Vec3Pair[] = [];
   for (let i = 0; i < 3; i++) {
     const ang = (i * Math.PI * 2) / 3 + Math.PI / 6;
     const cosA = Math.cos(ang);
     const sinA = Math.sin(ang);
-
-    // Decorative cast boss on the circular ring between the 3 arm junctions
-    const midAng = ang + Math.PI / 3;
-    const boss = new THREE.Mesh(geo.bossGeo, mats.iron);
-    boss.position.set(Math.cos(midAng) * 0.15, ringY - 0.005, Math.sin(midAng) * 0.15);
-    boss.rotation.y = -midAng;
-    g.add(boss);
-
-    // Radial arm + fleur-de-lys connecting the central ring to the lamp
-    const arm = new THREE.Group();
-    arm.add(new THREE.Mesh(geo.armGeo, mats.iron));
-    arm.add(new THREE.Mesh(geo.upperScrollGeo, mats.iron));
-    arm.add(new THREE.Mesh(geo.underScrollGeo, mats.iron));
-
-    // Inner fleur-de-lys at the ring-to-arm junction + outer fleur-de-lys crest along the arm
-    const ringFleur = new THREE.Mesh(geo.fleurGeo, mats.iron);
-    ringFleur.position.set(0.185, 0.022, 0);
-    ringFleur.rotation.z = -0.42;
-    ringFleur.scale.setScalar(0.78);
-    arm.add(ringFleur);
-
-    const crestFleur = new THREE.Mesh(geo.fleurGeo, mats.iron);
-    crestFleur.position.set(0.345, 0.078, 0);
-    crestFleur.rotation.z = -0.12;
-    arm.add(crestFleur);
-
-    const collar = new THREE.Mesh(geo.collarGeo, mats.iron);
-    collar.position.set(0.345, 0.08, 0);
-    arm.add(collar);
-
-    arm.position.y = ringY;
-    arm.rotation.y = -ang;
-    g.add(arm);
-
-    // Equidistant lamp hanging from the outer tip of the fleur-de-lys arm
-    const lampR = 0.456;
-    addShade(cosA * lampR, ringY - 0.032, sinA * lampR, 1);
-
-    // Forged suspension chain from the ceiling rose down to this arm's mount point on the circular ring
+    addShade(cosA * 0.456, ringY - 0.032, sinA * 0.456);
     chainRuns.push([
       new THREE.Vector3(cosA * 0.016, -0.06, sinA * 0.016),
       new THREE.Vector3(cosA * 0.15, ringY + 0.012, sinA * 0.15)
     ]);
   }
-  const linkPitch = 0.024;
-  let linkCount = 0;
-  chainRuns.forEach(([a, b]) => {
-    linkCount += Math.max(2, Math.floor(a.distanceTo(b) / linkPitch));
-  });
-  const chain = new THREE.InstancedMesh(geo.linkGeo, mats.iron, linkCount);
-  const up = new THREE.Vector3(0, 1, 0);
-  const dirV = new THREE.Vector3();
-  const alignQ = new THREE.Quaternion();
-  const twistQ = new THREE.Quaternion();
-  const m = new THREE.Matrix4();
-  const p = new THREE.Vector3();
-  const one = new THREE.Vector3(1, 1, 1);
-  let li = 0;
-  chainRuns.forEach(([a, b]) => {
-    const n = Math.max(2, Math.floor(a.distanceTo(b) / linkPitch));
-    dirV.subVectors(b, a).normalize();
-    alignQ.setFromUnitVectors(up, dirV);
-    for (let k = 0; k < n; k++) {
-      p.lerpVectors(a, b, (k + 0.5) / n);
-      twistQ.setFromAxisAngle(up, k % 2 === 0 ? 0 : Math.PI / 2);
-      const q = alignQ.clone().multiply(twistQ);
-      m.compose(p, q, one);
-      chain.setMatrixAt(li++, m);
-    }
-  });
-  chain.instanceMatrix.needsUpdate = true;
-  g.add(chain);
+  g.add(buildChainRuns(geo, mats, chainRuns));
 
-  // Warm interior pendant PointLight
-  const light = new THREE.PointLight(0xffdfb0, lightIntensity, 10.5, 1.7);
+  // Warm interior pendant PointLight (intensity is scaled per lighting mood in main.ts)
+  const light = new THREE.PointLight(0xffdfb0, 1.65, 10.5, 1.7);
   light.position.set(0, ringY - 0.2, 0);
   light.castShadow = false;
   g.add(light);
 
   return { group: g, light };
 }
-
-// Helper to build a smoothly curved, subtly creased botanical blade (leaf or cupped flower petal)
 
 export function buildCeilingSpotlight(aim: THREE.Vector3, mountPos: THREE.Vector3, inward: THREE.Vector3) {
   const black = new THREE.MeshStandardMaterial({ color: 0x141414, roughness: 0.45, metalness: 0.55 });
@@ -510,7 +513,6 @@ function getOilLampAssets() {
     fontGeo: new THREE.LatheGeometry(fontProfile, 28),
     chimneyGeo: new THREE.LatheGeometry(chimneyProfile, 24),
     burnerGeo: new THREE.CylinderGeometry(0.03, 0.034, 0.03, 16),
-    flameGeo: new THREE.SphereGeometry(0.014, 10, 8).scale(1, 2.2, 1),
     chimneyMat: new THREE.MeshStandardMaterial({
       color: 0xf4f1e8,
       roughness: 0.05,
@@ -518,8 +520,7 @@ function getOilLampAssets() {
       opacity: 0.32,
       side: THREE.DoubleSide,
       depthWrite: false
-    }),
-    flameMat: new THREE.MeshBasicMaterial({ color: 0xffc46a })
+    })
   };
   return oilLampAssets;
 }
@@ -533,10 +534,11 @@ function buildParaffinLamp(mats: ChurchMaterials) {
   const burner = new THREE.Mesh(a.burnerGeo, mats.brass);
   burner.position.y = 0.165;
   g.add(burner);
-  const flame = new THREE.Mesh(a.flameGeo, a.flameMat);
-  flame.position.y = 0.205;
+  // Placeholder mesh populated with the flickering shader geometry & material by candleRig.addOilFlame()
+  const flame = new THREE.Mesh();
+  flame.position.y = 0.176;
   g.add(flame);
-  g.userData.flame = flame; // buildInterior swaps in the flickering candle-flame shader
+  g.userData.flame = flame;
   const chimney = new THREE.Mesh(a.chimneyGeo, a.chimneyMat);
   chimney.position.y = 0.18;
   g.add(chimney);
@@ -551,76 +553,27 @@ export function buildOilPendant(dropHeight: number, mats: ChurchMaterials) {
   const geo = getPendantGeometries();
   const ringY = -dropHeight + 0.35; // the lamp stands above the ring, so the ring hangs a little higher
 
-  const rose = new THREE.Mesh(geo.roseGeo, mats.iron);
-  rose.position.y = -0.0175;
-  g.add(rose);
-  const hook = new THREE.Mesh(geo.hookGeo, mats.iron);
-  hook.position.y = -0.05;
-  g.add(hook);
+  addPendantRoseAndHook(g, geo, mats);
 
-  // Saddle: ring, bosses and the three scrolled arms with their fleurs-de-lys, then turned upside down
-  const saddle = new THREE.Group();
-  saddle.add(new THREE.Mesh(geo.ringGeo, mats.iron));
-  const tips: THREE.Vector3[] = [];
-  for (let i = 0; i < 3; i++) {
-    const ang = (i * Math.PI * 2) / 3 + Math.PI / 6;
-    const midAng = ang + Math.PI / 3;
-    const boss = new THREE.Mesh(geo.bossGeo, mats.iron);
-    boss.position.set(Math.cos(midAng) * 0.15, -0.005, Math.sin(midAng) * 0.15);
-    boss.rotation.y = -midAng;
-    saddle.add(boss);
-    const arm = new THREE.Group();
-    arm.add(new THREE.Mesh(geo.armGeo, mats.iron));
-    arm.add(new THREE.Mesh(geo.upperScrollGeo, mats.iron));
-    arm.add(new THREE.Mesh(geo.underScrollGeo, mats.iron));
-    const ringFleur = new THREE.Mesh(geo.fleurGeo, mats.iron);
-    ringFleur.position.set(0.185, 0.022, 0);
-    ringFleur.rotation.z = -0.42;
-    ringFleur.scale.setScalar(0.78);
-    arm.add(ringFleur);
-    const crestFleur = new THREE.Mesh(geo.fleurGeo, mats.iron);
-    crestFleur.position.set(0.345, 0.078, 0);
-    crestFleur.rotation.z = -0.12;
-    arm.add(crestFleur);
-    arm.rotation.y = -ang;
-    saddle.add(arm);
-    // Arm end (0.456, -0.02) in the saddle; turned over (rotation.x = PI) that is (x, +0.02, -z)
-    tips.push(new THREE.Vector3(Math.cos(ang) * 0.456, ringY + 0.02, -Math.sin(ang) * 0.456));
-  }
+  // Saddle: ring, bosses and the three scrolled arms with their fleurs-de-lys, turned upside down
+  const saddle = buildPendantSaddle(geo, mats, false);
   saddle.rotation.x = Math.PI;
   saddle.position.y = ringY;
   g.add(saddle);
 
   // Small eye on each upturned arm end, and a chain from the rose down to it
-  const chainRuns = tips.map((tip) => {
+  const chainRuns: Vec3Pair[] = [];
+  for (let i = 0; i < 3; i++) {
+    const ang = (i * Math.PI * 2) / 3 + Math.PI / 6;
+    // Arm end (0.456, -0.02) in the saddle; turned over (rotation.x = PI) that is (x, +0.02, -z)
+    const tip = new THREE.Vector3(Math.cos(ang) * 0.456, ringY + 0.02, -Math.sin(ang) * 0.456);
     const eye = new THREE.Mesh(geo.hookGeo, mats.iron);
     eye.position.copy(tip).setY(tip.y + 0.012);
     eye.rotation.y = Math.atan2(tip.z, tip.x);
     g.add(eye);
-    return [new THREE.Vector3(tip.x * 0.035, -0.06, tip.z * 0.035), tip.clone().setY(tip.y + 0.024)];
-  });
-  const linkPitch = 0.024;
-  const counts = chainRuns.map(([a, b]) => Math.max(2, Math.floor(a.distanceTo(b) / linkPitch)));
-  const chain = new THREE.InstancedMesh(
-    geo.linkGeo,
-    mats.iron,
-    counts.reduce((n, c) => n + c, 0)
-  );
-  const up = new THREE.Vector3(0, 1, 0);
-  const m = new THREE.Matrix4();
-  const p = new THREE.Vector3();
-  const one = new THREE.Vector3(1, 1, 1);
-  let li = 0;
-  chainRuns.forEach(([a, b], r) => {
-    const alignQ = new THREE.Quaternion().setFromUnitVectors(up, b.clone().sub(a).normalize());
-    for (let k = 0; k < counts[r]; k++) {
-      p.lerpVectors(a, b, (k + 0.5) / counts[r]);
-      const q = alignQ.clone().multiply(new THREE.Quaternion().setFromAxisAngle(up, k % 2 ? Math.PI / 2 : 0));
-      chain.setMatrixAt(li++, m.compose(p, q, one));
-    }
-  });
-  chain.instanceMatrix.needsUpdate = true;
-  g.add(chain);
+    chainRuns.push([new THREE.Vector3(tip.x * 0.035, -0.06, tip.z * 0.035), tip.clone().setY(tip.y + 0.024)]);
+  }
+  g.add(buildChainRuns(geo, mats, chainRuns));
 
   // The lamp's font sits down in the ring
   const lamp = buildParaffinLamp(mats);
