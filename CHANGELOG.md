@@ -65,6 +65,7 @@ Generated automatically from [Conventional Commits](https://www.conventionalcomm
 
 ### Bug fixes
 
+- Remove unused code ([dcd0c04](https://github.com/rbirkby/Ilmer.org/commit/dcd0c04b386099986835321519a11fd8bc5b0b29))
 - 3D reconstruction church porch tiles now match the main roof ([3704271](https://github.com/rbirkby/Ilmer.org/commit/3704271b55d9cb25b5caf5dea5d0d6714593ee82))
 - rebuild 1839 shadows after context restore, not on every GPS fix ([30fbc3e](https://github.com/rbirkby/Ilmer.org/commit/30fbc3e50bd3554d63849d31e4058265bd07bda0))
 - fix formatting ([f68d0a7](https://github.com/rbirkby/Ilmer.org/commit/f68d0a735b220e915a1de4c1e0d7bfda8ca1e06c))
