@@ -6,6 +6,7 @@ Generated automatically from [Conventional Commits](https://www.conventionalcomm
 
 ### Features
 
+- Oaths of allegiance in timeline ([717c6f3](https://github.com/rbirkby/Ilmer.org/commit/717c6f32815e8fe0579aae60acf865126efb92b8))
 - Oaths of landholders in 1723 ([756f26f](https://github.com/rbirkby/Ilmer.org/commit/756f26f684fe0cf254a80fe29c88abe9b5b812c7))
 - Changelog generation ([884b153](https://github.com/rbirkby/Ilmer.org/commit/884b15339b32907b51079e4309cd488c51da5b95))
 - Replace CDN JS with locally managed deps ([098d566](https://github.com/rbirkby/Ilmer.org/commit/098d56657e4fbfdd275133f8ae1b55e37ec9465b))
