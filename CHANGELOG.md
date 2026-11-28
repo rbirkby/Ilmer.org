@@ -6,6 +6,7 @@ Generated automatically from [Conventional Commits](https://www.conventionalcomm
 
 ### Features
 
+- Oaths of landholders in 1723 ([756f26f](https://github.com/rbirkby/Ilmer.org/commit/756f26f684fe0cf254a80fe29c88abe9b5b812c7))
 - Changelog generation ([884b153](https://github.com/rbirkby/Ilmer.org/commit/884b15339b32907b51079e4309cd488c51da5b95))
 - Replace CDN JS with locally managed deps ([098d566](https://github.com/rbirkby/Ilmer.org/commit/098d56657e4fbfdd275133f8ae1b55e37ec9465b))
 - Do not use typescript 'any' ([29ce1c8](https://github.com/rbirkby/Ilmer.org/commit/29ce1c8bd18c6ee54d6e3803ddea2b91ed828827))
@@ -80,6 +81,7 @@ Generated automatically from [Conventional Commits](https://www.conventionalcomm
 
 ### Maintenance
 
+- **deps:** Update dependencies ([22cb933](https://github.com/rbirkby/Ilmer.org/commit/22cb9338ff7c4d34e56f44e1ac8a0378a1b15671))
 - **deps:** Update dependencies ([489e3dc](https://github.com/rbirkby/Ilmer.org/commit/489e3dc8cf27fa5c9b07d4ac7956303be0e99e52))
 - Further optimisations ([83063d8](https://github.com/rbirkby/Ilmer.org/commit/83063d8f12224ffb3081007f83ccabf8e12a7f77))
 - Optimisations ([ae0738d](https://github.com/rbirkby/Ilmer.org/commit/ae0738d923e5351c0ffb3016ce2d97b4582b9a6e))
